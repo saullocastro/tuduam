@@ -4,4 +4,5 @@ pytest
 pytest-cov
 coverage
 coveralls
+pymoo
 

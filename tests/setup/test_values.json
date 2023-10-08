@@ -1,0 +1,27 @@
+{
+    "SingleWing":{ 
+        "aspect_ratio":9.6,
+        "quarterchord_sweep":0.08726646259971647,
+        "surface": 12
+    },
+    "Fuselage":{ 
+        "length_fuselage":9.6,
+        "width_fuselage":2,
+        "height_fuselage":2.3
+    },
+    "HybridPowertrain":{ 
+        "fuel_cell_mass":90,
+        "battery_mass":90
+    },
+    "Engine":{ 
+        "n_engines": 6
+    },
+    "FlightPerformance":{ 
+        "n_ult":4.7,
+        "v_cruise":83
+    },
+    "VTOL":{ 
+        "mtom": 2400,
+        "oem": 1900
+    }
+}
