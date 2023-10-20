@@ -11,12 +11,18 @@ class Parent(BaseModel):
 
 class SingleWing(Parent):
     aspect_ratio: float  
+    taper: float  
     quarterchord_sweep: float  
+    washout: float  
+    """"The geometric twist between the tip and root chord 
+    in radians. Negative value indicates washin i.e the tip is at a
+    higher AoA."""
     surface: Optional[float]  =  None
     span: Optional[float]  =  None
     chord_root: Optional[float]  =  None
     chord_tip: Optional[float]  =  None
     chord_mac: Optional[float]  =  None             # Mean Aerodynamic chord
+    sweep_le: Optional[float]  =  None
     x_lemac: Optional[float]  =  None               # x position (longitudinal) leading edge mean aerodynamic chord
     y_mac: Optional[float]  =  None               # y position leading edge mean aerodynamic chord
     mass_wing: Optional[float]  =  None               # Mass of both wings
@@ -36,6 +42,7 @@ class SingleWing(Parent):
             raise Exception(f"There was an error when loading in {cls}")
 
 class Airfoil(Parent):
+    cl_alpha: float 
     thick_to_chord: Optional[float] = None
 
     @classmethod
@@ -107,9 +114,24 @@ class VTOL(Parent):
             raise Exception(f"There was an error when loading in {cls}")
 
 class FlightPerformance(Parent):
+    wingloading_cruise: Optional[float] = None
     mission_energy: Optional[float] = None
     n_ult: Optional[float] = None
     v_cruise: Optional[float] = None
+
+    @classmethod
+    def load_from_json(cls, file_path:FilePath):
+        with open(file_path) as jsonFile:
+            data = json.load(jsonFile)
+        try:
+            return cls(**data)
+        except:
+            raise Exception(f"There was an error when loading in {cls}")
+
+class Aerodynamics(Parent):
+    cL_alpha: Optional[float] = None
+    cd0: Optional[float] = None
+    """"Zero lift drag coefficient"""
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):

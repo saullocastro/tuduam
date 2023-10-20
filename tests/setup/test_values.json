@@ -2,7 +2,12 @@
     "SingleWing":{ 
         "aspect_ratio":9.6,
         "quarterchord_sweep":0.08726646259971647,
-        "surface": 12
+        "surface": 12,
+        "taper": 0.45,
+        "span": 10,
+        "chord_root": 3,
+        "chord_tip": 1,
+        "washout": 0.05
     },
     "Fuselage":{ 
         "length_fuselage":9.6,
