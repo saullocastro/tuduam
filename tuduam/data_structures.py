@@ -1,5 +1,5 @@
-from pydantic import BaseModel, ConfigDict, FilePath
-from typing import Optional, List
+from pydantic import BaseModel, ConfigDict, FilePath, conlist
+from typing import Optional, List 
 import numpy as np
 import json
 
@@ -17,19 +17,30 @@ class SingleWing(Parent):
     """"The geometric twist between the tip and root chord 
     in radians. Negative value indicates washin i.e the tip is at a
     higher AoA."""
+    x_le_root_global: Optional[float]  =  None               # y position leading edge mean aerodynamic chord
+    """"The coordinate of the leading edge of the root chord. Defines the 
+    positioning of the wing"""
     surface: Optional[float]  =  None
     span: Optional[float]  =  None
     chord_root: Optional[float]  =  None
     chord_tip: Optional[float]  =  None
     chord_mac: Optional[float]  =  None             # Mean Aerodynamic chord
     sweep_le: Optional[float]  =  None
-    x_lemac: Optional[float]  =  None               # x position (longitudinal) leading edge mean aerodynamic chord
+    x_lemac_local: Optional[float]  =  None               # x position (longitudinal) leading edge mean aerodynamic chord
     y_mac: Optional[float]  =  None               # y position leading edge mean aerodynamic chord
-    mass_wing: Optional[float]  =  None               # Mass of both wings
+    mass: Optional[float]  =  None               # Mass of both wings
 
-    #--------------wingbox--------------
-    wingbox_front: Optional[float]  =  None
-    wingbox_rear: Optional[float]  =  None
+    #--------------wingbox structure --------------
+    wingbox_start: Optional[float]  =  None
+    wingbox_end: Optional[float]  =  None
+    n_ribs: Optional[float]  =  None
+    n_str: Optional[float]  =  None
+    t_rib: Optional[float]  =  None
+    spar_thickness: Optional[float]  =  None
+    stringer_height: Optional[float]  =  None
+    stringer_width: Optional[float]  =  None
+    stringer_thickness: Optional[float]  =  None
+    skin_thickness: Optional[float]  =  None
 
 
     @classmethod
@@ -43,7 +54,7 @@ class SingleWing(Parent):
 
 class Airfoil(Parent):
     cl_alpha: float 
-    thick_to_chord: Optional[float] = None
+    thickness_to_chord: Optional[float] = None
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):
@@ -58,7 +69,7 @@ class Fuselage(Parent):
     length_fuselage: Optional[float] = None
     width_fuselage: Optional[float] = None
     height_fuselage: Optional[float] = None
-    mass_fuselage: Optional[float] = None
+    mass: Optional[float] = None
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):
@@ -85,10 +96,12 @@ class HybridPowertrain(Parent):
 
 class Engine(Parent):
     n_engines: int 
+    thrust: Optional[float] = None
+    mass: Optional[float] = None
     power_grav_density: Optional[float] = None
     power_vol_density: Optional[float] = None
-    x_rotor_locatons: Optional[List] = None
-    y_rotor_locatons: Optional[List] = None
+    x_rotor_locations: Optional[List] = None
+    y_rotor_locations: Optional[List] = None
 
 
     @classmethod
@@ -114,10 +127,13 @@ class VTOL(Parent):
             raise Exception(f"There was an error when loading in {cls}")
 
 class FlightPerformance(Parent):
-    wingloading_cruise: Optional[float] = None
+    wingloading: Optional[float] = None
+    cL_cruise: Optional[float] = None
     mission_energy: Optional[float] = None
     n_ult: Optional[float] = None
     v_cruise: Optional[float] = None
+    h_cruise: Optional[float] = None
+    """"cruise altitude"""
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):
@@ -130,8 +146,12 @@ class FlightPerformance(Parent):
 
 class Aerodynamics(Parent):
     cL_alpha: Optional[float] = None
+    alpha_zero_lift: Optional[float] = None
     cd0: Optional[float] = None
     """"Zero lift drag coefficient"""
+    spanwise_points: Optional[int] = None
+    """"The spanwise points used in the Weissinger-L/Lifiting line method.
+    Odd integer"""
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):
@@ -145,8 +165,13 @@ class Aerodynamics(Parent):
 
 class Material(Parent):
     young_modulus: Optional[float] = None
+    safety_factor: Optional[float] = None
+    shear_modulus: Optional[float] = None
     poisson: Optional[float] = None
     density: Optional[float] = None
+    sigma_yield: Optional[float] = None
+    sigma_ultimate: Optional[float] = None
+    shear_strength: Optional[float] = None
     beta_crippling: Optional[float] = None 
     """Material constant specific for crippling"""
     m_crippling: Optional[float] = None

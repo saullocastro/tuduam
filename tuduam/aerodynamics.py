@@ -7,9 +7,11 @@ from scipy.interpolate import interp1d
 from scipy.integrate import quad, cumulative_trapezoid
 import pdb
 
-def wing_planform(flight_perf, vtol, wing):
+def wing_geometry(flight_perf, vtol, wing):
   """ The following functions sizes the wing planform based on the specified
   wing loading and maximum take off weight. All attributes are assigned to the wing data struct.
+  Note that x_lemac is given in the local coordinate system of te wing. That is the 
+  the coordinate system attached to the wing.
 
   :param flight_perf: FlightPerformance data structure
   :type flight_perf: FlightPerformance 
@@ -19,14 +21,14 @@ def wing_planform(flight_perf, vtol, wing):
   :type wing: SingleWing 
   """  
 
-  wing.surface = vtol.mtom / flight_perf.wingloading_cruise*g
+  wing.surface = vtol.mtom / flight_perf.wingloading*g
   wing.span  = np.sqrt( wing.aspect_ratio * wing.surface)
   wing.chord_root = 2 * wing.surface / ((1 + wing.taper) * wing.span)
   wing.chord_tip = wing.taper * wing.chord_root
   wing.chord_mac = (2 / 3) * wing.chord_root  * ((1 + wing.taper + wing.taper ** 2) / (1 + wing.taper))
   wing.y_mac = (wing.span / 6) * ((1 + 2 * wing.taper) / (1 + wing.taper))
-  wing.sweep_le = 0.25 * (2 * wing.chord_root / wing.span) * (1 - wing.taper) + np.tan(np.radians(wing.quarterchord_sweep))
-  wing.x_lemac = wing.y_mac * wing.sweep_le
+  wing.sweep_le = np.arctan(0.25 * (2 * wing.chord_root / wing.span) * (1 - wing.taper) + np.tan(wing.quarterchord_sweep))
+  wing.x_lemac_local = wing.y_mac * np.tan(wing.sweep_le)
 
 def l_function(lam, spc, y, n, eps= 1e-10):
   """Weissinger-L function, formulation by De Young and Harper.
@@ -63,7 +65,7 @@ def l_function(lam, spc, y, n, eps= 1e-10):
 
   return weissl 
 
-def weissinger_l(wing, alpha_root, m, plot= False): 
+def weissinger_l(aero, wing, alpha_root, plot= False): 
   """Weissinger-L method for a swept, tapered, twisted wing.
 
 
@@ -84,31 +86,31 @@ def weissinger_l(wing, alpha_root, m, plot= False):
       CDi: induced drag coefficient for entire wing 
   :rtype: tuple
   """  
-  if (m % 2) == 0:
-    m += 1
-    warn(f"{m=} was not ann odd number, one spanwise point has been added to make it such")
+  if (aero.spanwise_points % 2) == 0:
+    aero.spanwise_points += 1
+    warn(f"{aero.spanwise_points=} was not ann odd number, one spanwise point has been added to make it such")
 
   # Convert angles to radians
   lam = wing.quarterchord_sweep
   tw = -wing.washout
 
   # Initialize solution arrays
-  O = m+2
-  phi   = np.zeros((m))
-  y     = np.zeros((m))
-  c     = np.zeros((m))
-  spc   = np.zeros((m))
-  twist = np.zeros((m))
+  O = aero.spanwise_points +2
+  phi   = np.zeros((aero.spanwise_points ))
+  y     = np.zeros((aero.spanwise_points ))
+  c     = np.zeros((aero.spanwise_points ))
+  spc   = np.zeros((aero.spanwise_points ))
+  twist = np.zeros((aero.spanwise_points))
   theta = np.zeros((O))
   n     = np.zeros((O))
-  rhs   = np.zeros((m,1))
-  b     = np.zeros((m,m))
-  g     = np.zeros((m,m))
-  A     = np.zeros((m,m))
+  rhs   = np.zeros((aero.spanwise_points ,1))
+  b     = np.zeros((aero.spanwise_points,aero.spanwise_points ))
+  g     = np.zeros((aero.spanwise_points,aero.spanwise_points ))
+  A     = np.zeros((aero.spanwise_points ,aero.spanwise_points ))
 
   # Compute phi, y, chord, span/chord, and twist on full span
-  for i in range(m):
-    phi[i]   = (i+1)*pi/float(m+1)                   #b[v,v] goes to infinity at phi=0
+  for i in range(aero.spanwise_points ):
+    phi[i]   = (i+1)*pi/float(aero.spanwise_points +1)                   #b[v,v] goes to infinity at phi=0
     y[i]     = cos(phi[i])                           #y* = y/l
     c[i]     = wing.chord_root + (wing.chord_tip-wing.chord_root)*y[i] #local chord
     spc[i]   = wing.span/c[i]                        #span/(local chord)
@@ -125,29 +127,29 @@ def weissinger_l(wing, alpha_root, m, plot= False):
 
   # Construct the A matrix, which is the analog to the 2D lift slope
   # print("Calculating aerodynamics ...")
-  for j in range(m):
+  for j in range(aero.spanwise_points ):
     # print("Point " + str(j+1) + " of " + str(m))
     rhs[j,0] = alpha_root + twist[j]
 
-    for i in range(m):
-      if i == j: b[j,i] = float(m+1)/(4.*sin(phi[j]))
+    for i in range(aero.spanwise_points ):
+      if i == j: b[j,i] = float(aero.spanwise_points +1)/(4.*sin(phi[j]))
       else: b[j,i] = sin(phi[i]) / (cos(phi[i])-cos(phi[j]))**2. * \
-            (1. - (-1.)**float(i-j))/float(2*(m+1))
+            (1. - (-1.)**float(i-j))/float(2*(aero.spanwise_points +1))
 
       g[j,i] = 0.
       Lj0 = l_function(lam, spc[j], y[j], n0)
       LjO1 = l_function(lam, spc[j], y[j], nO1)
       fi0 = 0.
       fiO1 = 0.
-      for mu in range(m):
-        fi0 += 2./float(m+1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*phi0)
-        fiO1 += 2./float(m+1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*phiO1)
+      for mu in range(aero.spanwise_points ):
+        fi0 += 2./float(aero.spanwise_points +1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*phi0)
+        fiO1 += 2./float(aero.spanwise_points +1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*phiO1)
 
       for r in range(O):
         Ljr = l_function(lam, spc[j], y[j], n[r])
         fir = 0.
-        for mu in range(m):
-          fir += 2./float(m+1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*theta[r])
+        for mu in range(aero.spanwise_points ):
+          fir += 2./float(aero.spanwise_points +1) * (mu+1)*sin((mu+1)*phi[i])*cos((mu+1)*theta[r])
         g[j,i] += Ljr*fir
       g[j,i] = -1./float(2*(O+1)) * ((Lj0*fi0 + LjO1*fiO1)/2. + g[j,i])
 
@@ -167,7 +169,7 @@ def weissinger_l(wing, alpha_root, m, plot= False):
   twist = np.hstack((np.array([tw]), twist))
 
   # Return only the right-hand side (symmetry)
-  nrhs = int((m+1)/2)+1    # Explicit int conversion needed for Python3
+  nrhs = int((aero.spanwise_points +1)/2)+1    # Explicit int conversion needed for Python3
   y = y[0:nrhs]
   ccl = ccl[0:nrhs]
 
@@ -248,7 +250,7 @@ def weissinger_l(wing, alpha_root, m, plot= False):
 
 
 
-def lift_curve_slope( aero, wing, m, plot= False ):
+def lift_curve_slope( aero, wing, plot= False ):
   """ Returns 
 
   :param flight_perf: FlightPerfomance datat structurer
@@ -268,7 +270,7 @@ def lift_curve_slope( aero, wing, m, plot= False ):
   induced_drag_lst = list()
 
   for alpha in np.arange(np.radians(-5), np.radians(15), np.pi/180):
-    span_points, cl_vector, ccl_vector, local_aoa, cL, CDi = weissinger_l( wing, alpha, m)
+    span_points, cl_vector, ccl_vector, local_aoa, cL, CDi = weissinger_l(aero, wing, alpha)
     alpha_lst.append(alpha)
     cL_lst.append(cL)
     induced_drag_lst.append(CDi)
@@ -318,16 +320,16 @@ def drag_coefficient(aero, wing, alpha, m):
 
 
 
-def lift_distribution(wing, alpha, m, rho, velocity ):
+def lift_distribution(aero, wing, alpha,rho, velocity ):
   """ returns a functions which outpouts the sectional lift for a given
   spanwise position
 
+  :param aero: _description_
+  :type aero: _type_
   :param wing: _description_
   :type wing: _type_
   :param alpha: _description_
   :type alpha: _type_
-  :param m: _description_
-  :type m: _type_
   :param rho: _description_
   :type rho: _type_
   :param velocity: _description_
@@ -336,7 +338,7 @@ def lift_distribution(wing, alpha, m, rho, velocity ):
       ccl: cl * local chord (proportional to sectional lift)
   :rtype: _type_
   """  
-  span_points, cl_vector, ccl_vector, local_aoa, cL, CDi = weissinger_l( wing, alpha, m)
+  span_points, cl_vector, ccl_vector, local_aoa, cL, CDi = weissinger_l(aero, wing, alpha)
 
   if span_points[-1] < 1e-8:
     span_points[-1] = 0

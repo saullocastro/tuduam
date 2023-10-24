@@ -1,8 +1,8 @@
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import tuduam.aerodynamics as aero
 from tuduam import *
+import numpy as np
 
 dict_wing ={
     "aspect_ratio": 10,
@@ -26,6 +26,6 @@ VTOLStruct  = VTOL(**dict_vtol)
 FlightPerfStruct  = FlightPerformance(**dict_flightperf)
 AeroStruct = Aerodynamics()
 
-aero.wing_planform(FlightPerfStruct, VTOLStruct, WingStruct)
+aero.wing_geometry(FlightPerfStruct, VTOLStruct, WingStruct)
 aero.weissinger_l(Airfoilstruct, WingStruct, np.radians(20), 20 )
 aero.get_aero_planform(AeroStruct, Airfoilstruct, WingStruct, 20, plot= True )

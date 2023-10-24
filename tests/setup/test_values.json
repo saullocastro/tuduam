@@ -3,27 +3,63 @@
         "aspect_ratio":9.6,
         "quarterchord_sweep":0.08726646259971647,
         "surface": 12,
+        "x_lemac_local": 0.5,
+        "sweep_le": 0.2617993877991494,
         "taper": 0.45,
         "span": 10,
         "chord_root": 3,
         "chord_tip": 1,
-        "washout": 0.05
+        "washout": 0.05,
+        "x_le_root_global": 6,
+        "wingbox_start":0.15,
+        "wingbox_end":0.75, 
+        "n_ribs":10, 
+        "n_str":0.008, 
+        "spar_thickness":0.008, 
+        "stringer_height":0.010, 
+        "stringer_width":0.005, 
+        "skin_thickness":0.003 
     },
     "Fuselage":{ 
         "length_fuselage":9.6,
         "width_fuselage":2,
         "height_fuselage":2.3
     },
+    "Material":{ 
+        "young_modulus":3e9,
+        "shear_modulus":4000000000.0,
+        "poisson":0.3,
+        "density":1600,
+        "beta_crippling":1.42,
+        "sigma_ultimate":407000000.0,
+        "sigma_yield":407000000.0,
+        "g_crippling":5
+    },
+    "Airfoil":{ 
+        "thickness_to_chord":0.17,
+        "cl_alpha":6.32
+    },
+    "Aerodynamics":{ 
+        "spanwise_points":29,
+        "cL_alpha":5,
+        "alpha_zero_lift":0
+    },
     "HybridPowertrain":{ 
         "fuel_cell_mass":90,
         "battery_mass":90
     },
     "Engine":{ 
-        "n_engines": 6
+        "n_engines": 2,
+        "mass": 60,
+        "x_rotor_locations": [3],
+        "y_rotor_locations": [2.8]
     },
     "FlightPerformance":{ 
         "n_ult":4.7,
-        "v_cruise":83
+        "v_cruise":83,
+        "h_cruise":1000,
+        "cL_cruise":0.3,
+        "wingloading":1000
     },
     "VTOL":{ 
         "mtom": 2400,
