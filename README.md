@@ -2,7 +2,7 @@ TU Delft, Urban Air Mobility
 ---
 
 Github Actions status:
-
+[![Actions Status](https://github.com/saullocastro/tuduam/workflows/pytest/badge.svg)](https://github.com/saullocastro/tuduam/actions)
 
 Coverage status:
 [![codecov](https://codecov.io/gh/saullocastro/tuduam/graph/badge.svg?token=QG08Lm2vwL)](https://codecov.io/gh/saullocastro/tuduam)
