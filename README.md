@@ -5,7 +5,7 @@ Github Actions status:
 
 
 Coverage status:
-
+[![codecov](https://codecov.io/gh/saullocastro/tuduam/graph/badge.svg?token=QG08Lm2vwL)](https://codecov.io/gh/saullocastro/tuduam)
 
 
 TU Delft
