@@ -33,14 +33,11 @@ jobs:
         flake8 ./tuduam --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and coverage report
       run: |
-        #coverage run -m py.test tests
-        coverage run --source tuduam -m pytest
-        coverage lcov
+        coverage run -m py.test tests
         coverage report
     - name: "Upload coverage to Codecov"
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }} 
-        files: ./.coverage
         fail_ci_if_error: true
         verbose: true
