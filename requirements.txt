@@ -5,4 +5,5 @@ pytest-cov
 coverage
 coveralls
 pymoo
+pydantic
 
