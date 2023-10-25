@@ -40,15 +40,7 @@ jobs:
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
       with:
-        token: ${{ secrets.CODECOV_UPLOAD_TOKEN }} 
+        token: ${{ secrets.CODECOV_TOKEN }} 
         files: ./.coverage
         fail_ci_if_error: true
         verbose: true
-
-    - name: "Coveralls GitHub Action"
-      uses: coverallsapp/github-action@master
-      env:
-        COVERALLS_REPO_TOKEN : ${{ secrets.COVERALLS_REPO_TOKEN }}
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }} 
-        path-to-lcov: ./coverage.lcov
