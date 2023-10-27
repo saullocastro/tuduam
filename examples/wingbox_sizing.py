@@ -71,4 +71,4 @@ res = struct.wingbox_optimization(AeroStruct, AirfoilStruct, EngStruct, Flightpe
 
 
 print(f"{res=}")
-print(WingStruct.mod)
+print(WingStruct.model_dump())

@@ -14,10 +14,24 @@ from tuduam.performance import ISA
 
 class WingboxGeometry():
     """ This class provided a framework for  computing the geometry of the wing and wingbox which are given in 
-    the following coordinate system which is attached to the nose.
+    the following coordinate system which is attached to the nose. 
 
     .. image:: vehicle_reference_frame.png
         :width: 500 
+
+    Currently this class only supports z stringers as shown in the following figure.
+
+    .. image:: z_stringer.png
+        :width: 500 
+        :alt:  z stringer
+    
+    The geometry of the wingbox is simplified as shown hereunder.
+
+    .. image:: wingbox_geometry.png
+        :width: 500 
+        :alt:  Coordinate system used in computations
+
+
     """        
     def __init__(self, aero, airfoil, engine, flight_perf ,material, wing):
         """ The initialization of this class takes in several data structures as described below
@@ -65,8 +79,9 @@ class WingboxGeometry():
 
 
         #GEOMETRY
-        self.width_wingbox = (wing.wingbox_end - wing.wingbox_start)*wing.chord_root
-        self.pitch_str = self.width_wingbox/(self.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
+        self.width_wingbox_root = (wing.wingbox_end - wing.wingbox_start)*wing.chord_root
+        self.width_wingbox = (wing.wingbox_end - wing.wingbox_start)
+        self.pitch_str = self.width_wingbox_root/(self.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
 
         #OPT related
         self.y = np.linspace(0, self.wing.span/2, 18)
@@ -74,16 +89,24 @@ class WingboxGeometry():
 
     #---------------Geometry functions-----------------
 
-    def x_to_global(self, coordinate):
-        return coordinate + self.wing.x_le_root_chord
+    def _x_to_global(self, coordinate):
+        """ Transform an x coordinate from the local frame attached to the leading edge of the root to the global 
+        coordinate system
+
+        :param coordinate: x coordinate to be transfomred
+        :type coordinate: float
+        :return: transformed x coordinate
+        :rtype:  float
+        """        
+        return coordinate + self.wing.x_le_root_global
 
     def perimiter_ellipse(self,a,b):
         """
         Ramanujans first approximation formula
 
-        :param a: minor  length of the ellipse
+        :param a:  Semi-Major axis of the ellipse
         :type a: float
-        :param b: Major length of the ellipse
+        :param b: Semi-Minor axis of the ellipse
         :type b: float
         :return: The perimeter of the ellipse
         :rtype: float
@@ -93,69 +116,156 @@ class WingboxGeometry():
 
 
     def chord(self,y):
+        """ Computes the chord at any given spanwise position
+
+        :param y: Spanwise position
+        :type y: float
+        :return: local chord
+        :rtype: float
+        """        
         return self.wing.chord_root - self.wing.chord_root * (1 - self.wing.taper) * y * 2 / self.wing.span
 
     def height(self,y):
+        """ Computes the height of the wingbox at any givn spanwise position
+
+        :param y: spanwise position
+        :type y: float
+        :return: height of wingbox
+        :rtype: float
+        """        
         return self.airfoil.thickness_to_chord * self.chord(y)
     
     def l_sk(self,y):
-        return np.sqrt(self.height(y) ** 2 + (0.25 * self.chord(y)) ** 2)
+        """ Computes the length of side 5 and 6 shown in the wingbox geometry. Used in 
+        computing the shear flows through them
+
+        :param y: Spanwise position
+        :type y: float
+        :return: Length of the trailing edges (5 and 6) shown in the simplified wingbox geometry
+        :rtype: float
+        """        
+        return np.sqrt(self.height(y) ** 2 + ((1 - self.wing.wingbox_end) * self.chord(y)) ** 2)
 
 
     def get_area_str(self, h_st,w_st,t_st):
+        """ Return the cross sectional area of a single z stringer
+
+        :param h_st: Height of the web plate in m
+        :type h_st: float
+        :param w_st: width of the two flanges in m
+        :type w_st: float
+        :param t_st: thickness of the stringer considered constant in m 
+        :type t_st: float
+        :return: cross sectional area
+        :rtype: float
+        """        
         return t_st * (2 * w_st + h_st)
 
     def I_st_x(self, h_st,w_st,t_st):
-        Ast = self.get_area_str(h_st,w_st,t_st)
-        i = t_st * h_st ** 3 / 12 + w_st * t_st ** 3 / 12 + 2 * Ast * (0.5 * h_st) ** 2
-        return i
+        """ Return the second moment of area of a single z stringer
+        arond the x axis (see reference frame)
+
+        :param h_st: Height of the web plate in m
+        :type h_st: float
+        :param w_st: width of the two flanges in m
+        :type w_st: float
+        :param t_st: thickness of the stringer considered constant in m 
+        :type t_st: float
+        :return: cross sectional area
+        :rtype: float
+        """        
+        return t_st*(h_st**3)/12 + w_st*(t_st**3)/6 + 2*t_st*w_st*(0.5*h_st + t_st/2)**2
 
     def I_st_z(self, h_st,w_st,t_st):
-        Ast = self.get_area_str(h_st,w_st,t_st)
-        i = (h_st*t_st ** 3)/12 + (t_st* w_st**3)/12
-        return i
+        """ Return the second moment of area of a single z stringer
+        arond the z axis (see reference frame)
 
-    def w_sp(self,y):
-        return 0.3 * self.height(y)
+        :param h_st: Height of the web plate in m
+        :type h_st: float
+        :param w_st: width of the two flanges in m
+        :type w_st: float
+        :param t_st: thickness of the stringer considered constant in m 
+        :type t_st: float
+        :return: cross sectional area
+        :rtype: float
+        """        
+        return (h_st*t_st ** 3)/12 + (t_st* w_st**3)/6 + 2*w_st*t_st*(w_st/2 - t_st/2)**2
 
 
-    def I_sp_x(self,t_sp,y):
+    def l_sp(self,y):
+        """ Returns the length of section 2 in the cross section view of the shear flow.
+        Simple division by two.
+
+        :param y: spanwise location
+        :type y: float
+        :return: Length section 2 in the cross sectional view of the shear flow diagram
+        :rtype: float
+        """        
+        return self.height(y)
+    
+    def l_fl(self,y):
+        """ Computes the length of the top and bottom flange of the wingbox
+
+        :param y: spanwise position
+        :type y: float
+        :return: Length of top and bottom flange
+        :rtype: float
+        """        
+        return self.width_wingbox*self.chord(y)
+
+
+    def I_sp_fl_x(self,t_sp,y):
+        """ Return the moment of inertia of the spars and flanges around the x axis
+
+        :param t_sp: thickness of the spar
+        :type t_sp: float
+        :param y: Spanwise locations
+        :type y: float
+        :return: Moment of inertia of the spar
+        :rtype: float
+        """        
         h = self.height(y)
-        wsp = self.w_sp(y)
-        return t_sp * (h - 2 * t_sp) ** 3 / 12 + 2 * wsp * t_sp ** 3 / 12 + 2 * t_sp * wsp * (
-                0.5 * h) ** 2
+        w_fl = self.l_fl(y)
+        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sp)**3/12
 
-    def I_sp_z(self,t_sp,y):
+    def I_sp_fl_z(self,t_sp,y):
+        """ Return the moment of inertia of the spars and flanges around the z axis
+
+        :param t_sp: thickness of the spar
+        :type t_sp: float
+        :param y: Spanwise locations
+        :type y: float
+        :return: Moment of inertia of the spar
+        :rtype: float
+        """        
         h = self.height(y)
-        wsp = self.w_sp(y)
-        return ((h - 2*t_sp)*t_sp**3)/12 + (2*t_sp*wsp**3)/12
+        w_fl = self.l_fl(y)
+        return w_fl**3*h/12 - (w_fl - 2*t_sp)**3*(h - 2*t_sp)/12
 
     def get_x_le(self,y):
+        """ Compute the x coordinate of the leading edge at a given spanwise position.
+
+        :param y: spanwise position
+        :type y: float
+        :return: The x coordinate of the leading edge
+        :rtype: float
+        """        
         return self.wing.x_le_root_global + np.tan(self.wing.sweep_le)*y
 
-    def get_x_te(self,y):
-        warn("change this one")
-        return self.wing.x_lemac_local + 0.25*self.wing.chord_root +0.75*self.chord(y)
-
     def get_x_start_wb(self,y):
+        """Compute the start of the wingbox at a given spanwise location
+
+        :param y: spanwise location
+        :type y: float
+        :return: x coordinate of the start of wingbox
+        :rtype: float
+        """        
         return self.get_x_le(y) + self.wing.wingbox_start*self.chord(y)
 
     def get_x_end_wb(self,y):
         return self.get_x_le(y) + self.wing.wingbox_end*self.chord(y)
 
-    def get_y_start_wb(self,x):
-        return (x-self.wing.x_lemac-0.15*self.wing.chord_root)/(0.1*self.wing.chord_root*(1-self.wing.taper)*2/self.wing.span)
-
-    def get_y_end_wb(self,x):
-        return (x-self.wing.x_lemac-0.75*self.wing.chord_root)/(-0.5*self.wing.chord_root*(1-self.wing.taper)*2/self.wing.span)
-
-    
-    def get_r_o(self,x):
-        t_sp, h_st, w_st, t_st, t_sk = x
-        return self.height(self.y_rotor_loc[0])/2 - t_sk*3
-  
-
-    def I_xx(self, x):#TODO implement dissappearing stringers
+    def I_xx(self, x):
         """_summary_
 
         :param x: _description_
@@ -167,7 +277,7 @@ class WingboxGeometry():
         h = self.height(self.y)
         # nst = n_st(c_r, b_st)
         Ist = self.I_st_x(h_st,w_st,t_st)
-        Isp = self.I_sp_x(t_sp, self.y)
+        Isp = self.I_sp_fl_x(t_sp, self.y)
         A = self.get_area_str(h_st,w_st,t_st)
         return 2 * (Ist + A * (0.5 * h) ** 2) * self.n_str + 2 * Isp + 2 * (0.6 * self.chord(self.y) * t_sk ** 3 / 12 + t_sk * 0.6 * self.wing.chord_root * (0.5 * h) ** 2)
 
@@ -176,9 +286,9 @@ class WingboxGeometry():
         y = self.y
         h = self.height(y)
         Ist = self.I_st_z(h_st,w_st,t_st)
-        Isp = self.I_sp_z(t_sp,y)
+        Isp = self.I_sp_fl_z(t_sp,y)
         Ast = self.get_area_str(h_st,w_st,t_st)
-        Asp = t_sp*self.w_sp(y)*2 + (h-2*t_sp)*t_sp
+        Asp = t_sp*self.l_sp(y) + (h-2*t_sp)*t_sp
         centre_line = self.wing.chord_root*0.25 + self.chord(y)*0.25
         position_stringers = np.ones((len(y),len(self.str_array_root)))*self.str_array_root
         distances_from_centre_line = position_stringers - np.transpose(np.ones((len(self.str_array_root),len(y))) * centre_line)
@@ -193,7 +303,7 @@ class WingboxGeometry():
 
         weight_str = self.material.density * self.get_area_str(h_st,w_st,t_st) * (self.wing.span/2- y) * self.n_str * 2
         weight_skin = (t_sk * ((0.6 * self.chord(self.wing.span/2) + 0.6 * self.chord(y))* (self.wing.span/2- y) / 2) * 2 + self.perimiter_ellipse(0.15*self.chord(y),self.height(y))*t_sk * 0.15 + np.sqrt((0.25*self.chord(y))**2 + (self.height(y))**2)*2*t_sk)*self.material.density
-        weight_spar_flanges = (self.w_sp(self.wing.span/2) + self.w_sp(y))*(self.wing.span/2- y)/2 * t_sp * self.material.density * 4
+        weight_spar_flanges = (self.l_fl(self.wing.span/2) + self.l_fl(y))*(self.wing.span/2- y)/2 * t_sp * self.material.density * 4
         weight_spar_web = (self.height(self.wing.span/2) - 2*t_sp + self.height(y) - 2*t_sp) * (self.wing.span/2- y) /2 * t_sp *self.material.density * 2
 
         total_weight = (weight_str + weight_skin + weight_spar_flanges + weight_spar_web)
@@ -201,10 +311,6 @@ class WingboxGeometry():
         difference_array = np.absolute(y-self.y_rotor_loc[0])
         index = difference_array.argmin()
 
-        total_weight[0:index+1] += self.engine_weight
-        warn("Total weight currently also takes the engine weight, should be discussed")
-
-        total_weight += self.engine_weight
         weight_ribs = np.linspace(self.wing.n_ribs,1,len(y)) * self.chord(y) * self.height(y) * self.t_rib * self.material.density
         total_weight += weight_ribs
 
@@ -415,16 +521,6 @@ class WingboxInternalForces(WingboxGeometry):
         t_sp, h_st, w_st, t_st, t_sk = x
         return self.bending_stress_x_from_tip(x) * t_sk
     
-    # def shear_flow_torque(self,x):
-    #     T = self.torque_from_tip(X)
-    #     y = self.y
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     return T/(2*self.chord(y)*self.height(y))
-
-
-#-------Georgiana Constraints-------
-    
-
 
 
 class Constraints(WingboxInternalForces):
@@ -635,12 +731,9 @@ def wingbox_optimization(aero, airfoil, engine, flight_perf, material, wing):
     resGA = minimizeGA(problem, method, termination=('n_gen', 50   ), seed=1,
                     save_history=True, verbose=True)
     print('GA optimum variables', resGA.X)
+
     print('GA optimum weight', resGA.F)
 
-
-        # NOTE final gradient descent to converget to a minimum point with SciPy minimize
-
-    print()
     print('Final SciPy minimize optimization')
     options = dict(eps=1e-5, ftol=1e-3)
     constraints = [
@@ -663,6 +756,73 @@ def wingbox_optimization(aero, airfoil, engine, flight_perf, material, wing):
             
     return resMin.x
 
+def create_bounds(wing, xlower= [5e-3,1.5e-2, 1.5e-2, 2e-3, 8e-4], xupper= [0.01, 0.01, 1e-1, 3.3e-2, 1e-1]):
+    """_summary_
+
+    :param wing: _description_
+    :type wing: _type_
+    :param xlower: _description_
+    :type xlower: _type_
+    :param xupper: _description_
+    :type xupper: _type_
+    """    
+
+    #------SET BOUNDS--------
+    height_tip = wing.chord_root - wing.chord_root*(1 - wing.taper)*2 
+    if height_tip/2<xupper[0]: 
+        warn(f"The given spar thickness limit {xupper[0]} was limited by the height of the wingbox, values was changed to {height_tip/2}")
+        xupper[0] = height_tip/2
+    if height_tip/2<xupper[1]: 
+        warn(f"The given stringer height limit {xupper[0]} was limited by the height of the wingbox, values was changed to {height_tip/2}")
+        xupper[1] = height_tip/2
+
+
+    return np.vstack((xlower, xupper)).T
+
+
+def GA_optimizer(aero, airfoil, engine, flight_perf, material, wing, bounds):
+
+    WingGeom = WingboxGeometry(aero, airfoil, engine, flight_perf, material, wing)
+    Constr =  Constraints(aero, airfoil, engine, flight_perf, material, wing)
+
+    # ------SET INITIAL VALUES------
+    tsp= wing.spar_thickness
+    hst= wing.stringer_height
+    wst= wing.stringer_width
+    tst= wing.stringer_thickness
+    tsk= wing.skin_thickness
+
+
+    X = [tsp, hst, wst, tst, tsk]
+    y = WingGeom.y
+
+
+    objs = [WingGeom.total_weight]
+
+    constr_ieq = [
+        lambda x: -Constr.buckling_constr(x)[0],
+        lambda x: -Constr.von_Mises(x)[0],
+        lambda x: -Constr.str_buckling_constr(x)[0],
+        lambda x: -Constr.f_ult_constr(x)[0],
+        lambda x: -Constr.flange_buckling_constr(x)[0],
+        lambda x: -Constr.web_buckling_constr(x)[0],
+        lambda x: -Constr.global_buckling_constr(x)[0],
+    ]
+
+    problem = FunctionalProblem(len(X),
+                                objs,
+                                constr_ieq=constr_ieq,
+                                xl=xlower,
+                                xu=xupper,
+                                )
+
+    method = GA(pop_size=50, eliminate_duplicates=True)
+
+    resGA = minimizeGA(problem, method, termination=('n_gen', 50   ), seed=1,
+                    save_history=True, verbose=True)
+    print('GA optimum variables', resGA.X)
+    print('GA optimum weight', resGA.F)
+    pass
 
 def class2_wing_mass(vtol, flight_perf, wing ):
         """ Returns the structural weight of both wings 
