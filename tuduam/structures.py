@@ -2,7 +2,7 @@ from math import pi
 import pdb
 import numpy as np
 from warnings import warn
-from scipy.integrate import trapz
+from scipy.integrate import trapezoid, cumulative_trapezoid, trapz
 from scipy import integrate
 from scipy.optimize import minimize
 from pymoo.problems.functional import FunctionalProblem
@@ -74,14 +74,13 @@ class WingboxGeometry():
         #Torsion shaft
 
         #STRINGERS
-        self.n_str = 15
-        self.str_array_root = np.linspace(0.15*self.wing.chord_root, 0.75*self.wing.chord_root,  self.n_str+2)
+        self.str_array = np.linspace(self.wing.wingbox_start, self.wing.wingbox_end,  self.wing.n_str)
 
 
         #GEOMETRY
         self.width_wingbox_root = (wing.wingbox_end - wing.wingbox_start)*wing.chord_root
         self.width_wingbox = (wing.wingbox_end - wing.wingbox_start)
-        self.pitch_str = self.width_wingbox_root/(self.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
+        self.pitch_str = self.width_wingbox_root/(self.wing.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
 
         #OPT related
         self.y = np.linspace(0, self.wing.span/2, 18)
@@ -135,7 +134,7 @@ class WingboxGeometry():
         """        
         return self.airfoil.thickness_to_chord * self.chord(y)
     
-    def l_sk(self,y):
+    def l_sk_te(self,y):
         """ Computes the length of side 5 and 6 shown in the wingbox geometry. Used in 
         computing the shear flows through them
 
@@ -214,7 +213,7 @@ class WingboxGeometry():
         return self.width_wingbox*self.chord(y)
 
 
-    def I_sp_fl_x(self,t_sp,y):
+    def I_sp_fl_x(self,t_sp, t_sk,y):
         """ Return the moment of inertia of the spars and flanges around the x axis
 
         :param t_sp: thickness of the spar
@@ -226,7 +225,8 @@ class WingboxGeometry():
         """        
         h = self.height(y)
         w_fl = self.l_fl(y)
-        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sp)**3/12
+        warn("This is wrong, flange has thickness t_sp")
+        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sk)**3/12
 
     def I_sp_fl_z(self,t_sp,y):
         """ Return the moment of inertia of the spars and flanges around the z axis
@@ -266,44 +266,64 @@ class WingboxGeometry():
         return self.get_x_le(y) + self.wing.wingbox_end*self.chord(y)
 
     def I_xx(self, x):
-        """_summary_
+        """ Computes the moment of inertia around the x axis  of the wingbox at a mutlitude of points and returns it as vectors.
+        Note that it only takes into account the spar webs, flanges and stringer. The skin of the leading and trailing 
+        edge are neglected since they do not carry much bending load
 
-        :param x: _description_
-        :type x: _type_
-        :return: _description_
-        :rtype: _type_
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the moment of inertia at various locations
+        :rtype: list
         """        
         t_sp, h_st, w_st, t_st, t_sk = x
         h = self.height(self.y)
-        # nst = n_st(c_r, b_st)
         Ist = self.I_st_x(h_st,w_st,t_st)
-        Isp = self.I_sp_fl_x(t_sp, self.y)
-        A = self.get_area_str(h_st,w_st,t_st)
-        return 2 * (Ist + A * (0.5 * h) ** 2) * self.n_str + 2 * Isp + 2 * (0.6 * self.chord(self.y) * t_sk ** 3 / 12 + t_sk * 0.6 * self.wing.chord_root * (0.5 * h) ** 2)
+        I_box = self.I_sp_fl_x(t_sp,t_sk, self.y)
+        A_str = self.get_area_str(h_st,w_st,t_st)
 
-    def I_zz(self, x):#TODO implement dissappearing stringers
+        return (Ist + A_str*(h/2 - h_st/2)**2)*self.wing.n_str*2 + I_box
+
+    def I_zz(self, x):
+        """ Computes the moment of inertia around the z axis of the wingbox at a mutlitude of points and returns it as vectors.
+        Note that it only takes into account the spar webs, flanges and stringer. The skin of the leading and trailing 
+        edge are neglected since they do not carry much bending load
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the moment of inertia at various locations
+        """        
         t_sp, h_st, w_st, t_st, t_sk = x
-        y = self.y
-        h = self.height(y)
+
+        h = self.height(self.y)
+        vec_chord = self.chord(self.y)
         Ist = self.I_st_z(h_st,w_st,t_st)
-        Isp = self.I_sp_fl_z(t_sp,y)
+        I_box = self.I_sp_fl_z(t_sp,self.y)
         Ast = self.get_area_str(h_st,w_st,t_st)
-        Asp = t_sp*self.l_sp(y) + (h-2*t_sp)*t_sp
-        centre_line = self.wing.chord_root*0.25 + self.chord(y)*0.25
-        position_stringers = np.ones((len(y),len(self.str_array_root)))*self.str_array_root
-        distances_from_centre_line = position_stringers - np.transpose(np.ones((len(self.str_array_root),len(y))) * centre_line)
-        moments_of_inertia = np.sum(distances_from_centre_line * Ast * 2,axis=1)
-        moments_of_inertia += 2*(Isp + Asp * (self.chord(y)/2)*(self.chord(y)/2)) + 2* t_sk*self.chord(y)**3/12
-        return moments_of_inertia
+        centre_line = (self.wing.wingbox_start + self.wing.wingbox_end)/2*vec_chord
 
-    #------------------ Mass computation --------------------------------------------
-    def weight_from_tip(self, x):#TODO implement dissappearing stringers #TODO Include rib weights
+        pos_str =  self.str_array*vec_chord.reshape(-1,1) # Utilize NumPy broadcasting (1,y) X (x,1) = (x,y) w
+        moment_arms = pos_str -  centre_line.reshape(-1,1) # Utilize broadcasting property again
+        moi_str = np.sum(Ast*moment_arms**2, axis=1)*2
+
+
+        return moi_str + I_box + Ist*self.wing.n_str*2
+
+    def weight_from_tip(self, x):
+        """ Computes the weight as a cumulutative vector, where each element represents the weight from the tip
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: vector where each element represent the weight from the tip
+        :rtype: np.ndarray
+        """        
         t_sp, h_st, w_st, t_st, t_sk = x
-        y = self.y
 
-        weight_str = self.material.density * self.get_area_str(h_st,w_st,t_st) * (self.wing.span/2- y) * self.n_str * 2
-        weight_skin = (t_sk * ((0.6 * self.chord(self.wing.span/2) + 0.6 * self.chord(y))* (self.wing.span/2- y) / 2) * 2 + self.perimiter_ellipse(0.15*self.chord(y),self.height(y))*t_sk * 0.15 + np.sqrt((0.25*self.chord(y))**2 + (self.height(y))**2)*2*t_sk)*self.material.density
-        weight_spar_flanges = (self.l_fl(self.wing.span/2) + self.l_fl(y))*(self.wing.span/2- y)/2 * t_sp * self.material.density * 4
+        y = self.y
+        warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
+        weight_str = self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(y)) * self.wing.n_str * 2
+        weight_le = (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(y),self.height(y))*t_sk, y) - cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(y),self.height(y))*t_sk, y))*self.material.density
+        weight_le = (trapezoid(self.l_sk_te(y)*t_sk, y) - cumulative_trapezoid(self.l_sk_te(y)*t_sk, y))*self.material.density
+        weight_fl = (trapezoid(self.l_fl(y)*t_sp, y) - cumulative_trapezoid(self.l_fl(y)*t_sk, y))*self.material.density
         weight_spar_web = (self.height(self.wing.span/2) - 2*t_sp + self.height(y) - 2*t_sp) * (self.wing.span/2- y) /2 * t_sp *self.material.density * 2
 
         total_weight = (weight_str + weight_skin + weight_spar_flanges + weight_spar_web)
@@ -387,7 +407,7 @@ class WingboxInternalForces(WingboxGeometry):
         chord = self.chord(y)
         Nxy = np.zeros(len(y))
         max_shear_stress = np.zeros(len(y))
-        l_sk = self.l_sk(y)
+        l_sk = self.l_sk_te(y)
 
         for i in range(len(y)):
             # Base region 1
@@ -544,7 +564,7 @@ class Constraints(WingboxInternalForces):
 
     def global_buckling(self, h_st, t_st, t):#TODO
         # n = n_st(c_r, b_st)
-        tsmr = (t * self.pitch_str + t_st * self.n_str * (h_st - t)) / self.pitch_str
+        tsmr = (t * self.pitch_str + t_st * self.wing.n_str * (h_st - t)) / self.pitch_str
         return 4 * pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson ** 2)) * (tsmr / self.pitch_str) ** 2
 
 
@@ -576,7 +596,7 @@ class Constraints(WingboxInternalForces):
     def f_ult(self, h_st,w_st,t_st,t_sk,y):#TODO
         A_st = self.get_area_str(h_st,w_st,t_st)
         # n=n_st(c_r,b_st)
-        A=self.n_str*A_st+0.6*self.chord(y)*t_sk
+        A=self.wing.n_str*A_st+0.6*self.chord(y)*t_sk
         f_uts=self.sigma_uts*A
         return f_uts
 

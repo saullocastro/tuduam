@@ -16,6 +16,7 @@ def test_get_fuselage_weight(FixtVTOL, FixtFlightPerformance, FixtFuselage):
     assert fuselage_mass ==  FixtFuselage.mass
 
 
+#----------------- Testing geometry class --------------------------
 def test_x_to_global(FixtGeometry, FixtSingleWing):
     # simple test mimics the behaviour in the function
     coord = 2
@@ -41,8 +42,8 @@ def test_height(FixtGeometry, FixtAirfoil, FixtSingleWing):
 
     assert np.isclose(res, FixtAirfoil.thickness_to_chord*FixtSingleWing.chord_root)
 
-def test_l_sk(FixtGeometry, FixtSingleWing, FixtAirfoil):
-    res = FixtGeometry.l_sk(0)
+def test_l_sk_te(FixtGeometry, FixtSingleWing, FixtAirfoil):
+    res = FixtGeometry.l_sk_te(0)
     assert np.isclose(res, ((FixtSingleWing.chord_root*0.25)**2 + (FixtAirfoil.thickness_to_chord*FixtSingleWing.chord_root)**2 )**0.5)
 
 def test_get_area_str(FixtGeometry):
@@ -60,7 +61,6 @@ def test_I_st_z(FixtGeometry):
     # Checked for consistency using the following tool
     # https://structx.com/Shape_Formulas_007.html 
     res = FixtGeometry.I_st_z(h_st=0.010, w_st=0.010, t_st=0.002)*1e12
-    print(res)
     assert  np.isclose(res, 980)
 
 def test_l_sp(FixtGeometry):
@@ -74,7 +74,7 @@ def test_l_fl(FixtGeometry, FixtSingleWing):
 def test_I_sp_fl_x(FixtGeometry):
     # Checked for equivalency using the following tool
     # https://calcresource.com/moment-of-inertia-rtube.html
-    res = FixtGeometry.I_sp_fl_x(0.002, 0)*1e12
+    res = FixtGeometry.I_sp_fl_x(0.002,0.002, 0)*1e12
     assert np.isclose(res, 1.77483288903039e8, rtol= 0, atol= 1e-5)
 
 def test_I_sp_fl_z(FixtGeometry):
@@ -86,12 +86,33 @@ def test_I_sp_fl_z(FixtGeometry):
 
 def test_get_x_le(FixtGeometry, FixtSingleWing):
     res = FixtGeometry.get_x_le(FixtSingleWing.span/2)
-    assert np.isclose(res, FixtSingleWing.x_le_root_global + np.tan(FixtSingleWing.sweep_le)*FixtSingleWing.span )
+    assert np.isclose(res, FixtSingleWing.x_le_root_global + np.tan(FixtSingleWing.sweep_le)*FixtSingleWing.span/2 )
 
 def test_get_x_start_wb(FixtGeometry, FixtSingleWing):
     res = FixtGeometry.get_x_start_wb(0)
     assert np.isclose(res, FixtSingleWing.x_le_root_global + FixtSingleWing.chord_root*FixtSingleWing.wingbox_start)
 
+def test_get_x_end_wb(FixtGeometry, FixtSingleWing):
+    res = FixtGeometry.get_x_end_wb(0)
+    assert np.isclose(res, FixtSingleWing.x_le_root_global + FixtSingleWing.chord_root*FixtSingleWing.wingbox_end)
+
+def test_I_xx(FixtGeometry):
+    # Checked by performing calculation at the root on paper using the 
+    # already tested functions for stringers, flanges et cetera
+    res =  FixtGeometry.I_xx((0.003, 0.010, 0.010, 0.02, 0.003))*1e12
+    assert isinstance(res, np.ndarray)
+    assert np.isclose(res[0], 3.7517e8, rtol=1e-3, atol=1e-3)
+
+def test_I_zz(FixtGeometry):
+    # Checked by performing calculation at the root on paper using the 
+    # already tested functions for stringers, flanges et cetera
+    res =  FixtGeometry.I_zz((0.003, 0.010, 0.010, 0.02, 0.003))*1e12
+    assert isinstance(res, np.ndarray)
+    assert np.isclose(res[0], 2.8419e9)
+
+# def test_weight_from_tip(FixtGeometry):
+#     res =  FixtGeometry.weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))*1e12
+#     assert isinstance(res, np.ndarray)
 
 def test_moment_y_from_tip(FixtInternalForces, FixtSingleWing):
     res = FixtInternalForces.moment_y_from_tip(np.linspace(0,FixtSingleWing.span,20))

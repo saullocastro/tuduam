@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, FilePath, conlist
+from pydantic import BaseModel, ConfigDict, FilePath, conlist, Field
 from typing import Optional, List 
 import numpy as np
 import json
@@ -10,8 +10,8 @@ class Parent(BaseModel):
                               validate_assignment=True)
 
 class SingleWing(Parent):
-    aspect_ratio: float  
-    taper: float  
+    aspect_ratio: float  = Field(gt=0, le=20)
+    taper: float  = Field(gt=0, le=1)
     quarterchord_sweep: float  
     washout: float  
     """"The geometric twist between the tip and root chord 
@@ -33,8 +33,9 @@ class SingleWing(Parent):
     #--------------wingbox structure --------------
     wingbox_start: Optional[float]  =  None
     wingbox_end: Optional[float]  =  None
-    n_ribs: Optional[float]  =  None
-    n_str: Optional[float]  =  None
+    n_ribs: Optional[int]  =  None
+    n_str: Optional[int]  =  None
+    """"The amount of stringers on one flange"""
     t_rib: Optional[float]  =  None
     spar_thickness: Optional[float]  =  None
     stringer_height: Optional[float]  =  None
@@ -53,7 +54,7 @@ class SingleWing(Parent):
             raise Exception(f"There was an error when loading in {cls}")
 
 class Airfoil(Parent):
-    cl_alpha: float 
+    cl_alpha: float  = Field(gt=2)
     thickness_to_chord: Optional[float] = None
 
     @classmethod
@@ -95,7 +96,7 @@ class HybridPowertrain(Parent):
             raise Exception(f"There was an error when loading in {cls}")
 
 class Engine(Parent):
-    n_engines: int 
+    n_engines: int  = Field(gt=0)
     thrust: Optional[float] = None
     mass: Optional[float] = None
     power_grav_density: Optional[float] = None
