@@ -21,7 +21,7 @@ This Python module can be used by the students to assist in the course assignmen
 License
 -------
 Distrubuted under the 3-Clause BSD license
-(https://raw.github.com/saullocastro/tudaesasII/master/LICENSE).
+(https://raw.github.com/saullocastro/tuduam/master/LICENSE).
 
 Contact: S.G.P.Castro@tudelft.nl
 
