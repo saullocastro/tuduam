@@ -872,49 +872,49 @@ def create_bounds(wing, xlower= [5e-3,1.5e-2, 1.5e-2, 2e-3, 8e-4], xupper= [0.01
     return np.vstack((xlower, xupper)).T
 
 
-def GA_optimizer(aero, airfoil, engine, flight_perf, material, wing, bounds):
+# def GA_optimizer(aero, airfoil, engine, flight_perf, material, wing, bounds):
 
-    WingGeom = WingboxGeometry(aero, airfoil, engine, flight_perf, material, wing)
-    Constr =  Constraints(aero, airfoil, engine, flight_perf, material, wing)
+#     WingGeom = WingboxGeometry(aero, airfoil, engine, flight_perf, material, wing)
+#     Constr =  Constraints(aero, airfoil, engine, flight_perf, material, wing)
 
-    # ------SET INITIAL VALUES------
-    tsp= wing.spar_thickness
-    hst= wing.stringer_height
-    wst= wing.stringer_width
-    tst= wing.stringer_thickness
-    tsk= wing.skin_thickness
-
-
-    X = [tsp, hst, wst, tst, tsk]
-    y = WingGeom.y
+#     # ------SET INITIAL VALUES------
+#     tsp= wing.spar_thickness
+#     hst= wing.stringer_height
+#     wst= wing.stringer_width
+#     tst= wing.stringer_thickness
+#     tsk= wing.skin_thickness
 
 
-    objs = [WingGeom.total_weight]
+#     X = [tsp, hst, wst, tst, tsk]
+#     y = WingGeom.y
 
-    constr_ieq = [
-        lambda x: -Constr.buckling_constr(x)[0],
-        lambda x: -Constr.von_Mises(x)[0],
-        lambda x: -Constr.str_buckling_constr(x)[0],
-        lambda x: -Constr.f_ult_constr(x)[0],
-        lambda x: -Constr.flange_buckling_constr(x)[0],
-        lambda x: -Constr.web_buckling_constr(x)[0],
-        lambda x: -Constr.global_buckling_constr(x)[0],
-    ]
 
-    problem = FunctionalProblem(len(X),
-                                objs,
-                                constr_ieq=constr_ieq,
-                                xl=xlower,
-                                xu=xupper,
-                                )
+#     objs = [WingGeom.total_weight]
 
-    method = GA(pop_size=50, eliminate_duplicates=True)
+#     constr_ieq = [
+#         lambda x: -Constr.buckling_constr(x)[0],
+#         lambda x: -Constr.von_Mises(x)[0],
+#         lambda x: -Constr.str_buckling_constr(x)[0],
+#         lambda x: -Constr.f_ult_constr(x)[0],
+#         lambda x: -Constr.flange_buckling_constr(x)[0],
+#         lambda x: -Constr.web_buckling_constr(x)[0],
+#         lambda x: -Constr.global_buckling_constr(x)[0],
+#     ]
 
-    resGA = minimizeGA(problem, method, termination=('n_gen', 50   ), seed=1,
-                    save_history=True, verbose=True)
-    print('GA optimum variables', resGA.X)
-    print('GA optimum weight', resGA.F)
-    pass
+#     problem = FunctionalProblem(len(X),
+#                                 objs,
+#                                 constr_ieq=constr_ieq,
+#                                 xl=xlower,
+#                                 xu=xupper,
+#                                 )
+
+#     method = GA(pop_size=50, eliminate_duplicates=True)
+
+#     resGA = minimizeGA(problem, method, termination=('n_gen', 50   ), seed=1,
+#                     save_history=True, verbose=True)
+#     print('GA optimum variables', resGA.X)
+#     print('GA optimum weight', resGA.F)
+#     pass
 
 def class2_wing_mass(vtol, flight_perf, wing ):
         """ Returns the structural weight of both wings 
