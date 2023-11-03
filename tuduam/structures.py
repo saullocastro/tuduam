@@ -2,7 +2,7 @@ from math import pi
 import pdb
 import numpy as np
 from warnings import warn
-from scipy.integrate import trapezoid, cumulative_trapezoid, trapz
+from scipy.integrate import trapezoid, cumulative_trapezoid, trapz, dblquad
 from scipy import integrate
 from scipy.optimize import minimize
 from pymoo.problems.functional import FunctionalProblem
@@ -83,7 +83,7 @@ class WingboxGeometry():
         self.pitch_str = self.width_wingbox_root/(self.wing.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
 
         #OPT related
-        self.y = np.linspace(0, self.wing.span/2, 18)
+        self.y = np.linspace(0, self.wing.span/2, self.wing.n_ribs)
 
 
     #---------------Geometry functions-----------------
@@ -213,7 +213,7 @@ class WingboxGeometry():
         return self.width_wingbox*self.chord(y)
 
 
-    def I_sp_fl_x(self,t_sp, t_sk,y):
+    def I_sp_fl_x(self,t_sp,y):
         """ Return the moment of inertia of the spars and flanges around the x axis
 
         :param t_sp: thickness of the spar
@@ -226,7 +226,7 @@ class WingboxGeometry():
         h = self.height(y)
         w_fl = self.l_fl(y)
         warn("This is wrong, flange has thickness t_sp")
-        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sk)**3/12
+        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sp)**3/12
 
     def I_sp_fl_z(self,t_sp,y):
         """ Return the moment of inertia of the spars and flanges around the z axis
@@ -278,7 +278,7 @@ class WingboxGeometry():
         t_sp, h_st, w_st, t_st, t_sk = x
         h = self.height(self.y)
         Ist = self.I_st_x(h_st,w_st,t_st)
-        I_box = self.I_sp_fl_x(t_sp,t_sk, self.y)
+        I_box = self.I_sp_fl_x(t_sp, self.y)
         A_str = self.get_area_str(h_st,w_st,t_st)
 
         return (Ist + A_str*(h/2 - h_st/2)**2)*self.wing.n_str*2 + I_box
@@ -291,6 +291,7 @@ class WingboxGeometry():
         :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the moment of inertia at various locations
+        :type x: numpy.ndarray
         """        
         t_sp, h_st, w_st, t_st, t_sk = x
 
@@ -305,8 +306,79 @@ class WingboxGeometry():
         moment_arms = pos_str -  centre_line.reshape(-1,1) # Utilize broadcasting property again
         moi_str = np.sum(Ast*moment_arms**2, axis=1)*2
 
-
         return moi_str + I_box + Ist*self.wing.n_str*2
+
+    
+    def str_weight_from_tip(self, x):
+        """ Computes the weight of the stringers in the planform. Assumes stringers are straight along the planform,
+        in reality they follow the local sweep of the wing.
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the stringer weight at each section
+        :rtype: numpy.ndarray
+        """        
+        t_sp, h_st, w_st, t_st, t_sk = x
+        warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
+        return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.y)) * self.wing.n_str * 2
+
+    def le_wingbox_weight_from_tip(self,x):
+        """ Uses trapezium integration approximation to compute the leading edge weight of the skin. This introduces a slight error as the perimeter
+        is a non linear equation
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the leading edge skin  of the wingbox
+        :rtype: numpy.ndarray
+        """        
+        t_sp, h_st, w_st, t_st, t_sk = x
+        return (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y) \
+                - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y),0,0))*self.material.density
+
+    def te_wingbox_weight_from_tip(self,x):
+        """ Computes the weight of the skin in the trailing edge of the wingbox. Weight is approximated using the trapezium integration method
+        in reality this does not hold due to the non-linearity of the length of the trailing w.r.t to the span.
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the leading edge skin  of the wingbox
+        :rtype: numpy.ndarray
+        """        
+        t_sp, h_st, w_st, t_st, t_sk = x
+        return (trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y) - np.insert(cumulative_trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y),0,0))*self.material.density
+    
+    def fl_weight_from_tip(self, x):
+        """ Computes the weight of the flanges in the planform as a vector
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the flange weight at each section to the tip
+        :rtype: numpy.ndarray
+        """        
+        t_sp, h_st, w_st, t_st, t_sk = x
+        return (trapezoid(self.l_fl(self.y)*t_sp*2, self.y) - np.insert(cumulative_trapezoid(self.l_fl(self.y)*t_sp*2, self.y),0,0))*self.material.density
+
+    def spar_weight_from_tip(self,x):
+        """ Computes the weight of the spars in the planform in the form of a vector showing the amount of weight to the tip
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: Vector containing the spar weight at each section
+        :rtype: numpy.ndarray
+        """        
+        t_sp, h_st, w_st, t_st, t_sk = x
+        return (trapezoid(self.height(self.y)*t_sp*2, self.y) - np.insert(cumulative_trapezoid(self.height(self.y)*t_sp*2, self.y),0,0))*self.material.density
+    
+    def rib_weight_from_tip(self):
+        """ Computes a vector of the weight of the ribs to the tip
+
+        :return: A vector of the weight of the ribs to the tip
+        :rtype: list
+        """        
+        weight_rib =  self.chord(self.y) * self.height(self.y) * self.t_rib * self.material.density
+        return np.cumsum(np.ones(len(self.y))*weight_rib)[::-1]
+
+       
 
     def weight_from_tip(self, x):
         """ Computes the weight as a cumulutative vector, where each element represents the weight from the tip
@@ -319,25 +391,25 @@ class WingboxGeometry():
         t_sp, h_st, w_st, t_st, t_sk = x
 
         y = self.y
-        warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
-        weight_str = self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(y)) * self.wing.n_str * 2
-        weight_le = (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(y),self.height(y))*t_sk, y) - cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(y),self.height(y))*t_sk, y))*self.material.density
-        weight_le = (trapezoid(self.l_sk_te(y)*t_sk, y) - cumulative_trapezoid(self.l_sk_te(y)*t_sk, y))*self.material.density
-        weight_fl = (trapezoid(self.l_fl(y)*t_sp, y) - cumulative_trapezoid(self.l_fl(y)*t_sk, y))*self.material.density
-        weight_spar_web = (self.height(self.wing.span/2) - 2*t_sp + self.height(y) - 2*t_sp) * (self.wing.span/2- y) /2 * t_sp *self.material.density * 2
+        weight_str =  self.str_weight_from_tip(x)
+        weight_le = self.le_wingbox_weight_from_tip(x)
+        weight_te =  self.te_wingbox_weight_from_tip(x)
+        weight_fl = self.fl_weight_from_tip(x)
+        weight_spar_web = self.spar_weight_from_tip(x)
+        rib_weight = self.rib_weight_from_tip()
 
-        total_weight = (weight_str + weight_skin + weight_spar_flanges + weight_spar_web)
+        #weight ribs
 
-        difference_array = np.absolute(y-self.y_rotor_loc[0])
-        index = difference_array.argmin()
-
-        weight_ribs = np.linspace(self.wing.n_ribs,1,len(y)) * self.chord(y) * self.height(y) * self.t_rib * self.material.density
-        total_weight += weight_ribs
-
-        return total_weight
-
+        return  weight_str +  weight_le + weight_te + weight_fl + weight_spar_web + rib_weight
 
     def total_weight(self, x):
+        """ Returns the total weight of the wingbox
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: The total weight of the wingbox
+        :rtype: _type_
+        """        
         return self.weight_from_tip(x)[0]
 
 
