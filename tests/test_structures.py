@@ -75,13 +75,13 @@ def test_l_fl(FixtGeometry, FixtSingleWing):
 def test_I_sp_fl_x(FixtGeometry):
     # Checked for equivalency using the following tool
     # https://calcresource.com/moment-of-inertia-rtube.html
-    res = FixtGeometry.I_sp_fl_x(0.002, 0)*1e12
+    res = FixtGeometry.I_sp_fl_x(0.002,0.002, 0)*1e12
     assert np.isclose(res, 1.77483288903039e8, rtol= 0, atol= 1e-5)
 
 def test_I_sp_fl_z(FixtGeometry):
     # Checked for equivalency using the following tool
     # https://calcresource.com/moment-of-inertia-rtube.html
-    res = FixtGeometry.I_sp_fl_z(0.002, 0)*1e12
+    res = FixtGeometry.I_sp_fl_z(0.002,0.002, 0)*1e12
     assert np.isclose(res, 1.25383088143245e9 , rtol= 0, atol= 1e-3)
 
 
@@ -100,34 +100,34 @@ def test_get_x_end_wb(FixtGeometry, FixtSingleWing):
 def test_I_xx(FixtGeometry):
     # Checked by performing calculation at the root on paper using the 
     # already tested functions for stringers, flanges et cetera
-    res =  FixtGeometry.I_xx((0.003, 0.010, 0.010, 0.02, 0.003))*1e12
+    res =  FixtGeometry.I_xx((0.003, 0.003, 0.010, 0.010, 0.02, 0.003))*1e12
     assert isinstance(res, np.ndarray)
     assert np.isclose(res[0], 3.7517e8, rtol=1e-3, atol=1e-3)
 
 def test_I_zz(FixtGeometry):
     # Checked by performing calculation at the root on paper using the 
     # already tested functions for stringers, flanges et cetera
-    res =  FixtGeometry.I_zz((0.003, 0.010, 0.010, 0.02, 0.003))*1e12
+    res =  FixtGeometry.I_zz((0.003, 0.003, 0.010, 0.010, 0.02, 0.003))*1e12
     assert isinstance(res, np.ndarray)
     assert np.isclose(res[0], 2.8419e9)
 
 def test_str_weight_from_tip(FixtGeometry):
-    res =  FixtGeometry.str_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))
+    res =  FixtGeometry.str_weight_from_tip((0.003, 0.003, 0.010, 0.010, 0.02, 0.003))
     assert isinstance(res, np.ndarray)
     assert res[-1] == 0
     assert np.isclose(res[0],FixtGeometry.get_area_str(0.010,0.010,0.02)*FixtGeometry.wing.span/2*FixtGeometry.material.density*FixtGeometry.wing.n_str*2)
 
 def test_le_wingbox_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
-    res =  FixtGeometry.le_wingbox_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))
+    res =  FixtGeometry.le_wingbox_weight_from_tip((0.003, 0.003, 0.010, 0.010, 0.02, 0.003))
     assert isinstance(res, np.ndarray)
     assert res[-1] == 0
     warn("No proper test has been implemted here yet")
 
 def test_te_wingbox_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
-    res1 =  FixtGeometry.te_wingbox_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))
-    res2 =  FixtGeometry.te_wingbox_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.006))
+    res1 =  FixtGeometry.te_wingbox_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.003))
+    res2 =  FixtGeometry.te_wingbox_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.006))
 
     assert isinstance(res1, np.ndarray)
     assert isinstance(res2, np.ndarray)
@@ -136,8 +136,8 @@ def test_te_wingbox_weight_from_tip(FixtGeometry):
 
 def test_fl_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
-    res1 =  FixtGeometry.fl_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))
-    res2 =  FixtGeometry.fl_weight_from_tip((0.006, 0.010, 0.010, 0.02, 0.003))
+    res1 =  FixtGeometry.fl_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.003))
+    res2 =  FixtGeometry.fl_weight_from_tip((0.006, 0.006,0.010, 0.010, 0.02, 0.003))
     root_flange = ref.width_wingbox*ref.chord(0)*2*ref.material.density*0.003
     tip_flange = ref.width_wingbox*ref.chord(ref.wing.span/2)*2*ref.material.density*0.003
     total_weight_flange = ref.wing.span/4*(root_flange + tip_flange)
@@ -150,8 +150,8 @@ def test_fl_weight_from_tip(FixtGeometry):
 
 def test_spar_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
-    res1 =  FixtGeometry.spar_weight_from_tip((0.003, 0.010, 0.010, 0.02, 0.003))
-    res2 =  FixtGeometry.spar_weight_from_tip((0.006, 0.010, 0.010, 0.02, 0.003))
+    res1 =  FixtGeometry.spar_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.003))
+    res2 =  FixtGeometry.spar_weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
     root_flange = ref.height(0)*2*ref.material.density*0.003
     tip_flange = ref.height(ref.wing.span/2)*2*ref.material.density*0.003
     total_weight_flange = ref.wing.span/4*(root_flange + tip_flange)
@@ -171,8 +171,8 @@ def test_rib_weight_from_tip(FixtGeometry):
     assert res[0] == np.sum(rib_weight)
 
 def test_total_weight(FixtGeometry):
-    res = FixtGeometry.weight_from_tip((0.006, 0.010, 0.010, 0.02, 0.003))
-    res2 = FixtGeometry.total_weight((0.006, 0.010, 0.010, 0.02, 0.003))
+    res = FixtGeometry.weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
+    res2 = FixtGeometry.total_weight((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
 
     assert isinstance(res, np.ndarray)
     assert isinstance(res2, float)

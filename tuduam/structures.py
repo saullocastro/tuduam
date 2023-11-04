@@ -25,7 +25,9 @@ class WingboxGeometry():
         :width: 500 
         :alt:  z stringer
     
-    The geometry of the wingbox is simplified as shown hereunder.
+    The geometry of the wingbox is simplified as shown hereunder. There are several thickness and lengths that can be defined.
+    The skin thickness defines the thickness of the leading edge and trailing edge skin. Then the flange and spar thickness
+    can be specified individually. Further more the height, width and thickness of the stringer can also be specified.
 
     .. image:: wingbox_geometry.png
         :width: 500 
@@ -213,7 +215,7 @@ class WingboxGeometry():
         return self.width_wingbox*self.chord(y)
 
 
-    def I_sp_fl_x(self,t_sp,y):
+    def I_sp_fl_x(self,t_sp,t_fl, y):
         """ Return the moment of inertia of the spars and flanges around the x axis
 
         :param t_sp: thickness of the spar
@@ -225,10 +227,10 @@ class WingboxGeometry():
         """        
         h = self.height(y)
         w_fl = self.l_fl(y)
-        warn("This is wrong, flange has thickness t_sp")
-        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_sp)**3/12
 
-    def I_sp_fl_z(self,t_sp,y):
+        return w_fl*h**3/12 - (w_fl - 2*t_sp)*(h - 2*t_fl)**3/12
+
+    def I_sp_fl_z(self,t_sp,t_fl,y):
         """ Return the moment of inertia of the spars and flanges around the z axis
 
         :param t_sp: thickness of the spar
@@ -240,7 +242,7 @@ class WingboxGeometry():
         """        
         h = self.height(y)
         w_fl = self.l_fl(y)
-        return w_fl**3*h/12 - (w_fl - 2*t_sp)**3*(h - 2*t_sp)/12
+        return w_fl**3*h/12 - (w_fl - 2*t_sp)**3*(h - 2*t_fl)/12
 
     def get_x_le(self,y):
         """ Compute the x coordinate of the leading edge at a given spanwise position.
@@ -275,10 +277,10 @@ class WingboxGeometry():
         :return: Vector containing the moment of inertia at various locations
         :rtype: list
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         h = self.height(self.y)
         Ist = self.I_st_x(h_st,w_st,t_st)
-        I_box = self.I_sp_fl_x(t_sp, self.y)
+        I_box = self.I_sp_fl_x(t_sp, t_fl, self.y)
         A_str = self.get_area_str(h_st,w_st,t_st)
 
         return (Ist + A_str*(h/2 - h_st/2)**2)*self.wing.n_str*2 + I_box
@@ -293,12 +295,12 @@ class WingboxGeometry():
         :return: Vector containing the moment of inertia at various locations
         :type x: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
 
         h = self.height(self.y)
         vec_chord = self.chord(self.y)
         Ist = self.I_st_z(h_st,w_st,t_st)
-        I_box = self.I_sp_fl_z(t_sp,self.y)
+        I_box = self.I_sp_fl_z(t_sp, t_fl, self.y)
         Ast = self.get_area_str(h_st,w_st,t_st)
         centre_line = (self.wing.wingbox_start + self.wing.wingbox_end)/2*vec_chord
 
@@ -318,7 +320,7 @@ class WingboxGeometry():
         :return: Vector containing the stringer weight at each section
         :rtype: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
         return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.y)) * self.wing.n_str * 2
 
@@ -331,7 +333,7 @@ class WingboxGeometry():
         :return: Vector containing the leading edge skin  of the wingbox
         :rtype: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp,t_fl, h_st, w_st, t_st, t_sk = x
         return (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y) \
                 - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y),0,0))*self.material.density
 
@@ -344,7 +346,7 @@ class WingboxGeometry():
         :return: Vector containing the leading edge skin  of the wingbox
         :rtype: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         return (trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y) - np.insert(cumulative_trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y),0,0))*self.material.density
     
     def fl_weight_from_tip(self, x):
@@ -355,8 +357,8 @@ class WingboxGeometry():
         :return: Vector containing the flange weight at each section to the tip
         :rtype: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.l_fl(self.y)*t_sp*2, self.y) - np.insert(cumulative_trapezoid(self.l_fl(self.y)*t_sp*2, self.y),0,0))*self.material.density
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
+        return (trapezoid(self.l_fl(self.y)*t_fl*2, self.y) - np.insert(cumulative_trapezoid(self.l_fl(self.y)*t_fl*2, self.y),0,0))*self.material.density
 
     def spar_weight_from_tip(self,x):
         """ Computes the weight of the spars in the planform in the form of a vector showing the amount of weight to the tip
@@ -366,7 +368,7 @@ class WingboxGeometry():
         :return: Vector containing the spar weight at each section
         :rtype: numpy.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         return (trapezoid(self.height(self.y)*t_sp*2, self.y) - np.insert(cumulative_trapezoid(self.height(self.y)*t_sp*2, self.y),0,0))*self.material.density
     
     def rib_weight_from_tip(self):
@@ -388,7 +390,7 @@ class WingboxGeometry():
         :return: vector where each element represent the weight from the tip
         :rtype: np.ndarray
         """        
-        t_sp, h_st, w_st, t_st, t_sk = x
+        t_sp, t_fl, h_st, w_st, t_st, t_sk = x
 
         y = self.y
         weight_str =  self.str_weight_from_tip(x)
