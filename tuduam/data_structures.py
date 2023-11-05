@@ -42,6 +42,9 @@ class SingleWing(Parent):
     stringer_width: Optional[float]  =  None
     stringer_thickness: Optional[float]  =  None
     skin_thickness: Optional[float]  =  None
+    rib_loc: Optional[List]  =  None
+    """"A list of the spanwise position of the ribs. Can be left to None
+    as it will be automatically created. Howeve if pre-defined it will keep this list"""
 
 
     @classmethod
@@ -97,12 +100,26 @@ class HybridPowertrain(Parent):
 
 class Engine(Parent):
     n_engines: int  = Field(gt=0)
+    diameter: Optional[float] = None
     thrust: Optional[float] = None
     mass: Optional[float] = None
     power_grav_density: Optional[float] = None
     power_vol_density: Optional[float] = None
-    x_rotor_locations: Optional[List] = None
-    y_rotor_locations: Optional[List] = None
+    x_rotor_loc: Optional[List] = None
+    """"A list of the x coordinates of your engines for both sides. Thus if you have 4
+    engines in total, the list must be 4 elements long. eg [2,4,4,2]. See section about 
+    coordinate systems if you have questions regardign this."""
+    x_rotor_rel_loc: Optional[List] = None
+    """"Same as x_rotor_locations but relative to the wing, that is the leading edge of the
+    spanwise location of the engine. Negative values are infront the wing"""
+    y_rotor_loc: Optional[List] = None
+    """"A list of the y coordinates of your engines for both sides. Thus if you have 4
+    engines in total, the list must be 4 elements long and correspond to
+    the elements x_rotor_locations. eg [-6,-3,3,6]. See section about 
+    coordinate systems if you have questions regardign this."""
+    ignore_loc: Optional[List] = None
+    """"Index of which engne positions to ignore in the wingbox analysis. For example when 
+    the engine is placed on the fuselage"""
 
 
     @classmethod

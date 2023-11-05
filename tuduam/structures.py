@@ -33,6 +33,8 @@ class WingboxGeometry():
         :width: 500 
         :alt:  Coordinate system used in computations
 
+    Further more the rib placement is evenly spaced throughout the wing
+
 
     """        
     def __init__(self, aero, airfoil, engine, flight_perf ,material, wing):
@@ -63,21 +65,12 @@ class WingboxGeometry():
 
         #Material
         self.rib_pitch = (self.wing.span/2)/(self.wing.n_ribs+1)
-        self.t_rib = 3e-3
 
         # Aerodynamics
         self.lift_func = lift_distribution(aero, wing, flight_perf.cL_cruise/aero.cL_alpha + aero.alpha_zero_lift,ISA(flight_perf.h_cruise).density(),  flight_perf.v_cruise)
 
-        #Engine
-        self.engine_weight = engine.mass
-        self.y_rotor_loc = engine.y_rotor_locations
-        self.x_rotor_loc = engine.x_rotor_locations
-        self.thrust_per_engine = engine.thrust
-        #Torsion shaft
-
         #STRINGERS
         self.str_array = np.linspace(self.wing.wingbox_start, self.wing.wingbox_end,  self.wing.n_str)
-
 
         #GEOMETRY
         self.width_wingbox_root = (wing.wingbox_end - wing.wingbox_start)*wing.chord_root
@@ -85,11 +78,23 @@ class WingboxGeometry():
         self.pitch_str = self.width_wingbox_root/(self.wing.n_str+1) #THE PROGRAM ASSUMES THERE ARE TWO STRINGERS AT EACH END AS WELL
 
         #OPT related
-        self.y = np.linspace(0, self.wing.span/2, self.wing.n_ribs)
+        if self.wing.rib_loc == None:
+            self.rib_loc = np.linspace(0, 1, self.wing.n_ribs - self.engine.n_engines)**2*self.wing.span/2
+
+            # Make sure ribs are placed at the mounting of the engines
+            for eng_loc in self.engine.y_rotor_loc:
+                if eng_loc < 0:
+                    continue
+                self.rib_loc = np.insert(self.rib_loc, 0, eng_loc - self.engine.diameter/2 )
+                self.rib_loc = np.insert(self.rib_loc, 0, eng_loc + self.engine.diameter/2 )
+            self.rib_loc.sort()
+            self.wing.rib_loc = self.rib_loc
+        else: 
+            pass
+
 
 
     #---------------Geometry functions-----------------
-
     def _x_to_global(self, coordinate):
         """ Transform an x coordinate from the local frame attached to the leading edge of the root to the global 
         coordinate system
@@ -255,7 +260,8 @@ class WingboxGeometry():
         return self.wing.x_le_root_global + np.tan(self.wing.sweep_le)*y
 
     def get_x_start_wb(self,y):
-        """Compute the start of the wingbox at a given spanwise location
+        """Compute the start of the wingbox in the global reference
+         frame  at a given spanwise location
 
         :param y: spanwise location
         :type y: float
@@ -265,6 +271,14 @@ class WingboxGeometry():
         return self.get_x_le(y) + self.wing.wingbox_start*self.chord(y)
 
     def get_x_end_wb(self,y):
+        """Compute the end of the wingbox in the global reference
+         frame  at a given spanwise location
+
+        :param y: spanwise location
+        :type y: float
+        :return: x coordinate of the start of wingbox
+        :rtype: float
+        """        
         return self.get_x_le(y) + self.wing.wingbox_end*self.chord(y)
 
     def I_xx(self, x):
@@ -278,9 +292,9 @@ class WingboxGeometry():
         :rtype: list
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        h = self.height(self.y)
+        h = self.height(self.rib_loc)
         Ist = self.I_st_x(h_st,w_st,t_st)
-        I_box = self.I_sp_fl_x(t_sp, t_fl, self.y)
+        I_box = self.I_sp_fl_x(t_sp, t_fl, self.rib_loc)
         A_str = self.get_area_str(h_st,w_st,t_st)
 
         return (Ist + A_str*(h/2 - h_st/2)**2)*self.wing.n_str*2 + I_box
@@ -297,10 +311,10 @@ class WingboxGeometry():
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
 
-        h = self.height(self.y)
-        vec_chord = self.chord(self.y)
+        h = self.height(self.rib_loc)
+        vec_chord = self.chord(self.rib_loc)
         Ist = self.I_st_z(h_st,w_st,t_st)
-        I_box = self.I_sp_fl_z(t_sp, t_fl, self.y)
+        I_box = self.I_sp_fl_z(t_sp, t_fl, self.rib_loc)
         Ast = self.get_area_str(h_st,w_st,t_st)
         centre_line = (self.wing.wingbox_start + self.wing.wingbox_end)/2*vec_chord
 
@@ -322,7 +336,7 @@ class WingboxGeometry():
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
-        return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.y)) * self.wing.n_str * 2
+        return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.rib_loc)) * self.wing.n_str * 2
 
     def le_wingbox_weight_from_tip(self,x):
         """ Uses trapezium integration approximation to compute the leading edge weight of the skin. This introduces a slight error as the perimeter
@@ -334,8 +348,8 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp,t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y) \
-                - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.y),self.height(self.y))*t_sk, self.y),0,0))*self.material.density
+        return (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.rib_loc),self.height(self.rib_loc))*t_sk, self.rib_loc) \
+                - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.rib_loc),self.height(self.rib_loc))*t_sk, self.rib_loc),0,0))*self.material.density
 
     def te_wingbox_weight_from_tip(self,x):
         """ Computes the weight of the skin in the trailing edge of the wingbox. Weight is approximated using the trapezium integration method
@@ -347,7 +361,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y) - np.insert(cumulative_trapezoid(self.l_sk_te(self.y)*t_sk*2, self.y),0,0))*self.material.density
+        return (trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc),0,0))*self.material.density
     
     def fl_weight_from_tip(self, x):
         """ Computes the weight of the flanges in the planform as a vector
@@ -358,7 +372,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.l_fl(self.y)*t_fl*2, self.y) - np.insert(cumulative_trapezoid(self.l_fl(self.y)*t_fl*2, self.y),0,0))*self.material.density
+        return (trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc),0,0))*self.material.density
 
     def spar_weight_from_tip(self,x):
         """ Computes the weight of the spars in the planform in the form of a vector showing the amount of weight to the tip
@@ -369,7 +383,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.height(self.y)*t_sp*2, self.y) - np.insert(cumulative_trapezoid(self.height(self.y)*t_sp*2, self.y),0,0))*self.material.density
+        return (trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc),0,0))*self.material.density
     
     def rib_weight_from_tip(self):
         """ Computes a vector of the weight of the ribs to the tip
@@ -377,8 +391,8 @@ class WingboxGeometry():
         :return: A vector of the weight of the ribs to the tip
         :rtype: list
         """        
-        weight_rib =  self.chord(self.y) * self.height(self.y) * self.t_rib * self.material.density
-        return np.cumsum(np.ones(len(self.y))*weight_rib)[::-1]
+        weight_rib =  self.chord(self.rib_loc) * self.height(self.rib_loc) * self.wing.t_rib * self.material.density
+        return np.cumsum(np.ones(len(self.rib_loc))*weight_rib)[::-1]
 
        
 
@@ -392,7 +406,7 @@ class WingboxGeometry():
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
 
-        y = self.y
+        y = self.rib_loc
         weight_str =  self.str_weight_from_tip(x)
         weight_le = self.le_wingbox_weight_from_tip(x)
         weight_te =  self.te_wingbox_weight_from_tip(x)
@@ -445,35 +459,52 @@ class WingboxInternalForces(WingboxGeometry):
         :rtype: float
         """        
         torque_arr = np.zeros(len(y))
+        filter = np.array(self.engine.y_rotor_loc) > 0
 
-        for x_loc, y_loc in zip(self.x_rotor_loc, self.y_rotor_loc):
+        # Assign any engines that have to be ignored in the analysis
+        if self.engine.ignore_loc != None:
+            try:
+                filter[self.engine.ignore_locations] = False
+            except:
+                warn("Unable to assign engine locations that had to be ignored")
+
+        if self.engine.x_rotor_loc == None:
+            y_rotor_loc = np.array(self.engine.y_rotor_loc)[filter]
+            x_rotor_loc = np.array(self.engine.x_rotor_rel_loc)[filter] + self.get_x_le(y_rotor_loc)
+        elif self.engine.x_rotor_rel_loc == None:   
+            y_rotor_loc = np.array(self.engine.y_rotor_loc)[filter]
+            x_rotor_loc = np.array(self.engine.x_rotor_loc)[filter]
+        else:
+            raise Exception("Both relative and absolute x rotor locations were defined")
+
+        for x_loc, y_loc in zip(x_rotor_loc, y_rotor_loc):
             index = np.argmin(np.absolute(y - y_loc))
-            torque_arr[0:index + 1] =  (self.engine.mass*9.81)*((self.get_x_start_wb(0) + self.get_x_end_wb(0))/2 - x_loc) #Torque at from tip roto
+            torque_arr[0:index + 1] += (self.engine.mass*9.81)*((self.get_x_start_wb(self.rib_loc[0:index + 1]) + self.get_x_end_wb(self.rib_loc[0:index + 1]))/2 - x_loc) #Torque at from tip roto
 
         return -torque_arr
 
 
     def shear_z_from_tip(self, x):
-        y = self.y
+        y = self.rib_loc
         return -self.weight_from_tip(x)*9.81 + self.lift_func(y)*self.flight_perf.n_ult
 
  
     def moment_x_from_tip(self, x):
         shear = self.shear_z_from_tip(x)
-        moment = np.zeros(len(self.y))
-        dy = (self.y[1]-self.y[0])
-        for i in range(2,len(self.y)+1):
+        moment = np.zeros(len(self.rib_loc))
+        dy = (self.rib_loc[1]-self.rib_loc[0])
+        for i in range(2,len(self.rib_loc)+1):
             moment[-i] = shear[-i+1]*dy + moment[-i+1]
         return moment
         # return self.shear_z_from_tip(x)*(self.span/2 - self.y)
 
 #-----------Stress functions---------
     def bending_stress_x_from_tip(self, x):
-        return self.moment_x_from_tip(x)/self.I_xx(x) * self.height(self.y)/2
+        return self.moment_x_from_tip(x)/self.I_xx(x) * self.height(self.rib_loc)/2
 
     def shearflow_max_from_tip(self, x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        y = self.y
+        y = self.rib_loc
         Vz = self.shear_z_from_tip(x)
         T = self.moment_y_from_tip(y)
         Ixx = self.I_xx(x)
@@ -715,7 +746,7 @@ class Constraints(WingboxInternalForces):
 
 
     def von_Mises(self, x):
-        y = self.y
+        y = self.rib_loc
         t_sp, h_st, w_st, t_st, t_sk = x
         Nxy =self.shearflow_max_from_tip(x)
         bend_stress=self.bending_stress_x_from_tip(x)
@@ -790,7 +821,7 @@ def wingbox_optimization(aero, airfoil, engine, flight_perf, material, wing):
 
 
     X = [tsp, hst, wst, tst, tsk]
-    y = WingGeom.y
+    y = WingGeom.wing.rib_loc
 
     #------SET BOUNDS--------
     height_tip = WingGeom.height(WingGeom.wing.span/2) - 2e-2#NOTE Set upper value so the stringer is not bigger than the wing itself.

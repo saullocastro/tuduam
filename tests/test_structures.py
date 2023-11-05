@@ -1,6 +1,7 @@
 import sys
 import pathlib as pl
 import numpy as np
+import pdb
 from warnings import warn
 
 sys.path.append(str(list(pl.Path(__file__).parents)[1]))
@@ -18,6 +19,11 @@ def test_get_fuselage_weight(FixtVTOL, FixtFlightPerformance, FixtFuselage):
 
 
 #----------------- Testing geometry class --------------------------
+def test_rib_placement(FixtGeometry):
+    assert len(FixtGeometry.wing.rib_loc) == FixtGeometry.wing.n_ribs
+    assert FixtGeometry.wing.rib_loc[-1] == FixtGeometry.wing.span/2
+    assert FixtGeometry.wing.rib_loc[0] == 0
+
 def test_x_to_global(FixtGeometry, FixtSingleWing):
     # simple test mimics the behaviour in the function
     coord = 2
@@ -164,11 +170,11 @@ def test_spar_weight_from_tip(FixtGeometry):
 
 def test_rib_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
-    rib_weight = ref.chord(ref.y) *ref.height(ref.y) *ref.t_rib *ref.material.density
+    rib_weight = ref.chord(ref.rib_loc) *ref.height(ref.rib_loc) *ref.wing.t_rib *ref.material.density
     res = FixtGeometry.rib_weight_from_tip()
 
     assert isinstance(res, np.ndarray)
-    assert res[0] == np.sum(rib_weight)
+    assert np.isclose(res[0], np.sum(rib_weight))
 
 def test_total_weight(FixtGeometry):
     res = FixtGeometry.weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
