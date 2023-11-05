@@ -18,18 +18,18 @@ release = '0.0.0'
 
 extensions = [
     'sphinx.ext.autodoc',
-        'sphinx.ext.autosummary',
-        'numpydoc',
-        'sphinx.ext.doctest',
-        'sphinx_rtd_theme',
-        'sphinx-pydantic',
-        'sphinx.ext.coverage',
-        'sphinx.ext.mathjax',
-        'sphinx.ext.graphviz',
-        'sphinx.ext.viewcode',
-        'sphinx.ext.todo',
-        'sphinxcontrib.autodoc_pydantic',
-        'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.autosummary',
+    # 'numpydoc',
+    'sphinx.ext.doctest',
+    'sphinx_rtd_theme',
+    'sphinx-pydantic',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.todo',
+    'sphinxcontrib.autodoc_pydantic',
+    'sphinx.ext.inheritance_diagram',
 ]
 
 sys.path.append(str(list(pl.Path(__file__).parents)[2]))
