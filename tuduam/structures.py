@@ -2,8 +2,9 @@ from math import pi
 import pdb
 import numpy as np
 from warnings import warn
+import matplotlib.pyplot as plt
+import matplotlib
 from scipy.integrate import trapezoid, cumulative_trapezoid, trapz, dblquad
-from scipy import integrate
 from scipy.optimize import minimize
 from pymoo.problems.functional import FunctionalProblem
 from pymoo.algorithms.soo.nonconvex.ga import GA
@@ -11,8 +12,10 @@ from pymoo.optimize import minimize as minimizeGA
 from tuduam.aerodynamics import lift_distribution
 from tuduam.performance import ISA
 
+matplotlib.use("tkagg")
 
-class WingboxGeometry():
+
+class WingboxGeometry:
     """ This class provided a framework for  computing the geometry of the wing and wingbox which are given in 
     the following coordinate system which is attached to the nose. 
 
@@ -428,6 +431,47 @@ class WingboxGeometry():
         """        
         return self.weight_from_tip(x)[0]
 
+class WingboxPlotter(WingboxGeometry):
+    def __init__(self, aero, airfoil, engine, flight_perf ,material, wing) -> None:
+        super().__init__(aero, airfoil, engine, flight_perf ,material, wing)
+        self.aerodynamics = aero
+        self.airfoil = airfoil
+        self.engine = engine
+        self.flight_perf = flight_perf
+        self.material = material
+        self.wing = wing
+
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111, projection='3d')
+
+    def create_top_flange_geometry(self):
+        x_lst = list()
+        y_lst = list()
+        z_lst = list()
+        for y_coord in np.linspace(0, self.wing.span/2, 20):
+            x_start = self.get_x_start_wb(y_coord)
+            x_end = self.get_x_end_wb(y_coord)
+            height = self.height(y_coord)
+
+            # x coordinates
+            x_lst.append(x_start)
+            x_lst.append(x_end)
+
+            #y coordinates
+            y_lst.append(y_coord)
+            y_lst.append(y_coord)
+
+            #y coordinates
+            z_lst.append(height/2)
+            z_lst.append(height/2)
+
+        self.ax.plot_surface(x_lst, y_coord, z_lst)
+
+    def create_rib_geometry():
+        pass
+
+    def show_geometry():
+        plt.show()
 
 class WingboxInternalForces(WingboxGeometry):
     """ This class provided a framework for computing the internal forces in the wingbox of which are given in :download:`Optimization documentation <eVTOL_Structural_Analysis.pdf>`.

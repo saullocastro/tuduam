@@ -8,13 +8,15 @@ import tuduam.structures as struct
 aero_dict = {
     "spanwise_points": 29,
     "alpha_zero_lift": 0,
+    "cL_alpha":5,
  }
 
 engine_dict  = {
     "n_engines": 2,
+    "diameter": 0.3,
     "mass": 100,
-    "y_rotor_locations": [ 2],
-    "x_rotor_locations": [3],
+    "y_rotor_loc": [2,2],
+    "x_rotor_loc": [-3,3],
     "thrust": 3e3,
  }
 
@@ -48,7 +50,7 @@ wingclass_dict  = {
     "wingbox_start":0.15, 
     "wingbox_end":0.75, 
     "n_ribs":10, 
-    "n_str":0.008, 
+    "n_str":10, 
     "spar_thickness":0.008, 
     "stringer_height":0.010, 
     "stringer_width":0.005, 
@@ -66,9 +68,12 @@ WingStruct = tud.SingleWing(**wingclass_dict)
 
 
 tud.wing_geometry(FlightperfStruct, VTOLStruct, WingStruct)
-tud.lift_curve_slope(AeroStruct, WingStruct)
-res = struct.wingbox_optimization(AeroStruct, AirfoilStruct, EngStruct, FlightperfStruct,  MatStruct, WingStruct )
+# tud.lift_curve_slope(AeroStruct, WingStruct)
+# res = struct.wingbox_optimization(AeroStruct, AirfoilStruct, EngStruct, FlightperfStruct,  MatStruct, WingStruct )
+
+plotter = struct.WingboxPlotter(AeroStruct, AirfoilStruct, EngStruct, FlightperfStruct,  MatStruct, WingStruct )
+plotter.create_top_flange_geometry()
+plotter.show_geometry()
 
 
-print(f"{res=}")
-print(WingStruct.model_dump())
+
