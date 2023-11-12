@@ -3,7 +3,7 @@ import pdb
 import numpy as np
 from warnings import warn
 from scipy.integrate import trapezoid, cumulative_trapezoid, trapz, dblquad
-from scipy import integrate
+from scipy.constants import g
 from scipy.optimize import minimize
 from pymoo.problems.functional import FunctionalProblem
 from pymoo.algorithms.soo.nonconvex.ga import GA
@@ -336,7 +336,7 @@ class WingboxGeometry():
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
         warn("stringer weight assumes they are straight while in reality they follow the local sweep of the wing")
-        return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.rib_loc)) * self.wing.n_str * 2
+        return self.material.density*self.get_area_str(h_st,w_st,t_st)*(np.flip(self.rib_loc))*self.wing.n_str*2*g
 
     def le_wingbox_weight_from_tip(self,x):
         """ Uses trapezium integration approximation to compute the leading edge weight of the skin. This introduces a slight error as the perimeter
@@ -349,7 +349,7 @@ class WingboxGeometry():
         """        
         t_sp,t_fl, h_st, w_st, t_st, t_sk = x
         return (trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.rib_loc),self.height(self.rib_loc))*t_sk, self.rib_loc) \
-                - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.rib_loc),self.height(self.rib_loc))*t_sk, self.rib_loc),0,0))*self.material.density
+                - np.insert(cumulative_trapezoid(self.perimiter_ellipse(self.wing.wingbox_start*self.chord(self.rib_loc),self.height(self.rib_loc))*t_sk, self.rib_loc),0,0))*self.material.density*g
 
     def te_wingbox_weight_from_tip(self,x):
         """ Computes the weight of the skin in the trailing edge of the wingbox. Weight is approximated using the trapezium integration method
@@ -361,7 +361,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc),0,0))*self.material.density
+        return (trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_sk_te(self.rib_loc)*t_sk*2, self.rib_loc),0,0))*self.material.density*g
     
     def fl_weight_from_tip(self, x):
         """ Computes the weight of the flanges in the planform as a vector
@@ -372,7 +372,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc),0,0))*self.material.density
+        return (trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.l_fl(self.rib_loc)*t_fl*2, self.rib_loc),0,0))*self.material.density*g
 
     def spar_weight_from_tip(self,x):
         """ Computes the weight of the spars in the planform in the form of a vector showing the amount of weight to the tip
@@ -383,7 +383,7 @@ class WingboxGeometry():
         :rtype: numpy.ndarray
         """        
         t_sp, t_fl, h_st, w_st, t_st, t_sk = x
-        return (trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc),0,0))*self.material.density
+        return (trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc) - np.insert(cumulative_trapezoid(self.height(self.rib_loc)*t_sp*2, self.rib_loc),0,0))*self.material.density*g
     
     def rib_weight_from_tip(self):
         """ Computes a vector of the weight of the ribs to the tip
@@ -392,7 +392,33 @@ class WingboxGeometry():
         :rtype: list
         """        
         weight_rib =  self.chord(self.rib_loc) * self.height(self.rib_loc) * self.wing.t_rib * self.material.density
-        return np.cumsum(np.ones(len(self.rib_loc))*weight_rib)[::-1]
+        return np.cumsum(np.ones(len(self.rib_loc))*weight_rib)[::-1]*g
+
+    def engine_weight_from_tip(self):
+        """ Computes a vector of the weight of the engines. Each element in this vector presents
+        the resultant magnitude as if a cut was made at that section. No sign is attached to these values
+
+        :return: Vector of weight at each rib location (see function description)
+        :rtype: numpy.ndarray
+        """        
+        warn("No test implemented yet")
+        weight_arr = np.zeros(len(self.rib_loc))
+        filter = np.array(self.engine.y_rotor_loc) > 0
+
+        if self.engine.ignore_loc != None:
+            try:
+                filter[self.engine.ignore_locations] = False
+            except:
+                warn("Unable to assign engine locations that had to be ignored")
+                
+        y_rotor_loc = np.array(self.engine.y_rotor_loc)[filter]
+
+        for y_loc in y_rotor_loc:
+            index = np.argmin(np.absolute(self.rib_loc - y_loc))
+            weight_arr[0:index + 1] += self.engine.mass
+
+        return weight_arr*g
+
 
        
 
@@ -450,7 +476,22 @@ class WingboxInternalForces(WingboxGeometry):
     """        
     pass
 
-    def moment_y_from_tip(self,y):
+
+
+    def shear_z_from_tip(self, x):
+        return (-self.weight_from_tip(x) - self.engine_weight_from_tip() + self.lift_func(self.rib_loc)*self.flight_perf.n_ult)*-1
+
+ 
+    def moment_x_from_tip(self, x):
+        shear = self.shear_z_from_tip(x)
+        moment = np.zeros(len(self.rib_loc))
+        dy = (self.rib_loc[1]-self.rib_loc[0])
+        for i in range(2,len(self.rib_loc)+1):
+            moment[-i] = shear[-i+1]*dy + moment[-i+1]
+        return moment
+        # return self.shear_z_from_tip(x)*(self.span/2 - self.y)
+
+    def moment_y_from_tip(self):
         """ Returns the moment at each section in the form of an array
 
         :param y: spanwise position
@@ -458,6 +499,7 @@ class WingboxInternalForces(WingboxGeometry):
         :return: moment in  Newton-meters
         :rtype: float
         """        
+        y = self.rib_loc
         torque_arr = np.zeros(len(y))
         filter = np.array(self.engine.y_rotor_loc) > 0
 
@@ -482,21 +524,6 @@ class WingboxInternalForces(WingboxGeometry):
             torque_arr[0:index + 1] += (self.engine.mass*9.81)*((self.get_x_start_wb(self.rib_loc[0:index + 1]) + self.get_x_end_wb(self.rib_loc[0:index + 1]))/2 - x_loc) #Torque at from tip roto
 
         return -torque_arr
-
-
-    def shear_z_from_tip(self, x):
-        y = self.rib_loc
-        return -self.weight_from_tip(x)*9.81 + self.lift_func(y)*self.flight_perf.n_ult
-
- 
-    def moment_x_from_tip(self, x):
-        shear = self.shear_z_from_tip(x)
-        moment = np.zeros(len(self.rib_loc))
-        dy = (self.rib_loc[1]-self.rib_loc[0])
-        for i in range(2,len(self.rib_loc)+1):
-            moment[-i] = shear[-i+1]*dy + moment[-i+1]
-        return moment
-        # return self.shear_z_from_tip(x)*(self.span/2 - self.y)
 
 #-----------Stress functions---------
     def bending_stress_x_from_tip(self, x):

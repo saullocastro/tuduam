@@ -2,9 +2,10 @@ import sys
 import pathlib as pl
 import numpy as np
 import pdb
+from scipy.constants import g
 from warnings import warn
 
-sys.path.append(str(list(pl.Path(__file__).parents)[1]))
+# sys.path.append(str(list(pl.Path(__file__).parents)[1]))
 
 import tuduam.structures as struct
 
@@ -121,7 +122,7 @@ def test_str_weight_from_tip(FixtGeometry):
     res =  FixtGeometry.str_weight_from_tip((0.003, 0.003, 0.010, 0.010, 0.02, 0.003))
     assert isinstance(res, np.ndarray)
     assert res[-1] == 0
-    assert np.isclose(res[0],FixtGeometry.get_area_str(0.010,0.010,0.02)*FixtGeometry.wing.span/2*FixtGeometry.material.density*FixtGeometry.wing.n_str*2)
+    assert np.isclose(res[0],FixtGeometry.get_area_str(0.010,0.010,0.02)*FixtGeometry.wing.span/2*FixtGeometry.material.density*FixtGeometry.wing.n_str*2*g)
 
 def test_le_wingbox_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
@@ -144,8 +145,8 @@ def test_fl_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
     res1 =  FixtGeometry.fl_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.003))
     res2 =  FixtGeometry.fl_weight_from_tip((0.006, 0.006,0.010, 0.010, 0.02, 0.003))
-    root_flange = ref.width_wingbox*ref.chord(0)*2*ref.material.density*0.003
-    tip_flange = ref.width_wingbox*ref.chord(ref.wing.span/2)*2*ref.material.density*0.003
+    root_flange = ref.width_wingbox*ref.chord(0)*2*ref.material.density*0.003*g
+    tip_flange = ref.width_wingbox*ref.chord(ref.wing.span/2)*2*ref.material.density*0.003*g
     total_weight_flange = ref.wing.span/4*(root_flange + tip_flange)
 
     assert isinstance(res1, np.ndarray)
@@ -158,8 +159,8 @@ def test_spar_weight_from_tip(FixtGeometry):
     ref = FixtGeometry
     res1 =  FixtGeometry.spar_weight_from_tip((0.003,0.003, 0.010, 0.010, 0.02, 0.003))
     res2 =  FixtGeometry.spar_weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
-    root_flange = ref.height(0)*2*ref.material.density*0.003
-    tip_flange = ref.height(ref.wing.span/2)*2*ref.material.density*0.003
+    root_flange = ref.height(0)*2*ref.material.density*0.003*g
+    tip_flange = ref.height(ref.wing.span/2)*2*ref.material.density*0.003*g
     total_weight_flange = ref.wing.span/4*(root_flange + tip_flange)
 
     assert isinstance(res1, np.ndarray)
@@ -174,7 +175,14 @@ def test_rib_weight_from_tip(FixtGeometry):
     res = FixtGeometry.rib_weight_from_tip()
 
     assert isinstance(res, np.ndarray)
-    assert np.isclose(res[0], np.sum(rib_weight))
+    assert np.isclose(res[0], np.sum(rib_weight)*g)
+
+def test_engine_weight_from_tip(FixtGeometry):
+    ref = FixtGeometry
+    res = FixtGeometry.engine_weight_from_tip()
+
+    assert isinstance(res, np.ndarray)
+    assert res[0] == ref.engine.mass*ref.engine.n_engines/2*g
 
 def test_total_weight(FixtGeometry):
     res = FixtGeometry.weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
@@ -183,8 +191,25 @@ def test_total_weight(FixtGeometry):
     assert isinstance(res, np.ndarray)
     assert isinstance(res2, float)
 
-def test_moment_y_from_tip(FixtInternalForces, FixtSingleWing):
-    res = FixtInternalForces.moment_y_from_tip(np.linspace(0,FixtSingleWing.span,20))
+
+#----------------------- tests for internal forces -----------------------
+
+def test_shear_z_from_tip(FixtInternalForces, FixtFlightPerformance):
+    ref = FixtInternalForces
+    res = FixtInternalForces.shear_z_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
+    root_check = ref.lift_func(0)*FixtFlightPerformance.n_ult - ref.total_weight((0.006,0.006, 0.010, 0.010, 0.02, 0.003)) - ref.engine.mass*ref.engine.n_engines/2*g
+    tip_check = ref.lift_func(ref.wing.span/2)*FixtFlightPerformance.n_ult - ref.weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))[-1]
+
     assert isinstance(res, np.ndarray)
+    assert all(res <= 100) # Normally should be smaller than 0 however last rib as slighlty more weight than lift
+    assert np.isclose(res[0], -root_check) # Check summation and sign at the end
+    assert np.isclose(res[-1], -tip_check) # Check summation and sign at the tip
+
+def test_moment_y_from_tip(FixtInternalForces, FixtSingleWing):
+    res = FixtInternalForces.moment_y_from_tip()
+    assert isinstance(res, np.ndarray)
+    assert all(res <= 0)
+    assert res[-1] == 0
+    assert np.isclose(res[0], -4652, rtol=0.01) # Value checked with simple example done by hand
 
 

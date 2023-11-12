@@ -15,7 +15,7 @@
         "x_le_root_global": 6,
         "wingbox_start":0.15,
         "wingbox_end":0.75, 
-        "n_ribs":10, 
+        "n_ribs":14, 
         "n_str":3, 
         "spar_thickness":0.008, 
         "stringer_height":0.010, 
