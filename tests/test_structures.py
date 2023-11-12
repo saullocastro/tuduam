@@ -205,6 +205,11 @@ def test_shear_z_from_tip(FixtInternalForces, FixtFlightPerformance):
     assert np.isclose(res[0], -root_check) # Check summation and sign at the end
     assert np.isclose(res[-1], -tip_check) # Check summation and sign at the tip
 
+def test_moment_x_from_tip(FixtInternalForces, FixtSingleWing):
+    res = FixtInternalForces.moment_x_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
+    assert isinstance(res, np.ndarray)
+    assert all(res >= 0)
+
 def test_moment_y_from_tip(FixtInternalForces, FixtSingleWing):
     res = FixtInternalForces.moment_y_from_tip()
     assert isinstance(res, np.ndarray)

@@ -474,21 +474,32 @@ class WingboxInternalForces(WingboxGeometry):
     :return: _description_
     :rtype: _type_
     """        
-    pass
-
-
 
     def shear_z_from_tip(self, x):
+        """ Internal shear force in the z direction using the sign convention shown in the class description
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: A vector of the internal shear force from root to tip
+        :rtype: numpy.ndarray
+        """        
         return (-self.weight_from_tip(x) - self.engine_weight_from_tip() + self.lift_func(self.rib_loc)*self.flight_perf.n_ult)*-1
 
  
     def moment_x_from_tip(self, x):
-        shear = self.shear_z_from_tip(x)
-        moment = np.zeros(len(self.rib_loc))
-        dy = (self.rib_loc[1]-self.rib_loc[0])
-        for i in range(2,len(self.rib_loc)+1):
-            moment[-i] = shear[-i+1]*dy + moment[-i+1]
-        return moment
+        """ Internal moment in the x direction using the sign convention show in the class description.
+        To compute the internal moment $\Delta M = - \int V $ is used. This is used from the tip onwards
+        to avoid computation of the reaction forces
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: A vector of the internal shear force from root to tip
+        :rtype: numpy.ndarray
+        """        
+        shear = np.flip(self.shear_z_from_tip(x))
+        moment = -cumulative_trapezoid(shear, dx= np.absolute(np.diff(np.flip(self.rib_loc))))
+
+        return np.flip(moment)
         # return self.shear_z_from_tip(x)*(self.span/2 - self.y)
 
     def moment_y_from_tip(self):
@@ -527,6 +538,13 @@ class WingboxInternalForces(WingboxGeometry):
 
 #-----------Stress functions---------
     def bending_stress_x_from_tip(self, x):
+        """ Returns the maximum bending stress as a vector at the rib locations
+
+        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: A vector of the bending stress at the rib locations from root to tip
+        :rtype: numpy.ndarray
+        """        
         return self.moment_x_from_tip(x)/self.I_xx(x) * self.height(self.rib_loc)/2
 
     def shearflow_max_from_tip(self, x):
