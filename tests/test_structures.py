@@ -1,7 +1,6 @@
-import sys
-import pathlib as pl
 import numpy as np
 import pdb
+import pytest
 from scipy.constants import g
 from warnings import warn
 
@@ -52,7 +51,7 @@ def test_height(FixtGeometry, FixtAirfoil, FixtSingleWing):
 
 def test_l_sk_te(FixtGeometry, FixtSingleWing, FixtAirfoil):
     res = FixtGeometry.l_sk_te(0)
-    assert np.isclose(res, ((FixtSingleWing.chord_root*0.25)**2 + (FixtAirfoil.thickness_to_chord*FixtSingleWing.chord_root)**2 )**0.5)
+    assert np.isclose(res, ((FixtSingleWing.chord_root*(1 - FixtSingleWing.wingbox_end))**2 + (FixtAirfoil.thickness_to_chord*FixtSingleWing.chord_root/2)**2 )**0.5)
 
 def test_get_area_str(FixtGeometry):
     # Simply checked manually 
@@ -184,6 +183,11 @@ def test_engine_weight_from_tip(FixtGeometry):
     assert isinstance(res, np.ndarray)
     assert res[0] == ref.engine.mass*ref.engine.n_engines/2*g
 
+    ref.engine.ignore_loc = [10]
+
+    with pytest.raises(Exception):
+        ref.engine_weight_from_tip()
+
 def test_total_weight(FixtGeometry):
     res = FixtGeometry.weight_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
     res2 = FixtGeometry.total_weight((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
@@ -208,13 +212,45 @@ def test_shear_z_from_tip(FixtInternalForces, FixtFlightPerformance):
 def test_moment_x_from_tip(FixtInternalForces, FixtSingleWing):
     res = FixtInternalForces.moment_x_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
     assert isinstance(res, np.ndarray)
+    assert len(res) == len(FixtInternalForces.rib_loc)
     assert all(res >= 0)
+    assert res[-1] == 0
 
 def test_moment_y_from_tip(FixtInternalForces, FixtSingleWing):
+    ref = FixtInternalForces
+
     res = FixtInternalForces.moment_y_from_tip()
     assert isinstance(res, np.ndarray)
     assert all(res <= 0)
     assert res[-1] == 0
     assert np.isclose(res[0], -4652, rtol=0.01) # Value checked with simple example done by hand
 
+    ref.engine.x_rotor_loc = None
+    ref.engine.x_rotor_rel_loc = [0.5, 0.5, 0.5, 0.5]
+    res2 =  ref.moment_y_from_tip()
+
+    assert isinstance(res2, np.ndarray)
+    assert not all(np.isclose(res, res2))
+
+    ref.engine.x_rotor_loc = [3,3,3,3]
+    ref.engine.x_rotor_rel_loc = [0.5, 0.5, 0.5, 0.5]
+
+    with pytest.raises(Exception):
+        ref.moment_y_from_tip()
+
+    ref.engine.ignore_loc = [10,3,5,0]
+    ref.engine.x_rotor_rel_loc =  None
+
+    with pytest.raises(Exception):
+        ref.moment_y_from_tip()
+
+def test_bending_stress_y_from_tip(FixtInternalForces, FixtSingleWing):
+    res = FixtInternalForces.bending_stress_y_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
+    assert isinstance(res, np.ndarray)
+    assert all(res >= 0) # Because of tension in the lower side
+    assert res[-1] == 0
+
+def test_max_shearflow(FixtInternalForces, FixtSingleWing):
+    res = FixtInternalForces.shearflow_max_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
+    assert isinstance(res, np.ndarray)
 

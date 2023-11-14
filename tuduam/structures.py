@@ -147,10 +147,11 @@ class WingboxGeometry():
 
         :param y: Spanwise position
         :type y: float
-        :return: Length of the trailing edges (5 and 6) shown in the simplified wingbox geometry
+        :return: Length of the trailing edge (i.e one edge not both simultaneoulsy) (region 5 and 6) shown
+          in the simplified wingbox geometry
         :rtype: float
         """        
-        return np.sqrt(self.height(y) ** 2 + ((1 - self.wing.wingbox_end) * self.chord(y)) ** 2)
+        return np.sqrt((self.height(y)/2)**2 + ((1 - self.wing.wingbox_end)*self.chord(y))**2)
 
 
     def get_area_str(self, h_st,w_st,t_st):
@@ -286,7 +287,7 @@ class WingboxGeometry():
         Note that it only takes into account the spar webs, flanges and stringer. The skin of the leading and trailing 
         edge are neglected since they do not carry much bending load
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the moment of inertia at various locations
         :rtype: list
@@ -304,7 +305,7 @@ class WingboxGeometry():
         Note that it only takes into account the spar webs, flanges and stringer. The skin of the leading and trailing 
         edge are neglected since they do not carry much bending load
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the moment of inertia at various locations
         :type x: numpy.ndarray
@@ -329,7 +330,7 @@ class WingboxGeometry():
         """ Computes the weight of the stringers in the planform. Assumes stringers are straight along the planform,
         in reality they follow the local sweep of the wing.
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the stringer weight at each section
         :rtype: numpy.ndarray
@@ -342,7 +343,7 @@ class WingboxGeometry():
         """ Uses trapezium integration approximation to compute the leading edge weight of the skin. This introduces a slight error as the perimeter
         is a non linear equation
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the leading edge skin  of the wingbox
         :rtype: numpy.ndarray
@@ -355,7 +356,7 @@ class WingboxGeometry():
         """ Computes the weight of the skin in the trailing edge of the wingbox. Weight is approximated using the trapezium integration method
         in reality this does not hold due to the non-linearity of the length of the trailing w.r.t to the span.
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the leading edge skin  of the wingbox
         :rtype: numpy.ndarray
@@ -366,7 +367,7 @@ class WingboxGeometry():
     def fl_weight_from_tip(self, x):
         """ Computes the weight of the flanges in the planform as a vector
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the flange weight at each section to the tip
         :rtype: numpy.ndarray
@@ -377,7 +378,7 @@ class WingboxGeometry():
     def spar_weight_from_tip(self,x):
         """ Computes the weight of the spars in the planform in the form of a vector showing the amount of weight to the tip
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: Vector containing the spar weight at each section
         :rtype: numpy.ndarray
@@ -401,7 +402,6 @@ class WingboxGeometry():
         :return: Vector of weight at each rib location (see function description)
         :rtype: numpy.ndarray
         """        
-        warn("No test implemented yet")
         weight_arr = np.zeros(len(self.rib_loc))
         filter = np.array(self.engine.y_rotor_loc) > 0
 
@@ -409,7 +409,7 @@ class WingboxGeometry():
             try:
                 filter[self.engine.ignore_locations] = False
             except:
-                warn("Unable to assign engine locations that had to be ignored")
+                raise Exception("Unable to assign engine locations that had to be ignored")
                 
         y_rotor_loc = np.array(self.engine.y_rotor_loc)[filter]
 
@@ -425,7 +425,7 @@ class WingboxGeometry():
     def weight_from_tip(self, x):
         """ Computes the weight as a cumulutative vector, where each element represents the weight from the tip
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl h_st, w_st, t_st, t_sk
         :type x: list
         :return: vector where each element represent the weight from the tip
         :rtype: np.ndarray
@@ -447,10 +447,10 @@ class WingboxGeometry():
     def total_weight(self, x):
         """ Returns the total weight of the wingbox
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
         :type x: list
         :return: The total weight of the wingbox
-        :rtype: _type_
+        :rtype: numpy.ndarray
         """        
         return self.weight_from_tip(x)[0]
 
@@ -467,12 +467,8 @@ class WingboxInternalForces(WingboxGeometry):
 
     .. image:: wingbox_geometry.png
         :width: 500 
-        :alt:  Coordinate system used in computations
+        :alt: Wingbox Geometery
 
-    :param WingboxGeometry: _description_
-    :type WingboxGeometry: _type_
-    :return: _description_
-    :rtype: _type_
     """        
 
     def shear_z_from_tip(self, x):
@@ -498,9 +494,9 @@ class WingboxInternalForces(WingboxGeometry):
         """        
         shear = np.flip(self.shear_z_from_tip(x))
         moment = -cumulative_trapezoid(shear, dx= np.absolute(np.diff(np.flip(self.rib_loc))))
+        moment = np.insert(moment, 0, 0)
 
         return np.flip(moment)
-        # return self.shear_z_from_tip(x)*(self.span/2 - self.y)
 
     def moment_y_from_tip(self):
         """ Returns the moment at each section in the form of an array
@@ -519,7 +515,7 @@ class WingboxInternalForces(WingboxGeometry):
             try:
                 filter[self.engine.ignore_locations] = False
             except:
-                warn("Unable to assign engine locations that had to be ignored")
+                raise Exception("Unable to assign engine locations that had to be ignored")
 
         if self.engine.x_rotor_loc == None:
             y_rotor_loc = np.array(self.engine.y_rotor_loc)[filter]
@@ -537,10 +533,10 @@ class WingboxInternalForces(WingboxGeometry):
         return -torque_arr
 
 #-----------Stress functions---------
-    def bending_stress_x_from_tip(self, x):
+    def bending_stress_y_from_tip(self, x):
         """ Returns the maximum bending stress as a vector at the rib locations
 
-        :param x: Design vector t_sp, h_st, w_st, t_st, t_sk
+        :param x: Design vector t_sp,t_fl h_st, w_st, t_st, t_sk
         :type x: list
         :return: A vector of the bending stress at the rib locations from root to tip
         :rtype: numpy.ndarray
@@ -548,10 +544,23 @@ class WingboxInternalForces(WingboxGeometry):
         return self.moment_x_from_tip(x)/self.I_xx(x) * self.height(self.rib_loc)/2
 
     def shearflow_max_from_tip(self, x):
-        t_sp, h_st, w_st, t_st, t_sk = x
+        """ The following function performs a shear analysis at all rib locations according to the following
+        figure. Each region is computed and the maximum shear stress is then returned
+
+        .. image:: wingbox_geometry.png
+            :width: 500 
+
+        :param x: Design vector t_sp, t_fl, h_st, w_st, t_st, t_sk
+        :type x: list
+        :return: _description_
+        :rtype: _type_
+        """        
+        t_sp,t_fl, h_st, w_st, t_st, t_sk = x
+        
+        #Initialize the necessary arrays for the shear computation
         y = self.rib_loc
         Vz = self.shear_z_from_tip(x)
-        T = self.moment_y_from_tip(y)
+        T = self.moment_y_from_tip()
         Ixx = self.I_xx(x)
         height = self.height(y)
         chord = self.chord(y)
@@ -568,20 +577,20 @@ class WingboxInternalForces(WingboxGeometry):
             # Base region 2
             def qb2(z):
                 return -Vz[i] * t_sp * z ** 2 / (2 * Ixx[i])
-            I2 = qb2(height[i])
-            s2 = np.arange(0, height[i]+ 0.1, 0.1)
+            I2 = qb2(height[i]/2)
+            s2 = np.linspace(0, height[i]/2, 100)
 
             # Base region 3
             def qb3(z):
-                return - Vz[i] * t_sk * (0.5 * height[i]) * z / Ixx[i] + I1 + I2
+                return - Vz[i] * t_fl * (0.5 * height[i]) * z / Ixx[i] + I1 + I2
             I3 = qb3(0.6 * chord[i])
-            s3 = np.arange(0, 0.6*chord[i]+ 0.1, 0.1)
+            s3 = np.linspace(0, self.width_wingbox*chord[i],100)
 
             # Base region 4
             def qb4(z):
                 return -Vz[i] * t_sp * z ** 2 / (2 * Ixx[i])
             I4 = qb4(height[i])
-            s4=np.arange(0, height[i]+ 0.1, 0.1)
+            s4=np.linspace(0, height[i]/2, 100)
 
             # Base region 5
             def qb5(z):
@@ -596,35 +605,35 @@ class WingboxInternalForces(WingboxGeometry):
             # Base region 7
             def qb7(z):
                 return -Vz[i] * t_sp * 0.5 * z ** 2 / Ixx[i]
-            I7 = qb7(-height[i])
+            I7 = qb7(-height[i]/2)
 
 
             # Base region 8
             def qb8(z):
-                return -Vz[i] * 0.5 * height[i] * t_sp * z / Ixx[i] + I6 - I7
-            I8 = qb8(0.6 * chord[i])
+                return -Vz[i] * 0.5 * height[i] * t_fl * z / Ixx[i] + I6 - I7
+            I8 = qb8(self.width_wingbox * chord[i])
 
             # Base region 9
             def qb9(z):
                 return -Vz[i] * 0.5 * t_sp * z ** 2 / Ixx[i]
-            I9 = qb9(-height[i])
+            I9 = qb9(-height[i]/2)
 
             # Base region 10
             def qb10(z):
                 return -Vz[i] * t_sk * (0.5 * height[i]) ** 2 * (np.cos(z) - 1) / Ixx[i] + I8 - I9
 
             #Torsion
-            A1 = float(np.pi*height[i]*chord[i]*0.15*0.5)
-            A2 = float(height[i]*0.6*chord[i])
-            A3 = float(height[i]*0.25*chord[i])
+            A1 = float(np.pi*height[i]*chord[i]*self.wing.wingbox_start*0.5)
+            A2 = float(height[i]*self.width_wingbox*chord[i])
+            A3 = float(height[i]*(1 - self.wing.wingbox_end)*chord[i])
 
-            T_A11 = 0.5 * A1 * self.perimiter_ellipse(height[i],0.15*chord[i]) * 0.5 * t_sk
+            T_A11 = 0.5 * A1 * self.perimiter_ellipse(height[i],self.wing.wingbox_start*chord[i]) * 0.5 * t_sk
             T_A12 = -A1 * height[i] * t_sp
             T_A13 = 0
             T_A14 = -1/(0.5*self.material.shear_modulus)
 
             T_A21 = -A2 * height[i] * t_sp
-            T_A22 = A2 * height[i] * t_sp * 2 + chord[i]*0.6*2*A2*t_sk
+            T_A22 = A2 * height[i] * t_sp * 2 + chord[i]*self.width_wingbox*2*A2*t_fl
             T_A23 = -height[i]*A2*t_sp
             T_A24 = -1/(0.5*self.material.shear_modulus)
 
@@ -653,13 +662,22 @@ class WingboxInternalForces(WingboxGeometry):
             A32 = - height[i] / t_sp
             A33 = 2 * l_sk[i] / t_sk + height[i] / t_sp
 
+            B1 =    (0.5*height[i]/t_sk*trapz([qb1(0),qb1(pi/2)], [0, pi / 2]) + 
+                    trapz([qb2(0),qb2(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp - 
+                    trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0])/ t_sp + 
+                    trapz([qb10(-pi/2),qb10(0)], [-pi / 2, 0]) * 0.5 * height[i] / t_sk)
 
+            B2 =    (trapz([qb2(0),qb2(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp +  
+                    trapz([qb3(0),qb3(self.width_wingbox*chord[i])], [0, self.width_wingbox * chord[i]]) / t_sk -  
+                    trapz([qb7(-0.5*height[i]),qb7(0)], [-0.5 * height[i], 0]) / t_sp + 
+                    trapz([qb4(0),qb4(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp +  
+                    trapz([qb8(0),qb8(self.width_wingbox*chord[i])], [0, self.width_wingbox * chord[i]]) / t_sk -  
+                    trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0]) / t_sp)
 
-            B1 = 0.5 * height[i] / t_sk * trapz([qb1(0),qb1(pi/2)], [0, pi / 2]) + trapz([qb2(0),qb2(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp - trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0])/ t_sp + trapz([qb10(-pi/2),qb10(0)], [-pi / 2, 0]) * 0.5 * height[i] / t_sk
-            B2 = trapz([qb2(0),qb2(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp + trapz([qb3(0),qb3(0.6*chord[i])], [0, 0.6 * chord[i]]) / t_sk - trapz([qb7(-0.5*height[i]),qb7(0)], [-0.5 * height[i], 0]) / t_sp + \
-                    trapz([qb4(0),qb4(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp + trapz([qb8(0),qb8(0.6*chord[i])], [0, 0.6 * chord[i]]) / t_sk - trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0]) / t_sp
-            B3 = trapz([qb5(0),qb5(l_sk[i])], [0, l_sk[i]]) / t_sk + trapz([qb6(0),qb6(l_sk[i])], [0, l_sk[i]]) / t_sk + trapz([qb4(0),qb4(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp - \
-                    trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0]) / t_sp
+            B3 =    (trapz([qb5(0),qb5(l_sk[i])], [0, l_sk[i]]) / t_sk + 
+                    trapz([qb6(0),qb6(l_sk[i])], [0, l_sk[i]]) / t_sk + 
+                    trapz([qb4(0),qb4(0.5*height[i])], [0, 0.5 * height[i]]) / t_sp - 
+                    trapz([qb9(-0.5*height[i]),qb9(0)], [-0.5 * height[i], 0]) / t_sp)
 
             A = np.array([[A11, A12, 0], [A21, A22, A23], [0, A32, A33]])
             B = -np.array([[B1], [B2], [B3]])
@@ -689,7 +707,7 @@ class WingboxInternalForces(WingboxGeometry):
 
     def distrcompr_max_from_tip(self, x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        return self.bending_stress_x_from_tip(x) * t_sk
+        return self.bending_stress_y_from_tip(x) * t_sk
     
 
 
@@ -746,7 +764,7 @@ class Constraints(WingboxInternalForces):
     def f_ult(self, h_st,w_st,t_st,t_sk,y):#TODO
         A_st = self.get_area_str(h_st,w_st,t_st)
         # n=n_st(c_r,b_st)
-        A=self.wing.n_str*A_st+0.6*self.chord(y)*t_sk
+        A=self.wing.n_str*A_st+self.width_wingbox*self.chord(y)*t_sk
         f_uts=self.sigma_uts*A
         return f_uts
 
@@ -794,7 +812,7 @@ class Constraints(WingboxInternalForces):
         y = self.rib_loc
         t_sp, h_st, w_st, t_st, t_sk = x
         Nxy =self.shearflow_max_from_tip(x)
-        bend_stress=self.bending_stress_x_from_tip(x)
+        bend_stress=self.bending_stress_y_from_tip(x)
         tau_shear_arr = Nxy/t_sk
         vm_lst =  np.sqrt(0.5 * (3 * tau_shear_arr ** 2+bend_stress**2))*self.material.safety_factor/self.material.sigma_yield
         return vm_lst
@@ -813,22 +831,22 @@ class Constraints(WingboxInternalForces):
         Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
         i= pi ** 2 * self.material.young_modulus * Ist / (self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
         i_sigma = (i/self.get_area_str(h_st,w_st,t_st))#convert to stress
-        return -1*(self.material.safety_factor*self.bending_stress_x_from_tip(x)/(i_sigma) - 1)
+        return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/(i_sigma) - 1)
     
     def f_ult_constr(self,x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        return -1*(self.material.safety_factor*self.bending_stress_x_from_tip(x)/self.material.sigma_ultimate - 1)
+        return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.material.sigma_ultimate - 1)
     def flange_buckling_constr(self,x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        return -1*(self.material.safety_factor*self.bending_stress_x_from_tip(x)/self.flange_buckling(t_st,w_st) - 1)
+        return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.flange_buckling(t_st,w_st) - 1)
     
     def web_buckling_constr(self,x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        return -1*(self.material.safety_factor*self.bending_stress_x_from_tip(x)/self.web_buckling(t_st,h_st) - 1)
+        return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.web_buckling(t_st,h_st) - 1)
     
     def global_buckling_constr(self,x):
         t_sp, h_st, w_st, t_st, t_sk = x
-        return -1*(self.material.safety_factor*self.bending_stress_x_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
+        return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
 
 
 
