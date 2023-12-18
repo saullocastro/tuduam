@@ -120,6 +120,29 @@ class WingboxGeometry():
 
         return np.pi*(3*(a+b) - np.sqrt( (3*a + b)*(a + 3*b))) 
 
+    def rad_ellipse_polar(self,theta,a,b):
+        """Returns the distance the distance r as shown in the figure below where theta is defined against
+        the major axis. Function is used  for the leading edge of wingbox.
+
+        .. image:: ..\_static\Ellipse_Polar_center.png
+            :width: 500 
+            :alt:  Coordinate system used in computations
+
+        :param theta: The angular coordinate in radians see figure
+        :type theta: float 
+        :param a: Semi-major axis (distance BC)
+        :type a: float
+        :param b: Semi-minor axis 
+        :type b: float
+        """        
+
+        if b>a:
+            raise Exception("Minor axis is defined larger than the major axis please  \
+                            switch the axis in the input")
+
+        e = np.sqrt(1 - (b/a)**2)
+        return a*b/np.sqrt((b*np.cos(theta))**2 + (a*np.sin(theta))**2)
+
 
     def chord(self,y):
         """ Computes the chord at any given spanwise position
@@ -142,7 +165,7 @@ class WingboxGeometry():
         return self.airfoil.thickness_to_chord * self.chord(y)
     
     def l_sk_te(self,y):
-        """ Computes the length of side 5 and 6 shown in the wingbox geometry. Used in 
+        """ Computes the length of side 5 and 6 (i.e one edge not both simultaneoulsy) shown in the wingbox geometry. Used in 
         computing the shear flows through them
 
         :param y: Spanwise position
@@ -571,7 +594,8 @@ class WingboxInternalForces(WingboxGeometry):
         for i in range(len(y)):
             # Base region 1
             def qb1(z):
-                return Vz[i] * t_sk * (0.5 * height[i]) ** 2 * (np.cos(z) - 1) / Ixx[i]
+                warn("Assumes it is a circle but most of the time it is not")
+                return -Vz[i]*t_sk*height[i]**2/4*(1- np.cos(z)) / Ixx[i]
             I1 = qb1(pi / 2)
 
             # Base region 2
@@ -583,13 +607,13 @@ class WingboxInternalForces(WingboxGeometry):
             # Base region 3
             def qb3(z):
                 return - Vz[i] * t_fl * (0.5 * height[i]) * z / Ixx[i] + I1 + I2
-            I3 = qb3(0.6 * chord[i])
+            I3 = qb3(self.width_wingbox * chord[i])
             s3 = np.linspace(0, self.width_wingbox*chord[i],100)
 
             # Base region 4
             def qb4(z):
                 return -Vz[i] * t_sp * z ** 2 / (2 * Ixx[i])
-            I4 = qb4(height[i])
+            I4 = qb4(height[i]/2)
             s4=np.linspace(0, height[i]/2, 100)
 
             # Base region 5
@@ -604,13 +628,14 @@ class WingboxInternalForces(WingboxGeometry):
 
             # Base region 7
             def qb7(z):
-                return -Vz[i] * t_sp * 0.5 * z ** 2 / Ixx[i]
+                return -Vz[i]*t_sp/Ixx[i]*(-height[i]/2*z + z**2/2) + I6
+            pdb.set_trace()
             I7 = qb7(-height[i]/2)
 
 
             # Base region 8
             def qb8(z):
-                return -Vz[i] * 0.5 * height[i] * t_fl * z / Ixx[i] + I6 - I7
+                return Vz[i] * 0.5 * height[i] * t_fl * z / Ixx[i] + I6 - I7
             I8 = qb8(self.width_wingbox * chord[i])
 
             # Base region 9
@@ -620,7 +645,7 @@ class WingboxInternalForces(WingboxGeometry):
 
             # Base region 10
             def qb10(z):
-                return -Vz[i] * t_sk * (0.5 * height[i]) ** 2 * (np.cos(z) - 1) / Ixx[i] + I8 - I9
+                return  -Vz[i]*t_sk*height[i]**2/4*(1- np.cos(z))/Ixx[i] + I8 - I9
 
             #Torsion
             A1 = float(np.pi*height[i]*chord[i]*self.wing.wingbox_start*0.5)
@@ -689,7 +714,7 @@ class WingboxInternalForces(WingboxGeometry):
 
             qT1 = float(T_X[0])
             qT2 = float(T_X[1])
-            qT3 = float(T_X[1])
+            qT3 = float(T_X[2])
 
             # Compute final shear flow
             q2 = qb2(s2) - q01 - qT1 + q02 + qT2
@@ -699,11 +724,21 @@ class WingboxInternalForces(WingboxGeometry):
             max_region2 = max(q2)
             max_region3 = max(q3)
             max_region4 = max(q4)
+            
+            shear_lst = [max_region2, max_region3, max_region4]
+            stress_lst = [max_region2/t_sp, max_region3/t_fl, max_region4/t_sp]
 
-            determine = max(max_region2, max_region3, max_region4)
-            Nxy[i] = determine
-            max_shear_stress[i] = max(max_region2/t_sp, max_region3/t_sk, max_region4/t_sp)
-        return Nxy
+            shear_max_idx = np.argmax(np.abs(shear_lst))
+            stress_max_idx = np.argmax(np.abs(stress_lst))
+
+            Nxy[i] = shear_lst[shear_max_idx]
+            max_shear_stress[i] = stress_lst[stress_max_idx]
+            base_shear_func_lst = [qb1, qb2, qb3,qb4,qb5,qb6,qb7,qb8,qb9,qb10] # Can be accessed by the user but is mostly here for test capability
+            cut_shear_func_lst = [q01, q02, q03, qT1, qT2, qT3] # Can be accessed by the user but is mostly here for test capability
+
+
+
+        return Nxy, base_shear_func_lst, cut_shear_func_lst
 
     def distrcompr_max_from_tip(self, x):
         t_sp, h_st, w_st, t_st, t_sk = x

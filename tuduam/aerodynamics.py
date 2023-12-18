@@ -7,7 +7,7 @@ from scipy.interpolate import interp1d
 from scipy.integrate import quad, cumulative_trapezoid
 import pdb
 
-def wing_geometry(flight_perf, vtol, wing):
+def planform_geometry(flight_perf, vtol, wing):
   """ The following functions sizes the wing planform based on the specified
   wing loading and maximum take off weight. All attributes are assigned to the wing data struct.
   Note that x_lemac is given in the local coordinate system of te wing. That is the 

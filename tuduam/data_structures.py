@@ -205,3 +205,21 @@ class Material(Parent):
             return cls(**data)
         except:
             raise Exception(f"There was an error when loading in {cls}")
+
+
+class Propeller(Parent):
+    n_blades:float
+    r_prop:float
+    rpm:float 
+    xi_0:float
+    """"Non-dimensional hub radius (r_hub/R) [-]"""
+
+
+    @classmethod
+    def load_from_json(cls, file_path:FilePath):
+        with open(file_path) as jsonFile:
+            data = json.load(jsonFile)
+        try:
+            return cls(**data)
+        except:
+            raise Exception(f"There was an error when loading in {cls}")
