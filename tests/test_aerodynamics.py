@@ -11,7 +11,7 @@ import pdb
 
 
 def test_wing_geometry(FixtFlightPerformance, FixtVTOL, FixtSingleWing):
-    aero.wing_geometry(FixtFlightPerformance, FixtVTOL, FixtSingleWing)
+    aero.planform_geometry(FixtFlightPerformance, FixtVTOL, FixtSingleWing)
     warn("Proper testcases still have to be build, current tests only check for code execution")
 
 def test_lift_distribution(FixtAero, FixtSingleWing):

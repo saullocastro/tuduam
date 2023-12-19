@@ -1,10 +1,10 @@
 import numpy as np
+import types
 import pdb
 import pytest
 from scipy.constants import g
+from scipy.integrate import quad
 from warnings import warn
-
-# sys.path.append(str(list(pl.Path(__file__).parents)[1]))
 
 import tuduam.structures as struct
 
@@ -35,6 +35,20 @@ def test_perimeter_ellipse( FixtGeometry):
     # https://www.mathsisfun.com/geometry/ellipse-perimeter.html#tool
     res = FixtGeometry.perimiter_ellipse(10,6)
     assert np.isclose(res,51.05397279)
+
+def test_ellipse_polar(FixtGeometry):
+    res1 = FixtGeometry.rad_ellipse_polar(0, 20,10)
+    res2 = FixtGeometry.rad_ellipse_polar(np.pi/2, 15, 3)
+    res3 = FixtGeometry.rad_ellipse_polar(np.pi, 24,10)
+    res4 = FixtGeometry.rad_ellipse_polar(0.3587706702705722, 10,5)
+
+    assert np.isclose(res1, 20 )
+    assert np.isclose(res2, 3 )
+    assert np.isclose(res3, 24 )
+    assert np.isclose(res4, 8.54400374531753 )
+
+    with pytest.raises(Exception):
+        FixtGeometry.rad_ellipse_polar(0,10 ,10.1)
 
 def test_chord(FixtGeometry, FixtSingleWing):
     #simple test edge cases tests
@@ -250,7 +264,87 @@ def test_bending_stress_y_from_tip(FixtInternalForces, FixtSingleWing):
     assert all(res >= 0) # Because of tension in the lower side
     assert res[-1] == 0
 
-def test_max_shearflow(FixtInternalForces, FixtSingleWing):
-    res = FixtInternalForces.shearflow_max_from_tip((0.006,0.006, 0.010, 0.010, 0.02, 0.003))
-    assert isinstance(res, np.ndarray)
+def test_max_shearflow_no_torque(FixtInternalForces, FixtSingleWing):
+
+    # Prepare the test with the forces required
+    ref = FixtInternalForces  # Easy reference for conciseness
+    ref.rib_loc = np.array([0]) 
+    sample = (0.006,0.006, 0.010, 0.010, 0.02, 0.002)
+    virt_shear = 1000
+    virt_torq = 0
+    virt_Ixx = 1e-4
+    virt_height = 0.6
+    virt_chord = 2
+
+
+    #Dynamically overwrite internal properties
+    shear_overwrite = lambda x,y: [virt_shear]
+    torque_overwrite = lambda x: [virt_torq]
+    Ixx_overwrite = lambda x,y: [virt_Ixx]
+    height_overwrite = lambda x,y: np.array([virt_height])
+    chord_overwrite = lambda x,y: np.array([virt_chord])
+
+    ref.shear_z_from_tip = types.MethodType(shear_overwrite, ref)
+    ref.moment_y_from_tip = types.MethodType(torque_overwrite, ref)
+    ref.I_xx = types.MethodType(Ixx_overwrite, ref)
+    ref.height = types.MethodType(height_overwrite, ref)
+    ref.chord = types.MethodType(chord_overwrite, ref)
+    shear_max, base_shear_flow_func_lst, cut_shear_lst = ref.shearflow_max_from_tip(sample)
+
+    q01 = cut_shear_lst[0]
+    q02 = cut_shear_lst[1]
+    q03 = cut_shear_lst[2]
+
+    qt1 = cut_shear_lst[3]
+    qt2 = cut_shear_lst[4]
+    qt3 = cut_shear_lst[5]
+
+    # Horizontal basic forces
+    func_hor_reg1 = lambda x: base_shear_flow_func_lst[0](x)*np.sin(x)*ref.wing.wingbox_start*virt_chord 
+    func_hor_reg10 = lambda x: base_shear_flow_func_lst[9](x)*np.sin(x)*ref.wing.wingbox_start*virt_chord 
+
+    force_basic_hor_1 = quad(func_hor_reg1, 0, np.pi/2)[0]
+    force_basic_hor_10 = quad(func_hor_reg10, -np.pi/2, 0)[0]
+    force_basic_hor_3 = quad(lambda x: base_shear_flow_func_lst[2](x) , 0, ref.width_wingbox*virt_chord)[0]
+    force_basic_hor_8 = quad(lambda x: base_shear_flow_func_lst[7](x) ,0, ref.width_wingbox*virt_chord)[0]
+    force_basic_hor_5 = quad(lambda x: base_shear_flow_func_lst[4](x), 0 ,  ref.l_sk_te(0))[0]*((1 - ref.wing.wingbox_end)*virt_chord)/(ref.l_sk_te(0))
+    force_basic_hor_6 = quad(lambda x: base_shear_flow_func_lst[5](x) ,0, ref.l_sk_te(0))[0]*((1 - ref.wing.wingbox_end)*virt_chord)/(ref.l_sk_te(0))
+
+    # Vertical basic forces
+    func_vert_reg1 = lambda x: base_shear_flow_func_lst[0](x)*np.cos(x)*ref.wing.wingbox_start*virt_chord 
+    func_vert_reg10 = lambda x: base_shear_flow_func_lst[9](x)*np.cos(x)*ref.wing.wingbox_start*virt_chord 
+
+    force_basic_ver_1 = quad(func_vert_reg1, 0, np.pi/2)[0]
+    force_basic_ver_10 = quad(func_vert_reg10, 0, -np.pi/2)[0]
+    force_basic_ver_2 = quad(lambda x: base_shear_flow_func_lst[1](x),0, virt_height/2)[0]
+    force_basic_ver_9 = quad(lambda x: base_shear_flow_func_lst[8](x),0, -virt_height/2)[0]
+    force_basic_ver_4 = quad(lambda x: base_shear_flow_func_lst[3](x),0, virt_height/2)[0]
+    force_basic_ver_7 = quad(lambda x: base_shear_flow_func_lst[6](x),0, virt_height/2)[0]
+    force_basic_ver_5 = quad(lambda x: base_shear_flow_func_lst[4](x), 0, ref.l_sk_te(0))[0]*virt_height/2/(ref.l_sk_te(0))
+    force_basic_ver_6 = quad(lambda x: base_shear_flow_func_lst[5](x), 0, ref.l_sk_te(0))[0]*virt_height/2/(ref.l_sk_te(0))
+
+
+    # res_hor_force = np.sum([force_reg_hor_1, force_reg_hor_10, force_reg_hor_3,
+    #                           -force_reg_hor_8, force_reg_hor_5,force_reg_hor_6])
+
+
+    assert np.isclose(qt1,0)
+    assert np.isclose(qt2,0)
+    assert np.isclose(qt3,0)
+    #Check the basic shearflows and their contributions
+    assert np.isclose(force_basic_hor_1, -270)
+    assert np.isclose(force_basic_hor_3, -18360)
+    assert np.isclose(force_basic_hor_5, -14985.24896657004, atol = 3 )
+    assert np.isclose(force_basic_hor_6, -14985.24896657004, atol = 3 )
+
+    assert np.isclose(force_basic_ver_1, -115.884)
+    assert np.isclose(force_basic_ver_2, -270)
+    assert np.isclose(force_basic_ver_4, -270)
+    assert np.isclose(force_basic_ver_5, -8991.149379942024, atol= 3)
+    assert np.isclose(force_basic_ver_6, -8991.149379942024, atol= 3)
+
+    # assert np.isclose(res_vert_force,virt_shear)
+    # assert np.isclose(res_hor_force,0)
+
+    #  check whether the resultant force equals vy and vx. Vx should be 0 and vy should be 1000.
 
