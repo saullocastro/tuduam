@@ -1,13 +1,10 @@
 import sys
-import pathlib as pl
-import numpy as np
+import os
 
-sys.path.append(str(list(pl.Path(__file__).parents)[1]))
+sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import tuduam.aerodynamics as aero
-import matplotlib.pyplot as plt
 from warnings import warn
-import pdb
 
 
 def test_wing_geometry(FixtFlightPerformance, FixtVTOL, FixtSingleWing):

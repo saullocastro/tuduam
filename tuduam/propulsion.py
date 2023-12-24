@@ -1,34 +1,25 @@
-import numpy as np
 import re
-from tuduam.data_structures import Propeller
+import numpy as np
 import os
+from data_structures import Propeller
 import matplotlib.pyplot as plt
 import scipy.integrate as spint
 from scipy.interpolate import NearestNDInterpolator
-import scipy.optimize as sp_opt
 import pdb
 
 
+def extract_data_dir(dir_path:str) -> np.ndarray:
+    """ This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array. Information on how to do this can be found in the notebooks. 
 
-def alpha_xfoil_interp(dir_path):
-    """ 
-    This function interpolates the angle of attack based on the reynolds numbers and lift coefficient
-    It uses the xfoil polar from various reynolds number created by the user. Its functionality
-    depends on the format of these files thus it is important xfoil is used. The spacing of the reynolds number
-    can be arbitrary but it is up to the user to verify this accuracy. This function utilizest a radial basis
-    interpolator from the scipy library
-
-    :param dir_path: Directory of the files containting the xfoil polar
+    :param dir_path: The path of the directory to read from can be absolute or relative
     :type dir_path: str
-    :return: A interpolator with the input cl and the Reynolds number. In that order.
-    :rtype: _type_
+    :return: An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]
+    :rtype: np.ndarray
     """    
-
     data_points = list()
-    res_lst = list()
 
     for file in os.listdir(dir_path):
-        reyn = float(re.findall(r'\d+', file)[0])
+        reyn = float(re.findall(r'Re(\d+)', file)[0])
         with open(os.path.join(dir_path,file), "r") as f:
             write = False
             for line in f.readlines():
@@ -37,21 +28,25 @@ def alpha_xfoil_interp(dir_path):
                     continue
                 if write:
                     value_lst = [float(value) for value in line.split()]
-                    data_points.append([value_lst[1], reyn])
-                    res_lst.append(value_lst[0])
+                    value_lst.append(reyn)
+                    data_points.append(value_lst)
+    return np.array(data_points)
 
-    data_points =  np.array(data_points)
-    res_arr =  np.array(res_lst)
 
-    return NearestNDInterpolator(data_points, res_arr)
+def alpha_xfoil_interp(dir_path:str) -> NearestNDInterpolator:
+    """ summary
 
-def cl_xfoil_interp(dir_path):
-    """ 
-    This function interpolates the angle of attack based on the reynolds numbers and lift coefficient
-    It uses the xfoil polar from various reynolds number created by the user. Its functionality
-    depends on the format of these files thus it is important xfoil is used. The spacing of the reynolds number
-    can be arbitrary but it is up to the user to verify this accuracy. This function utilizest a radial basis
-    interpolator from the scipy library
+    :param dir_path: _description_
+    :type dir_path: str
+    :return: _description_
+    :rtype: NearestNDInterpolator
+    """    
+
+    raw_data =  extract_data_dir(dir_path)
+    return NearestNDInterpolator(raw_data[:,[1,-1]], raw_data[:,0])
+
+def cl_xfoil_interp(dir_path:str) -> NearestNDInterpolator:
+    """  summary
 
     :param dir_path: Directory of the files containting the xfoil polar
     :type dir_path: str
@@ -59,65 +54,24 @@ def cl_xfoil_interp(dir_path):
     :rtype: _type_
     """    
 
-    data_points = list()
-    res_lst = list()
-
-    for file in os.listdir(dir_path):
-        reyn = float(re.findall(r'\d+', file)[0])
-        with open(os.path.join(dir_path,file), "r") as f:
-            write = False
-            for line in f.readlines():
-                if  line.count("-") > 3:
-                    write = True
-                    continue
-                if write:
-                    value_lst = [float(value) for value in line.split()]
-                    data_points.append([value_lst[0], reyn])
-                    res_lst.append(value_lst[1])
-
-    data_points =  np.array(data_points)
-    res_arr =  np.array(res_lst)
-
-    return NearestNDInterpolator(data_points, res_arr)
+    raw_data =  extract_data_dir(dir_path)
+    return NearestNDInterpolator(raw_data[:,[0,-1]], raw_data[:,1])
 
 
-def cd_xfoil_interp(dir_path):
+def cd_xfoil_interp(dir_path:str) -> NearestNDInterpolator:
     """ 
-    This function interpolates the angle of attack based on the lift coefficient and lift coefficient
-    It uses the xfoil polar from various reynolds number created by the user. Its functionality
-    depends on the format of these files thus it is important xfoil is used. The spacing of the reynolds number
-    can be arbitrary but it is up to the user to verify this accuracy. This function utilizest a radial basis
-    interpolator from the scipy library
 
     :param dir_path: Directory of the files containting the xfoil polar
     :type dir_path: str
     :return: A interpolator with the input cl and the Reynolds number. In that order.
     :rtype: _type_
     """    
+    raw_data =  extract_data_dir(dir_path)
+    return NearestNDInterpolator(raw_data[:,[1,-1]], raw_data[:,2])
 
-    data_points = list()
-    res_lst = list()
-
-    for file in os.listdir(dir_path):
-        reyn = float(re.findall(r'\d+', file)[0])
-        with open(os.path.join(dir_path,file), "r") as f:
-            write = False
-            for line in f.readlines():
-                if  line.count("-") > 3:
-                    write = True
-                    continue
-                if write:
-                    value_lst = [float(value) for value in line.split()]
-                    data_points.append([value_lst[1], reyn])
-                    res_lst.append(value_lst[2])
-
-    data_points =  np.array(data_points)
-    res_arr =  np.array(res_lst)
-
-    return NearestNDInterpolator(data_points, res_arr)
 
 class PlotBlade:
-    def __init__(self, chords, pitchs, radial_coords, R, xi_0, airfoil_name='naca4412', tc_ratio=0.12):
+    def __init__(self, propclass:Propeller, path_coord:str) -> None:
         """
         :param chords: Array with chords, from root to tip [m]
         :param pitchs: Array with pitch angles, from root to tip [rad]
@@ -127,20 +81,25 @@ class PlotBlade:
         :param airfoil_name: String with ile name of the airfoil to use, by default NACA4412 [-]
         :param tc_ratio: Thickness to chord ratio of the airfoil, by default 12% for NACA4412 [-]
         """
-        self.chords = chords
-        self.pitchs = pitchs
-        self.radial_coords = radial_coords
-        self.R = R
-        self.xi_0 = xi_0
-        self.airfoil_name = airfoil_name
-        self.tc_ratio = tc_ratio
+        self.chords = propclass.chord_arr
+        self.pitchs = propclass.pitch_arr
+        self.radial_coords = propclass.rad_arr
+        self.R = propclass.r_prop
+        self.xi_0 = propclass.xi_0
+        self.tc_ratio = propclass.tc_ratio
+        self.path_coord = path_coord
 
-    def load_airfoil(self):
-        file = open('../PropandPower/'+self.airfoil_name)
+    def _load_airfoil(self) -> np.ndarray:
+        """ Returns an array Using a path to coordinate file of the airfoil
 
+        :param path: _description_
+        :type path: str
+        :return: _description_
+        :rtype: np.ndarray
+        """        
+
+        file = open(self.path_coord)
         airfoil = file.readlines()
-
-        # Close file
         file.close()
 
         # List to save formatted coordinates
@@ -171,8 +130,8 @@ class PlotBlade:
         # Plot side view of the airfoil cross-sections
         for i in range(len(self.chords)):
             # Scale the chord length and thickness
-            x_coords = self.load_airfoil()[0] * self.chords[i]
-            y_coords = self.load_airfoil()[1] * self.chords[i]
+            x_coords = self._load_airfoil()[0] * self.chords[i]
+            y_coords = self._load_airfoil()[1] * self.chords[i]
 
             # New coordinates after pitch
             x_coords_n = []
@@ -232,8 +191,8 @@ class PlotBlade:
         # Plot airfoil blade in 3D
         for i in range(len(self.chords)):
             # Scale the chord length and thickness
-            x_coords = self.load_airfoil()[0] * self.chords[i]
-            y_coords = self.load_airfoil()[1] * self.chords[i]
+            x_coords = self._load_airfoil()[0] * self.chords[i]
+            y_coords = self._load_airfoil()[1] * self.chords[i]
 
             # New coordinates after pitch
             x_coords_n = []
@@ -278,34 +237,44 @@ class PlotBlade:
             ax.plot([xb], [yb], [zb], 'w')
 
 class BEM:
-    def __init__(self, data_path, propclass, rho, dyn_vis, V_fr, N_stations, a, T=None, P=None):
-        """
-        :param propclass: Propeller class from [kg/m^3]
-        :param rho: Density [kg/m^3]
-        :param dyn_vis: Dynamic viscosity [N s/m^2)
-        :param V_fr: Freestream velocity
-        :param T: Thrust delivered BY the propeller [N]
-        :param P: Power delivered TO the propeller [W]
-        :param N_stations: Number of stations to calculate [-] (preferably > 20)
-        :param a: Speed of sound [m/s]
-        :param RN_spacing: Spacing of the Reynold's numbers of the airfoil data files [-] (added for flexibility,
-                           but probably should be 100,000)
+    def __init__(self, data_path:str, propclass:Propeller, rho:float, dyn_vis:float, 
+                 V_fr:float, n_stations:int, a:float, T=None, P=None) -> None:
+        """ Initalization of the BEM class, please keep the amount of station above 20. Also, if any error occurs with the propeller class
+        carefully check whether all parameters have been properly loaded in.
 
-        :out: [0] -> speed ratio, used for iterations, internal variable
-              [1] -> Array with relevant parameters for blade design and propeller performance:
-                     [chord per station, beta per station, alpha per station, E per station, eff, Tc, Pc]
-        """
+        :param data_path: Path to te directory containing all xfoil data for the various Reynolds number. Please note the format of the 
+        file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.
+        :type data_path: str
+        :param propclass: The propeller data structure with the propeller radius, number of blades, rpm cruise and non-dimensional hub radius specified
+        :type propclass: Propeller
+        :param rho: Density at the cruise height [kg/m^3]
+        :type rho: float
+        :param dyn_vis: Dynamic viscosity [N s/m^2]
+        :type dyn_vis: float
+        :param V_fr: Freestream velocity [m/s]
+        :type V_fr: float
+        :param N_stations: Number of stations to calculate [-] (preferably > 20)
+        :type N_stations: int
+        :param a: Speed of sound [m/s]
+        :type a: float
+        :param T: Thrust delivered BY the propeller [N], defaults to None
+        :type T: float , optional
+        :param P: Power deliverd to the propeller [W], defaults to None
+        :type P: float, optional
+        """        
+
+        self.propeller = propclass
         self.B = propclass.n_blades
         self.R = propclass.r_prop
         self.D = 2*self.R
-        self.Omega = propclass.rpm*2 * np.pi / 60  # rpm to rad/s
+        self.Omega = propclass.rpm_cruise*2 * np.pi / 60  # rpm to rad/s
         self.xi_0 = propclass.xi_0
         self.rho = rho
         self.dyn_vis = dyn_vis
         self.V = V_fr
         # self.phi_T = 1
         self.lamb = V_fr/(self.Omega*self.R)  # Speed ratio
-        self.N_s = N_stations
+        self.N_s = n_stations
         self.a = a
         self.dir_path = data_path
         self.alpha_interp = alpha_xfoil_interp(data_path)
@@ -416,24 +385,23 @@ class BEM:
         st_len = (self.R - self.R*self.xi_0)/len(stations)
 
         # Radius of the middle point of each station. Station 1 has st length/2, each station has that plus N*st length, Station 1 starts after hub
-        stations_r = self.xi_0*self.R + st_len/2 + (stations-1)*st_len
+        stations_arr = self.xi_0*self.R + st_len/2 + (stations-1)*st_len
         # stations_r = self.xi_0*self.R + (stations)*st_len
         # F and phi for each station
-        F = self.F(stations_r, zeta)
-        phis = self.phi(stations_r, zeta)
+        F = self.F(stations_arr, zeta)
+        phis = self.phi(stations_arr, zeta)
 
         # trial with a different range of Cls
         Cls_trial = np.arange(0.1, 1.2, 0.05)
 
         # Create arrays for lift and drag coefficients, angle of attack and D/L ratio for each station
-        Cl = np.ones(self.N_s)
-        Cd = np.ones(self.N_s)
-        alpha = np.ones(self.N_s)
-        E = np.ones(self.N_s)
-        cs = np.ones(self.N_s)
-        betas = np.ones(self.N_s)
-        # Ves = np.ones(self.N_s)
-        Ves = zeta*self.V + self.V
+        cl_arr = np.ones(self.N_s)
+        cd_arr = np.ones(self.N_s)
+        alpha_arr = np.ones(self.N_s)
+        eps_arr = np.ones(self.N_s)
+        chord_arr = np.ones(self.N_s)
+        beta_arr = np.ones(self.N_s)
+        v_e = zeta*self.V + self.V
 
         # Optimise each station for max L/D
         for station in stations:
@@ -452,6 +420,7 @@ class BEM:
                 # Calculate Reynolds number at the station to look for the correct airfoil datafile
                 Reyn = self.RN(Wc)
 
+                # Find the maximum and minimum Reynold number specified by user
                 reyn_lst = []
                 for file in os.listdir(self.dir_path):
                     reyn_lst.append(int(re.findall(r'\d+', file)[0]))
@@ -465,7 +434,7 @@ class BEM:
                 if Reyn>reyn_max:
                     Reyn = reyn_max
 
-                cl_corr = (lift_coef * self.PG(self.M(stations_r[station]))) # Corrected cl for compressibility
+                cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
                 Cd_ret = self.cd_interp([[cl_corr, Reyn]])
                 alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))       # Retrieved AoA (from deg to rad)
 
@@ -478,10 +447,10 @@ class BEM:
                     eps_min = eps
 
             # Save the optimum config of the blade station
-            Cl[station] = optim_vals[0]
-            Cd[station] = optim_vals[1]
-            alpha[station] = optim_vals[2]
-            E[station] = optim_vals[3]
+            cl_arr[station] = optim_vals[0]
+            cd_arr[station] = optim_vals[1][0]
+            alpha_arr[station] = optim_vals[2][0]
+            eps_arr[station] = optim_vals[3][0]
 
             local_Cl = optim_vals[0]
             local_Cd = optim_vals[1]
@@ -490,20 +459,20 @@ class BEM:
             Wc = optim_vals[4]
 
         # Smooth the Cl distribution and recalculate the lift coefficient: Polinomial regression for smooth distribution
-        coef_cl = np.polynomial.polynomial.polyfit(stations_r, Cl, 1)
+        coef_cl = np.polynomial.polynomial.polyfit(stations_arr, cl_arr, 1)
         cl_fun = np.polynomial.polynomial.Polynomial(coef_cl)
 
-        Cl = cl_fun(stations_r)
+        cl_arr = cl_fun(stations_arr)
 
         # Calculate product of local speed with chord
-        Wc = self.Wc(F, phis, zeta, Cl)
+        Wc = self.Wc(F, phis, zeta, cl_arr)
         # Wc = self.Wc(F, phis, zeta, Cl, stations_r)
 
         # After smoothing the Cl, get new AoA and E corresponding to such Cls
-        for station in range(len(Cl)):
+        for station in range(len(cl_arr)):
             # lift_coef = lift_coef * self.PG(self.M(stations_r[station]))
 
-            lift_coef = Cl[station]
+            lift_coef = cl_arr[station]
 
             # # Calculate product of local speed with chord
             # Wc = self.Wc(F[station], phis[station], zeta, lift_coef)
@@ -524,7 +493,7 @@ class BEM:
             if Reyn>reyn_max:
                 Reyn = reyn_max
 
-            cl_corr = (lift_coef * self.PG(self.M(stations_r[station]))) # Corrected cl for compressibility
+            cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
             Cd_ret = self.cd_interp([[cl_corr, Reyn]])
             alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))       # Retrieved AoA (from deg to rad)
 
@@ -532,28 +501,26 @@ class BEM:
             eps = Cd_ret / lift_coef
 
             # Update arrays with values
-            Cd[station] = Cd_ret
-            alpha[station] = alpha_ret
-            E[station] = eps
+            cd_arr[station] = Cd_ret[0]
+            alpha_arr[station] = alpha_ret[0]
+            eps_arr[station] = eps[0]
 
         # Calculate interference factors
-        a = (zeta/2) * (np.cos(phis))**2 * (1 - E*np.tan(phis))
-        a_prime = (zeta/(2*self.x(stations_r))) * np.cos(phis) * np.sin(phis) * \
-                  (1 + E/np.tan(phis))
+        a = (zeta/2) * (np.cos(phis))**2 * (1 - eps_arr*np.tan(phis))
+        a_prime = (zeta/(2*self.x(stations_arr))) * np.cos(phis) * np.sin(phis) * \
+                  (1 + eps_arr/np.tan(phis))
 
         # Calculate local speed at the blade station
         W = self.V * (1 + a) / np.sin(phis)
 
         # Calculate required chord of the station and save to array
-        c = Wc/W
-        cs = c
+        chord_arr = Wc/W
 
         # Calculate blade pitch angle as AoA+phi and save to array
-        beta = alpha + phis
-        betas = beta
+        beta_arr = alpha_arr + phis
 
         # Use average epsilon, independent of r/R (xi), to simplify calculations, as it is very similar in all stations
-        eps_avg = np.average(E)
+        eps_avg = np.average(eps_arr)
 
         # Integrate the derivatives from xi_0 to 1 (from hub to tip of the blade)
         I1 = spint.quad(self.I_prim_1, self.xi_0, 1, args=(zeta, eps_avg))[0]
@@ -561,7 +528,23 @@ class BEM:
         J1 = spint.quad(self.J_prim_1, self.xi_0, 1, args=(zeta, eps_avg))[0]
         J2 = spint.quad(self.J_prim_2, self.xi_0, 1, args=(zeta, eps_avg))[0]
         # Calculate solidity per station
-        solidity = cs * self.B / (2 * np.pi * stations_r)
+        solidity = chord_arr * self.B / (2 * np.pi * stations_arr)
+
+        res_dict = {
+            "chord_arr":chord_arr,
+            "pitch_arr": beta_arr,
+            "alpha_arr": alpha_arr,
+            "station_arr": stations_arr,
+            "drag_to_lift_arr": eps_arr, 
+            "v_e": v_e,
+            "solidity": solidity,
+            "cl": cl_arr,
+            "cd": cd_arr,
+            }
+        
+        self.propeller.chord_arr = chord_arr
+        self.propeller.pitch_arr = beta_arr 
+        self.propeller.rad_arr =  stations_arr
 
         # Calculate new speed ratio and Tc or Pc as required
         if self.Tc is not None:
@@ -571,7 +554,12 @@ class BEM:
             # Propeller efficiency
             eff = self.efficiency(self.Tc, Pc)
 
-            return zeta_new, [cs, betas, alpha, stations_r, E, eff, self.Tc, Pc], Ves, [Cl, Cd], solidity
+            res_dict["eff"] = eff
+            res_dict["tc"] = self.Tc
+            res_dict["pc"] =  Pc
+            res_dict["zeta"] =  zeta_new
+
+            return res_dict
 
         elif self.Pc is not None:
             zeta_new = -(J1/(2*J2)) + ((J1/(2*J2))**2 + self.Pc/J2)**(1/2)
@@ -580,7 +568,12 @@ class BEM:
             # Propeller efficiency
             eff = self.efficiency(Tc, self.Pc)
 
-            return zeta_new, [cs, betas, alpha, stations_r, E, eff, Tc, self.Pc], Ves, [Cl, Cd], solidity
+            res_dict["eff"] = eff
+            res_dict["tc"] = Tc
+            res_dict["pc"] =  self.Pc
+            res_dict["disp_velocity"] =  zeta_new
+
+            return res_dict
 
     def optimise_blade(self, zeta_init):
         convergence = 1
@@ -589,7 +582,7 @@ class BEM:
         while convergence > 0.001:
             # Run BEM design procedure and retrieve new zeta
             design = self.run_BEM(zeta)
-            zeta_new = design[0]
+            zeta_new =  design["zeta"]
 
             # Check convergence
             if zeta == 0:
@@ -607,24 +600,22 @@ class BEM:
 
 # Analyse the propeller in off-design conditions
 class OffDesignAnalysisBEM:
-    def __init__(self, dir_path:str, propclass: Propeller, V: float, B: int, R: float, chords: np.array, betas: np.array, r_stations: np.array,
-                 Cls: np.array, Cds: np.array, rpm: float, rho: float, dyn_vis: float, a: float, RN: np.array,
-                 RN_spacing=100000):
+    def __init__(self, dir_path:str, propclass: Propeller, V: float, r_stations: np.array,
+                  rpm: float, rho: float, dyn_vis: float, a: float) -> None:
         self.V = V
-        self.B = B
-        self.R = R
-        self.D = 2*R
+        self.B = propclass.n_blades
+        self.R = propclass.r_prop
+        self.D = 2*propclass.r_prop
+        self.dir_path = dir_path
 
-        self.chords = chords
-        self.betas = betas
-        self.Cls = Cls
-        self.Cds = Cds
+        self.chords = propclass.chord_arr
+        self.betas = propclass.pitch_arr
         self.r_stations = r_stations
 
         self.rpm = rpm
-        self.Omega = rpm * 2 * np.pi / 60  # rpm to rad/s
+        self.Omega = self.rpm * 2 * np.pi / 60  # rpm to rad/s
         self.n = self.Omega / (2 * np.pi)
-        self.lamb = V / (self.Omega * R)  # Speed ratio
+        self.lamb = V / (self.Omega * self.R)  # Speed ratio
 
         self.J = V / (self.n * self.D)
 
@@ -756,107 +747,32 @@ class OffDesignAnalysisBEM:
         # Get initial estimate of CL and Cd per station
         Cls = np.ones(len(self.r_stations))
         Cds = np.ones(len(self.r_stations))
+        Reyn =  self.Omega*self.rho/self.dyn_vis*self.chords # Initial estiamte of the reynolds number
 
-        """
-        Start
-        """
-        Reyn = self.RN_init
 
         for station in range(len(Reyn)):
 
-            RN = self.RN_spacing * round(Reyn[station] / self.RN_spacing)
+            # Find the maximum and minimum Reynold number specified by user
+            reyn_lst = []
+            for file in os.listdir(self.dir_path):
+                reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+
+            reyn_min = np.min(reyn_lst)
+            reyn_max = np.min(reyn_lst)
 
             # Maximum and minimum RN in database
-            if RN < 100000:
-                RN = 100000
-            if RN > 5000000:
-                RN = 5000000
+            if Reyn[station]<reyn_min:
+                Reyn[station] = reyn_min 
+            if Reyn[station]>reyn_max:
+                Reyn[station] = reyn_max
 
-            # Look for corresponding airfoil data file for that RN
-            filename1 = "4412_Re%d_up.txt" % RN
-            filename2 = "4412_Re%d_dwn.txt" % RN
-
-
-            file_up = open(os.path.join(os.path.dirname(__file__),"data",filename1), "r")
-            file_down = open(os.path.join(os.path.dirname(__file__),"data",filename2), "r")
-            # Read lines
-            lines_up = file_up.readlines()
-            lines_down = file_up.readlines()
-
-            # Close files
-            file_up.close()
-            file_down.close()
-
-            # List and Boolean to save relevant lines
-            format_lines = []
-            save_lines = False
-
-            for line in lines_up:
-                # Separate variables inside file
-                a = line.split()
-
-                # If the save_lines boolean is True (when the code gets to numerical values), save to list
-                if save_lines:
-                    # Create a line with floats (instead of strings) to append to main list
-                    new_line = []
-                    for value in a:
-                        new_line.append(float(value))
-                    format_lines.append(new_line)
-
-                # Protect against empty lines
-                if len(a) > 0:
-                    # There is a line with ---- before the numbers, so once we get to this line, start saving
-                    if a[0].count('-') >= 1:
-                        save_lines = True
-
-            # Restart boolean for down file
-            save_lines = False
-
-            # Do the same process for down file and append to the same array as up
-            for line in lines_down:
-                a = line.split()
-
-                if save_lines:
-                    new_line = []
-                    for value in a:
-                        new_line.append(float(value))
-                    format_lines.append(new_line)
-
-                if len(a) > 0:
-                    if a[0].count('-') >= 1:
-                        save_lines = True
-
-            # Convert to numpy array with airfoil data
-            airfoil_data = np.array(format_lines)
-
-            # ------------ Format of each line --------------
-            # alpha, CL, CD, Re(CL), CM, S_xtr, P_xtr, CDp
-
-            # Order airfoil data by angle of attack, this can be eliminated to save time if needed
-            airfoil_data = airfoil_data[airfoil_data[:, 0].argsort()]
-
-            # Save airfoil data array to have a copy to modify
-            airfoil_data_check = airfoil_data
-
-            # Subtract current AoA from list of AoAs
-            # Note that the AoA in the files is in degrees
-            airfoil_data_check[:, 0] -= np.rad2deg(alphas[station])
-
-            # Check what line has min AoA difference, and retrieve index of that column
-            index = np.argmin(np.abs(airfoil_data_check[:, 0]))
-
-            # Obtain the Cl and Cd from the line where Cl difference is min
             # Correct the Cl/Cd obtained for Mach number
-            Cl_ret = airfoil_data[index, 1] / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cl
-            Cd_ret = airfoil_data[index, 2] / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
+            Cl_ret = self.cl_interp([[alphas[station], Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
+            Cd_ret = self.cd_interp([[float(Cl_ret), Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
 
             # Update the Cl and Cd at each station
             Cls[station] = Cl_ret
             Cds[station] = Cd_ret
-
-        """
-        End
-        """
 
         # Calculate initial estimates for the interference factors
         a_facs = self.a_fac(Cls, Cds, phi, self.chords, self.r_stations, phi[-1]*self.r_stations[-1]/self.R)
@@ -877,90 +793,24 @@ class OffDesignAnalysisBEM:
             for station in range(len(self.r_stations)):
                 # Get the Reynold's number per station
                 RN = Re[station]
-                RN = self.RN_spacing * round(RN / self.RN_spacing)
+
+                # Find the maximum and minimum Reynold number specified by user
+                reyn_lst = []
+                for file in os.listdir(self.dir_path):
+                    reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+
+                reyn_min = np.min(reyn_lst)
+                reyn_max = np.min(reyn_lst)
 
                 # Maximum and minimum RN in database
-                if RN<100000:
-                    RN = 100000
-                if RN>5000000:
-                    RN = 5000000
-
-                # Look for corresponding airfoil data file for that RN
-                filename1 = "4412_Re%d_up.txt" % RN
-                filename2 = "4412_Re%d_dwn.txt" % RN
-
-                file_up = open(os.path.join(os.path.dirname(__file__),"data",filename1), "r")
-                file_down = open(os.path.join(os.path.dirname(__file__),"data",filename2), "r")
-                # Read lines
-                lines_up = file_up.readlines()
-                lines_down = file_up.readlines()
-
-                # Close files
-                file_up.close()
-                file_down.close()
-
-                # List and Boolean to save relevant lines
-                format_lines = []
-                save_lines = False
-
-                for line in lines_up:
-                    # Separate variables inside file
-                    a = line.split()
-
-                    # If the save_lines boolean is True (when the code gets to numerical values), save to list
-                    if save_lines:
-                        # Create a line with floats (instead of strings) to append to main list
-                        new_line = []
-                        for value in a:
-                            new_line.append(float(value))
-                        format_lines.append(new_line)
-
-                    # Protect against empty lines
-                    if len(a) > 0:
-                        # There is a line with ---- before the numbers, so once we get to this line, start saving
-                        if a[0].count('-') >= 1:
-                            save_lines = True
-
-                # Restart boolean for down file
-                save_lines = False
-
-                # Do the same process for down file and append to the same array as up
-                for line in lines_down:
-                    a = line.split()
-
-                    if save_lines:
-                        new_line = []
-                        for value in a:
-                            new_line.append(float(value))
-                        format_lines.append(new_line)
-
-                    if len(a) > 0:
-                        if a[0].count('-') >= 1:
-                            save_lines = True
-
-                # Convert to numpy array with airfoil data
-                airfoil_data = np.array(format_lines)
-
-                # ------------ Format of each line --------------
-                # alpha, CL, CD, Re(CL), CM, S_xtr, P_xtr, CDp
-
-                # Order airfoil data by angle of attack, this can be eliminated to save time if needed
-                airfoil_data = airfoil_data[airfoil_data[:, 0].argsort()]
-
-                # Save airfoil data array to have a copy to modify
-                airfoil_data_check = airfoil_data
-
-                # Subtract current AoA from list of AoAs
-                # Note that the AoA in the files is in degrees
-                airfoil_data_check[:, 0] -= np.rad2deg(alphas[station])
-
-                # Check what line has min AoA difference, and retrieve index of that column
-                index = np.argmin(np.abs(airfoil_data_check[:, 0]))
-
-                # Obtain the Cl and Cd from the line where Cl difference is min
+                if Reyn[station]<reyn_min:
+                    Reyn[station] = reyn_min 
+                if Reyn[station]>reyn_max:
+                    Reyn[station] = reyn_max
+            
                 # Correct the Cl/Cd obtained for Mach number
-                Cl_ret = airfoil_data[index, 1]/self.PG_correct(self.M(Ws[station]))  # Retrieved Cl
-                Cd_ret = airfoil_data[index, 2]/self.PG_correct(self.M(Ws[station]))  # Retrieved Cd
+                Cl_ret = self.cl_interp([[alphas[station], Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
+                Cd_ret = self.cd_interp([[float(Cl_ret), Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
 
                 Cds[station] = Cd_ret
 
@@ -975,7 +825,6 @@ class OffDesignAnalysisBEM:
             conv = np.abs((phi - phi_new) / phi)
           
             if np.average(conv) > 0.03:
-                # print("### conv", conv, np.average(conv))
                 pass
             else:
                 iterate = False
@@ -1005,6 +854,7 @@ class OffDesignAnalysisBEM:
         C_P = spint.trapz(C_P_prim, self.r_stations)
 
         eff = self.eff(C_T, C_P)
+
         return [T, Q, eff], [C_T, C_P], [alphas, Cls, Cds]
 
 

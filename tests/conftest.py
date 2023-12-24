@@ -59,3 +59,15 @@ def FixtInternalForces(FixtAero, FixtAirfoil, FixtEngine, FixtFlightPerformance,
 @pytest.fixture
 def FixtConstraints(FixtAero, FixtAirfoil, FixtEngine, FixtFlightPerformance, FixtMaterial, FixtSingleWing):
     return struct.Constraints(FixtAero, FixtAirfoil, FixtEngine, FixtFlightPerformance, FixtMaterial, FixtSingleWing)
+
+@pytest.fixture
+def FixtPropDSE2021():
+    data_dict = {
+        "r_prop": 0.50292971,
+        "n_blades": 6,
+        "rpm_cruise": 1350,
+        "xi_0": 0.1
+    }
+    return tud.Propeller(**data_dict)
+
+

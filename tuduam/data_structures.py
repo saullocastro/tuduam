@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict, FilePath, conlist, Field
 from typing import Optional, List 
-import numpy as np
 import json
+import numpy as np
 
 #TODO Create documentation usig sphinx-pydantic plugin
 
@@ -209,10 +209,21 @@ class Material(Parent):
 
 class Propeller(Parent):
     n_blades:float
+    """The number of blades on the propellor"""    
     r_prop:float
-    rpm:float 
+    """"Propeller radius"""
+    rpm_cruise:float 
+    """"The rotations per minute during cruise flight"""
     xi_0:float
     """"Non-dimensional hub radius (r_hub/R) [-]"""
+    chord_arr: Optional[list] = None
+    """"Array with the chords at each station"""
+    rad_arr: Optional[list] = None
+    """"Radial coordinates for each station"""
+    pitch_arr: Optional[list] = None
+    """"Array with the pitch at each station"""
+    tc_ratio:Optional[list] = None
+    """Thickness over chord ratio of the airfoil"""    
 
 
     @classmethod
