@@ -40,7 +40,7 @@ def test_BEM(FixtPropDSE2021):
     new interpolators.
     ---------------------------------
     """
-    data_path = r"C:\Users\damie\OneDrive\Desktop\Damien\UAM_course\tuduam\tests\Airfoil_test_data"
+    data_path =  os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "tests", "Airfoil_test_data"))
     rho = 1.111617926993772
     dyn_vis = 1.757864864661911e-05
     v_cruise = 72.18676185339652
