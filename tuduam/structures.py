@@ -629,7 +629,6 @@ class WingboxInternalForces(WingboxGeometry):
             # Base region 7
             def qb7(z):
                 return -Vz[i]*t_sp/Ixx[i]*(-height[i]/2*z + z**2/2) + I6
-            pdb.set_trace()
             I7 = qb7(-height[i]/2)
 
 
