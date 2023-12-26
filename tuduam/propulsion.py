@@ -776,13 +776,13 @@ class OffDesignAnalysisBEM:
                 Reyn[station] = reyn_max
 
             # Correct the Cl/Cd obtained for Mach number
-            Cl_ret = self.cl_interp([[np.degrees(alphas[station]), Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
-            Cd_ret = self.cd_interp([[Cl_ret[0], Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
+            Cl_uncorr = self.cl_interp([[np.degrees(alphas[station]), Reyn[station]]])[0]
+            Cl_ret =  Cl_uncorr / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
+            Cd_ret = self.cd_interp([[Cl_ret, Reyn[station]]])[0] / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
 
             # Update the Cl and Cd at each station
-            Cls[station] = Cl_ret[0]
-            Cds[station] = Cd_ret[0]
-            pdb.set_trace()
+            Cls[station] = Cl_ret
+            Cds[station] = Cd_ret
 
         # Calculate initial estimates for the interference factors
         a_facs = self.a_fac(Cls, Cds, phi, self.chords, self.r_stations, phi[-1]*self.r_stations[-1]/self.R)
@@ -799,10 +799,9 @@ class OffDesignAnalysisBEM:
             Ws = self.W(a_facs, a_prims, self.r_stations)
 
             # Calculate the Reynolds number
-            Re = self.RN(Ws, self.chords)
+            Reyn = self.RN(Ws, self.chords)
             for station in range(len(self.r_stations)):
                 # Get the Reynold's number per station
-                RN = Re[station]
 
                 # Find the maximum and minimum Reynold number specified by user
                 reyn_lst = []
@@ -810,7 +809,7 @@ class OffDesignAnalysisBEM:
                     reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
 
                 reyn_min = np.min(reyn_lst)
-                reyn_max = np.min(reyn_lst)
+                reyn_max = np.max(reyn_lst)
 
                 # Maximum and minimum RN in database
                 if Reyn[station]<reyn_min:
@@ -819,9 +818,11 @@ class OffDesignAnalysisBEM:
                     Reyn[station] = reyn_max
             
                 # Correct the Cl/Cd obtained for Mach number
-                Cl_ret = self.cl_interp([[alphas[station], Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
-                Cd_ret = self.cd_interp([[float(Cl_ret), Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
+                Cl_uncorr = self.cl_interp([[np.degrees(alphas[station]), Reyn[station]]])[0]
+                Cl_ret =  Cl_uncorr / self.PG_correct(self.M(Ws[station]))
+                Cd_ret = self.cd_interp([[Cl_uncorr, Reyn[station]]])[0] / self.PG_correct(self.M(Ws[station]))  # Retrieved Cd
 
+                Cls[station] = Cl_ret
                 Cds[station] = Cd_ret
 
             # Update the interference factors

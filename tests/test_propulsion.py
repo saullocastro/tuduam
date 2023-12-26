@@ -84,7 +84,9 @@ def test_BEM(FixtPropDSE2021):
 def test_offdesign(DSE2021OffDesignAnalysis):
     """"
     Check for equivalence with the off design analysis code with the original code. Please see :test_BEM: for further explanation and where to 
-    find the original sample.
+    find the original sample. The bugfixes specified in :test_BEM:  were implented as well, also the initial estimate of the Reynolds
+    number was made using 1090 as this is internally done in this reposiotry. I don't think it would matter
+    for the end result however.
     """
     data_path =  os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "tests", "Airfoil_test_data"))
     rho = 1.111617926993772
@@ -95,36 +97,51 @@ def test_offdesign(DSE2021OffDesignAnalysis):
     blade_analysis = prop.OffDesignAnalysisBEM(data_path, DSE2021OffDesignAnalysis, v_cruise, rpm, rho, dyn_vis, soundspeed)
     res = blade_analysis.analyse_propeller()
 
-    assert np.isclose(res["thrust"], 157.8187, rtol =0.01)
-    assert np.isclose(res["torque"], 128.928187)
-    assert np.isclose(res["eff"], 0.774122895)
-    assert np.isclose(res["thrust_coeff"], 0.4202)
-    assert np.isclose(res["power_coeff"], 2.1445)
-    assert all(np.isclose(res["AoA"], np.array([0.04046394, 0.02295662, 0.02008227, 0.01985122, 0.02087762,
-       0.01916235, 0.01963098, 0.018492  , 0.01862655, 0.02004781,
-       0.02080169, 0.02009016, 0.02117429, 0.02086136, 0.02200812,
-       0.02329413, 0.02358909, 0.02526579, 0.0256387 , 0.02782584,
-       0.02835683, 0.03022875, 0.03168534, 0.03458972, 0.03868065])))
-    assert all(np.isclose(res["lift_coeff"] ,np.array([0.66951785, 0.56388127, 0.56174527, 0.55101608, 0.56202493,
-       0.55708196, 0.55727841, 0.55749745, 0.56225514, 0.56252254,
-       0.5737981 , 0.57411611, 0.57445696, 0.57842678, 0.58983142,
-       0.59025406, 0.60173806, 0.59849811, 0.60994828, 0.621443  ,
-       0.62201972, 0.62872631, 0.64024739, 0.65616928, 0.66882847])))
-    assert all(np.isclose(res["drag_coeff"] , np.array([0.01685313, 0.01634201, 0.01505498, 0.01501747, 0.01506247,
-       0.01420636, 0.01421137, 0.01421695, 0.01361768, 0.01362415,
-       0.01367213, 0.01367971, 0.01368783, 0.01322324, 0.01327327,
-       0.01328278, 0.01332383, 0.01380911, 0.01386199, 0.01390519,
-       0.01391809, 0.01459432, 0.01465052, 0.01561023, 0.01704022])))
+    assert np.isclose(res["thrust"], 159.9499511)
+    assert np.isclose(res["torque"], 130.9214)
+    assert np.isclose(res["eff"], 0.77263)
+    assert np.isclose(res["thrust_coeff"], 0.425920857)
+    assert np.isclose(res["power_coeff"], 2.177700363)
+    assert all(np.isclose(res["AoA"], np.array([0.04744176, 0.02797871, 0.02570013, 0.02553307, 0.02510486,
+                                            0.02350286, 0.02441464, 0.02501597, 0.02300074, 0.02425103,
+                                            0.02516243, 0.02511891, 0.02447518, 0.02553313, 0.02675604,
+                                            0.02701844, 0.02828004, 0.02866974, 0.0300271 , 0.03141794,
+                                            0.03194067, 0.03291112, 0.03525129, 0.03906602, 0.0424161 ])))
+    assert all(np.isclose(res["lift_coeff"] ,np.array([0.71119423, 0.59582504, 0.58529195, 0.59413737, 0.58354448,
+                                                    0.57891257, 0.58988066, 0.59011234, 0.58411223, 0.59537095,
+                                                    0.59567611, 0.59600843, 0.59636288, 0.60764481, 0.60805522,
+                                                    0.60849354, 0.61988117, 0.62037903, 0.63184504, 0.64335694,
+                                                    0.64395399, 0.65047667, 0.66201734, 0.67775645, 0.69012942])))
+    assert all(np.isclose(res["drag_coeff"] , np.array([0.01708873, 0.01648528, 0.01643733, 0.01518123, 0.01513424,
+                                                        0.01427807, 0.01432406, 0.01432969, 0.01368949, 0.01373696,
+                                                        0.013744  , 0.01375167, 0.01375985, 0.01380964, 0.01381897,
+                                                        0.01382893, 0.01387024, 0.01388138, 0.01393426, 0.01398782,
+                                                        0.0140008 , 0.01467716, 0.01474375, 0.01571399, 0.01715453])))
 
 
 
 if __name__ == "__main__":
-    def FixtPropDSE2021():
+    def DSE2021OffDesignAnalysis():
         data_dict = {
             "r_prop": 0.50292971,
             "n_blades": 6,
             "rpm_cruise": 1350,
-            "xi_0": 0.1
+            "xi_0": 0.1,
+            "chord_arr": np.array([0.03465952, 0.04455214, 0.05395549, 0.06279065, 0.07098139,
+        0.07845934, 0.08517839, 0.09109053, 0.09615647, 0.10035978,
+        0.10367558, 0.10609018, 0.10758779, 0.10816815, 0.10781527,
+        0.10651308, 0.10423676, 0.10094716, 0.09658681, 0.09104805,
+        0.08417472, 0.07569153, 0.06508562, 0.05118965, 0.02995261]),
+            "pitch_arr":np.array([1.59010535, 1.56060352, 1.5278318 , 1.49881861, 1.47011773,
+        1.43827993, 1.41207003, 1.38454137, 1.35397965, 1.32913886,
+        1.3030613 , 1.27751229, 1.2507629 , 1.2263168 , 1.20243842,
+        1.17913448, 1.15640891, 1.13426302, 1.11269583, 1.09170422,
+        1.07128323, 1.05142623, 1.03387054, 1.01860692, 1.00387976]),
+        "rad_arr":np.array([0.05934571, 0.07745118, 0.09555665, 0.11366212, 0.13176759,
+        0.14987305, 0.16797852, 0.18608399, 0.20418946, 0.22229493,
+        0.2404004 , 0.25850587, 0.27661134, 0.29471681, 0.31282228,
+        0.33092775, 0.34903322, 0.36713869, 0.38524416, 0.40334963,
+        0.4214551 , 0.43956057, 0.45766604, 0.47577151, 0.49387698])
         }
         return tud.Propeller(**data_dict)
 
@@ -132,8 +149,7 @@ if __name__ == "__main__":
     rho = 1.111617926993772
     dyn_vis = 1.757864864661911e-05
     v_cruise = 72.18676185339652
-    n_stations = 25
     soundspeed = 336.4029875015975
-    thrust = 399.4478198779665
-    cruise_BEM = prop.BEM(data_path, FixtPropDSE2021(), rho, dyn_vis, v_cruise, n_stations, soundspeed, T=thrust)
-    res = cruise_BEM.optimise_blade(0)
+    rpm = 1090
+    blade_analysis = prop.OffDesignAnalysisBEM(data_path, DSE2021OffDesignAnalysis(), v_cruise, rpm, rho, dyn_vis, soundspeed)
+    res = blade_analysis.analyse_propeller()
