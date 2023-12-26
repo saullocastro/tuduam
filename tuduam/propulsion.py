@@ -423,10 +423,10 @@ class BEM:
                 # Find the maximum and minimum Reynold number specified by user
                 reyn_lst = []
                 for file in os.listdir(self.dir_path):
-                    reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+                    reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
 
                 reyn_min = np.min(reyn_lst)
-                reyn_max = np.min(reyn_lst)
+                reyn_max = np.max(reyn_lst)
 
                 # Maximum and minimum RN in database
                 if Reyn<reyn_min:
@@ -435,8 +435,8 @@ class BEM:
                     Reyn = reyn_max
 
                 cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
-                Cd_ret = self.cd_interp([[cl_corr, Reyn]])
-                alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))       # Retrieved AoA (from deg to rad)
+                Cd_ret = (self.cd_interp([[cl_corr, Reyn]])/self.PG(self.M(stations_arr[station])))[0]
+                alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))[0]       # Retrieved AoA (from deg to rad)
 
                 # Compute D/L ration
                 eps = Cd_ret / lift_coef
@@ -448,9 +448,9 @@ class BEM:
 
             # Save the optimum config of the blade station
             cl_arr[station] = optim_vals[0]
-            cd_arr[station] = optim_vals[1][0]
-            alpha_arr[station] = optim_vals[2][0]
-            eps_arr[station] = optim_vals[3][0]
+            cd_arr[station] = optim_vals[1]
+            alpha_arr[station] = optim_vals[2]
+            eps_arr[station] = optim_vals[3]
 
             local_Cl = optim_vals[0]
             local_Cd = optim_vals[1]
@@ -460,6 +460,7 @@ class BEM:
 
         # Smooth the Cl distribution and recalculate the lift coefficient: Polinomial regression for smooth distribution
         coef_cl = np.polynomial.polynomial.polyfit(stations_arr, cl_arr, 1)
+
         cl_fun = np.polynomial.polynomial.Polynomial(coef_cl)
 
         cl_arr = cl_fun(stations_arr)
@@ -482,10 +483,10 @@ class BEM:
 
             reyn_lst = []
             for file in os.listdir(self.dir_path):
-                reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+                reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
 
             reyn_min = np.min(reyn_lst)
-            reyn_max = np.min(reyn_lst)
+            reyn_max = np.max(reyn_lst)
 
             # Maximum and minimum RN in database
             if Reyn<reyn_min:
@@ -494,16 +495,16 @@ class BEM:
                 Reyn = reyn_max
 
             cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
-            Cd_ret = self.cd_interp([[cl_corr, Reyn]])
-            alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))       # Retrieved AoA (from deg to rad)
+            Cd_ret = (self.cd_interp([[cl_corr, Reyn]])/self.PG(self.M(stations_arr[station])))[0]
+            alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))[0]       # Retrieved AoA (from deg to rad)
 
             # Compute D/L ration
             eps = Cd_ret / lift_coef
 
             # Update arrays with values
-            cd_arr[station] = Cd_ret[0]
-            alpha_arr[station] = alpha_ret[0]
-            eps_arr[station] = eps[0]
+            cd_arr[station] = Cd_ret
+            alpha_arr[station] = alpha_ret
+            eps_arr[station] = eps
 
         # Calculate interference factors
         a = (zeta/2) * (np.cos(phis))**2 * (1 - eps_arr*np.tan(phis))
@@ -600,7 +601,7 @@ class BEM:
 
 # Analyse the propeller in off-design conditions
 class OffDesignAnalysisBEM:
-    def __init__(self, dir_path:str, propclass: Propeller, V: float, r_stations: np.array,
+    def __init__(self, dir_path:str, propclass: Propeller, V: float,
                   rpm: float, rho: float, dyn_vis: float, a: float) -> None:
         self.V = V
         self.B = propclass.n_blades
@@ -608,9 +609,9 @@ class OffDesignAnalysisBEM:
         self.D = 2*propclass.r_prop
         self.dir_path = dir_path
 
-        self.chords = propclass.chord_arr
-        self.betas = propclass.pitch_arr
-        self.r_stations = r_stations
+        self.chords = np.array(propclass.chord_arr)
+        self.betas = np.array(propclass.pitch_arr)
+        self.r_stations = np.array(propclass.rad_arr)
 
         self.rpm = rpm
         self.Omega = self.rpm * 2 * np.pi / 60  # rpm to rad/s
@@ -725,12 +726,6 @@ class OffDesignAnalysisBEM:
         return self.C_T_prim(r, c, Cl, Cd, F, K_prim, phi) * np.pi * (r/self.R) * self.Cx(Cl, Cd, phi) / \
                self.Cy(Cl, Cd, phi)
 
- 
-
-    """
-    End of the functions used for integration
-    """
-
     def eff(self, C_T, C_P):
         return C_T * self.J / C_P
 
@@ -738,7 +733,21 @@ class OffDesignAnalysisBEM:
     def PG_correct(self, M):
         return np.sqrt(1 - M**2)
 
-    def analyse_propeller(self):
+    def analyse_propeller(self) -> dict:
+        """ Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the 
+        keys as specified below.
+
+        :return: A dictinary with the following keys:
+            "thrust": thrust created by the propeller,
+            "torque": torque required for the propeller ,
+            "eff": propulsive efficiency of the propeller,
+            "thrust_coeff": thrust coefficient of the propeller,
+            "power_coeff": power coefficien of the propeller,
+            "AoA": Angle of attack at each station of the propeller,
+            "lift_coeff": Lift coefficient at each station of the propeller,
+            "drag_coeff": Drag coefficient at each station of the propller,
+        :rtype: dict
+        """        
         # Initial estimate for phi and zeta
         phi = np.arctan(self.lamb / self.Xi(self.r_stations))
 
@@ -747,7 +756,7 @@ class OffDesignAnalysisBEM:
         # Get initial estimate of CL and Cd per station
         Cls = np.ones(len(self.r_stations))
         Cds = np.ones(len(self.r_stations))
-        Reyn =  self.Omega*self.rho/self.dyn_vis*self.chords # Initial estiamte of the reynolds number
+        Reyn =  self.Omega*self.rho*self.chords/self.dyn_vis # Initial estiamte of the reynolds number
 
 
         for station in range(len(Reyn)):
@@ -755,10 +764,10 @@ class OffDesignAnalysisBEM:
             # Find the maximum and minimum Reynold number specified by user
             reyn_lst = []
             for file in os.listdir(self.dir_path):
-                reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+                reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
 
             reyn_min = np.min(reyn_lst)
-            reyn_max = np.min(reyn_lst)
+            reyn_max = np.max(reyn_lst)
 
             # Maximum and minimum RN in database
             if Reyn[station]<reyn_min:
@@ -767,12 +776,13 @@ class OffDesignAnalysisBEM:
                 Reyn[station] = reyn_max
 
             # Correct the Cl/Cd obtained for Mach number
-            Cl_ret = self.cl_interp([[alphas[station], Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
-            Cd_ret = self.cd_interp([[float(Cl_ret), Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
+            Cl_ret = self.cl_interp([[np.degrees(alphas[station]), Reyn[station] ]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
+            Cd_ret = self.cd_interp([[Cl_ret[0], Reyn[station]]]) / self.PG_correct(self.M(self.Omega*self.r_stations[station]))  # Retrieved Cd
 
             # Update the Cl and Cd at each station
-            Cls[station] = Cl_ret
-            Cds[station] = Cd_ret
+            Cls[station] = Cl_ret[0]
+            Cds[station] = Cd_ret[0]
+            pdb.set_trace()
 
         # Calculate initial estimates for the interference factors
         a_facs = self.a_fac(Cls, Cds, phi, self.chords, self.r_stations, phi[-1]*self.r_stations[-1]/self.R)
@@ -797,7 +807,7 @@ class OffDesignAnalysisBEM:
                 # Find the maximum and minimum Reynold number specified by user
                 reyn_lst = []
                 for file in os.listdir(self.dir_path):
-                    reyn_lst.append(int(re.findall(r'\d+', file)[0]))
+                    reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
 
                 reyn_min = np.min(reyn_lst)
                 reyn_max = np.min(reyn_lst)
@@ -855,110 +865,16 @@ class OffDesignAnalysisBEM:
 
         eff = self.eff(C_T, C_P)
 
-        return [T, Q, eff], [C_T, C_P], [alphas, Cls, Cds]
+        data_dict = {
+            "thrust": T,
+            "torque": Q,
+            "eff": eff,
+            "thrust_coeff":C_T,
+            "power_coeff":C_P,
+            "AoA":alphas,
+            "lift_coeff":Cls,
+            "drag_coeff":Cds,
+        }
 
-
-class Optiblade:
-    def __init__(self, B, R, rpm_cr, xi_0, rho_cr, dyn_vis_cr, V_cr, N_stations, a_cr, RN_spacing, max_M_tip, rho_h,
-                 dyn_vis_h, V_h, a_h, rpm_h, delta_pitch, T_cr, T_h):
-        """
-        This file is for the blade shape optimisation. It optimises the blade for cruise, and checks if the blade can
-        meet hover thrust requirements. If not, it designs the blade for higher thrust levels and checks again, up until
-        we have a design that works in hover but is optimised for a condition as close to cruise as possible
-
-                                            Propeller
-        :param B: Number of blades [-]
-        :param R: Outer radius of propeller [m]
-        :param xi_0: Non-dimensional hub radius (r_hub/R) [-]
-        :param N_stations: Number of stations to calculate [-]
-        :param RN_spacing: Spacing of the Reynold's numbers of the airfoil data files [-] (added for flexibility,
-                           but probably should be 100,000)
-
-                                        Cruise conditions
-        :param rpm_cr: rpm of the propeller during cruise [rpm]
-        :param rho_cr: Density [kg/m^3]
-        :param dyn_vis_cr: Dynamic viscosity [N s/m^2)
-        :param V_cr: Freestream velocity
-        :param T_cr: Thrust delivered BY the propeller [N]
-        :param P_cr: Power delivered TO the propeller [W]
-        :param a_cr: Speed of sound [m/s]
-
-                                        Hover conditions
-        :param max_rpm_h: Max allowable rpm of the propeller during hover [rpm]
-        :param rho_h: Density [kg/m^3]
-        :param dyn_vis_h: Dynamic viscosity [N s/m^2)
-        :param V_h: Freestream velocity
-        :param T_h: Thrust delivered BY the propeller [N]
-        :param P_h: Power delivered TO the propeller [W]
-        :param a_h: Speed of sound [m/s]
-        :param max_M_tip: Maximum allowable tip Mach [-]
-        :param rpm_h: rpm of the blade for hover (optimisation variable) [rpm]
-        :param delta_pitch: Change in pitch of the blade to obtain more thrust (optimisation variable) [rad]
-        """
-        self.B = B
-        self.R = R
-        # self.D = 2 * R
-        self.RN_spacing = RN_spacing
-        self.N_s = N_stations
-        self.xi_0 = xi_0
-
-        self.rho_cr = rho_cr
-        self.dyn_vis_cr = dyn_vis_cr
-        self.V_cr = V_cr
-        self.rpm_cr = rpm_cr
-        self.Omega_cr = rpm_cr * 2 * np.pi / 60  # rpm to rad/s
-        self.lamb_cr = V_cr / (self.Omega_cr * R)  # Speed ratio
-        self.a_cr = a_cr
-        self.T_cr = T_cr
-
-        self.rho_h = rho_h
-        self.dyn_vis_h = dyn_vis_h
-        self.V_h = V_h
-        self.a_h = a_h
-        self.T_h = T_h
-        self.max_M_tip = max_M_tip
-        self.rpm_h = rpm_h
-        self.delta_pitch = delta_pitch
-
-    def blade_design(self, design_thrust_factor):
-        # Design the propeller for given conditions
-        propeller = BEM(self.B, self.R, self.rpm_cr, self.xi_0, self.rho_cr, self.dyn_vis_cr, self.V_cr, self.N_s,
-                        self.a_cr, self.RN_spacing, T=self.T_cr * design_thrust_factor)
-
-        # Zeta to initialise the procedure
-        zeta_init = 0
-        zeta, design, V_e, coefs = propeller.optimise_blade(zeta_init)
-
-        return zeta, design, V_e, coefs
-
-
-
-    def optimised_blade(self):
-        # Multiply design (cruise) drag times factor
-        thrust_factors = np.arange(1, np.floor(self.T_h / self.T_cr))
-
-        # Check if the design can meet thrust requirements, else design it or higher thrust
-        index = 0
-        max_thrust = 0
-        while max_thrust < self.T_h:
-            thrust_factor = thrust_factors[index]
-
-            # Design optimum blade for the thrust condition
-            blade = self.blade_design(thrust_factor)
-
-            # Check whether the max thrust is enough, once it is the loop ends
-            max_thrust = self.max_T_check(blade)
-
-            index += 1
-
-        # Now we have a blade design that can provide the necessary max thrust
-        # Analyse the blade at optimum hover condition to optimise
-        blade_hover = OffDesignAnalysisBEM(self.V_h, self.B, self.R, blade[1][0], blade[1][1]-self.delta_pitch,
-                                           blade[1][3], blade[3][0], blade[3][1], self.rpm_h,
-                                           blade[0], self.rho_h, self.dyn_vis_h, self.a_h).analyse_propeller()
-
-        # Return [blade in cruise], [T, Q, eff] of blade in hover, and thrust factor at which the blade is designed
-        # The cost function should maximise both cruise and hover efficiency, so [0][1][5] and [1][2] TODO: check
-        return blade, blade_hover, thrust_factor
-
+        return data_dict
 
