@@ -72,15 +72,15 @@ def cd_xfoil_interp(dir_path:str) -> NearestNDInterpolator:
 
 class PlotBlade:
     def __init__(self, propclass:Propeller, path_coord:str) -> None:
-        """
-        :param chords: Array with chords, from root to tip [m]
-        :param pitchs: Array with pitch angles, from root to tip [rad]
-        :param radial_coords: Radial coordinates per station [m]
-        :param R: Radius of propeller [m]
-        :param xi_0: Hub ratio [-]
-        :param airfoil_name: String with ile name of the airfoil to use, by default NACA4412 [-]
-        :param tc_ratio: Thickness to chord ratio of the airfoil, by default 12% for NACA4412 [-]
-        """
+        """ Initialization of the plot class. The propeller data structures is required to be fully filled,
+        also the thickness over chord ratio.
+
+        :param propclass: Propeller class of which all the attributes are defined.
+        :type propclass: Propeller
+        :param path_coord: Path to the coordinates of the airfoil in the format starting at the top trailing edge,
+        moving to the top leading edge and then looping back to the bottom trailinng edge. 
+        :type path_coord: str
+        """        
         self.chords = propclass.chord_arr
         self.pitchs = propclass.pitch_arr
         self.radial_coords = propclass.rad_arr
@@ -92,9 +92,7 @@ class PlotBlade:
     def _load_airfoil(self) -> np.ndarray:
         """ Returns an array Using a path to coordinate file of the airfoil
 
-        :param path: _description_
-        :type path: str
-        :return: _description_
+        :return: Returns an array with the airfoil coordinates
         :rtype: np.ndarray
         """        
 
@@ -106,6 +104,8 @@ class PlotBlade:
         airfoil_coord = []
 
         for line in airfoil:
+            if any([i.isalpha() for i in line]):
+                continue
             # Separate variables inside file
             a = line.split()
 
@@ -122,7 +122,13 @@ class PlotBlade:
 
         return airfoil_coord
 
-    def plot_blade(self):
+    def plot_blade(self,tst=False):
+        """ Returns two plots, one top down view of the propeller showing the amount of twist and the various chords
+        and one plot showing a side view of the propeller
+
+        :param tst: A boolean which is used for testing to surpess the output, defaults to False
+        :type tst: bool, optional
+        """        
         # Create figures
         fig, axs = plt.subplots(2, 1)
         axs[0].axis('equal')
@@ -181,9 +187,16 @@ class PlotBlade:
         axs[1].plot(radius, y_max_fun(radius))
 
         axs[0].legend()
-        plt.show()
+        if not tst:
+            plt.show()
 
-    def plot_3D_blade(self):
+    def plot_3D_blade(self,tst=False):
+        """ Plot a 3D plot of one propeller blade. The user can drag his mouse around to see
+        the blade from various angles.
+
+        :param tst: A boolean which is used for testing to surpess the output, defaults to False
+        :type tst: bool, optional
+        """        
         fig = plt.figure()
         ax = plt.axes(projection='3d')
         # ax.set_aspect('equal')
@@ -235,6 +248,8 @@ class PlotBlade:
         # Comment or uncomment following both lines to test the fake bounding box:
         for xb, yb, zb in zip(Xb, Yb, Zb):
             ax.plot([xb], [yb], [zb], 'w')
+        if not tst:
+            plt.show()
 
 class BEM:
     def __init__(self, data_path:str, propclass:Propeller, rho:float, dyn_vis:float, 

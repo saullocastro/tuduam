@@ -222,7 +222,7 @@ class Propeller(Parent):
     """"Radial coordinates for each station"""
     pitch_arr: Optional[list] = None
     """"Array with the pitch at each station"""
-    tc_ratio:Optional[list] = None
+    tc_ratio:Optional[float] = None
     """Thickness over chord ratio of the airfoil"""    
 
 
