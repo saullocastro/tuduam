@@ -234,3 +234,30 @@ class Propeller(Parent):
             return cls(**data)
         except:
             raise Exception(f"There was an error when loading in {cls}")
+
+class Wingbox(Parent):
+    rib_loc:list
+    """A list of the rib locations in meters"""    
+    n_cell: int
+    """"The amount of cells in the wingbox structure"""
+    spar_loc_dimless:list
+    """"The location of the spar over the chord so dimensionless. Length should be n_cell - 1 """
+    t_sk_cell:list
+    """The thickness of the skin in each cell, length should be equal to n_cell"""
+    t_sp: float
+    """The thickness of the spars"""
+    area_str:float
+    """"Area of the stringer"""
+    str_cell: list
+    """"List of stringers (both top and bottom) per cell. Length should be n_cell"""
+    booms_cell: int
+    """"Amount of booms  per cell"""
+
+    @classmethod
+    def load_from_json(cls, file_path:FilePath):
+        with open(file_path) as jsonFile:
+            data = json.load(jsonFile)
+        try:
+            return cls(**data)
+        except:
+            raise Exception(f"There was an error when loading in {cls}")

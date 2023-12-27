@@ -63,17 +63,17 @@ def FixtConstraints(FixtAero, FixtAirfoil, FixtEngine, FixtFlightPerformance, Fi
 
 @pytest.fixture
 def FixtPropDSE2021():
-    data_dict = {
+    attr_dict = {
         "r_prop": 0.50292971,
         "n_blades": 6,
         "rpm_cruise": 1350,
         "xi_0": 0.1
     }
-    return tud.Propeller(**data_dict)
+    return tud.Propeller(**attr_dict)
 
 @pytest.fixture
 def DSE2021OffDesignAnalysis():
-    data_dict = {
+    attr_dict = {
         "r_prop": 0.50292971,
         "n_blades": 6,
         "rpm_cruise": 1350,
@@ -94,5 +94,20 @@ def DSE2021OffDesignAnalysis():
        0.33092775, 0.34903322, 0.36713869, 0.38524416, 0.40334963,
        0.4214551 , 0.43956057, 0.45766604, 0.47577151, 0.49387698])
     }
-    return tud.Propeller(**data_dict)
+    return tud.Propeller(**attr_dict)
+
+@pytest.fixture
+def FixtWingbox():
+    pass
+    attr_dict = {
+        "rib_loc": np.linspace(0,1,9)**1.5*10,
+        "n_cell":3,
+        "spar_loc_dimless":[0.3, 0.7],
+        "t_sk_cell":[0.002,0.004,0.002],
+        "area_str":20e-6,
+        "t_sp":0.01,
+        "str_cell":[6,8,6],
+        "booms_cell": 15,
+    }
+    return tud.Wingbox(**attr_dict)
 
