@@ -107,7 +107,20 @@ def FixtWingbox():
         "area_str":20e-6,
         "t_sp":0.01,
         "str_cell":[6,8,6],
-        "booms_cell": 15,
+        "booms_sk": 100,
+        "booms_spar": 8,
     }
     return tud.Wingbox(**attr_dict)
 
+
+@pytest.fixture
+def naca24012():
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), "naca24012.txt"))
+
+@pytest.fixture
+def naca0012():
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), "naca0012.txt"))
+
+@pytest.fixture
+def naca45112():
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), "naca45112.txt"))

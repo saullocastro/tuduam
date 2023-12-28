@@ -250,8 +250,10 @@ class Wingbox(Parent):
     """"Area of the stringer"""
     str_cell: list
     """"List of stringers (both top and bottom) per cell. Length should be n_cell"""
-    booms_cell: int
-    """"Amount of booms  per cell"""
+    booms_sk: int
+    """"Amount of booms on the skin """
+    booms_spar: int
+    """"Amount of booms on each spar"""
 
     @classmethod
     def load_from_json(cls, file_path:FilePath):
