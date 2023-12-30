@@ -3,7 +3,8 @@ name: auto-release
 on:
   push:
     tags:
-      - '20*.*'
+      - v0.**
+  workflow_dispatch:
 
 jobs:
   build:

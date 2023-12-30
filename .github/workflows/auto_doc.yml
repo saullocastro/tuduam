@@ -3,7 +3,8 @@ name: doc
 on:
   push:
     tags:
-      - '20*.*'
+      - v0.**
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
