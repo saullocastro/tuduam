@@ -1,7 +1,7 @@
 import re
 import numpy as np
 import os
-from data_structures import Propeller
+from tuduam.data_structures import Propeller
 import matplotlib.pyplot as plt
 import scipy.integrate as spint
 from scipy.interpolate import NearestNDInterpolator
