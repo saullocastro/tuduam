@@ -120,10 +120,9 @@ def test_offdesign(DSE2021OffDesignAnalysis):
 
 
 
-def test_plotblade(DSE2021OffDesignAnalysis):
+def test_plotblade(DSE2021OffDesignAnalysis, naca24012):
     tst = True
-    coord_path =  os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "tests", "airfoil_geometry.txt"))
     DSE2021OffDesignAnalysis.tc_ratio = 0.12
-    plotblade = prop.PlotBlade(DSE2021OffDesignAnalysis, coord_path)
+    plotblade = prop.PlotBlade(DSE2021OffDesignAnalysis, naca24012)
     plotblade.plot_blade(tst)
     plotblade.plot_3D_blade(tst)

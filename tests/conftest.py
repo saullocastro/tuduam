@@ -8,7 +8,7 @@ import json
 sys.path.append(str(list(pl.Path(__file__).parents)[1]))
 
 import tuduam as tud
-import tuduam.structures as struct
+import legacy.legacy_structures as struct
 
 with open(os.path.join(os.path.dirname(__file__), "setup", "test_values.json")) as f:
     values = json.load(f)

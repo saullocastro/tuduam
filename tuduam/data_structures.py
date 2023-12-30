@@ -38,6 +38,7 @@ class SingleWing(Parent):
     """"The amount of stringers on one flange"""
     t_rib: Optional[float]  =  None
     spar_thickness: Optional[float]  =  None
+    fl_thickness: Optional[float]  =  None
     stringer_height: Optional[float]  =  None
     stringer_width: Optional[float]  =  None
     stringer_thickness: Optional[float]  =  None
