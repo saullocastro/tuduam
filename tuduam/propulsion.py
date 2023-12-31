@@ -255,7 +255,8 @@ class BEM:
     def __init__(self, data_path:str, propclass:Propeller, rho:float, dyn_vis:float, 
                  V_fr:float, n_stations:int, a:float, T=None, P=None) -> None:
         """ Initalization of the BEM class, please keep the amount of station above 20. Also, if any error occurs with the propeller class
-        carefully check whether all parameters have been properly loaded in.
+        carefully check whether all parameters have been properly loaded in. Please specify either a thrust level or
+        power level.
 
         :param data_path: Path to te directory containing all xfoil data for the various Reynolds number. Please note the format of the 
         file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.

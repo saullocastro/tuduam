@@ -8,6 +8,10 @@ class ISA:
 
     Note: Since our aircraft probably doesn't fly too high, this is only valid in the troposphere
 
+    # Future improvements
+    ------------------------------------------------
+    - Made ISA calculator valid for altitudes above the troposhere
+
     Verified by comparison to: https://www.digitaldutch.com/atmoscalc/
     """
 
