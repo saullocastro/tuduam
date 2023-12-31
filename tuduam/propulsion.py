@@ -1,4 +1,5 @@
 import re
+import plotly.graph_objs as go
 import numpy as np
 import os
 from tuduam.data_structures import Propeller
@@ -190,7 +191,7 @@ class PlotBlade:
         if not tst:
             plt.show()
 
-    def plot_3D_blade(self,tst=False):
+    def plot_3D(self,tst=False):
         """ Plot a 3D plot of one propeller blade. The user can drag his mouse around to see
         the blade from various angles.
 
@@ -250,6 +251,59 @@ class PlotBlade:
             ax.plot([xb], [yb], [zb], 'w')
         if not tst:
             plt.show()
+
+
+    def plot_3D_plotly(self, tst=False):
+        fig = go.Figure()
+
+        for i in range(len(self.chords)):
+            x_coords = self._load_airfoil()[0] * self.chords[i]
+            y_coords = self._load_airfoil()[1] * self.chords[i]
+            x_coords_n = []
+            y_coords_n = []
+
+            # Apply pitch
+            for j in range(len(x_coords)):
+                x_coord_n = np.cos(self.pitchs[i]) * x_coords[j] + np.sin(self.pitchs[i]) * y_coords[j]
+                y_coord_n = -np.sin(self.pitchs[i]) * x_coords[j] + np.cos(self.pitchs[i]) * y_coords[j]
+
+                x_coords_n.append(x_coord_n)
+                y_coords_n.append(y_coord_n)
+
+            fig.add_trace(go.Scatter3d(
+                x=x_coords_n,
+                y=y_coords_n,
+                z=np.full(len(x_coords_n), self.radial_coords[i]),
+                mode='lines',
+                line=dict(color='black'),
+                showlegend=False
+            ))
+
+        # Trick to set 3D axes to equal scale, obtained from:
+        # https://stackoverflow.com/questions/13685386/matplotlib-equal-unit-length-with-equal-aspect-ratio-z-axis-is-not-equal-to
+
+        X = np.array([self.chords[0], self.chords[-1]])
+        Y = np.array([self.chords[0]*self.tc_ratio, self.chords[-1]*self.tc_ratio])
+        Z = np.array([0, self.radial_coords[-1]])
+        max_range = np.array([X.max() - X.min(), Y.max() - Y.min(), Z.max() - Z.min()]).max()
+        Xb = 0.5 * max_range * np.mgrid[-1:2:2, -1:2:2, -1:2:2][0].flatten() + 0.5 * (X.max() + X.min())
+        Yb = 0.5 * max_range * np.mgrid[-1:2:2, -1:2:2, -1:2:2][1].flatten() + 0.5 * (Y.max() + Y.min())
+        Zb = 0.5 * max_range * np.mgrid[-1:2:2, -1:2:2, -1:2:2][2].flatten() + 0.5 * (Z.max() + Z.min())
+        for xb, yb, zb in zip(Xb, Yb, Zb):
+            fig.add_trace(go.Scatter3d(
+                x=[xb],
+                y=[yb],
+                z=[zb],
+                mode='markers',
+                marker=dict(color='white', size=0.1),
+                showlegend=False
+            ))
+
+        # Set layout
+        fig.update_layout(scene=dict(aspectmode='data'))
+        
+        if not tst:
+            fig.show()
 
 class BEM:
     def __init__(self, data_path:str, propclass:Propeller, rho:float, dyn_vis:float, 
