@@ -1,0 +1,5 @@
+{
+    "sigma_yield": 55e6,
+    "safety_factor": 1.4,
+    "sigma_ultimate": 1e6
+}

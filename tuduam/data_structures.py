@@ -1,13 +1,16 @@
-from pydantic import BaseModel, ConfigDict, FilePath, conlist, Field
+from pydantic import BaseModel, ConfigDict, FilePath, Field
 from typing import Optional, List 
 import json
-import numpy as np
-
-#TODO Create documentation usig sphinx-pydantic plugin
 
 class Parent(BaseModel):
     model_config = ConfigDict(extra='forbid',
                               validate_assignment=True)
+
+    @classmethod
+    def load_from_json(cls, file_path:FilePath):
+        with open(file_path) as jsonFile:
+            data = json.load(jsonFile)
+        return cls(**data)
 
 class SingleWing(Parent):
     aspect_ratio: float  = Field(gt=0, le=20)
@@ -47,28 +50,9 @@ class SingleWing(Parent):
     """"A list of the spanwise position of the ribs. Can be left to None
     as it will be automatically created. Howeve if pre-defined it will keep this list"""
 
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
 class Airfoil(Parent):
     cl_alpha: float  = Field(gt=2)
     thickness_to_chord: Optional[float] = None
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
 
 class Fuselage(Parent):
     length_fuselage: Optional[float] = None
@@ -76,28 +60,9 @@ class Fuselage(Parent):
     height_fuselage: Optional[float] = None
     mass: Optional[float] = None
 
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
-
 class HybridPowertrain(Parent):
     fuel_cell_mass: Optional[float] = None
     battery_mass : Optional[float] = None
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
 
 class Engine(Parent):
     n_engines: int  = Field(gt=0)
@@ -122,28 +87,9 @@ class Engine(Parent):
     """"Index of which engne positions to ignore in the wingbox analysis. For example when 
     the engine is placed on the fuselage"""
 
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
 class VTOL(Parent):
     mtom: Optional[float] = None
     oem: Optional[float] = None
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
 
 class FlightPerformance(Parent):
     wingloading: Optional[float] = None
@@ -154,15 +100,6 @@ class FlightPerformance(Parent):
     h_cruise: Optional[float] = None
     """"cruise altitude"""
 
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
 class Aerodynamics(Parent):
     cL_alpha: Optional[float] = None
     alpha_zero_lift: Optional[float] = None
@@ -171,16 +108,6 @@ class Aerodynamics(Parent):
     spanwise_points: Optional[int] = None
     """"The spanwise points used in the Weissinger-L/Lifiting line method.
     Odd integer"""
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
 
 class Material(Parent):
     young_modulus: Optional[float] = None
@@ -197,16 +124,6 @@ class Material(Parent):
     """Material constant specific for crippling"""
     g_crippling: Optional[float] = None
     """Material constant specific for crippling"""
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
-
 
 class Propeller(Parent):
     n_blades:float
@@ -226,15 +143,6 @@ class Propeller(Parent):
     tc_ratio:Optional[float] = None
     """Thickness over chord ratio of the airfoil"""    
 
-
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
 
 class Wingbox(Parent):
     rib_loc:list
@@ -256,11 +164,4 @@ class Wingbox(Parent):
     booms_spar: int
     """"Amount of booms on each spar"""
 
-    @classmethod
-    def load_from_json(cls, file_path:FilePath):
-        with open(file_path) as jsonFile:
-            data = json.load(jsonFile)
-        try:
-            return cls(**data)
-        except:
-            raise Exception(f"There was an error when loading in {cls}")
+
