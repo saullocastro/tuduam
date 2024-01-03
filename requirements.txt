@@ -6,4 +6,5 @@ coverage
 coveralls
 pymoo
 pydantic
+plotly
 

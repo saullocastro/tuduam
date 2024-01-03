@@ -132,3 +132,4 @@ def test_plotblade(DSE2021OffDesignAnalysis, naca24012):
     plotblade = prop.PlotBlade(DSE2021OffDesignAnalysis, naca24012)
     plotblade.plot_blade(tst)
     plotblade.plot_3D(tst)
+    plotblade.plot_3D_plotly(tst)
