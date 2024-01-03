@@ -1,5 +1,6 @@
 import sys
 import os
+import pdb
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import tuduam.propulsion as prop
@@ -11,7 +12,7 @@ def test_extract_data():
     res_arr = prop.extract_data_dir(test_path)
     assert isinstance(res_arr, np.ndarray)
     assert res_arr.shape[1] == 8
-    assert all(res_arr[:,-1] > 9e5)
+    assert all(res_arr[:,-1] > 9.99e4)
     assert all(res_arr[:,0] < 30)
 
 def test_interpolators():

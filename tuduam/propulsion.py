@@ -6,7 +6,7 @@ from tuduam.data_structures import Propeller
 import matplotlib.pyplot as plt
 import scipy.integrate as spint
 from scipy.interpolate import NearestNDInterpolator
-from typing import Union
+from warnings import warn
 
 
 def extract_data_dir(dir_path:str) -> np.ndarray:
@@ -20,7 +20,10 @@ def extract_data_dir(dir_path:str) -> np.ndarray:
     data_points = list()
 
     for file in os.listdir(dir_path):
-        reyn = float(re.findall(r'Re(\d+)', file)[0])
+        try:
+            reyn = float(re.findall(r'Re(\d+)', file, re.IGNORECASE)[0])
+        except IndexError:
+            raise Exception("One of the files is likely in the incorrect format. Please check wheter the Reynolds number has Re infront of it")
         with open(os.path.join(dir_path,file), "r") as f:
             write = False
             for line in f.readlines():
@@ -490,23 +493,18 @@ class BEM:
                 # Calculate Reynolds number at the station to look for the correct airfoil datafile
                 Reyn = self.RN(Wc)
 
-                # Find the maximum and minimum Reynold number specified by user
-                reyn_lst = []
-                for file in os.listdir(self.dir_path):
-                    reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
-
-                reyn_min = np.min(reyn_lst)
-                reyn_max = np.max(reyn_lst)
-
                 # Maximum and minimum RN in database
-                if Reyn<reyn_min:
-                    Reyn = reyn_min 
-                if Reyn>reyn_max:
-                    Reyn = reyn_max
+                if Reyn<self.cd_interp.tree.mins[1] and Reyn != 0:
+                    warn(f"A Reynolds number of {Reyn:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
+                if Reyn>self.cd_interp.tree.maxes[1] and Reyn != 0:
+                    warn(f"A Reynolds number of {Reyn:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
 
                 cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
                 Cd_ret = (self.cd_interp([[cl_corr, Reyn]])/self.PG(self.M(stations_arr[station])))[0]
                 alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))[0]       # Retrieved AoA (from deg to rad)
+
+                if cl_corr > self.alpha_interp.tree.maxes[0]:
+                    warn(f"A Cl {cl_corr} was encountered, higher than the max {self.alpha_interp.tree.maxes[0]:.3e} in the data set was encounterd")
 
                 # Compute D/L ration
                 eps = Cd_ret / lift_coef
@@ -551,22 +549,19 @@ class BEM:
             # Calculate Reynolds number at the station to look for the correct airfoil datafile
             Reyn = self.RN(Wc[station])
 
-            reyn_lst = []
-            for file in os.listdir(self.dir_path):
-                reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
-
-            reyn_min = np.min(reyn_lst)
-            reyn_max = np.max(reyn_lst)
-
             # Maximum and minimum RN in database
-            if Reyn<reyn_min:
-                Reyn = reyn_min 
-            if Reyn>reyn_max:
-                Reyn = reyn_max
+            if Reyn<self.cd_interp.tree.mins[1] and Reyn != 0:
+                warn(f"A Reynolds number of {Reyn:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
+            if Reyn>self.cd_interp.tree.maxes[1] and Reyn != 0:
+                warn(f"A Reynolds number of {Reyn:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
+       
 
             cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
             Cd_ret = (self.cd_interp([[cl_corr, Reyn]])/self.PG(self.M(stations_arr[station])))[0]
             alpha_ret = np.deg2rad(self.alpha_interp([[cl_corr, Reyn]]))[0]       # Retrieved AoA (from deg to rad)
+
+            if cl_corr > self.alpha_interp.tree.maxes[0]:
+                warn(f"A Cl {cl_corr} was encountered, higher than the max {self.alpha_interp.tree.maxes[0]:.3e} in the data set was encounterd")
 
             # Compute D/L ration
             eps = Cd_ret / lift_coef
@@ -681,6 +676,8 @@ class OffDesignAnalysisBEM:
     -  TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)
     - TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be
             necessary in that case
+    - TODO: Notify user when the interpolator has to extrapolate to reach a datapoint. This could mean 
+            higher angle of attacks should be taken into acount
 
     """    
     def __init__(self, dir_path:str, propclass: Propeller, V: float,
@@ -930,26 +927,22 @@ class OffDesignAnalysisBEM:
             # Calculate the Reynolds number
             Reyn = self.RN(Ws, self.chords)
             for station in range(len(self.r_stations)):
-                # Get the Reynold's number per station
-
-                # Find the maximum and minimum Reynold number specified by user
-                reyn_lst = []
-                for file in os.listdir(self.dir_path):
-                    reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
-
-                reyn_min = np.min(reyn_lst)
-                reyn_max = np.max(reyn_lst)
 
                 # Maximum and minimum RN in database
-                if Reyn[station]<reyn_min:
-                    Reyn[station] = reyn_min 
-                if Reyn[station]>reyn_max:
-                    Reyn[station] = reyn_max
+                if Reyn[station]<self.cd_interp.tree.mins[1] and Reyn[station] != 0:
+                    warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
+                if Reyn[station]>self.cd_interp.tree.maxes[1] and Reyn[station] != 0:
+                    warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
+
+                if alphas[station] > self.cl_interp.tree.maxes[0]:
+                    raise ValueError(f"An AoA of {alphas[station]} was encountered, higher than the maximum of {self.cl_interp.tree.maxes[0]} in \
+                                      the dataset. This results in extremely unreliable results. Try to lower the pitch angle")
             
                 # Correct the Cl/Cd obtained for Mach number
                 Cl_uncorr = self.cl_interp([[np.degrees(alphas[station]), Reyn[station]]])[0]
                 Cl_ret =  Cl_uncorr / self.PG_correct(self.M(Ws[station]))
                 Cd_ret = self.cd_interp([[Cl_uncorr, Reyn[station]]])[0] / self.PG_correct(self.M(Ws[station]))  # Retrieved Cd
+
 
                 Cls[station] = Cl_ret
                 Cds[station] = Cd_ret
