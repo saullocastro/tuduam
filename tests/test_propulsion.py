@@ -95,7 +95,8 @@ def test_offdesign(DSE2021OffDesignAnalysis):
     soundspeed = 336.4029875015975
     rpm = 1090
     blade_analysis = prop.OffDesignAnalysisBEM(data_path, DSE2021OffDesignAnalysis, v_cruise, rpm, rho, dyn_vis, soundspeed)
-    res = blade_analysis.analyse_propeller()
+    res = blade_analysis.analyse_propeller(delta_pitch=0)
+    
 
     assert np.isclose(res["thrust"], 159.9499511)
     assert np.isclose(res["torque"], 130.9214)

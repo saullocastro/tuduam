@@ -667,17 +667,21 @@ class BEM:
         return design
 
 
-
-
-# Analyse the propeller in off-design conditions
 class OffDesignAnalysisBEM:
     """
     A class encapsulating the arbitrary analysis of a propeller blade as described in Adkins and Liebeck (1994).
 
     General notes
     ----------------------
-    -  Viterna and Janetzke11 give empirical arguments for clipping the magnitude of a and a' at the value of 0.7 
-        in order to better convergence.  See a_fac and a_prime_fac
+    -  Interferences factors were clipped to -0.7 and 0.7. Viterna and Janetzke11 give empirical arguments 
+       for clipping the magnitude of a and a' at the value of 0.7 in order to better convergence.  See a_fac and a_prime_fac
+
+    Future improvement
+    -----------------------------
+    -  TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)
+    - TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be
+            necessary in that case
+
     """    
     def __init__(self, dir_path:str, propclass: Propeller, V: float,
                   rpm: float, rho: float, dyn_vis: float, a: float) -> None:
@@ -848,11 +852,14 @@ class OffDesignAnalysisBEM:
     def PG_correct(self, M):
         return np.sqrt(1 - M**2)
 
-    def analyse_propeller(self) -> dict:
+    def analyse_propeller(self, delta_pitch:float) -> dict:
         """ Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the 
         keys as specified below.
 
-        :return: A dictinary with the following keys:
+        :param delta_pitch: A change in pitch of the entire blade in radians. A positive value will further in crease the pitch
+        and vice versa.
+        :type delta_pitch: float
+        :return: A dictionary with the following keys:
             "thrust": thrust created by the propeller,
             "torque": torque required for the propeller ,
             "eff": propulsive efficiency of the propeller,
@@ -863,6 +870,7 @@ class OffDesignAnalysisBEM:
             "drag_coeff": Drag coefficient at each station of the propller,
         :rtype: dict
         """        
+        self.betas = self.betas + delta_pitch
         # Initial estimate for phi and zeta
         phi = np.arctan(self.lamb / self.Xi(self.r_stations))
 
@@ -941,6 +949,7 @@ class OffDesignAnalysisBEM:
                 Cds[station] = Cd_ret
 
             # Update the interference factors
+            # TODO: Figure out why phi_t is defined like this. In the paper this done differently.
             a_facs = self.a_fac(Cls, Cds, phi, self.chords, self.r_stations, phi[-1]*self.r_stations[-1]/self.R)
             a_prims = self.a_prim_fac(Cls, Cds, phi, self.chords, self.r_stations, phi[-1]*self.r_stations[-1]/self.R)
 
@@ -969,15 +978,15 @@ class OffDesignAnalysisBEM:
         Q_prim_r = 0.5 * self.rho * Ws**2 * self.B * self.chords * Cx
 
         # Do simple integration to get total thrust and Q per unit r
-        T = spint.trapz(T_prim, self.r_stations)
-        Q = spint.trapz(Q_prim_r * self.r_stations, self.r_stations)
+        T = spint.trapezoid(T_prim, self.r_stations)
+        Q = spint.trapezoid(Q_prim_r * self.r_stations, self.r_stations)
 
 
         C_T_prim = T_prim/(self.rho * self.n**2 * self.D**4)
-        C_T = spint.trapz(C_T_prim, self.r_stations)
+        C_T = spint.trapezoid(C_T_prim, self.r_stations)
 
         C_P_prim = C_T_prim * np.pi * self.r_stations/self.R * Cx/Cy
-        C_P = spint.trapz(C_P_prim, self.r_stations)
+        C_P = spint.trapezoid(C_P_prim, self.r_stations)
 
         eff = self.eff(C_T, C_P)
 
