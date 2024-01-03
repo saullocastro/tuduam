@@ -1,8 +1,18 @@
 import sys
 import os
 
+sys.path.insert(0,os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+
 import tuduam as tud
-import tuduam.structures as struct
+from legacy.legacy_structures  import wingbox_optimization
+from warnings import warn
+
+warn("This script is not supported anymore and might fail. \
+Script is likely be deprecated in the future", DeprecationWarning)
+
+
+
 
 
 aero_dict = {
@@ -13,8 +23,9 @@ aero_dict = {
 engine_dict  = {
     "n_engines": 2,
     "mass": 100,
-    "y_rotor_locations": [ 2],
-    "x_rotor_locations": [3],
+    "diameter": 1.4,
+    "y_rotor_loc": [ 2],
+    "x_rotor_loc": [3],
     "thrust": 3e3,
  }
 
@@ -48,8 +59,9 @@ wingclass_dict  = {
     "wingbox_start":0.15, 
     "wingbox_end":0.75, 
     "n_ribs":10, 
-    "n_str":0.008, 
+    "n_str":4, 
     "spar_thickness":0.008, 
+    "fl_thickness":0.008, 
     "stringer_height":0.010, 
     "stringer_width":0.005, 
     "stringer_thickness":0.002, 
@@ -65,10 +77,9 @@ VTOLStruct = tud.VTOL(mtom=2300)
 WingStruct = tud.SingleWing(**wingclass_dict)
 
 
-tud.wing_geometry(FlightperfStruct, VTOLStruct, WingStruct)
+tud.planform_geometry(FlightperfStruct, VTOLStruct, WingStruct)
 tud.lift_curve_slope(AeroStruct, WingStruct)
-res = struct.wingbox_optimization(AeroStruct, AirfoilStruct, EngStruct, FlightperfStruct,  MatStruct, WingStruct )
+res = wingbox_optimization(AeroStruct, AirfoilStruct, EngStruct, FlightperfStruct,  MatStruct, WingStruct )
 
 
-print(f"{res=}")
-print(WingStruct.model_dump())
+

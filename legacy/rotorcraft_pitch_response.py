@@ -62,33 +62,27 @@ vtip = 200  # Rotor tip speed (m/s)
 rotor_radius = 7.32  # Rotor radius (m)
 iy = 10625  # Rotorcraft moment of inertia (kgm^2)
 h = 1  # Distance from vehicle CG to rotor hub
-kbeta = 46000  # Rotor hinge spring hingeless (Nm)
-kbeta0 = 0  # Rotor hinge spring teetering (Nm)
+kbeta = 46000  # Rotor hinged (Nm)
+kbeta0 = 0  # Rotor hinge  (Nm)
 omega = 50  # Rotor rpm
 N = 3  # Number of blades
 thiy = (mass * 9.81 * h + N/2 * kbeta) / iy
 thiy0 = (mass * 9.81 * h + N/2 * kbeta0) / iy
+input_cyc = -1 * np.pi / 180  # Pilot cyclic control (1 deg/sec)
 
 # Starting integration for the pitch equation of motion
 t_end = 10  # Time (sec)
-step = 0.1  # Time step (sec)
-t_arr = int(t_end / step)  # Time step
+step = 0.001  # Time step (sec)
+t_arr = np.arange(0, t_end, step)
 
 # Initialize arrays
-q = np.zeros(t_arr+1)  # Pitch rate (rad/sec)
-q0 = np.zeros(t_arr+1)  # Initial pitch rate (rad/sec)
-t = np.zeros(t_arr+1)  # Initial time t=0 sec
-input_cyc = -1 * np.pi / 180  # Pilot cyclic control (1 deg/sec)
 
-# Starting the program
-for i in range(t_arr+1):
-    t[i] = i * step
-    q[i] = -input_cyc * omega * lok / 16 * (1 - np.exp(-16 / (lok * omega) * thiy * t[i]))
-    q0[i] = -input_cyc * omega * lok / 16 * (1 - np.exp(-16 / (lok * omega) * thiy0 * t[i]))
+q = -input_cyc * omega * lok / 16 * (1 - np.exp(-16 / (lok * omega) * thiy * t_arr))
+q0 = -input_cyc * omega * lok / 16 * (1 - np.exp(-16 / (lok * omega) * thiy0 * t_arr))
 
 # Plot the results for the first 100 time steps
-plt.plot(t[:100], np.degrees(q[:100]), label='Hingeless Rotorcraft')
-plt.plot(t[:100], np.degrees(q0[:100]), label='Teetering Rotorcraft')
+plt.plot(t_arr, np.degrees(q), label='Hingeless Rotorcraft')
+plt.plot(t_arr, np.degrees(q0), label='Teetering Rotorcraft')
 plt.xlabel('Time (sec)')
 plt.ylabel('q (deg/sec)')
 plt.legend()

@@ -8,6 +8,7 @@ dist
 # Temp files
 .ipynb_checkpoints
 tmp*
+.vscode
 temp*
 tmp*.*
 temp*.*
