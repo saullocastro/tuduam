@@ -3,7 +3,7 @@ import os
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import tuduam.propulsion as prop
-import tuduam as tud
+import pytest
 import numpy as np
 
 def test_extract_data():
@@ -24,7 +24,7 @@ def test_interpolators():
     assert np.isclose(alpha_interp([[0.8038, 42e6]]), 2.8)
     assert np.isclose(cl_interp([[15.4, 39e6]]), 2.01)
     assert np.isclose(cd_interp([[1.7082, 13e6]]), 0.01268)
-    
+
 
 def test_BEM(FixtPropDSE2021):
     """" 
@@ -52,7 +52,12 @@ def test_BEM(FixtPropDSE2021):
     soundspeed = 336.4029875015975
     thrust = 399.4478198779665
     cruise_BEM = prop.BEM(data_path, FixtPropDSE2021, rho, dyn_vis, v_cruise, n_stations, soundspeed, T=thrust)
+    cruise_BEM_power = prop.BEM(data_path, FixtPropDSE2021, rho, dyn_vis, v_cruise, n_stations, soundspeed, P=thrust*v_cruise)
     res = cruise_BEM.optimise_blade(0)
+
+    # Test for exception when raising both thrust and power
+    with pytest.raises(Exception):
+        except_test = prop.BEM(data_path, FixtPropDSE2021, rho, dyn_vis, v_cruise, n_stations, soundspeed, T=thrust, P=thrust*v_cruise)
 
     assert np.isclose(res["v_e"], 99.13960660958429)
     assert np.isclose(res["tc"], 0.17356211071732652)
@@ -126,4 +131,4 @@ def test_plotblade(DSE2021OffDesignAnalysis, naca24012):
     DSE2021OffDesignAnalysis.tc_ratio = 0.12
     plotblade = prop.PlotBlade(DSE2021OffDesignAnalysis, naca24012)
     plotblade.plot_blade(tst)
-    plotblade.plot_3D_blade(tst)
+    plotblade.plot_3D(tst)

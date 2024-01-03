@@ -351,11 +351,11 @@ class BEM:
         self.cd_interp = cd_xfoil_interp(data_path)
 
         # Define thrust or power coefficients, depending on input
-        if T is not None:
+        if T is not None and P is None:
             self.Tc = 2 * T / (rho * V_fr**2 * np.pi * self.R**2)
             self.Pc = None
 
-        elif P is not None:
+        elif P is not None and T is None:
             self.Pc = 2 * P / (rho * V_fr**3 * np.pi * self.R**2)
             self.Tc = None
         else:
@@ -830,6 +830,11 @@ class OffDesignAnalysisBEM:
     def phi(self, a, a_prim, r):
         return np.arctan(self.V * (1 + a) / (self.Omega * r * (1 - a_prim)))
 
+    """"
+    The function below were in the original source code but were not used so for now have been
+    commented out. They will remain here for now
+
+
     def C_T(self, T):
         return T / (self.rho * self.n**2 * self.D**4)
 
@@ -844,6 +849,7 @@ class OffDesignAnalysisBEM:
     def C_P_prim(self, r, c, Cl, Cd, F, K_prim, phi):
         return self.C_T_prim(r, c, Cl, Cd, F, K_prim, phi) * np.pi * (r/self.R) * self.Cx(Cl, Cd, phi) / \
                self.Cy(Cl, Cd, phi)
+    """ 
 
     def eff(self, C_T, C_P):
         return C_T * self.J / C_P

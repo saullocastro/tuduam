@@ -31,14 +31,14 @@ class ISA:
         # [K]       Sea level temperature
         self.T_SL = 288.15 + T_offset
         # [kg/m/s] Sea Level Dynamic Viscosity 1.81206E-5
-        self.mu_SL = 1.7894E-5
+        self.mu_SL = 1.8120567103e-5
         # [m/s] Sea level speed of sound
         self.a_SL = np.sqrt(self.gamma*self.R*self.T_SL)
 
         self.h = h  # [m]       Altitude
 
         # Throw an error if the specified altitude is outside of the troposphere
-        if np.any(h) > 11000:
+        if h > 11000:
             raise ValueError(
                 'The specified altitude is outside the range of this class')
 
