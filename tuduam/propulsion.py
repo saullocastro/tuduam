@@ -618,7 +618,7 @@ class BEM:
         self.propeller.rad_arr =  stations_arr
 
         # Calculate new speed ratio and Tc or Pc as required
-        if self.Tc is not None:
+        if self.Tc is not None and self.Pc is None:
             zeta_new = (I1/(2*I2)) - ((I1/(2*I2))**2 - self.Tc/I2)**(1/2)
             Pc = J1*zeta_new + J2*zeta_new**2
 
@@ -632,7 +632,7 @@ class BEM:
 
             return res_dict
 
-        elif self.Pc is not None:
+        elif self.Pc is not None and self.Tc is None:
             zeta_new = -(J1/(2*J2)) + ((J1/(2*J2))**2 + self.Pc/J2)**(1/2)
             Tc = I1*zeta_new - I2*zeta_new**2
 
