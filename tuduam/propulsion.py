@@ -6,7 +6,7 @@ from tuduam.data_structures import Propeller
 import matplotlib.pyplot as plt
 import scipy.integrate as spint
 from scipy.interpolate import NearestNDInterpolator
-import pdb
+from typing import Union
 
 
 def extract_data_dir(dir_path:str) -> np.ndarray:
@@ -671,6 +671,14 @@ class BEM:
 
 # Analyse the propeller in off-design conditions
 class OffDesignAnalysisBEM:
+    """
+    A class encapsulating the arbitrary analysis of a propeller blade as described in Adkins and Liebeck (1994).
+
+    General notes
+    ----------------------
+    -  Viterna and Janetzke11 give empirical arguments for clipping the magnitude of a and a' at the value of 0.7 
+        in order to better convergence.  See a_fac and a_prime_fac
+    """    
     def __init__(self, dir_path:str, propclass: Propeller, V: float,
                   rpm: float, rho: float, dyn_vis: float, a: float) -> None:
         self.V = V
@@ -745,24 +753,61 @@ class OffDesignAnalysisBEM:
         return self.Cx(Cl, Cd, phi) / (4 * np.sin(phi) * np.cos(phi))
 
     # Interference factors
-    def a_fac(self, Cl, Cd, phi, c, r, phi_t):
+    def a_fac(self, Cl:np.ndarray, Cd:np.ndarray, phi:np.ndarray, c:np.ndarray, r:np.ndarray, phi_t:np.ndarray) -> np.ndarray:
+        """
+        Returns the rotational interferene factor. Note that Viterna and Janetzke11 give empirical arguments 
+        for clipping the magnitude of a and a' at the value of 0.7 in order to better convergence.
+
+        Viterna, A., and Janetzke, D., "Theoretical and Experimental Power from Large Horizontal-Axis Wind Turbines," Proceedings from
+        the Large Horizontal-Axis Wind Turbine Conference, DOE/NASA-LeRC, July 1981.
+
+        :param Cl: _description_
+        :type Cl: np.ndarray
+        :param Cd: _description_
+        :type Cd: np.ndarray
+        :param phi: _description_
+        :type phi: np.ndarray
+        :param c: _description_
+        :type c: np.ndarray
+        :param r: _description_
+        :type r: np.ndarray
+        :param phi_t: _description_
+        :type phi_t: np.ndarray
+        :return: _description_
+        :rtype: np.ndarray
+        """        
         sigma = self.solidity_local(c, r)  # Local solidity
         K = self.K(Cl, Cd, phi)
-
         # From Viterna and Janetzke
         sign = np.sign(sigma * K / (self.F(r, phi_t) - sigma*K))
-        # print(sign)
-        # if any(sign) < 0:
-        #     print("a sign negative")
-
         magnitude = np.minimum(np.abs(sigma * K / (self.F(r, phi_t) - sigma*K)), 0.7)
 
-        # TODO: check sign of a
-        # print("a:", omega * K / (self.F(r, zeta) - omega*K))
         return magnitude  # *sign
-        # return np.abs(sigma * K / (self.F(r, phi_t) - sigma * K))
 
     def a_prim_fac(self, Cl, Cd, phi, c, r, phi_t):
+        """ 
+        Returns the rotational interferene factor. Note that Viterna and Janetzke11 give empirical arguments 
+        for clipping the magnitude of a and a' at the value of 0.7 in order to better convergence.
+
+        Viterna, A., and Janetzke, D., "Theoretical and Experimental Power from Large Horizontal-Axis Wind Turbines," Proceedings from
+        the Large Horizontal-Axis Wind Turbine Conference, DOE/NASA-LeRC, July 1981.
+
+
+        :param Cl: _description_
+        :type Cl: _type_
+        :param Cd: _description_
+        :type Cd: _type_
+        :param phi: _description_
+        :type phi: _type_
+        :param c: _description_
+        :type c: _type_
+        :param r: _description_
+        :type r: _type_
+        :param phi_t: _description_
+        :type phi_t: _type_
+        :return: _description_
+        :rtype: _type_
+        """        
         sigma = self.solidity_local(c, r)  # Local solidity
         K_prim = self.K_prim(Cl, Cd, phi)
 
