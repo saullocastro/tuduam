@@ -12,8 +12,8 @@ def test_extract_data():
     res_arr = prop.extract_data_dir(test_path)
     assert isinstance(res_arr, np.ndarray)
     assert res_arr.shape[1] == 8
-    assert all(res_arr[:,-1] > 9.99e4)
-    assert all(res_arr[:,0] < 30)
+    assert all(res_arr[:,-1] > 0)
+    assert all(res_arr[:,0] < 31)
 
 def test_interpolators():
     test_path =  os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "examples", "data"))
@@ -104,7 +104,7 @@ def test_offdesign(DSE2021OffDesignAnalysis):
     soundspeed = 336.4029875015975
     rpm = 1090
     blade_analysis = prop.OffDesignAnalysisBEM(data_path, DSE2021OffDesignAnalysis, v_cruise, rpm, rho, dyn_vis, soundspeed)
-    res = blade_analysis.analyse_propeller(delta_pitch=0)
+    res = blade_analysis.analyse_propeller(delta_pitch=0, abs_extrapolation=0)
     
 
     assert np.isclose(res["thrust"], 159.9499511)

@@ -495,9 +495,9 @@ class BEM:
                 Reyn = self.RN(Wc)
 
                 # Maximum and minimum RN in database
-                if Reyn<self.cd_interp.tree.mins[1] and Reyn != 0:
+                if Reyn<self.cd_interp.tree.mins[1] and Reyn > 5e4:
                     warn(f"A Reynolds number of {Reyn:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
-                if Reyn>self.cd_interp.tree.maxes[1] and Reyn != 0:
+                if Reyn>self.cd_interp.tree.maxes[1]:
                     warn(f"A Reynolds number of {Reyn:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
 
                 cl_corr = (lift_coef * self.PG(self.M(stations_arr[station]))) # Corrected cl for compressibility
@@ -551,9 +551,9 @@ class BEM:
             Reyn = self.RN(Wc[station])
 
             # Maximum and minimum RN in database
-            if Reyn<self.cd_interp.tree.mins[1] and Reyn != 0:
+            if Reyn<self.cd_interp.tree.mins[1] and Reyn > 5e4:
                 warn(f"A Reynolds number of {Reyn:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
-            if Reyn>self.cd_interp.tree.maxes[1] and Reyn != 0:
+            if Reyn>self.cd_interp.tree.maxes[1]:
                 warn(f"A Reynolds number of {Reyn:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
        
 
@@ -677,8 +677,7 @@ class OffDesignAnalysisBEM:
     -  TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)
     - TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be
             necessary in that case
-    - TODO: Notify user when the interpolator has to extrapolate to reach a datapoint. This could mean 
-            higher angle of attacks should be taken into acount
+    - TODO: Make the off design analysis robust enough so a scipy.optimize could perhaps be used in the future.
 
     """    
     def __init__(self, dir_path:str, propclass: Propeller, V: float,
@@ -856,13 +855,15 @@ class OffDesignAnalysisBEM:
     def PG_correct(self, M):
         return np.sqrt(1 - M**2)
 
-    def analyse_propeller(self, delta_pitch:float) -> dict:
+    def analyse_propeller(self, delta_pitch:float, max_iter=100, abs_extrapolation=0) -> dict:
         """ Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the 
         keys as specified below.
 
         :param delta_pitch: A change in pitch of the entire blade in radians. A positive value will further in crease the pitch
         and vice versa.
         :type delta_pitch: float
+        :param abs_extrapolation: The maximum extrapolation out of the given dataset allowed before a near zero thrust is returned  in degrees
+        :type abs_extrapolation: float
         :return: A dictionary with the following keys:
             "thrust": thrust created by the propeller,
             "torque": torque required for the propeller ,
@@ -874,11 +875,11 @@ class OffDesignAnalysisBEM:
             "drag_coeff": Drag coefficient at each station of the propller,
         :rtype: dict
         """        
-        self.betas = self.betas + delta_pitch
+        betas = self.betas + delta_pitch
         # Initial estimate for phi and zeta
         phi = np.arctan(self.lamb / self.Xi(self.r_stations))
 
-        alphas = self.betas - phi
+        alphas = betas - phi
 
         # Get initial estimate of CL and Cd per station
         Cls = np.ones(len(self.r_stations))
@@ -888,20 +889,13 @@ class OffDesignAnalysisBEM:
 
         for station in range(len(Reyn)):
 
-            # Find the maximum and minimum Reynold number specified by user
-            reyn_lst = []
-            for file in os.listdir(self.dir_path):
-                reyn_lst.append(int(re.findall(r'Re(\d+)', file)[0]))
-
-            reyn_min = np.min(reyn_lst)
-            reyn_max = np.max(reyn_lst)
-
             # Maximum and minimum RN in database
-            if Reyn[station]<reyn_min:
-                Reyn[station] = reyn_min 
-            if Reyn[station]>reyn_max:
-                Reyn[station] = reyn_max
+            if Reyn[station]<self.cd_interp.tree.mins[1] and Reyn[station] > 5e4:
+                warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
+            if Reyn[station]>self.cd_interp.tree.maxes[1]:
+                warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
 
+         
             # Correct the Cl/Cd obtained for Mach number
             Cl_uncorr = self.cl_interp([[np.degrees(alphas[station]), Reyn[station]]])[0]
             Cl_ret =  Cl_uncorr / self.PG_correct(self.M(self.Omega*self.r_stations[station]))
@@ -920,7 +914,7 @@ class OffDesignAnalysisBEM:
         iterate = True
         while iterate or (count < 10):
             # Calculate AoA of the blade stations
-            alphas = self.betas - phi
+            alphas = betas - phi
 
             # Calculate the speed
             Ws = self.W(a_facs, a_prims, self.r_stations)
@@ -930,14 +924,13 @@ class OffDesignAnalysisBEM:
             for station in range(len(self.r_stations)):
 
                 # Maximum and minimum RN in database
-                if Reyn[station]<self.cd_interp.tree.mins[1] and Reyn[station] != 0:
+                if Reyn[station]<self.cd_interp.tree.mins[1] and Reyn[station] > 5e4:
                     warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, lower than the minimum {self.cd_interp.tree.mins[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closest neighbour.", category=RuntimeWarning)
-                if Reyn[station]>self.cd_interp.tree.maxes[1] and Reyn[station] != 0:
+                if Reyn[station]>self.cd_interp.tree.maxes[1]:
                     warn(f"A Reynolds number of {Reyn[station]:.3e} was encountered, higher than the maximum {self.cd_interp.tree.maxes[1]:.3e} in the data set was reached. scipy.interpolate.NearestNDInterpolator will default to closes neighbour.", category=RuntimeWarning)
 
-                if alphas[station] > self.cl_interp.tree.maxes[0]:
-                    raise ValueError(f"An AoA of {alphas[station]} was encountered, higher than the maximum of {self.cl_interp.tree.maxes[0]} in \
-                                      the dataset. This results in extremely unreliable results. Try to lower the pitch angle")
+                if np.degrees(alphas[station]) > self.cl_interp.tree.maxes[0] + abs_extrapolation:
+                    raise ValueError(f"An AoA of {np.degrees(alphas[station])} was encountered, higher than the maximum of {self.cl_interp.tree.maxes[0]} in the dataset. This results in extremely unreliable results. Try to lower the pitch angle")
             
                 # Correct the Cl/Cd obtained for Mach number
                 Cl_uncorr = self.cl_interp([[np.degrees(alphas[station]), Reyn[station]]])[0]
@@ -966,6 +959,9 @@ class OffDesignAnalysisBEM:
 
             # Update the phi angles
             phi = phi_new
+
+            if count > max_iter:
+                raise RuntimeError("Convergence failed maximum amount of iterations was reached")
 
             count += 1
 
