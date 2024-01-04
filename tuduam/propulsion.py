@@ -2,6 +2,7 @@ import re
 import plotly.graph_objs as go
 import numpy as np
 import os
+import pdb
 from tuduam.data_structures import Propeller
 import matplotlib.pyplot as plt
 import scipy.integrate as spint
@@ -637,7 +638,7 @@ class BEM:
             res_dict["eff"] = eff
             res_dict["tc"] = Tc
             res_dict["pc"] =  self.Pc
-            res_dict["disp_velocity"] =  zeta_new
+            res_dict["zeta"] =  zeta_new
 
             return res_dict
 

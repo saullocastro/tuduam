@@ -1,6 +1,6 @@
 import sys
 import os
-import pdb
+import copy
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import tuduam.propulsion as prop
@@ -53,8 +53,11 @@ def test_BEM(FixtPropDSE2021):
     soundspeed = 336.4029875015975
     thrust = 399.4478198779665
     cruise_BEM = prop.BEM(data_path, FixtPropDSE2021, rho, dyn_vis, v_cruise, n_stations, soundspeed, T=thrust)
-    cruise_BEM_power = prop.BEM(data_path, FixtPropDSE2021, rho, dyn_vis, v_cruise, n_stations, soundspeed, P=thrust*v_cruise)
+    
+    fixt_copy =  copy.deepcopy(FixtPropDSE2021)
+    cruise_BEM_power = prop.BEM(data_path, fixt_copy, rho, dyn_vis, v_cruise, n_stations, soundspeed, P=thrust*v_cruise)
     res = cruise_BEM.optimise_blade(0)
+    res2 = cruise_BEM_power.optimise_blade(0)
 
     # Test for exception when raising both thrust and power
     with pytest.raises(Exception):
