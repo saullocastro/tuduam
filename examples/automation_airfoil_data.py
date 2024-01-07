@@ -11,13 +11,13 @@ naca_airfoil = "4412"
 max_iter = "40"
 
 # Reynolds range
-start_reyn = 1e5
-ending_reyn = 1e5
+start_reyn = 5e4
+ending_reyn = 5e4
 step_reyn = 1e6
 
 #AoA range
 start_alpha = "-5"
-end_alpha = "16"
+end_alpha = "30"
 step_alpha = "0.1"
 
 # XFOIL commands  start up command
