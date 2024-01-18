@@ -1,4 +1,6 @@
 name: doc
+permissions:
+  contents: write
 
 on:
   push:
