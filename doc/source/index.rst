@@ -6,8 +6,12 @@
 Welcome to tuduam's documentation!
 ==================================
 
-**tuduam** (TU Delft UAM)  is a Python library which provides a framework for designing UAM vehicles. This repository is developed by the Urban Air Mobility department 
-at the faculty of Aerospace Engineering from Delft University of Technology. This course also serves as an extension to the `UAM course <https://online-learning.tudelft.nl/courses/urban-air-mobility/>`_ 
+**tuduam** (TU Delft UAM)  is a Python library which provides a framework for
+designing UAM vehicles. This repository is developed by the Urban Air Mobility
+department at the faculty of Aerospace Engineering from Delft University of
+Technology. This course also serves as an extension to the `UAM course
+<https://online-learning.tudelft.nl/courses/urban-air-mobility/>`_ 
+
 
 .. toctree::
    :maxdepth: 2
@@ -17,6 +21,10 @@ at the faculty of Aerospace Engineering from Delft University of Technology. Thi
    structures
 
 
+Code repository
+===============
+
+https://github.com/saullocastro/tuduam
 
 
 Indices and tables

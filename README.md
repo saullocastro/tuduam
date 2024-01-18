@@ -15,7 +15,10 @@ Urban Air Mobility
 
 This Python module can be used by the students to assist in the course assignments.
 
+Documentation
+-------------
 
+The documentation is available on: https://saullocastro.github.io/tuduam/
 
 
 License
