@@ -1,0 +1,721 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tuduam.structures &#8212; tuduam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/structures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">tuduam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../data_structures.html">
+                        tuduam.data_structures module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../structures.html">
+                        tuduam.structures module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../data_structures.html">
+                        tuduam.data_structures module
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../structures.html">
+                        tuduam.structures module
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">tuduam.structures</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tuduam.structures</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>  <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
+<span class="kn">from</span> <span class="nn">.data_structures</span> <span class="kn">import</span> <span class="n">Wingbox</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<div class="viewcode-block" id="Boom">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.Boom">[docs]</a>
+<span class="k">class</span> <span class="nc">Boom</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; A class to represent an idealized boom</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bid</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#  Boom ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Area boom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># X location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Y location</span></div>
+
+
+<div class="viewcode-block" id="IdealPanel">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.IdealPanel">[docs]</a>
+<span class="k">class</span> <span class="nc">IdealPanel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Panel ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># The boom id of its corresponding first boom id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The boom id of its corresponding second boom id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_tot</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="IdealWingbox">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.IdealWingbox">[docs]</a>
+<span class="k">class</span> <span class="nc">IdealWingbox</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">wingbox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_centroid</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># datum attached to leading edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="IdealWingbox.plot">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.IdealWingbox.plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">panel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;&gt;-&quot;</span><span class="p">)</span>
+        <span class="n">y_arr</span>  <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="n">y_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_arr</span><span class="p">)</span>
+        <span class="n">y_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y_arr</span><span class="p">)</span>
+        <span class="c1"># aspect_ratio = np.max([i.y for i in self.boom_dict.values()])*2/np.max([i.x for i in self.boom_dict.values()])</span>
+        <span class="n">aspect_ratio</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="c1"># plt.gca().set_aspect(aspect_ratio, adjustable=&#39;box&#39;)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span> <span class="n">y_min</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span><span class="n">y_max</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="read_coord">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.read_coord">[docs]</a>
+<span class="k">def</span> <span class="nf">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns an  m x 2 array of the airfoil coordinates based on a Selig formatted dat file.</span>
+
+<span class="sd">    :return: An m x 2 array with the airfoil coordinates where x goes top trailing edge to top leading edge and then back to </span>
+<span class="sd">    lower trailing edge. I.e it keeps the Selig format</span>
+<span class="sd">    :rtype: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="c1"># List to save formatted coordinates</span>
+    <span class="n">airfoil_coord</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_coord</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]):</span>
+                <span class="k">continue</span>
+            <span class="n">airfoil_coord</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+        <span class="n">airfoil_coord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">airfoil_coord</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">airfoil_coord</span></div>
+
+
+<div class="viewcode-block" id="interp_airfoil">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.interp_airfoil">[docs]</a>
+<span class="k">def</span> <span class="nf">interp_airfoil</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">CubicSpline</span><span class="p">,</span> <span class="n">CubicSpline</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Return two function which interpolate the coordinates of the airfoil given. Two functions are returned</span>
+<span class="sd">    the first interpolates the top skin and the second function interpolates the bottom skin. The result interpolation functions </span>
+<span class="sd">    take into account an airfoil scaled by the given chord.</span>
+
+<span class="sd">    :param path_coord: Path to the airfoil coordinates using the Selig format.</span>
+<span class="sd">    :type path_coord: str</span>
+<span class="sd">    :return: A cubic spline of the top skin and lower skin, respectively.</span>
+<span class="sd">    :rtype: Tuple[CubicSpline, CubicSpline]</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    
+    <span class="n">coord_scaled</span> <span class="o">=</span> <span class="n">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">)</span><span class="o">*</span><span class="n">chord</span> <span class="c1"># coordinates of airfoil scaled by the chord</span>
+    <span class="n">top_coord</span> <span class="o">=</span>  <span class="n">coord_scaled</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">coord_scaled</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span> <span class="p">:]</span> <span class="c1">#coordinates of top skin</span>
+    <span class="n">top_coord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">top_coord</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bot_coord</span> <span class="o">=</span>  <span class="n">coord_scaled</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">coord_scaled</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]):,</span> <span class="p">:]</span> <span class="c1"># coordinates of bottom skin</span>
+
+    <span class="n">top_interp</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">top_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">top_coord</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">bot_interp</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">bot_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">bot_coord</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">top_interp</span><span class="p">,</span> <span class="n">bot_interp</span></div>
+
+
+<div class="viewcode-block" id="get_centroids">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.get_centroids">[docs]</a>
+<span class="k">def</span> <span class="nf">get_centroids</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.</span>
+<span class="sd">    The centroids are computing assuming the following:</span>
+<span class="sd">     </span>
+<span class="sd">     Assumptions</span>
+<span class="sd">     -----------------------------</span>
+<span class="sd">     - It is only based on the skin, i.e  the spar webs and stringers are ignored. Additionally the different thickness of the skin are not taken into account </span>
+<span class="sd">     The implication being that the x centroid should be at x/c = 0.5. Unless there was a bias in the sampling points</span>
+
+<span class="sd">    Future improvement</span>
+<span class="sd">     -----------------------------</span>
+<span class="sd">     - Take into account the spar webs for a better x centroid. However irrelevant for now as we only</span>
+<span class="sd">     take into account forces in the vertical directoin</span>
+<span class="sd">    </span>
+
+<span class="sd">    :param path_coord: Path to the geometry file using the Selig format</span>
+<span class="sd">    :type path_coord: str</span>
+<span class="sd">    :return: The nondimensional x and y centroid of the airfoil</span>
+<span class="sd">    :rtype: Tuple[float, float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">coord</span> <span class="o">=</span> <span class="n">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">)</span>
+    <span class="n">y_centroid_dimless</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coord</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="n">coord</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x_centroid_dimless</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">coord</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">x_centroid_dimless</span><span class="p">,</span> <span class="n">y_centroid_dimless</span></div>
+
+
+<div class="viewcode-block" id="discretize_airfoil">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.discretize_airfoil">[docs]</a>
+<span class="k">def</span> <span class="nf">discretize_airfoil</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span><span class="n">Wingbox</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IdealWingbox</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing</span>
+<span class="sd">      the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.</span>
+
+<span class="sd">      Assumptions</span>
+<span class="sd">      -------------------------------------</span>
+<span class="sd">      - Airfoil is idealized according Megson ch. 20</span>
+<span class="sd">      - The stringers are modeled by equally smearing the total area of the combined </span>
+<span class="sd">      stringers in a certain cell  to all booms attached to the skin in that cell </span>
+<span class="sd">      - The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is </span>
+<span class="sd">      determined by the ratio of their y positin thus $\frac{y_1}{y_2}$.</span>
+
+<span class="sd">      General Procedure</span>
+<span class="sd">      -----------------------------------------------</span>
+<span class="sd">      1. Discretize the skin first and create the panels there first.</span>
+
+
+
+<span class="sd">    :param path_coord: _description_</span>
+<span class="sd">    :type path_coord: str</span>
+<span class="sd">    :param chord: _description_</span>
+<span class="sd">    :type chord: float</span>
+<span class="sd">    :param wingbox_struct: _description_</span>
+<span class="sd">    :type wingbox_struct: Wingbox</span>
+<span class="sd">    :return: _description_</span>
+<span class="sd">    :rtype: IdealWingbox</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="c1"># Check  wingbox data structure</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_sk_cell</span><span class="p">)</span> <span class="o">==</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">,</span> <span class="s2">&quot;Length of t_sk_cell should be equal to the amount of cells&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">str_cell</span><span class="p">)</span> <span class="o">==</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">,</span> <span class="s2">&quot;Length of str_cell should be equal to the amount of cells&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_dimless</span><span class="p">)</span> <span class="o">==</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Length of spar_loc should be equal to the amount of cells - 1&quot;</span>
+
+    <span class="n">top_interp</span><span class="p">,</span> <span class="n">bot_interp</span> <span class="o">=</span> <span class="n">interp_airfoil</span><span class="p">(</span><span class="n">path_coord</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span>
+    <span class="n">x_centr</span><span class="p">,</span> <span class="n">y_centr</span> <span class="o">=</span> <span class="n">get_centroids</span><span class="p">(</span><span class="n">path_coord</span><span class="p">)</span>
+
+    <span class="n">wingbox</span> <span class="o">=</span> <span class="n">IdealWingbox</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="p">)</span>
+    <span class="n">wingbox</span><span class="o">.</span><span class="n">x_centroid</span> <span class="o">=</span>  <span class="n">x_centr</span><span class="o">*</span><span class="n">chord</span>
+    <span class="n">wingbox</span><span class="o">.</span><span class="n">y_centroid</span> <span class="o">=</span>  <span class="n">y_centr</span><span class="o">*</span><span class="n">chord</span>
+
+
+    <span class="n">x_boom_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">ceil</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">booms_sk</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="c1">#TODO correct for spar locations </span>
+
+    <span class="n">boom_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">panel_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">bid</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># set bid to zero</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set panel counter to zero</span>
+    <span class="c1"># create the upper booms and panels from leading edge to trailing edge</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x_boom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_boom_loc</span><span class="p">):</span>
+        <span class="n">boom</span> <span class="o">=</span> <span class="n">Boom</span><span class="p">()</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">bid</span> <span class="o">=</span> <span class="n">bid</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span>  <span class="n">x_boom</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">top_interp</span><span class="p">(</span><span class="n">x_boom</span><span class="p">)</span>
+
+        <span class="n">boom_dict</span><span class="p">[</span><span class="n">boom</span><span class="o">.</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">boom</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Create panels, can not create a panel on the first pass through the for loop</span>
+            <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
+            <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
+            <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span> 
+            <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
+            <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span><span class="p">]</span>
+            <span class="c1">#TODO create the areas  based on sigma ratio</span>
+
+            <span class="n">panel_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="n">pnl</span>
+            <span class="c1"># boom.A = 0 # Boom on  x axis should not have any area as it </span>
+
+        <span class="n">bid</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">pid</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Create the lower booms and panels from trailing edge to leading edge</span>
+    <span class="k">for</span> <span class="n">x_boom</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">x_boom_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">boom</span> <span class="o">=</span> <span class="n">Boom</span><span class="p">()</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">bid</span> <span class="o">=</span> <span class="n">bid</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span>  <span class="n">x_boom</span>
+        <span class="n">boom</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">bot_interp</span><span class="p">(</span><span class="n">x_boom</span><span class="p">)</span>
+        <span class="n">boom_dict</span><span class="p">[</span><span class="n">boom</span><span class="o">.</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">boom</span>
+
+        <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
+        <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
+        <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span> 
+        <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
+        <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span><span class="p">]</span>
+        <span class="c1">#TODO create the areas  based on sigma ratio</span>
+        <span class="n">panel_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="n">pnl</span>
+
+        <span class="n">bid</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">pid</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Connect the last panel (the panel between the first and the last boom)</span>
+    <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
+    <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
+    <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
+    <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span><span class="p">]</span>
+    <span class="c1">#TODO create the areas  based on sigma ratio</span>
+    <span class="n">panel_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="n">pnl</span>
+
+
+    <span class="n">wingbox</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">boom_dict</span><span class="p">)</span>
+    <span class="n">wingbox</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">panel_dict</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wingbox</span></div>
+
+
+
+<div class="viewcode-block" id="stress_analysis">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.stress_analysis">[docs]</a>
+<span class="k">def</span> <span class="nf">stress_analysis</span><span class="p">(</span><span class="n">airfoil</span><span class="p">:</span> <span class="n">IdealWingbox</span><span class="p">,</span> <span class="n">intern_shear</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">internal_mz</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span>  <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;  TODO: Consider implementing as a method of IdealWingbox class</span>
+<span class="sd">    </span>
+<span class="sd">    Perform stress analysis on  a wingbox section </span>
+
+<span class="sd">    List of assumptions (Most made in Megson, some for simplificatoin of code)</span>
+<span class="sd">    ---------------------------------------</span>
+<span class="sd">    - The effect of taper are not included see 21.2 (See megson) TODO: future implementation</span>
+<span class="sd">    - Lift acts through the shear centre (no torque is created) TODO: future implementation</span>
+<span class="sd">    - Forces in the x-y plane are not considered </span>
+
+
+
+<span class="sd">    :param airfoil: _description_</span>
+<span class="sd">    :type airfoil: IdealWingbox</span>
+<span class="sd">    :param intern_shear: _description_</span>
+<span class="sd">    :type intern_shear: float</span>
+<span class="sd">    :return: _description_</span>
+<span class="sd">    :rtype: Tuple[float, dict]</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="class2_wing_mass">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.class2_wing_mass">[docs]</a>
+<span class="k">def</span> <span class="nf">class2_wing_mass</span><span class="p">(</span><span class="n">vtol</span><span class="p">,</span> <span class="n">flight_perf</span><span class="p">,</span> <span class="n">wing</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns the structural weight of both wings </span>
+
+<span class="sd">        :param vtol: VTOL data structure</span>
+<span class="sd">        :type vtol: VTOL</span>
+<span class="sd">        :param flight_perf: FlightPerformance data structure</span>
+<span class="sd">        :type flight_perf: FlightPerformance</span>
+<span class="sd">        :param wing: SingleWing datastructure</span>
+<span class="sd">        :type wing: SingleWing</span>
+<span class="sd">        :return: Mass of both wings</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">S_ft</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">surface</span><span class="o">*</span><span class="mf">10.7639104</span>
+        <span class="n">mtow_lbs</span> <span class="o">=</span> <span class="mf">2.20462</span> <span class="o">*</span> <span class="n">vtol</span><span class="o">.</span><span class="n">mtom</span>
+        <span class="n">wing</span><span class="o">.</span><span class="n">mass</span><span class="o">=</span> <span class="mf">0.04674</span><span class="o">*</span><span class="p">(</span><span class="n">mtow_lbs</span><span class="o">**</span><span class="mf">0.397</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">S_ft</span><span class="o">**</span><span class="mf">0.36</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">flight_perf</span><span class="o">.</span><span class="n">n_ult</span><span class="o">**</span><span class="mf">0.397</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span><span class="o">**</span><span class="mf">1.712</span><span class="p">)</span><span class="o">*</span><span class="mf">0.453592</span>
+        <span class="k">return</span> <span class="n">wing</span><span class="o">.</span><span class="n">mass</span></div>
+
+
+
+<div class="viewcode-block" id="class2_fuselage_mass">
+<a class="viewcode-back" href="../../structures.html#tuduam.structures.class2_fuselage_mass">[docs]</a>
+<span class="k">def</span> <span class="nf">class2_fuselage_mass</span><span class="p">(</span><span class="n">vtol</span><span class="p">,</span> <span class="n">flight_perf</span><span class="p">,</span> <span class="n">fuselage</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns the mass of the fuselage</span>
+
+<span class="sd">        :param vtol: VTOL data structure, requires: mtom</span>
+<span class="sd">        :type vtol: VTOL</span>
+<span class="sd">        :param flight_perf: FlightPerformance data structure</span>
+<span class="sd">        :type flight_perf: FlightPerformance</span>
+<span class="sd">        :param fuselage: Fuselage data structure</span>
+<span class="sd">        :type fuselage: Fuselage</span>
+<span class="sd">        :return: Fuselage mass</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">mtow_lbs</span> <span class="o">=</span> <span class="mf">2.20462</span> <span class="o">*</span> <span class="n">vtol</span><span class="o">.</span><span class="n">mtom</span>
+        <span class="n">lf_ft</span><span class="p">,</span> <span class="n">lf</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">length_fuselage</span><span class="o">*</span><span class="mf">3.28084</span><span class="p">,</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">length_fuselage</span>
+
+        <span class="n">nult</span> <span class="o">=</span> <span class="n">flight_perf</span><span class="o">.</span><span class="n">n_ult</span> <span class="c1"># ultimate load factor</span>
+        <span class="n">wf_ft</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">width_fuselage</span><span class="o">*</span><span class="mf">3.28084</span> <span class="c1"># width fuselage [ft]</span>
+        <span class="n">hf_ft</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">height_fuselage</span><span class="o">*</span><span class="mf">3.28084</span> <span class="c1"># height fuselage [ft]</span>
+        <span class="n">Vc_kts</span> <span class="o">=</span> <span class="n">flight_perf</span><span class="o">.</span><span class="n">v_cruise</span><span class="o">*</span><span class="mf">1.94384449</span> <span class="c1"># design cruise speed [kts]</span>
+
+        <span class="n">fweigh_USAF</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="p">((</span><span class="n">mtow_lbs</span><span class="o">*</span><span class="n">nult</span><span class="o">/</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span><span class="o">**</span><span class="mf">0.286</span><span class="o">*</span><span class="p">(</span><span class="n">lf_ft</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.857</span><span class="o">*</span><span class="p">((</span><span class="n">wf_ft</span> <span class="o">+</span> <span class="n">hf_ft</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">Vc_kts</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">**</span><span class="mf">0.338</span><span class="p">)</span><span class="o">**</span><span class="mf">1.1</span>
+        <span class="n">fuselage</span><span class="o">.</span><span class="n">mass</span><span class="o">=</span> <span class="n">fweigh_USAF</span><span class="o">*</span><span class="mf">0.453592</span>
+        <span class="k">return</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">mass</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
