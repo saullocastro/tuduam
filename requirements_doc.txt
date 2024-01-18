@@ -1,4 +1,9 @@
+numpy
+scipy
+pydantic
+plotly
 sphinx
 numpydoc
-sphinx_rtd_theme
-
+pydata-sphinx-theme
+sphinx-pydantic
+autodoc_pydantic
