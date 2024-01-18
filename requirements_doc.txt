@@ -1,6 +1,7 @@
 numpy
 scipy
 pydantic
+matplotlib
 plotly
 sphinx
 numpydoc
