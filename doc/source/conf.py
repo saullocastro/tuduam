@@ -9,9 +9,8 @@ import pathlib as pl
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'tuduam'
-copyright = '2023, Damien Keijzer, Georgina Maties, Saullo Castro'
-author = 'Damien Keijzer, Georgina Maties, Saullo Castro'
-release = '0.0.0'
+author = 'Damien Keijzer, Saullo Castro'
+copyright = '2024-, Damien Keijzer,, Saullo G. P. Castro'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -19,9 +18,8 @@ release = '0.0.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    # 'numpydoc',
+    'numpydoc',
     'sphinx.ext.doctest',
-    'sphinx_rtd_theme',
     'sphinx-pydantic',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -37,7 +35,7 @@ sys.path.append(str(list(pl.Path(__file__).parents)[2]))
 templates_path = ['_templates']
 exclude_patterns = []
 source_suffix = ".rst"
-html_theme = "sphinx_rtd_theme"
+html_theme = 'pydata_sphinx_theme'
 
 
 

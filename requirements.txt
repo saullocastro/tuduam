@@ -4,7 +4,7 @@ pytest
 pytest-cov
 coverage
 coveralls
-pymoo
 pydantic
+matplotlib
 plotly
 

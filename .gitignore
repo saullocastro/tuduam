@@ -22,3 +22,4 @@ temp*.*
 *.pyo
 *.pyd
 
+.DS_Store
