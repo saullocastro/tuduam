@@ -149,7 +149,7 @@ class Wingbox(Parent):
     """A list of the rib locations in meters"""    
     n_cell: int
     """"The amount of cells in the wingbox structure"""
-    spar_loc_dimless:list
+    spar_loc_nondim:list
     """"The location of the spar over the chord so dimensionless. Length should be n_cell - 1 """
     t_sk_cell:list
     """The thickness of the skin in each cell, length should be equal to n_cell"""

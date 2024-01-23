@@ -37,6 +37,28 @@ class IdealWingbox():
         self.boom_dict = {}
         pass
 
+    def stress_analysis(self, intern_shear:float, internal_mz:float) ->  Tuple[float, dict]:
+        """  TODO: Consider implementing as a method of IdealWingbox class
+        
+        Perform stress analysis on  a wingbox section 
+
+        List of assumptions (Most made in Megson, some for simplificatoin of code)
+        ---------------------------------------
+        - The effect of taper are not included see 21.2 (See megson) TODO: future implementation
+        - Lift acts through the shear centre (no torque is created) TODO: future implementation
+        - Forces in the x-y plane are not considered 
+
+
+
+        :param airfoil: _description_
+        :type airfoil: IdealWingbox
+        :param intern_shear: _description_
+        :type intern_shear: float
+        :return: _description_
+        :rtype: Tuple[float, dict]
+        """    
+        pass
+
     def plot(self) -> None:
         plt.figure(figsize=(10,1))
         for key, panel in self.panel_dict.items():
@@ -46,12 +68,8 @@ class IdealWingbox():
         y_arr  = [i.y for i in self.boom_dict.values()]
         y_max = np.max(y_arr)
         y_min = np.min(y_arr)
-        # aspect_ratio = np.max([i.y for i in self.boom_dict.values()])*2/np.max([i.x for i in self.boom_dict.values()])
-        aspect_ratio = 0.3
-        # plt.gca().set_aspect(aspect_ratio, adjustable='box')
         plt.ylim([ y_min - 0.1,y_max + 0.1])
         plt.show()
-        pass
 
 
 def read_coord(path_coord:str) -> np.ndarray:
@@ -117,6 +135,7 @@ def get_centroids(path_coord:str) -> Tuple[float, float]:
     x_centroid_dimless = np.sum(coord[:,0])/coord.shape[0]
     return x_centroid_dimless, y_centroid_dimless
 
+
 def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> IdealWingbox:
     """ Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
       the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
@@ -148,7 +167,8 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     # Check  wingbox data structure
     assert len(wingbox_struct.t_sk_cell) == wingbox_struct.n_cell, "Length of t_sk_cell should be equal to the amount of cells"
     assert len(wingbox_struct.str_cell) == wingbox_struct.n_cell, "Length of str_cell should be equal to the amount of cells"
-    assert len(wingbox_struct.spar_loc_dimless) == wingbox_struct.n_cell - 1, "Length of spar_loc should be equal to the amount of cells - 1"
+    assert len(wingbox_struct.spar_loc_nondim) == wingbox_struct.n_cell - 1, "Length of spar_loc should be equal to the amount of cells - 1"
+    assert wingbox_struct.booms_spar > 4, "Length of spar_loc should be equal to the amount of cells - 1"
 
     top_interp, bot_interp = interp_airfoil(path_coord, chord)
     x_centr, y_centr = get_centroids(path_coord)
@@ -159,6 +179,13 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
 
 
     x_boom_loc = np.linspace(0, chord, ceil(wingbox_struct.booms_sk/2 + 2))
+
+    # Put booms at the spar locations
+    for spar_loc in wingbox_struct.spar_loc_nondim:
+        spar_loc *= chord
+        idx = np.argmin(np.abs(x_boom_loc - spar_loc))
+        x_boom_loc[idx] = spar_loc
+
     #TODO correct for spar locations 
 
     boom_dict = {}
@@ -166,13 +193,16 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     bid = 0 # set bid to zero
     pid = 0  # set panel counter to zero
     # create the upper booms and panels from leading edge to trailing edge
-    for idx, x_boom in enumerate(x_boom_loc):
+    for idx, x_boom in enumerate(x_boom_loc, start=0):
         boom = Boom()
         boom.bid = bid
         boom.x =  x_boom
         boom.y = top_interp(x_boom)
 
-        boom_dict[boom.bid] = boom
+        if boom.bid not in boom_dict.keys():
+            boom_dict[boom.bid] = boom 
+        else:
+            raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
 
         if not idx == 0: # Create panels, can not create a panel on the first pass through the for loop
             pnl = IdealPanel()
@@ -183,11 +213,13 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             pnl.b2 =  boom_dict[pnl.bid2]
             #TODO create the areas  based on sigma ratio
 
-            panel_dict[pid] = pnl
-            # boom.A = 0 # Boom on  x axis should not have any area as it 
+            if pnl.pid not in panel_dict.keys():
+                panel_dict[pid] = pnl
+            else:
+                raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
+            pid += 1
 
         bid += 1
-        pid += 1
 
     # Create the lower booms and panels from trailing edge to leading edge
     for x_boom in np.flip(x_boom_loc[1:-1]):
@@ -218,6 +250,79 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     pnl.b2 =  boom_dict[pnl.bid2]
     #TODO create the areas  based on sigma ratio
     panel_dict[pid] = pnl
+    pid +=1 
+
+    # Create panels on the spar booms
+    for spar_loc in wingbox_struct.spar_loc_nondim:
+        spar_loc *= chord
+        spar_booms = [i for i in boom_dict.values() if i.x == spar_loc] # find booms defined on this spar
+
+        # assert that only two booms should be found
+        if len(spar_booms) != 2:
+            raise RuntimeError(f"Object {spar_booms} should have length two but had length {len(spar_booms)}")
+
+        # define upper and lower boom
+        if spar_booms[0].y > spar_booms[1].y:
+            upper_b = spar_booms[0]
+            lower_b = spar_booms[1]
+        else:
+            upper_b = spar_booms[1]
+            lower_b = spar_booms[0]
+
+        y_locations = np.delete(np.linspace(upper_b.y, lower_b.y, wingbox_struct.booms_spar), [0,-1]) # delete padding as they already have booms
+
+        # Loop over the spar to create the booms
+        for idx, y_loc in enumerate(y_locations, start=0):
+            # Create boom
+            boom = Boom()
+            boom.bid = bid
+            boom.x =  spar_loc
+            boom.y = y_loc
+            if boom.bid not in boom_dict.keys():
+                boom_dict[boom.bid] = boom
+            else:
+                raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
+
+            if idx == 0:
+                pnl = IdealPanel()
+                pnl.pid = pid
+                pnl.bid1 = upper_b.bid 
+                pnl.bid2 = bid
+                pnl.b1 =  boom_dict[pnl.bid1]
+                pnl.b2 =  boom_dict[pnl.bid2]
+                if pnl.pid not in panel_dict.keys():
+                    panel_dict[pid] = pnl
+                else:
+                    raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
+            else: 
+                pnl = IdealPanel()
+                pnl.pid = pid
+                pnl.bid1 = bid - 1
+                pnl.bid2 = bid
+                pnl.b1 =  boom_dict[pnl.bid1]
+                pnl.b2 =  boom_dict[pnl.bid2]
+
+                if pnl.pid not in panel_dict.keys():
+                    panel_dict[pid] = pnl
+                else:
+                    raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
+
+            bid += 1
+            pid += 1
+
+        # Connect the last panel to the lower boom
+        pnl = IdealPanel()
+        pnl.pid = pid
+        pnl.bid1 = bid - 1
+        pnl.bid2 = lower_b.bid
+        pnl.b1 =  boom_dict[pnl.bid1]
+        pnl.b2 =  boom_dict[pnl.bid2]
+
+        if pnl.pid not in panel_dict.keys():
+            panel_dict[pid] = pnl
+        else:
+            raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
+        pid += 1
 
 
     wingbox.boom_dict.update(boom_dict)
@@ -226,27 +331,6 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     return wingbox
 
 
-def stress_analysis(airfoil: IdealWingbox, intern_shear:float, internal_mz:float) ->  Tuple[float, dict]:
-    """  TODO: Consider implementing as a method of IdealWingbox class
-    
-    Perform stress analysis on  a wingbox section 
-
-    List of assumptions (Most made in Megson, some for simplificatoin of code)
-    ---------------------------------------
-    - The effect of taper are not included see 21.2 (See megson) TODO: future implementation
-    - Lift acts through the shear centre (no torque is created) TODO: future implementation
-    - Forces in the x-y plane are not considered 
-
-
-
-    :param airfoil: _description_
-    :type airfoil: IdealWingbox
-    :param intern_shear: _description_
-    :type intern_shear: float
-    :return: _description_
-    :rtype: Tuple[float, dict]
-    """    
-    pass
 
 def class2_wing_mass(vtol, flight_perf, wing ):
         """ Returns the structural weight of both wings 

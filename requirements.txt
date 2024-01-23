@@ -1,3 +1,4 @@
+python
 numpy
 scipy
 pytest
@@ -7,4 +8,5 @@ coveralls
 pydantic
 matplotlib
 plotly
+ipython
 
