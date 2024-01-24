@@ -2,6 +2,7 @@ import numpy  as np
 from typing import Tuple
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
+import scipy.constants as const
 from .data_structures import Wingbox
 from math import ceil
 import pdb
@@ -384,9 +385,9 @@ def class2_wing_mass(vtol, flight_perf, wing ):
         :return: Mass of both wings
         :rtype: float
         """        
-        S_ft = wing.surface*10.7639104
-        mtow_lbs = 2.20462 * vtol.mtom
-        wing.mass= 0.04674*(mtow_lbs**0.397)*(S_ft**0.36)*(flight_perf.n_ult**0.397)*(wing.aspect_ratio**1.712)*0.453592
+        S_ft = wing.surface*1/const.foot**2
+        mtow_lbs = 1/const.pound * vtol.mtom
+        wing.mass= 0.04674*(mtow_lbs**0.397)*(S_ft**0.36)*(flight_perf.n_ult**0.397)*(wing.aspect_ratio**1.712)*const.pound
         return wing.mass
 
 
@@ -402,14 +403,14 @@ def class2_fuselage_mass(vtol, flight_perf, fuselage):
         :return: Fuselage mass
         :rtype: float
         """        
-        mtow_lbs = 2.20462 * vtol.mtom
-        lf_ft, lf = fuselage.length_fuselage*3.28084, fuselage.length_fuselage
+        mtow_lbs = 1/const.pound * vtol.mtom
+        lf_ft, lf = fuselage.length_fuselage*1/const.foot, fuselage.length_fuselage
 
         nult = flight_perf.n_ult # ultimate load factor
-        wf_ft = fuselage.width_fuselage*3.28084 # width fuselage [ft]
-        hf_ft = fuselage.height_fuselage*3.28084 # height fuselage [ft]
-        Vc_kts = flight_perf.v_cruise*1.94384449 # design cruise speed [kts]
+        wf_ft = fuselage.width_fuselage*1/const.foot # width fuselage [ft]
+        hf_ft = fuselage.height_fuselage*1/const.foot # height fuselage [ft]
+        Vc_kts = flight_perf.v_cruise*1/const.foot # design cruise speed [kts]
 
         fweigh_USAF = 200*((mtow_lbs*nult/10**5)**0.286*(lf_ft/10)**0.857*((wf_ft + hf_ft)/10)*(Vc_kts/100)**0.338)**1.1
-        fuselage.mass= fweigh_USAF*0.453592
+        fuselage.mass= fweigh_USAF*const.pound
         return fuselage.mass
