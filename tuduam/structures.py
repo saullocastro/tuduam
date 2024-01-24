@@ -24,9 +24,21 @@ class IdealPanel:
         self.bid2 = None # The boom id of its corresponding second boom id
         self.b1 = None
         self.b2  = None
+        self.t_pnl = None
         self.q_basic = None
         self.q_tot = None
         self.tau = None
+    
+    @property
+    def dir_vec(self) -> tuple:
+        try:
+            abs_len = np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2)
+            x_comp = (self.b2.x - self.b1.x)/abs_len
+            y_comp = (self.b2.y - self.b1.y)/abs_len
+        except AttributeError as err:
+            raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
+        
+        return (x_comp, y_comp)
 
 class IdealWingbox():
     def __init__(self, wingbox: Wingbox) -> None:
@@ -57,6 +69,13 @@ class IdealWingbox():
         :return: _description_
         :rtype: Tuple[float, dict]
         """    
+        pass
+
+    def create_boom_areas(self) -> None:
+        """ Function that creates all boom areas, program assumes a fully functional panel and boom
+        dictionary where all values have the full classes assigned. Function can be used by user manually
+        but it is generall advised to use the discretize_airfoil function to create a wingbox.
+        """        
         pass
 
     def plot(self) -> None:
@@ -186,8 +205,6 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         idx = np.argmin(np.abs(x_boom_loc - spar_loc))
         x_boom_loc[idx] = spar_loc
 
-    #TODO correct for spar locations 
-
     boom_dict = {}
     panel_dict = {}
     bid = 0 # set bid to zero
@@ -211,7 +228,13 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             pnl.bid2 = bid 
             pnl.b1 =  boom_dict[pnl.bid1]
             pnl.b2 =  boom_dict[pnl.bid2]
-            #TODO create the areas  based on sigma ratio
+            cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim,0,0)*chord) # Get index of the cell
+
+            if  not any(cell_idx):
+                cell_idx = 0
+            else:
+                cell_idx = cell_idx.nonzero()[0][-1]
+            pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
 
             if pnl.pid not in panel_dict.keys():
                 panel_dict[pid] = pnl
@@ -235,6 +258,12 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         pnl.bid2 = bid 
         pnl.b1 =  boom_dict[pnl.bid1]
         pnl.b2 =  boom_dict[pnl.bid2]
+        cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        if  not any(cell_idx):
+            cell_idx = 0
+        else:
+            cell_idx = cell_idx.nonzero()[0][-1]
+        pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
         #TODO create the areas  based on sigma ratio
         panel_dict[pid] = pnl
 
@@ -248,6 +277,12 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     pnl.bid2 = 0
     pnl.b1 =  boom_dict[pnl.bid1]
     pnl.b2 =  boom_dict[pnl.bid2]
+    cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim,0,0)*chord) # Get index of the cell
+    if  not any(cell_idx):
+        cell_idx = 0
+    else:
+        cell_idx = cell_idx.nonzero()[0][-1]
+    pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
     #TODO create the areas  based on sigma ratio
     panel_dict[pid] = pnl
     pid +=1 
@@ -288,6 +323,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
                 pnl.pid = pid
                 pnl.bid1 = upper_b.bid 
                 pnl.bid2 = bid
+                pnl.t_pnl = wingbox_struct.t_sp
                 pnl.b1 =  boom_dict[pnl.bid1]
                 pnl.b2 =  boom_dict[pnl.bid2]
                 if pnl.pid not in panel_dict.keys():
@@ -299,6 +335,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
                 pnl.pid = pid
                 pnl.bid1 = bid - 1
                 pnl.bid2 = bid
+                pnl.t_pnl = wingbox_struct.t_sp
                 pnl.b1 =  boom_dict[pnl.bid1]
                 pnl.b2 =  boom_dict[pnl.bid2]
 
@@ -315,6 +352,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         pnl.pid = pid
         pnl.bid1 = bid - 1
         pnl.bid2 = lower_b.bid
+        pnl.t_pnl = wingbox_struct.t_sp
         pnl.b1 =  boom_dict[pnl.bid1]
         pnl.b2 =  boom_dict[pnl.bid2]
 
@@ -327,6 +365,8 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
 
     wingbox.boom_dict.update(boom_dict)
     wingbox.panel_dict.update(panel_dict)
+
+    # TODO: Call function to get the right areas of the stringers
 
     return wingbox
 
