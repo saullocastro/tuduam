@@ -113,7 +113,7 @@ def FixtWingbox():
     return tud.Wingbox(**attr_dict)
 
 @pytest.fixture
-def Case1():
+def case1():
     """"This case set ups the wingbox shown on page 560 of Megson"""
     pass
     attr_dict = {
@@ -233,6 +233,14 @@ def Case1():
 
     
 
+@pytest.fixture
+def case2(case1):
+    case2 =  case1
+    data_struct = case2.wingbox_struct
+
+    data_struct.str_cell = [10, 2]
+    data_struct.area_str = 3e-4
+    return case2
 
 @pytest.fixture
 def naca24012():

@@ -104,10 +104,10 @@ class IdealWingbox():
 
     @property
     def _panel_per_cell(self) -> list:
-        """ Returns the panel contained within a certain cell and are not
-        on one of the spars.
+        """ Returns a list with the amount of panels on the skin per cell. That is ignoring the panels
+        which are part of one the spars.
 
-        :return: An n x m 2d list where n is the amount cells and m 
+        :return: An n x m 2d list where n is the amount cells and m the amount of panels (might not be identical for each cell)
         :rtype: list
         """        
         panel_lst =  []
@@ -138,6 +138,8 @@ class IdealWingbox():
         for idx, n_str in enumerate(self.wingbox_struct.str_cell):
             str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._panel_per_cell[idx]))
 
+        # Define absolute spar location for use within the loop
+        spar_loc_abs = np.array(self.wingbox_struct.spar_loc_nondim)*chord
         # Per boom find all the panel in which the boom is found and add skin contribution
         for boom in self.boom_dict.values():
             boom_area = boom.A =  0
@@ -151,7 +153,7 @@ class IdealWingbox():
 
             boom.A = boom_area
 
-            if len(str_contrib) != 0:
+            if len(str_contrib) != 0 and not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
 
 
@@ -210,7 +212,7 @@ def read_coord(path_coord:str) -> np.ndarray:
         airfoil_coord = np.array(airfoil_coord)
     return airfoil_coord
 
-def interp_airfoil(path_coord:str, chord:float) -> Tuple[CubicSpline, CubicSpline]:
+def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, CubicSpline]:
     """ Return two function which interpolate the coordinates of the airfoil given. Two functions are returned
     the first interpolates the top skin and the second function interpolates the bottom skin. The result interpolation functions 
     take into account an airfoil scaled by the given chord.
@@ -258,20 +260,24 @@ def get_centroids(path_coord:str) -> Tuple[float, float]:
 
 def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> IdealWingbox:
     """ Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
-      the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
+    the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
 
-      Assumptions
-      -------------------------------------
-      - Airfoil is idealized according Megson ch. 20
-      - The stringers are modeled by equally smearing the total area of the combined 
-      stringers in a certain cell  to all booms attached to the skin in that cell 
-      - The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is 
-      determined by the ratio of their y positin thus $\frac{y_1}{y_2}$.
+    Assumptions
+    -------------------------------------
+    - Airfoil is idealized according Megson ch. 20
+    - The stringers are modeled by equally smearing the total area of the combined 
+    stringers in a certain cell  to all booms attached to the skin in that cell 
+    - The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is 
+    determined by the ratio of their y positin thus $\frac{y_1}{y_2}$.
 
-      General Procedure
-      -----------------------------------------------
-      1. Discretize the skin first and create the panels there first.
-
+    General Procedure
+    -----------------------------------------------
+    1. Create a spline of the top and bottom airfoil
+    2. Create array along which to sample this spline to create the booms, creating specific samples for the spar positions
+    3. Move over top surface creating booms and panel as we go
+    4. Do the same for the bottom surface moving in a circle like motion
+    5. Move over all the spars and create booms and panels as we go.
+    6. Iterate over all booms and add skin contribution and stringer contribution to all their areas
 
 
     :param path_coord: _description_
@@ -290,7 +296,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     assert len(wingbox_struct.spar_loc_nondim) == wingbox_struct.n_cell - 1, "Length of spar_loc should be equal to the amount of cells - 1"
     assert wingbox_struct.booms_spar > 4, "Length of spar_loc should be equal to the amount of cells - 1"
 
-    top_interp, bot_interp = interp_airfoil(path_coord, chord)
+    top_interp, bot_interp = spline_airfoil_coord(path_coord, chord)
     x_centr, y_centr = get_centroids(path_coord)
 
     wingbox = IdealWingbox(wingbox_struct)

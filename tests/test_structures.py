@@ -95,19 +95,31 @@ def test_discretize_airfoil(FixtWingbox, naca24012, naca0012, naca45112):
     assert [b.A != None and b.A != 0 for b in res.boom_dict.values()]
     assert res.Ixx != 0
 
-    res.plot()
 
-def test_discretization_case1(Case1):
-    Case1._compute_boom_area(1.2)
-    assert np.isclose(Case1.boom_dict["a"].A, 750e-6)
-    assert np.isclose(Case1.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
-    assert np.isclose(Case1.boom_dict["c"].A, 591.7e-6, atol=1e-7)
-    assert np.isclose(Case1.boom_dict["d"].A, 591.7e-6, atol=1e-7)
-    assert np.isclose(Case1.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
-    assert np.isclose(Case1.boom_dict["f"].A, 750e-6, atol=1e-7)
-    Case1.plot()
+def test_discretization_case1(case1):
+    "See the used fixture for more information on the test"
+    case1._compute_boom_area(1.1958260743101399)
+    assert np.isclose(case1.boom_dict["a"].A, 750e-6)
+    assert np.isclose(case1.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
+    assert np.isclose(case1.boom_dict["c"].A, 591.7e-6, atol=1e-7)
+    assert np.isclose(case1.boom_dict["d"].A, 591.7e-6, atol=1e-7)
+    assert np.isclose(case1.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
+    assert np.isclose(case1.boom_dict["f"].A, 750e-6, atol=1e-7)
 
-    pass
+def test_discretization_case2(case2):
+    "See the used fixture for more information on the test"
+    case2._compute_boom_area(1.1958260743101399)
+    assert case2.boom_dict["a"].A > 760e-6
+    assert case2.boom_dict["c"].A > 600e-6
+    assert case2.boom_dict["d"].A > 600e-6
+    assert case2.boom_dict["f"].A > 760e-6
 
-    pass
+    assert np.isclose(case2.boom_dict["a"].A, 750e-6 + 1.5e-3, atol=1e-7)
+    assert np.isclose(case2.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
+    assert np.isclose(case2.boom_dict["c"].A, 591.7e-6  + 3e-4, atol=1e-7)
+    assert np.isclose(case2.boom_dict["d"].A, 591.7e-6 + 3e-4, atol=1e-7)
+    assert np.isclose(case2.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
+    assert np.isclose(case2.boom_dict["f"].A, 750e-6 + 1.5e-3, atol=1e-7)
+
+
  
