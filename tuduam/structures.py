@@ -10,11 +10,29 @@ import pdb
 class Boom:
     """ A class to represent an idealized boom
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.bid = None #  Boom ID
         self.A = None  # Area boom
         self.x = None # X location
         self.y = None # Y location
+
+    def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
+        """ Returns the cell index of where the panel is located.
+
+            :param wingbox_struct: The wingbox data structure containing the locations of the spars
+            :type wingbox_struct: Wingbox
+            :param chord: The local chord of the wing section
+            :type chord: float
+            :return: The cell index of where the panel is located
+            :rtype: int
+        """        
+        cell_idx = np.asarray(self.x >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        if  not any(cell_idx):
+            cell_idx = 0
+        else:
+            cell_idx = cell_idx.nonzero()[0][-1]
+        return cell_idx
+
 
 class IdealPanel:
     """_summary_
@@ -30,6 +48,33 @@ class IdealPanel:
         self.q_tot = None
         self.tau = None
     
+    def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
+        """ Returns the cell index of where the panel is located.
+
+        :param wingbox_struct: The wingbox data structure containing the locations of the spars
+        :type wingbox_struct: Wingbox
+        :param chord: The local chord of the wing section
+        :type chord: float
+        :return: The cell index of where the panel is located
+        :rtype: int
+        """        
+        cell_idx = np.asarray( (self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        if  not any(cell_idx):
+            cell_idx = 0
+        else:
+            cell_idx = cell_idx.nonzero()[0][-1]
+        return cell_idx
+    
+    @property
+    def length(self) -> float:
+        """ Length of the panel based on the coordinates of the boom. Boom center is used as the 
+        assumption is that the booms are infitestimally small.
+
+        :return: The length of the panel
+        :rtype: float
+        """        
+        return np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2)
+
     @property
     def dir_vec(self) -> tuple:
         try:
@@ -49,6 +94,68 @@ class IdealWingbox():
         self.panel_dict = {}
         self.boom_dict = {}
         pass
+
+    @property
+    def Ixx(self):
+        Ixx = 0
+        for boom in self.boom_dict.values():
+            Ixx += boom.A*(boom.y - self.y_centroid)**2
+        return Ixx
+
+    @property
+    def _panel_per_cell(self) -> list:
+        """ Returns the panel contained within a certain cell and are not
+        on one of the spars.
+
+        :return: An n x m 2d list where n is the amount cells and m 
+        :rtype: list
+        """        
+        panel_lst =  []
+
+        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)
+        for idx, spar_loc in enumerate(spar_loc_arr):
+            if idx != len(spar_loc_arr) - 1:
+                panel_lst.append([i for i in self.panel_dict.values() if (spar_loc <= (i.b1.x + i.b2.x)/2 < spar_loc_arr[idx + 1]) and i.b1.x != i.b2.x])
+            else:
+                panel_lst.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc and i.b1.x != i.b2.x])
+        return panel_lst
+            
+
+
+    def _compute_boom_area(self, chord) -> None:
+        """ Function that creates all boom areas, program assumes a fully functional panel and boom
+        dictionary where all values have the full classes assigned. Function can be used by user manually
+        but it is generall advised to use the discretize_airfoil function to create a wingbox.
+
+        Assumptions
+        --------------------------
+        - The idealizatin only takes into account a force in the vertical direction (that is tip-deflection path)
+        - The area of the stringers is smeared acrossed all skin booms in the respective cell
+        """        
+
+        # Find stringer area to add per cell
+        str_contrib = []
+        for idx, n_str in enumerate(self.wingbox_struct.str_cell):
+            str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._panel_per_cell[idx]))
+
+        # Per boom find all the panel in which the boom is found and add skin contribution
+        for boom in self.boom_dict.values():
+            boom_area = boom.A =  0
+            # Retrieve all panel where boom is a part of
+            pnl_lst = [pnl for pnl in self.panel_dict.values() if pnl.bid1 == boom.bid or pnl.bid2 == boom.bid]
+            for pnl in pnl_lst:
+                if boom.bid == pnl.bid1:
+                    boom_area += pnl.t_pnl*pnl.length/6*(2 + (pnl.b2.y - self.y_centroid )/(boom.y - self.y_centroid))
+                else:
+                    boom_area += pnl.t_pnl*pnl.length/6*(2 + (pnl.b1.y - self.y_centroid)/(boom.y - self.y_centroid))
+
+            boom.A = boom_area
+
+            if len(str_contrib) != 0:
+                boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
+
+
+        
 
     def stress_analysis(self, intern_shear:float, internal_mz:float) ->  Tuple[float, dict]:
         """  TODO: Consider implementing as a method of IdealWingbox class
@@ -70,13 +177,6 @@ class IdealWingbox():
         :return: _description_
         :rtype: Tuple[float, dict]
         """    
-        pass
-
-    def create_boom_areas(self) -> None:
-        """ Function that creates all boom areas, program assumes a fully functional panel and boom
-        dictionary where all values have the full classes assigned. Function can be used by user manually
-        but it is generall advised to use the discretize_airfoil function to create a wingbox.
-        """        
         pass
 
     def plot(self) -> None:
@@ -229,12 +329,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             pnl.bid2 = bid 
             pnl.b1 =  boom_dict[pnl.bid1]
             pnl.b2 =  boom_dict[pnl.bid2]
-            cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim,0,0)*chord) # Get index of the cell
-
-            if  not any(cell_idx):
-                cell_idx = 0
-            else:
-                cell_idx = cell_idx.nonzero()[0][-1]
+            cell_idx = pnl.get_cell_idx(wingbox_struct, chord)
             pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
 
             if pnl.pid not in panel_dict.keys():
@@ -259,11 +354,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         pnl.bid2 = bid 
         pnl.b1 =  boom_dict[pnl.bid1]
         pnl.b2 =  boom_dict[pnl.bid2]
-        cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
-        if  not any(cell_idx):
-            cell_idx = 0
-        else:
-            cell_idx = cell_idx.nonzero()[0][-1]
+        cell_idx = pnl.get_cell_idx(wingbox_struct, chord)
         pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
         #TODO create the areas  based on sigma ratio
         panel_dict[pid] = pnl
@@ -278,11 +369,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     pnl.bid2 = 0
     pnl.b1 =  boom_dict[pnl.bid1]
     pnl.b2 =  boom_dict[pnl.bid2]
-    cell_idx = np.asarray(max(pnl.b1.x, pnl.b2.x) >= np.insert(wingbox_struct.spar_loc_nondim,0,0)*chord) # Get index of the cell
-    if  not any(cell_idx):
-        cell_idx = 0
-    else:
-        cell_idx = cell_idx.nonzero()[0][-1]
+    cell_idx = pnl.get_cell_idx(wingbox_struct, chord)
     pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
     #TODO create the areas  based on sigma ratio
     panel_dict[pid] = pnl
@@ -367,7 +454,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.boom_dict.update(boom_dict)
     wingbox.panel_dict.update(panel_dict)
 
-    # TODO: Call function to get the right areas of the stringers
+    wingbox._compute_boom_area(chord)
 
     return wingbox
 
