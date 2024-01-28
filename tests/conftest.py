@@ -8,6 +8,7 @@ import json
 sys.path.append(str(list(pl.Path(__file__).parents)[1]))
 
 import tuduam as tud
+import tuduam.structures as struct
 
 with open(os.path.join(os.path.dirname(__file__), "setup", "test_values.json")) as f:
     values = json.load(f)
@@ -101,15 +102,136 @@ def FixtWingbox():
     attr_dict = {
         "rib_loc": np.linspace(0,1,9)**1.5*10,
         "n_cell":3,
-        "spar_loc_dimless":[0.3, 0.7],
+        "spar_loc_nondim":[0.3, 0.7],
         "t_sk_cell":[0.002,0.004,0.002],
         "area_str":20e-6,
         "t_sp":0.01,
         "str_cell":[6,8,6],
-        "booms_sk": 100,
-        "booms_spar": 8,
+        "booms_sk": 69,
+        "booms_spar": 5,
     }
     return tud.Wingbox(**attr_dict)
+
+@pytest.fixture
+def Case1():
+    """"This case set ups the wingbox shown on page 560 of Megson"""
+    pass
+    attr_dict = {
+        "rib_loc": np.linspace(0,1,9)**1.5*10,
+        "n_cell":2,
+        "spar_loc_nondim":[0.5],
+        "t_sk_cell":[2, 1.5],
+        "area_str":0,
+        "t_sp":0,
+        "str_cell":[1,1],
+        "booms_sk": 0,
+        "booms_spar": 0,
+    }
+    data_struct = tud.Wingbox(**attr_dict)
+
+    width = 1.1958260743101399
+
+    boom1 = struct.Boom()
+    boom1.x = 0
+    boom1.y = 0.4
+    boom1.bid = 1
+
+    boom6 = struct.Boom()
+    boom6.x = 0
+    boom6.y = 0.
+    boom6.bid = 6
+
+    boom2 = struct.Boom()
+    boom2.x = width/2
+    boom2.y = 0.35
+    boom2.bid = 2
+    
+    boom5 = struct.Boom()
+    boom5.x = width/2
+    boom5.y = 0.05
+    boom5.bid = 5
+    
+    boom3 = struct.Boom()
+    boom3.x = width
+    boom3.y = 0.3
+    boom3.bid = 3
+    
+    boom4 = struct.Boom()
+    boom4.x = width
+    boom4.y = 0.1
+    boom4.bid = 4
+
+    pnl1 = struct.IdealPanel()
+    pnl1.b1 = boom1
+    pnl1.bid1 = 1
+    pnl1.b2 = boom2
+    pnl1.bid2 = 2
+    pnl1.t_pnl = 2e-3
+
+    pnl2 = struct.IdealPanel()
+    pnl2.b1 = boom2
+    pnl2.bid1 = 2
+    pnl2.b2 = boom3
+    pnl2.bid2 = 3 
+    pnl2.t_pnl = 1.5e-3
+
+    pnl3 = struct.IdealPanel()
+    pnl3.b1 = boom3
+    pnl3.bid1 = 3
+    pnl3.b2 = boom4
+    pnl3.bid2 = 4
+    pnl3.t_pnl = 2e-3
+
+    pnl4 = struct.IdealPanel()
+    pnl4.b1 = boom4
+    pnl4.bid1 = 4
+    pnl4.b2 = boom5
+    pnl4.bid2 = 5
+    pnl4.t_pnl = 1.5e-3
+
+    pnl5 = struct.IdealPanel()
+    pnl5.b1 = boom5
+    pnl5.bid1 = 5
+    pnl5.b2 = boom6
+    pnl5.bid2 = 6
+    pnl5.t_pnl = 2e-3
+
+    pnl6 = struct.IdealPanel()
+    pnl6.b1 = boom5
+    pnl6.bid1 = 5
+    pnl6.b2 = boom2
+    pnl6.bid2 = 2
+    pnl6.t_pnl = 2.5e-3
+
+    pnl7 = struct.IdealPanel()
+    pnl7.b1 = boom6
+    pnl7.bid1 = 6 
+    pnl7.b2 = boom1
+    pnl7.bid2 = 1
+    pnl7.t_pnl = 3e-3
+
+    wingbox = struct.IdealWingbox(data_struct)
+
+    wingbox.x_centroid = 0.6
+    wingbox.y_centroid = 0.2
+    wingbox.boom_dict = dict(a=boom1,
+                             b=boom2,
+                             c=boom3,
+                             d=boom4,
+                             e=boom5,
+                             f=boom6
+                             )
+    wingbox.panel_dict = dict(a=pnl1,
+                              b=pnl2,
+                              c=pnl3,
+                              d=pnl4,
+                              e=pnl5,
+                              f=pnl6,
+                              g=pnl7
+                              )
+    return wingbox
+
+    
 
 
 @pytest.fixture

@@ -1,5 +1,6 @@
 import numpy as np
 import pdb 
+import pytest
 import os
 import sys
 
@@ -37,11 +38,76 @@ def test_get_centroids(naca24012, naca0012):
     assert np.isclose(x1,0.5,atol=0.01)
     assert np.isclose(x2,0.5,atol=0.01)
 
+def test_IdealPanel():
+
+    boom1 = struct.Boom()
+    boom2 = struct.Boom()
+
+    boom1.x = 0
+    boom1.y = 0
+    boom2.x = 0
+    boom2.y = 1
+
+    pnl = struct.IdealPanel()
+    pnl.b1 = boom1
+    pnl.b2 = boom2
+    assert pnl.dir_vec == (0,1)
+
+    boom1.x = 0
+    boom1.y = 0
+    boom2.x = 1
+    boom2.y = 1
+    assert np.isclose(pnl.dir_vec,(1/2**0.5, 1/2**0.5)).all()
+    boom = struct.Boom()
+
+    with pytest.raises(Exception):
+        boom.dir_vec
+    
+
 
 def test_discretize_airfoil(FixtWingbox, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox)
-    #TODO implement proper tests 
-    # res.plot()
+    max_pid = np.max([i.pid for i in res.panel_dict.values()])
+    max_bid = np.max([i.bid for i in res.boom_dict.values()])
+    assert max_pid  == len(res.panel_dict) - 1
+    assert max_bid  == len(res.boom_dict) - 1
 
+    # Get panel per cell
+    panel_cell1 = [i for i in res.panel_dict.values() if (i.b1.x + i.b2.x)/2 < 0.6 ]
+    panel_cell2 = [i for i in res.panel_dict.values() if 0.6 <= (i.b1.x + i.b2.x)/2 < 1.4 ]
+    panel_cell3 = [i for i in res.panel_dict.values() if (i.b1.x + i.b2.x)/2 >= 1.4 ]
+    
+
+    # Test whether correct thicknesses have been assigned
+    tsk_cell1 = [i.t_pnl for i in panel_cell1 if i.b1.x != i.b2.x]
+    tsk_cell2 = [i.t_pnl for i in panel_cell2 if i.b1.x != i.b2.x]
+    tsk_cell3 = [i.t_pnl for i in panel_cell3 if i.b1.x != i.b2.x]
+
+    spar_panels = [i.t_pnl for i in res.panel_dict.values() if i.b1.x == i.b2.x]
+
+    assert  None not in tsk_cell1 and None not in  tsk_cell2 and None not in  tsk_cell3
+    assert np.isclose(tsk_cell1, FixtWingbox.t_sk_cell[0]).all()
+    assert np.isclose(tsk_cell2, FixtWingbox.t_sk_cell[1]).all()  # FIXME alos includes spars of course
+    assert np.isclose(tsk_cell3, FixtWingbox.t_sk_cell[2]).all()
+    assert np.isclose(spar_panels, FixtWingbox.t_sp).all()
+
+    # Test whether all boom have been assigned an area and is non zero
+    assert [b.A != None and b.A != 0 for b in res.boom_dict.values()]
+    assert res.Ixx != 0
+
+    res.plot()
+
+def test_discretization_case1(Case1):
+    Case1._compute_boom_area(1.2)
+    assert np.isclose(Case1.boom_dict["a"].A, 750e-6)
+    assert np.isclose(Case1.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
+    assert np.isclose(Case1.boom_dict["c"].A, 591.7e-6, atol=1e-7)
+    assert np.isclose(Case1.boom_dict["d"].A, 591.7e-6, atol=1e-7)
+    assert np.isclose(Case1.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
+    assert np.isclose(Case1.boom_dict["f"].A, 750e-6, atol=1e-7)
+    Case1.plot()
 
     pass
+
+    pass
+ 
