@@ -178,7 +178,7 @@ class IdealWingbox():
                 bnd = (bnd_top + bnd_bot)/2
 
             # Get all upper  coords and sort them from low to high based on the x location
-            upper_coord = coord_arr[coord_arr[:,1] > bnd,:]
+            upper_coord = coord_arr[coord_arr[:,1] >= bnd,:]
             upper_coord = upper_coord[upper_coord[:,0].argsort(),:]
             
             # Sort the upper coords of the left spar and right spar 

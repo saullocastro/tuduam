@@ -65,8 +65,8 @@ def test_IdealPanel():
     
 
 
-def test_discretize_airfoil(FixtWingbox, naca24012, naca0012, naca45112):
-    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox)
+def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
+    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox1)
     max_pid = np.max([i.pid for i in res.panel_dict.values()])
     max_bid = np.max([i.bid for i in res.boom_dict.values()])
     assert max_pid  == len(res.panel_dict) - 1
@@ -86,10 +86,10 @@ def test_discretize_airfoil(FixtWingbox, naca24012, naca0012, naca45112):
     spar_panels = [i.t_pnl for i in res.panel_dict.values() if i.b1.x == i.b2.x]
 
     assert  None not in tsk_cell1 and None not in  tsk_cell2 and None not in  tsk_cell3
-    assert np.isclose(tsk_cell1, FixtWingbox.t_sk_cell[0]).all()
-    assert np.isclose(tsk_cell2, FixtWingbox.t_sk_cell[1]).all()  # FIXME alos includes spars of course
-    assert np.isclose(tsk_cell3, FixtWingbox.t_sk_cell[2]).all()
-    assert np.isclose(spar_panels, FixtWingbox.t_sp).all()
+    assert np.isclose(tsk_cell1, FixtWingbox1.t_sk_cell[0]).all()
+    assert np.isclose(tsk_cell2, FixtWingbox1.t_sk_cell[1]).all()  # FIXME alos includes spars of course
+    assert np.isclose(tsk_cell3, FixtWingbox1.t_sk_cell[2]).all()
+    assert np.isclose(spar_panels, FixtWingbox1.t_sp).all()
 
     # Test whether all boom have been assigned an area and is non zero
     assert [b.A != None and b.A != 0 for b in res.boom_dict.values()]
@@ -98,7 +98,7 @@ def test_discretize_airfoil(FixtWingbox, naca24012, naca0012, naca45112):
 
 def test_discretization_case1(case1):
     "See the used fixture for more information on the test"
-    case1._compute_boom_area(1.1958260743101399)
+    case1._compute_boom_areas(1.1958260743101399)
     assert np.isclose(case1.boom_dict["a"].A, 750e-6)
     assert np.isclose(case1.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
     assert np.isclose(case1.boom_dict["c"].A, 591.7e-6, atol=1e-7)
@@ -108,7 +108,7 @@ def test_discretization_case1(case1):
 
 def test_discretization_case2(case2):
     "See the used fixture for more information on the test"
-    case2._compute_boom_area(1.1958260743101399)
+    case2._compute_boom_areas(1.1958260743101399)
     assert case2.boom_dict["a"].A > 760e-6
     assert case2.boom_dict["c"].A > 600e-6
     assert case2.boom_dict["d"].A > 600e-6
@@ -121,5 +121,9 @@ def test_discretization_case2(case2):
     assert np.isclose(case2.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
     assert np.isclose(case2.boom_dict["f"].A, 750e-6 + 1.5e-3, atol=1e-7)
 
-
+def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
+    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
+    res.plot()
+    area_lst = res.read_cell_areas(True)
+    print(area_lst)
  

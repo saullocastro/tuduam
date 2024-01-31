@@ -97,7 +97,7 @@ def DSE2021OffDesignAnalysis():
     return tud.Propeller(**attr_dict)
 
 @pytest.fixture
-def FixtWingbox():
+def FixtWingbox1():
     pass
     attr_dict = {
         "rib_loc": np.linspace(0,1,9)**1.5*10,
@@ -107,6 +107,22 @@ def FixtWingbox():
         "area_str":20e-6,
         "t_sp":0.01,
         "str_cell":[6,8,6],
+        "booms_sk": 69,
+        "booms_spar": 5,
+    }
+    return tud.Wingbox(**attr_dict)
+
+@pytest.fixture
+def FixtWingbox2():
+    pass
+    attr_dict = {
+        "rib_loc": np.linspace(0,1,9)**1.5*10,
+        "n_cell":4,
+        "spar_loc_nondim":[0.3, 0.5, 0.75],
+        "t_sk_cell":[0.002,0.004,0.002, 0.003],
+        "area_str":20e-6,
+        "t_sp":0.01,
+        "str_cell":[6,8,6,4],
         "booms_sk": 69,
         "booms_spar": 5,
     }
@@ -210,7 +226,7 @@ def case1():
     pnl7.bid2 = 1
     pnl7.t_pnl = 3e-3
 
-    wingbox = struct.IdealWingbox(data_struct)
+    wingbox = struct.IdealWingbox(data_struct, width)
 
     wingbox.x_centroid = 0.6
     wingbox.y_centroid = 0.2
