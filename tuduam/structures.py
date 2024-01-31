@@ -1,10 +1,12 @@
 import numpy  as np
-from typing import Tuple
+from typing import Tuple, List
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 import scipy.constants as const
 from .data_structures import Wingbox
 from math import ceil
+from shapely.geometry import Polygon, Point
+from warnings import warn
 import pdb
 
 class Boom:
@@ -58,7 +60,7 @@ class IdealPanel:
         :return: The cell index of where the panel is located
         :rtype: int
         """        
-        cell_idx = np.asarray( (self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        cell_idx = np.asarray((self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
         if  not any(cell_idx):
             cell_idx = 0
         else:
@@ -87,8 +89,9 @@ class IdealPanel:
         return (x_comp, y_comp)
 
 class IdealWingbox():
-    def __init__(self, wingbox: Wingbox) -> None:
+    def __init__(self, wingbox: Wingbox, chord:float) -> None:
         self.wingbox_struct = wingbox
+        self.chord = chord
         self.x_centroid = None # datum attached to leading edge
         self.y_centroid = None
         self.panel_dict = {}
@@ -103,26 +106,128 @@ class IdealWingbox():
         return Ixx
 
     @property
-    def _panel_per_cell(self) -> list:
+    def _read_skin_panels_per_cell(self) -> List[int]:
         """ Returns a list with the amount of panels on the skin per cell. That is ignoring the panels
-        which are part of one the spars.
+        which are part of one the spars. This functions requires a fully filled out boom and panel dictionary
 
         :return: An n x m 2d list where n is the amount cells and m the amount of panels (might not be identical for each cell)
         :rtype: list
         """        
         panel_lst =  []
 
-        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)
+        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord
         for idx, spar_loc in enumerate(spar_loc_arr):
             if idx != len(spar_loc_arr) - 1:
                 panel_lst.append([i for i in self.panel_dict.values() if (spar_loc <= (i.b1.x + i.b2.x)/2 < spar_loc_arr[idx + 1]) and i.b1.x != i.b2.x])
             else:
                 panel_lst.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc and i.b1.x != i.b2.x])
         return panel_lst
+
+
+    def read_cell_areas(self, validate=False) -> List[float]:
+        """ Compute the area of each cell with the help of the shapely.geometry.Polygon class. When using this function for the first time
+        with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
+        show you n plots of the cell polygon where n is the amount of cells.
+
+        :param validate: When True will show the 3 plots described above, defaults to False
+        :type validate: bool, optional
+        :param validate:
+        :return: A list whic is m long where m is the amount of cells. Each element is the area
+        of the respective cell.
+        :rtype: List[float]
+        """        
+        bm_per_cell_lst =  []
+        area_lst =  []
+
+        # Get all the booms per cell
+        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord
+        for idx, spar_loc in enumerate(spar_loc_arr):
+            if idx != len(spar_loc_arr) - 1:
+                bm_per_cell_lst.append([i for i in self.boom_dict.values() if (spar_loc <= i.x <= spar_loc_arr[idx + 1])])
+            else:
+                bm_per_cell_lst.append([i for i in self.boom_dict.values() if  i.x >= spar_loc])
+        
+        # The code in this for loop is required to correctly sort the coordinates 
+        #so a polygon can be created from which the area is computed
+        for idx, cell in enumerate(bm_per_cell_lst):
+            x_lst = [i.x for i in cell]
+            y_lst = [i.y for i in cell]
+            coord_arr = np.vstack((x_lst, y_lst)).transpose()
+            if idx == 0:
+                # The boundary here is always chosen to be the leading edge
+                bnd = y_lst[x_lst.index(np.min(x_lst))] 
+            elif idx == self.wingbox_struct.n_cell - 1:
+                # The boundary here is always chosen to be the trailing edge
+                bnd = y_lst[x_lst.index(np.max(x_lst))] 
+            else:
+                # Get the vertices of the spar in order to always choose 
+                # the correct horizontal boundary to split from
+                idx_xmax = np.where(x_lst == np.max(x_lst))
+                idx_xmin = np.where(x_lst == np.min(x_lst))
+
+                y_right_max = np.max(np.array(y_lst)[idx_xmax])
+                y_right_min = np.min(np.array(y_lst)[idx_xmax])
+
+                y_left_max = np.max(np.array(y_lst)[idx_xmin])
+                y_left_min = np.min(np.array(y_lst)[idx_xmin])
+
+                # Select the limitng vertices and select the boundary by choosing the half way
+                # point between them.
+                bnd_top = np.min([y_right_max, y_left_max])
+                bnd_bot = np.max([y_right_min, y_left_min])
+                bnd = (bnd_top + bnd_bot)/2
+
+            # Get all upper  coords and sort them from low to high based on the x location
+            upper_coord = coord_arr[coord_arr[:,1] > bnd,:]
+            upper_coord = upper_coord[upper_coord[:,0].argsort(),:]
             
+            # Sort the upper coords of the left spar and right spar 
+            if idx != 0: # The first cell does not have a left spar
+                #left spar
+                spar_sort_idx = np.where(upper_coord[:,0] == np.min(upper_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
+                left_spar =  upper_coord[spar_sort_idx,:]
+                left_spar = left_spar[left_spar[:,1].argsort(),:]
+                upper_coord[spar_sort_idx,:] = left_spar
 
+                # right spar
+                spar_sort_idx = np.where(upper_coord[:,0] == np.max(upper_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
+                right_spar =  upper_coord[spar_sort_idx,:]
+                right_spar = right_spar[np.flip(right_spar[:,1].argsort()),:]
+                upper_coord[spar_sort_idx,:] = right_spar
 
-    def _compute_boom_area(self, chord) -> None:
+            # Get all lower coords and sort them from high to low based on the x location
+            lower_coord = coord_arr[coord_arr[:,1] < bnd,:]
+            lower_coord = np.flip(lower_coord[lower_coord[:,0].argsort(),:], axis=0)
+
+            # Sort the lower coords of the left spar internally 
+            if idx != 0: # The first cell does not have a left spar
+                # left spar
+                spar_sort_idx = np.where(lower_coord[:,0] == np.min(lower_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
+                left_spar = lower_coord[spar_sort_idx,:]
+                left_spar = left_spar[left_spar[:,1].argsort(),:]
+                lower_coord[spar_sort_idx,:] = left_spar
+
+                # right spar
+                spar_sort_idx = np.where(lower_coord[:,0] == np.max(lower_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
+                right_spar = lower_coord[spar_sort_idx,:]
+                right_spar = right_spar[np.flip(right_spar[:,1].argsort()),:]
+                lower_coord[spar_sort_idx,:] = right_spar
+
+            # An correct set of coordinates is now achieved
+            coord_arr = np.vstack((upper_coord, lower_coord)) 
+            coord_arr[0,:] = coord_arr[-1:] # Close the loop so the polygon can compute the area
+            poly = Polygon(coord_arr) # Create the actual polygon
+            area_lst.append(poly.area) # Get the area
+
+            if validate:
+                x,y = poly.exterior.xy
+                plt.hlines([bnd], np.min(x_lst), np.max(x_lst), "r")
+                plt.plot(x,y)
+                plt.show()
+
+        return area_lst
+
+    def _compute_boom_areas(self, chord) -> None:
         """ Function that creates all boom areas, program assumes a fully functional panel and boom
         dictionary where all values have the full classes assigned. Function can be used by user manually
         but it is generall advised to use the discretize_airfoil function to create a wingbox.
@@ -136,7 +241,7 @@ class IdealWingbox():
         # Find stringer area to add per cell
         str_contrib = []
         for idx, n_str in enumerate(self.wingbox_struct.str_cell):
-            str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._panel_per_cell[idx]))
+            str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._read_skin_panels_per_cell[idx]))
 
         # Define absolute spar location for use within the loop
         spar_loc_abs = np.array(self.wingbox_struct.spar_loc_nondim)*chord
@@ -155,9 +260,6 @@ class IdealWingbox():
 
             if len(str_contrib) != 0 and not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
-
-
-        
 
     def stress_analysis(self, intern_shear:float, internal_mz:float) ->  Tuple[float, dict]:
         """  TODO: Consider implementing as a method of IdealWingbox class
@@ -299,7 +401,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     top_interp, bot_interp = spline_airfoil_coord(path_coord, chord)
     x_centr, y_centr = get_centroids(path_coord)
 
-    wingbox = IdealWingbox(wingbox_struct)
+    wingbox = IdealWingbox(wingbox_struct, chord)
     wingbox.x_centroid =  x_centr*chord
     wingbox.y_centroid =  y_centr*chord
 
@@ -321,7 +423,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         boom = Boom()
         boom.bid = bid
         boom.x =  x_boom
-        boom.y = top_interp(x_boom)
+        boom.y = float(top_interp(x_boom))
 
         if boom.bid not in boom_dict.keys():
             boom_dict[boom.bid] = boom 
@@ -351,7 +453,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         boom = Boom()
         boom.bid = bid
         boom.x =  x_boom
-        boom.y = bot_interp(x_boom)
+        boom.y = float(bot_interp(x_boom))
         boom_dict[boom.bid] = boom
 
         pnl = IdealPanel()
@@ -460,7 +562,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.boom_dict.update(boom_dict)
     wingbox.panel_dict.update(panel_dict)
 
-    wingbox._compute_boom_area(chord)
+    wingbox._compute_boom_areas(chord)
 
     return wingbox
 
