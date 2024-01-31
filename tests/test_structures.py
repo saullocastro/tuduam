@@ -123,7 +123,7 @@ def test_discretization_case2(case2):
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    res.plot()
-    area_lst = res.read_cell_areas(True)
+    # res.plot()
+    area_lst = res.read_cell_areas()
     print(area_lst)
  
