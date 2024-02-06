@@ -17,6 +17,7 @@ class Boom:
         self.A = None  # Area boom
         self.x = None # X location
         self.y = None # Y location
+        self.sigma = None
 
     def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
         """ Returns the cell index of where the panel is located.
@@ -49,6 +50,7 @@ class IdealPanel:
         self.q_basic = None
         self.q_tot = None
         self.tau = None
+        self.dir_vec = None
     
     def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
         """ Returns the cell index of where the panel is located.
@@ -77,18 +79,35 @@ class IdealPanel:
         """        
         return np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2)
 
-    @property
-    def dir_vec(self) -> tuple:
+    def set_b1_to_b2_vector(self) -> tuple:
         try:
-            abs_len = np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2)
-            x_comp = (self.b2.x - self.b1.x)/abs_len
-            y_comp = (self.b2.y - self.b1.y)/abs_len
+            x_comp = (self.b2.x - self.b1.x)/self.length
+            y_comp = (self.b2.y - self.b1.y)/self.length
         except AttributeError as err:
             raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
-        
-        return (x_comp, y_comp)
+        self.dir_vec = (x_comp, y_comp)
+
+    def set_b2_to_b1_vector(self) -> tuple:
+        try:
+            x_comp = (self.b1.x - self.b2.x)/self.length
+            y_comp = (self.b1.y - self.b2.y)/self.length
+        except AttributeError as err:
+            raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
+        self.dir_vec =  (x_comp, y_comp)
 
 class IdealWingbox():
+    """ A class representing an idealized wingbox, containing methods to perform computations
+    on that instants and some accessed methods. It is not recommended to use as a standalone tool but should 
+    be using in conjunction with the discretize_airfoil function.
+
+    Assumptions
+    --------------------------------------------------------------------------------
+    - The x datum of the coordinate system should be attached to the leading edge of the 
+    wingbox
+    - Some methods such as the read_cell_area expect the first and last to begin and end on a vertex.
+
+
+    """    
     def __init__(self, wingbox: Wingbox, chord:float) -> None:
         self.wingbox_struct = wingbox
         self.chord = chord
@@ -124,8 +143,9 @@ class IdealWingbox():
         return panel_lst
 
 
-    def read_cell_areas(self, validate=False) -> List[float]:
-        """ Compute the area of each cell with the help of the shapely.geometry.Polygon class. When using this function for the first time
+    def _get_polygon_of_cells(self, validate=False) -> List[float]:
+        """ Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the 
+        class using the idealized_airfoil function. Errenous results or an error will be given in case this is not the case! When using this function for the first time
         with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
         show you n plots of the cell polygon where n is the amount of cells.
 
@@ -137,7 +157,7 @@ class IdealWingbox():
         :rtype: List[float]
         """        
         bm_per_cell_lst =  []
-        area_lst =  []
+        polygon_lst =  []
 
         # Get all the booms per cell
         spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord
@@ -148,7 +168,7 @@ class IdealWingbox():
                 bm_per_cell_lst.append([i for i in self.boom_dict.values() if  i.x >= spar_loc])
         
         # The code in this for loop is required to correctly sort the coordinates 
-        #so a polygon can be created from which the area is computed
+        # so a polygon can be created from which the area is computed
         for idx, cell in enumerate(bm_per_cell_lst):
             x_lst = [i.x for i in cell]
             y_lst = [i.y for i in cell]
@@ -217,7 +237,7 @@ class IdealWingbox():
             coord_arr = np.vstack((upper_coord, lower_coord)) 
             coord_arr[0,:] = coord_arr[-1:] # Close the loop so the polygon can compute the area
             poly = Polygon(coord_arr) # Create the actual polygon
-            area_lst.append(poly.area) # Get the area
+            polygon_lst.append(poly) # Get the area
 
             if validate:
                 x,y = poly.exterior.xy
@@ -225,7 +245,11 @@ class IdealWingbox():
                 plt.plot(x,y)
                 plt.show()
 
-        return area_lst
+        return polygon_lst
+
+    def read_cell_areas(self):
+        polygon_lst = self._get_polygon_of_cells()
+        return [i.area for i in polygon_lst]
 
     def _compute_boom_areas(self, chord) -> None:
         """ Function that creates all boom areas, program assumes a fully functional panel and boom
@@ -261,29 +285,151 @@ class IdealWingbox():
             if len(str_contrib) != 0 and not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
 
-    def stress_analysis(self, intern_shear:float, internal_mz:float) ->  Tuple[float, dict]:
-        """  TODO: Consider implementing as a method of IdealWingbox class
-        
+    def stress_analysis(self, intern_shear:float, internal_mz:float, shear_mod:float, validate=False) ->  Tuple[float, dict]:
+        """ 
         Perform stress analysis on  a wingbox section 
 
         List of assumptions (Most made in Megson, some for simplificatoin of code)
         ---------------------------------------
         - The effect of taper are not included see 21.2 (See megson) TODO: future implementation
         - Lift acts through the shear centre (no torque is created) TODO: future implementation
-        - Forces in the x-y plane are not considered 
+        - Stresses due to drag are not considered. 
 
 
 
-        :param airfoil: _description_
-        :type airfoil: IdealWingbox
         :param intern_shear: _description_
         :type intern_shear: float
+        :param internal_mz: _description_
+        :type internal_mz: float
+        :param shear_mod: _description_
+        :type shear_mod: float
         :return: _description_
         :rtype: Tuple[float, dict]
         """    
-        pass
 
-    def plot(self) -> None:
+        # First compute all the direct stresses
+        for boom in self.boom_dict.values():
+            boom.sigma = internal_mz*(boom.y - self.y_centroid)/self.Ixx
+
+        
+        # Start by computing basic shear stresses
+
+        cut_lst = [] #define list to 
+
+        # Loop over all cells and specify required conditions in order to cut
+        # We cut the upper panel left of each spar. Except for the last cell, here we cut to the
+        # right of the last spar. Hence the elif statement with one less condition
+        for idx, spar_loc in enumerate(self.wingbox_struct.spar_loc_nondim):
+            spar_loc *= self.chord
+            # find panel left of the spar and cut it it
+            if idx != len(self.wingbox_struct.spar_loc_nondim) - 1:
+                for pnl in self.panel_dict.values():
+                    cond1 = pnl.b1.x != pnl.b2.x # Remove the spars from selectioj
+                    cond2 = pnl.b2.y >= self.y_centroid and pnl.b1.y >= self.y_centroid # Only upper skin 
+                    cond3 = pnl.b1.x <= spar_loc  and pnl.b2.x <= spar_loc # Get the panel left of the spar
+                    cond4 = pnl.b1.x == spar_loc or pnl.b2.x == spar_loc # Only select panel attached to the spar
+                    if cond1 and cond2 and cond3 and cond4: # Combine all statements
+                        pnl.q_basic = 0 # Cut this panel
+                        cut_lst.append(pnl) 
+            # If are at the last cell cut both the left and right panel connected to the spar
+            elif idx ==  len(self.wingbox_struct.spar_loc_nondim) - 1:
+                for pnl in self.panel_dict.values():
+                    cond1 = pnl.b1.x != pnl.b2.x
+                    cond2 = pnl.b2.y >= self.y_centroid and pnl.b1.y >= self.y_centroid
+                    cond3 = pnl.b1.x == spar_loc or pnl.b2.x == spar_loc
+                    if cond1 and cond2 and cond3:
+                        pnl.q_basic = 0
+                        cut_lst.append(pnl)
+            # In case something goes wrong with the previous statements
+            else:
+                raise Exception(f"Something went wrong, more iterations were made than there are cells")
+            
+        cut_lst = sorted(cut_lst, key= lambda x1: np.min([x1.b1.x, x1.b2.x]))# Sort the cut panels based on their x location.
+            
+        # Get panels per cell excluding the right spar of that cell 
+        pnl_per_cell_lst = []
+        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord # dimensionalize and insert a zero
+        for idx, spar_loc in enumerate(spar_loc_arr):
+            # conditions for any cell except the last
+            if idx != len(spar_loc_arr) - 1:
+                pnl_per_cell_lst.append([i for i in self.panel_dict.values() if (spar_loc <= (i.b1.x + i.b2.x)/2 < spar_loc_arr[idx + 1])])
+            # Conditions for the last cell
+            else:
+                pnl_per_cell_lst.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc])
+            
+        shear_const = -intern_shear/self.Ixx # define -Sy/Ixx which is used repeatdly
+
+        # Chain from the cut panel per cell until all q_basic have been defined
+        for idx, cell in enumerate(pnl_per_cell_lst):
+            # Shows the selection of panels made, verify that the right spar is not included
+            if validate:
+                for panel in cell:
+                    x = [panel.b1.x, panel.b2.x]
+                    y = [panel.b1.y, panel.b2.y]
+                    plt.plot(x,y, ">-")
+                plt.show()
+
+            curr_pnl = cut_lst[idx] # set beginning of the q_basic chain
+            q_basic = 0
+            for pnl_num in range(len(cell) - 1):
+                # Find connected panels to boom 1 of the current panel except itself of course
+                b1_lst = [i for i in cell if (curr_pnl.b1 == i.b1 or curr_pnl.b1 == i.b2) and i != curr_pnl]
+                b2_lst = [i for i in cell if (curr_pnl.b2 == i.b1 or curr_pnl.b2 == i.b2)  and i != curr_pnl] # idem but for boom 2
+                # If b1 is attached to another panel and q_basic is not attached yet continue from this panel
+                if len(b1_lst) == 1 and b1_lst[0].q_basic == None:
+                    # Check if it was to boom 1
+                    if curr_pnl.b1 == b1_lst[0].b1:
+                        curr_pnl = b1_lst[0]
+                        q_basic += shear_const*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid)
+                        curr_pnl.q_basic =  q_basic
+                        curr_pnl.set_b1_to_b2_vector()
+                    # if not boom 1 then it was boom 2
+                    else:
+                        curr_pnl = b1_lst[0]
+                        q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
+                        curr_pnl.q_basic =  q_basic
+                        curr_pnl.set_b2_to_b1_vector()
+                # If b2 is attached to another panel and q_basic is not attached yet continue from this panel
+                elif len(b2_lst) == 1 and b2_lst[0].q_basic == None:
+                    # Check if it was to boom 1
+                    if curr_pnl.b2 == b2_lst[0].b2:
+                        curr_pnl = b2_lst[0]
+                        q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
+                        curr_pnl.q_basic =  q_basic
+                        curr_pnl.set_b2_to_b1_vector()
+                    # if not boom 1 then it was boom 2
+                    else:
+                        curr_pnl = b2_lst[0]
+                        q_basic += shear_const*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid)
+                        curr_pnl.q_basic =  q_basic
+                        curr_pnl.set_b1_to_b2_vector()
+                else: 
+                    raise Exception("No connecting panel was found")
+
+
+        area_lst = self.read_cell_areas()
+
+
+
+
+
+    def plot_direct_stresses(self) -> None:
+            plt.figure(figsize=(10,1))
+            x_lst = np.array([i.x for i in self.boom_dict.values()])
+            y_lst = np.array([i.y for i in self.boom_dict.values()])
+            stress_arr = np.array([i.sigma for i in self.boom_dict.values()])
+            norm = plt.Normalize(stress_arr.min(), stress_arr.max())
+            plt.scatter(x_lst, y_lst, c=stress_arr, cmap='viridis', norm=norm)
+            plt.colorbar(label='Direct Stress ')
+
+            y_arr  = [i.y for i in self.boom_dict.values()]
+            y_max = np.max(y_arr)
+            y_min = np.min(y_arr)
+            plt.ylim([ y_min - 0.1,y_max + 0.1])
+            plt.show()
+
+
+    def plot_geometry(self) -> None:
         plt.figure(figsize=(10,1))
         for key, panel in self.panel_dict.items():
             x = [panel.b1.x, panel.b2.x]

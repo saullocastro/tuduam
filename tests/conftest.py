@@ -269,3 +269,138 @@ def naca0012():
 @pytest.fixture
 def naca45112():
     return os.path.realpath(os.path.join(os.path.dirname(__file__), "naca45112.txt"))
+
+@pytest.fixture
+def case23_5_Megson():
+    """"This case set ups the wingbox of problem 23.5 shown in Megson and will serve as the main verification of the shear
+    flows of values"""
+    pass
+    attr_dict = {
+        "rib_loc": np.linspace(0,1,9)**1.5*10,
+        "n_cell":2,
+        "spar_loc_nondim":[635/1398],
+        "t_sk_cell":[2, 1.5],
+        "area_str":0,
+        "t_sp":0,
+        "str_cell":[1,1],
+        "booms_sk": 0,
+        "booms_spar": 0,
+    }
+    data_struct = tud.Wingbox(**attr_dict)
+
+    width = 1.398
+
+    boom1 = struct.Boom()
+    boom1.x = 0
+    boom1.y = 0.076
+    boom1.A = 1290e-6
+    boom1.bid = 1
+
+    boom2 = struct.Boom()
+    boom2.x = 0.635
+    boom2.y = 0.
+    boom2.A = 1936e-6
+    boom2.bid = 2
+
+    boom3 = struct.Boom()
+    boom3.x = 1.128
+    boom3.y = 0.102
+    boom3.A = 645e-6
+    boom3.bid = 3
+    
+    boom4 = struct.Boom()
+    boom4.x = 1.128
+    boom4.y = 0.304
+    boom4.A = 645e-6
+    boom4.bid = 4
+    
+    boom5 = struct.Boom()
+    boom5.x = 0.635
+    boom5.y = 0.406
+    boom5.A = 1936e-6
+    boom5.bid = 5
+    
+    boom6 = struct.Boom()
+    boom6.x = 0
+    boom6.y = 0.330
+    boom6.A = 1290e-6
+    boom6.bid = 6
+
+    # Create panels
+    pnl1 = struct.IdealPanel()
+    pnl1.pid = 1
+    pnl1.b1 = boom6
+    pnl1.bid1 = 6
+    pnl1.b2 = boom1
+    pnl1.bid2 = 1
+    pnl1.t_pnl = 1.625e-3
+
+    pnl2 = struct.IdealPanel()
+    pnl2.pid = 2
+    pnl2.b1 = boom1
+    pnl2.bid1 = 1
+    pnl2.b2 = boom2
+    pnl2.bid2 = 2 
+    pnl2.t_pnl = 0.915e-3
+
+    pnl3 = struct.IdealPanel()
+    pnl3.pid = 3
+    pnl3.b1 = boom2
+    pnl3.bid1 = 2
+    pnl3.b2 = boom3
+    pnl3.bid2 = 3
+    pnl3.t_pnl = 0.559e-3
+
+    pnl4 = struct.IdealPanel()
+    pnl4.pid = 4
+    pnl4.b1 = boom3
+    pnl4.bid1 = 3
+    pnl4.b2 = boom4
+    pnl4.bid2 = 4
+    pnl4.t_pnl = 1.220e-3
+
+    pnl5 = struct.IdealPanel()
+    pnl5.pid = 5
+    pnl5.b1 = boom4
+    pnl5.bid1 = 4
+    pnl5.b2 = boom5
+    pnl5.bid2 = 5
+    pnl5.t_pnl = 0.559e-3
+
+    pnl6 = struct.IdealPanel()
+    pnl6.pid = 6
+    pnl6.b1 = boom5
+    pnl6.bid1 = 5
+    pnl6.b2 = boom6
+    pnl6.bid2 = 6
+    pnl6.t_pnl = 0.915e-3
+
+    pnl7 = struct.IdealPanel()
+    pnl7.pid = 7
+    pnl7.b1 = boom2
+    pnl7.bid1 = 2
+    pnl7.b2 = boom5
+    pnl7.bid2 = 5
+    pnl7.t_pnl = 2.032e-3
+
+    wingbox = struct.IdealWingbox(data_struct, width)
+
+    wingbox.x_centroid = 0
+    wingbox.y_centroid = 0.203
+    wingbox.boom_dict = dict(a=boom1,
+                             b=boom2,
+                             c=boom3,
+                             d=boom4,
+                             e=boom5,
+                             f=boom6
+                             )
+    wingbox.panel_dict = dict(a=pnl1,
+                              b=pnl2,
+                              c=pnl3,
+                              d=pnl4,
+                              e=pnl5,
+                              f=pnl6,
+                              g=pnl7
+                              )
+    wingbox.read_cell_areas = lambda : [0.232, 0.258]
+    return wingbox
