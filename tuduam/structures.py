@@ -69,7 +69,6 @@ class IdealPanel:
             cell_idx = cell_idx.nonzero()[0][-1]
         return cell_idx
     
-    @property
     def length(self) -> float:
         """ Length of the panel based on the coordinates of the boom. Boom center is used as the 
         assumption is that the booms are infitestimally small.
@@ -81,19 +80,19 @@ class IdealPanel:
 
     def set_b1_to_b2_vector(self) -> tuple:
         try:
-            x_comp = (self.b2.x - self.b1.x)/self.length
-            y_comp = (self.b2.y - self.b1.y)/self.length
+            x_comp = (self.b2.x - self.b1.x)/self.length()
+            y_comp = (self.b2.y - self.b1.y)/self.length()
         except AttributeError as err:
             raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
-        self.dir_vec = (x_comp, y_comp)
+        self.dir_vec = [x_comp, y_comp]
 
     def set_b2_to_b1_vector(self) -> tuple:
         try:
-            x_comp = (self.b1.x - self.b2.x)/self.length
-            y_comp = (self.b1.y - self.b2.y)/self.length
+            x_comp = (self.b1.x - self.b2.x)/self.length()
+            y_comp = (self.b1.y - self.b2.y)/self.length()
         except AttributeError as err:
             raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
-        self.dir_vec =  (x_comp, y_comp)
+        self.dir_vec =  [x_comp, y_comp]
 
 class IdealWingbox():
     """ A class representing an idealized wingbox, containing methods to perform computations
@@ -149,6 +148,11 @@ class IdealWingbox():
         with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
         show you n plots of the cell polygon where n is the amount of cells.
 
+        Assumptions
+        -----------------------------------------------------------------------------
+        - Function is built for a object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one
+        point is the furthest ahead. The same goes for cell n but with the trailing edge
+
         :param validate: When True will show the 3 plots described above, defaults to False
         :type validate: bool, optional
         :param validate:
@@ -163,9 +167,9 @@ class IdealWingbox():
         spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord
         for idx, spar_loc in enumerate(spar_loc_arr):
             if idx != len(spar_loc_arr) - 1:
-                bm_per_cell_lst.append([i for i in self.boom_dict.values() if (spar_loc <= i.x <= spar_loc_arr[idx + 1])])
+                bm_per_cell_lst.append([i for i in self.boom_dict.values() if (spar_loc <= i.x <= spar_loc_arr[idx + 1]) or np.isclose(i.x, spar_loc) or np.isclose(i.x, spar_loc_arr[idx + 1])])
             else:
-                bm_per_cell_lst.append([i for i in self.boom_dict.values() if  i.x >= spar_loc])
+                bm_per_cell_lst.append([i for i in self.boom_dict.values() if  (i.x >= spar_loc) or np.isclose(i.x, spar_loc)])
         
         # The code in this for loop is required to correctly sort the coordinates 
         # so a polygon can be created from which the area is computed
@@ -247,8 +251,8 @@ class IdealWingbox():
 
         return polygon_lst
 
-    def read_cell_areas(self):
-        polygon_lst = self._get_polygon_of_cells()
+    def read_cell_areas(self, validate= False):
+        polygon_lst = self._get_polygon_of_cells(validate)
         return [i.area for i in polygon_lst]
 
     def _compute_boom_areas(self, chord) -> None:
@@ -276,16 +280,16 @@ class IdealWingbox():
             pnl_lst = [pnl for pnl in self.panel_dict.values() if pnl.bid1 == boom.bid or pnl.bid2 == boom.bid]
             for pnl in pnl_lst:
                 if boom.bid == pnl.bid1:
-                    boom_area += pnl.t_pnl*pnl.length/6*(2 + (pnl.b2.y - self.y_centroid )/(boom.y - self.y_centroid))
+                    boom_area += pnl.t_pnl*pnl.length()/6*(2 + (pnl.b2.y - self.y_centroid )/(boom.y - self.y_centroid))
                 else:
-                    boom_area += pnl.t_pnl*pnl.length/6*(2 + (pnl.b1.y - self.y_centroid)/(boom.y - self.y_centroid))
+                    boom_area += pnl.t_pnl*pnl.length()/6*(2 + (pnl.b1.y - self.y_centroid)/(boom.y - self.y_centroid))
 
             boom.A = boom_area
 
             if len(str_contrib) != 0 and not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
 
-    def stress_analysis(self, intern_shear:float, internal_mz:float, shear_mod:float, validate=False) ->  Tuple[float, dict]:
+    def stress_analysis(self,  intern_shear:float, internal_mz:float, shear_centre_rel : float, shear_mod:float, validate=False) ->  Tuple[float, dict]:
         """ 
         Perform stress analysis on  a wingbox section 
 
@@ -362,7 +366,8 @@ class IdealWingbox():
         # Chain from the cut panel per cell until all q_basic have been defined
         for idx, cell in enumerate(pnl_per_cell_lst):
             # Shows the selection of panels made, verify that the right spar is not included
-            if validate:
+            warn("Line here under needs to be changed")
+            if False:
                 for panel in cell:
                     x = [panel.b1.x, panel.b2.x]
                     y = [panel.b1.y, panel.b2.y]
@@ -388,7 +393,7 @@ class IdealWingbox():
                         curr_pnl = b1_lst[0]
                         q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
                         curr_pnl.q_basic =  q_basic
-                        curr_pnl.set_b2_to_b1_vector()
+                        curr_pnl.set_b2_to_b1_vector() # Set the direction in which the shear flow was defined
                 # If b2 is attached to another panel and q_basic is not attached yet continue from this panel
                 elif len(b2_lst) == 1 and b2_lst[0].q_basic == None:
                     # Check if it was to boom 1
@@ -396,7 +401,7 @@ class IdealWingbox():
                         curr_pnl = b2_lst[0]
                         q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
                         curr_pnl.q_basic =  q_basic
-                        curr_pnl.set_b2_to_b1_vector()
+                        curr_pnl.set_b2_to_b1_vector() # Set the direction in which the shear flow was defined
                     # if not boom 1 then it was boom 2
                     else:
                         curr_pnl = b2_lst[0]
@@ -407,11 +412,194 @@ class IdealWingbox():
                     raise Exception("No connecting panel was found")
 
 
-        area_lst = self.read_cell_areas()
+        #=========================================================================
+        # Now Compute the complementary shear flows and the twist per unit lengt   
+        #========================================================================
+        area_lst = self.read_cell_areas() # Get the area per cell
+        centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in self._get_polygon_of_cells()] # get the centroid of each cell
+
+        # Get the panel per cell, that is the fully defined cell. 
+        pnl_per_cell_lst2 = []
+        spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord # dimensionalize and insert a zero
+        for idx, spar_loc in enumerate(spar_loc_arr):
+            # conditions for any cell except the last
+            if idx != len(spar_loc_arr) - 1:
+                pnl_per_cell_lst2.append([i for i in self.panel_dict.values() if (spar_loc <= (i.b1.x + i.b2.x)/2 <= spar_loc_arr[idx + 1])])
+            # Conditions for the last cell
+            else:
+                pnl_per_cell_lst2.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc])
+        
+        # Define A and b matrix to compute qs,1 qs,2 \cdots qs,n and dtheta/dz 
+        n_cell =  self.wingbox_struct.n_cell  # shortcut to amount of cells
+        b_arr = np.zeros((n_cell + 1,1))
+        A_arr = np.zeros((n_cell + 1, n_cell + 1,))
+
+        # Set up the equations for the twist per unit length in array A
+        # Everything counterclockwise (ccw) is set up as positive. We can check whether something is ccw 
+        # as we have the direction the q_basic was set up and the centroid of each cell thus a simple cross 
+        # product will tell us so
+        for idx, cell in enumerate(pnl_per_cell_lst2):
+            # Flag to easily verify whether the cell geometry selection makes sense
+            if validate:
+                for panel in cell:
+                    x = [panel.b1.x, panel.b2.x]
+                    y = [panel.b1.y, panel.b2.y]
+                    plt.plot(x,y, ">-")
+                plt.show()
+
+            if idx == 0:
+                x_max = np.max([i.b1.x for i in cell])
+                # first assign dtheta/dz
+                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
+                A_arr[idx, idx + 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_max)])
+            elif  0 < idx < len(pnl_per_cell_lst2) - 1:
+                x_min = np.min([i.b1.x for i in cell])
+                x_max = np.max([i.b1.x for i in cell])
+                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, idx - 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_min) ])
+                A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
+                A_arr[idx, idx + 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_max)])
+                pass
+            elif idx == len(pnl_per_cell_lst2) - 1:
+                x_min = np.min([i.b1.x for i in cell])
+                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, idx - 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_min)])
+                A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
+            else: 
+                raise Exception(f"Something went wrong, more iterations were made then there were cells")
+        
+        # Set up eqautions for twist per unit legnth but in b array
+        for idx, cell in enumerate(pnl_per_cell_lst2):
+            b_ele = 0
+            for pnl in cell:
+                r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
+                r_rel_vec = r_abs_vec - centroid_lst[idx]
+                # When we have a panel that was not cut (they do not have a defined direction yet)
+                if pnl.q_basic != 0: 
+                    sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                    b_ele += sign*pnl.q_basic*pnl.length()/pnl.t_pnl
+                elif pnl.q_basic == 0:
+                    b_ele += pnl.q_basic*pnl.length()/pnl.t_pnl
+                else:
+                    raise Exception(f"Line should not have been reached")
+            b_arr[idx,0] = b_ele
 
 
+        #------------------------------- Fill in the final equatin, moment equivalence ------------------
+        for idx, cell in enumerate(pnl_per_cell_lst2):
+            A_arr[n_cell, idx] = 2*area_lst[idx]
+        
+        sum = 0
+        for pnl in self.panel_dict.values():
+            if pnl.q_basic == 0:
+                continue
+            else:
+                r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
+                moment = pnl.q_basic*np.cross(r_abs_vec, pnl.dir_vec)*pnl.length()
+                sum += moment
 
+        b_arr[n_cell, 0] = -1*sum + intern_shear*shear_centre_rel*self.chord
 
+        # Get the actual solution
+        X = np.linalg.solve(A_arr, b_arr)
+        qs_lst = X[:-1,0]
+        dtheta_dz = X[-1]
+
+        #---------------------- Apply the solution to all of the panels (so sorry about the flow of logic and indentation) -------------------------
+        # general logic is as follows (felt this was necessary else only God knows what happens here in a month)
+        # 1. check whether we are at first cell, last cell or somwhere in between
+        # 2. Depending on what cell check if we are on the left, right spar or not on a spar at all
+        # 3. Act accordingly to prevous step, if we are somewhere in between some logic is required to define the direction of that panel
+
+        for idx, cell in enumerate(pnl_per_cell_lst2):
+            x_max = np.max([i.b1.x for i in cell]) # get maximum x value in cell (will help us find spars)
+            x_min = np.min([i.b1.x for i in cell]) # idem but for  minimum
+            # Now we will loop over all panel 
+            for pnl in cell:
+                r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
+                r_rel_vec = r_abs_vec - centroid_lst[idx]
+                if idx == 0:
+                    # If it is on the right spar qs,0+1 will also have an influence
+                    if (pnl.b1.x == pnl.b2.x == x_max):
+                        sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                        pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx] - sign*qs_lst[idx + 1]
+                        pnl.tau = pnl.q_tot/pnl.t_pnl
+                    # Else if it not on the right spar just add qs0
+                    else:
+                        # Check if it was not the cut panel
+                        if pnl.q_basic != 0: 
+                            sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                            pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                        # if it is a cut panel
+                        elif pnl.q_basic == 0:
+                            pnl.q_tot = qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                            # Define ccw direction as these panel did not have a direction yet
+                            pnl.set_b1_to_b2_vector()
+                            if np.cross(r_rel_vec, pnl.dir_vec) > 0:
+                                pass
+                            else:
+                                pnl.set_b2_to_b1_vector()
+                        else:
+                            raise Exception(f"Line should not have been reached")
+                elif idx != 0 and idx < len(pnl_per_cell_lst2) - 1:
+                    # If it is on the right spar qs,0+1 will also have an influence
+                    if (pnl.b1.x == pnl.b2.x == x_max):
+                        sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                        pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx] - sign*qs_lst[idx + 1]
+                        pnl.tau = pnl.q_tot/pnl.t_pnl
+                    # If it is on the left spar
+                    elif (pnl.b1.x == pnl.b2.x == x_min) :
+                        sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                        pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx] - sign*qs_lst[idx - 1]
+                        pnl.tau = pnl.q_tot/pnl.t_pnl
+                    # Else if it not on the right spar just add qs,n
+                    else:
+                        # Check if it was not the cut panel
+                        if pnl.q_basic != 0: 
+                            sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                            pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                        # if it is a cut panel
+                        elif pnl.q_basic == 0:
+                            pnl.q_tot = qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                            # Define ccw direction as these panel did not have a direction yet
+                            pnl.set_b1_to_b2_vector()
+                            if np.cross(r_rel_vec, pnl.dir_vec) > 0:
+                                pass
+                            else:
+                                pnl.set_b2_to_b1_vector()
+                        else:
+                            raise Exception(f"Line should not have been reached")
+                elif idx == len(pnl_per_cell_lst2) - 1:
+                    # If it is on the left spar
+                    if (pnl.b1.x == pnl.b2.x == x_min) :
+                        sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                        pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx] - sign*qs_lst[idx - 1]
+                        pnl.tau = pnl.q_tot/pnl.t_pnl
+                    # Else if it not on the right spar just add qs,n
+                    else:
+                        # Check if it was not the cut panel
+                        if pnl.q_basic != 0: 
+                            sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
+                            pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                        # if it is a cut panel
+                        elif pnl.q_basic == 0:
+                            pnl.q_tot = qs_lst[idx]
+                            pnl.tau = pnl.q_tot/pnl.t_pnl
+                            # Define ccw direction as these panel did not have a direction yet
+                            pnl.set_b1_to_b2_vector()
+                            if np.cross(r_rel_vec, pnl.dir_vec) > 0:
+                                pass
+                            else:
+                                pnl.set_b2_to_b1_vector()
+                        else:
+                            raise Exception(f"Line should not have been reached")
+        return  qs_lst, dtheta_dz
 
     def plot_direct_stresses(self) -> None:
             plt.figure(figsize=(10,1))
