@@ -366,8 +366,7 @@ class IdealWingbox():
         # Chain from the cut panel per cell until all q_basic have been defined
         for idx, cell in enumerate(pnl_per_cell_lst):
             # Shows the selection of panels made, verify that the right spar is not included
-            warn("Line here under needs to be changed")
-            if False:
+            if validate:
                 for panel in cell:
                     x = [panel.b1.x, panel.b2.x]
                     y = [panel.b1.y, panel.b2.y]
@@ -487,9 +486,11 @@ class IdealWingbox():
 
 
         #------------------------------- Fill in the final equatin, moment equivalence ------------------
+        # Contribution from the complementary shear flows
         for idx, cell in enumerate(pnl_per_cell_lst2):
             A_arr[n_cell, idx] = 2*area_lst[idx]
         
+        # Contribution to b_arr from basic shear flows and shear force itself
         sum = 0
         for pnl in self.panel_dict.values():
             if pnl.q_basic == 0:
@@ -615,6 +616,29 @@ class IdealWingbox():
             y_min = np.min(y_arr)
             plt.ylim([ y_min - 0.1,y_max + 0.1])
             plt.show()
+
+    def plot_shear_stress(self) -> None:
+        fig = plt.figure(figsize=(10, 1))
+        ax = plt.gca()
+
+        # Assuming each panel has a 'stress' attribute for demonstration
+        stress_values = np.abs([panel.tau for panel in self.panel_dict.values()])/1e6
+        norm = plt.Normalize(stress_values.min(), stress_values.max())
+        cmap = plt.cm.viridis
+
+        for key, panel in self.panel_dict.items():
+            x = [panel.b1.x, panel.b2.x]
+            y = [panel.b1.y, panel.b2.y]
+            col = cmap(norm(abs(panel.tau/1e6)))
+            plt.plot(x, y, color=col, marker='>')
+
+        plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), label='Stress Value', ax=ax )
+
+        y_arr = [i.y for i in self.boom_dict.values()]
+        y_max = np.max(y_arr)
+        y_min = np.min(y_arr)
+        plt.ylim([y_min - 0.1, y_max + 0.1])
+        plt.show()
 
 
     def plot_geometry(self) -> None:

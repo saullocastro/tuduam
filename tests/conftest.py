@@ -100,7 +100,6 @@ def DSE2021OffDesignAnalysis():
 def FixtWingbox1():
     pass
     attr_dict = {
-        "rib_loc": np.linspace(0,1,9)**1.5*10,
         "n_cell":3,
         "spar_loc_nondim":[0.3, 0.7],
         "t_sk_cell":[0.002,0.004,0.002],
@@ -116,15 +115,14 @@ def FixtWingbox1():
 def FixtWingbox2():
     pass
     attr_dict = {
-        "rib_loc": np.linspace(0,1,9)**1.5*10,
         "n_cell":4,
         "spar_loc_nondim":[0.3, 0.5, 0.75],
-        "t_sk_cell":[0.002,0.004,0.002, 0.003],
+        "t_sk_cell":[0.004,0.004,0.004, 0.004],
         "area_str":20e-6,
-        "t_sp":0.01,
-        "str_cell":[6,8,6,4],
-        "booms_sk": 69,
-        "booms_spar": 5,
+        "t_sp":0.001,
+        "str_cell":[4,8,7,20],
+        "booms_sk": 100,
+        "booms_spar": 15,
     }
     return tud.Wingbox(**attr_dict)
 
@@ -133,7 +131,6 @@ def case1():
     """"This case set ups the wingbox shown on page 560 of Megson"""
     pass
     attr_dict = {
-        "rib_loc": np.linspace(0,1,9)**1.5*10,
         "n_cell":2,
         "spar_loc_nondim":[0.5],
         "t_sk_cell":[2, 1.5],
@@ -276,7 +273,6 @@ def case23_5_Megson():
     flows of values"""
     pass
     attr_dict = {
-        "rib_loc": np.linspace(0,1,9)**1.5*10,
         "n_cell":2,
         "spar_loc_nondim":[635/1398],
         "t_sk_cell":[2, 1.5],

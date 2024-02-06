@@ -71,13 +71,23 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
     assert [b.A != None and b.A != 0 for b in res.boom_dict.values()]
     assert res.Ixx != 0
 
-def test_direct_stress(FixtWingbox1, naca45112):
+def test_stress1(FixtWingbox1, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox1)
     res.stress_analysis(48e3, 200e4, 0.4, 80e9, validate=False)
-    # res.plot_direct_stresses()
-    pass
+    # res.plot_shear_stress()
 
-def test_discretization_case1(case1):
+    assert all([i.sigma is not None for i in res.boom_dict.values()])
+    assert all([i.tau is not None for i in res.panel_dict.values()])
+
+def test_stress2(FixtWingbox2, naca45112):
+    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
+    res.stress_analysis(48e3, 200e4, 0.3, 80e9, validate=False)
+    # res.plot_shear_stress()
+
+    assert all([i.sigma is not None for i in res.boom_dict.values()])
+    assert all([i.tau is not None for i in res.panel_dict.values()])
+
+def test_boom_sizing_based_of_skin(case1):
     "See the used fixture for more information on the test"
     case1._compute_boom_areas(1.1958260743101399)
     assert np.isclose(case1.boom_dict["a"].A, 750e-6)
@@ -87,8 +97,8 @@ def test_discretization_case1(case1):
     assert np.isclose(case1.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
     assert np.isclose(case1.boom_dict["f"].A, 750e-6, atol=1e-7)
 
-def test_discretization_case2(case2):
-    "See the used fixture for more information on the test"
+def test_contribution_stringers(case2):
+    "See the used fixture for more informatdion on the test"
     case2._compute_boom_areas(1.1958260743101399)
     assert case2.boom_dict["a"].A > 760e-6
     assert case2.boom_dict["c"].A > 600e-6

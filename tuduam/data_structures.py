@@ -145,8 +145,6 @@ class Propeller(Parent):
 
 
 class Wingbox(Parent):
-    rib_loc:list
-    """A list of the rib locations in meters"""    
     n_cell: int
     """"The amount of cells in the wingbox structure"""
     spar_loc_nondim:list
