@@ -303,13 +303,13 @@ def case23_5_Megson():
     boom2.bid = 2
 
     boom3 = struct.Boom()
-    boom3.x = 1.128
+    boom3.x = 1.398
     boom3.y = 0.102
     boom3.A = 645e-6
     boom3.bid = 3
     
     boom4 = struct.Boom()
-    boom4.x = 1.128
+    boom4.x = 1.398
     boom4.y = 0.304
     boom4.A = 645e-6
     boom4.bid = 4
@@ -334,6 +334,7 @@ def case23_5_Megson():
     pnl1.b2 = boom1
     pnl1.bid2 = 1
     pnl1.t_pnl = 1.625e-3
+    pnl1.length = lambda : 0.254 # Force length of the panel
 
     pnl2 = struct.IdealPanel()
     pnl2.pid = 2
@@ -342,6 +343,7 @@ def case23_5_Megson():
     pnl2.b2 = boom2
     pnl2.bid2 = 2 
     pnl2.t_pnl = 0.915e-3
+    pnl2.length = lambda : 0.647 # Force length of the panel
 
     pnl3 = struct.IdealPanel()
     pnl3.pid = 3
@@ -350,6 +352,7 @@ def case23_5_Megson():
     pnl3.b2 = boom3
     pnl3.bid2 = 3
     pnl3.t_pnl = 0.559e-3
+    pnl3.length = lambda : 0.775 # Force length of the panel
 
     pnl4 = struct.IdealPanel()
     pnl4.pid = 4
@@ -358,6 +361,7 @@ def case23_5_Megson():
     pnl4.b2 = boom4
     pnl4.bid2 = 4
     pnl4.t_pnl = 1.220e-3
+    pnl4.length = lambda : 0.202 # Force length of the panel
 
     pnl5 = struct.IdealPanel()
     pnl5.pid = 5
@@ -366,6 +370,7 @@ def case23_5_Megson():
     pnl5.b2 = boom5
     pnl5.bid2 = 5
     pnl5.t_pnl = 0.559e-3
+    pnl5.length = lambda : 0.775 # force length of the panel
 
     pnl6 = struct.IdealPanel()
     pnl6.pid = 6
@@ -374,6 +379,7 @@ def case23_5_Megson():
     pnl6.b2 = boom6
     pnl6.bid2 = 6
     pnl6.t_pnl = 0.915e-3
+    pnl6.length = lambda : 0.647 # Force length of the panel
 
     pnl7 = struct.IdealPanel()
     pnl7.pid = 7
@@ -382,6 +388,7 @@ def case23_5_Megson():
     pnl7.b2 = boom5
     pnl7.bid2 = 5
     pnl7.t_pnl = 2.032e-3
+    pnl7.length = lambda : 0.406 # Force length of the panel
 
     wingbox = struct.IdealWingbox(data_struct, width)
 
@@ -403,4 +410,19 @@ def case23_5_Megson():
                               g=pnl7
                               )
     wingbox.read_cell_areas = lambda : [0.232, 0.258]
+    
+    # Some placeholder classes so we can get the correct centroid without chaning 
+    # the source code. The normal function for the centroids does not work
+    # due the assumptions of the leading and trailing edge
+    class centroid:
+        def __init__(self, arr) -> None:
+            self.xy = arr
+
+    class Foo:
+        def __init__(self, arr) -> None:
+            self.centroid = centroid(arr)
+
+    cell1 = Foo([[0.3175],[0.203]])
+    cell2 = Foo([[1.0165],[0.203]])
+    wingbox._get_polygon_of_cells = lambda : [cell1, cell2]
     return wingbox
