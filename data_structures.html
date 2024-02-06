@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
@@ -33,9 +33,9 @@
     <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
@@ -57,7 +57,6 @@
   <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
-
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
@@ -97,10 +96,8 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <header>
   
-    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
@@ -208,18 +205,15 @@ document.write(`
   
 </div>
 
-    </div>
+    </header>
   
-  </header>
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -269,6 +263,15 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -422,6 +425,12 @@ document.write(`
 Odd integer</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Aerodynamics.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Aerodynamics.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -488,6 +497,12 @@ Odd integer</p>
 <dt class="sig sig-object py" id="tuduam.data_structures.Airfoil.thickness_to_chord">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thickness_to_chord</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.Airfoil.thickness_to_chord" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Airfoil.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Airfoil.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -715,6 +730,12 @@ the elements x_rotor_locations. eg [-6,-3,3,6]. See section about
 coordinate systems if you have questions regardign this.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Engine.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Engine.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -852,6 +873,12 @@ coordinate systems if you have questions regardign this.</p>
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wingloading</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.FlightPerformance.wingloading" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.FlightPerformance.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.FlightPerformance.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -952,6 +979,12 @@ coordinate systems if you have questions regardign this.</p>
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width_fuselage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.Fuselage.width_fuselage" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Fuselage.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Fuselage.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -1015,6 +1048,12 @@ coordinate systems if you have questions regardign this.</p>
 <dt class="sig sig-object py" id="tuduam.data_structures.HybridPowertrain.fuel_cell_mass">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fuel_cell_mass</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.HybridPowertrain.fuel_cell_mass" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.HybridPowertrain.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.HybridPowertrain.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1245,6 +1284,12 @@ coordinate systems if you have questions regardign this.</p>
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">young_modulus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.Material.young_modulus" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Material.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Material.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -1272,6 +1317,12 @@ coordinate systems if you have questions regardign this.</p>
 <dt class="sig sig-object py" id="tuduam.data_structures.Parent.load_from_json">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/data_structures.html#Parent.load_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.data_structures.Parent.load_from_json" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Parent.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Parent.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1428,6 +1479,12 @@ coordinate systems if you have questions regardign this.</p>
 <dt class="sig sig-object py" id="tuduam.data_structures.Propeller.xi_0">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xi_0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Propeller.xi_0" title="Link to this definition">#</a></dt>
 <dd><p>“Non-dimensional hub radius (r_hub/R) [-]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Propeller.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Propeller.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1929,6 +1986,12 @@ positioning of the wing</p>
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_mac</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.SingleWing.y_mac" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.SingleWing.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.SingleWing.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -1993,6 +2056,12 @@ positioning of the wing</p>
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">oem</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.VTOL.oem" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.VTOL.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.VTOL.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class pydantic_model">
@@ -2004,18 +2073,13 @@ positioning of the wing</p>
 <span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wingbox&quot;</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;rib_loc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rib Loc&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
-<span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;n_cell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;N Cell&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;spar_loc_dimless&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;spar_loc_nondim&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Spar Loc Dimless&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Spar Loc Nondim&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;t_sk_cell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2047,9 +2111,8 @@ positioning of the wing</p>
 <span class="w">   </span><span class="p">},</span>
 <span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;rib_loc&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;n_cell&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;spar_loc_dimless&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;spar_loc_nondim&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;t_sk_cell&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;t_sp&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="s2">&quot;area_str&quot;</span><span class="p">,</span>
@@ -2073,8 +2136,7 @@ positioning of the wing</p>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.booms_sk" title="tuduam.data_structures.Wingbox.booms_sk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">booms_sk</span> <span class="pre">(int)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.booms_spar" title="tuduam.data_structures.Wingbox.booms_spar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">booms_spar</span> <span class="pre">(int)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.n_cell" title="tuduam.data_structures.Wingbox.n_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_cell</span> <span class="pre">(int)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.rib_loc" title="tuduam.data_structures.Wingbox.rib_loc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rib_loc</span> <span class="pre">(list)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.spar_loc_dimless" title="tuduam.data_structures.Wingbox.spar_loc_dimless"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spar_loc_dimless</span> <span class="pre">(list)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.spar_loc_nondim" title="tuduam.data_structures.Wingbox.spar_loc_nondim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spar_loc_nondim</span> <span class="pre">(list)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.str_cell" title="tuduam.data_structures.Wingbox.str_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str_cell</span> <span class="pre">(list)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.t_sk_cell" title="tuduam.data_structures.Wingbox.t_sk_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">t_sk_cell</span> <span class="pre">(list)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Wingbox.t_sp" title="tuduam.data_structures.Wingbox.t_sp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">t_sp</span> <span class="pre">(float)</span></code></a></p></li>
@@ -2106,14 +2168,8 @@ positioning of the wing</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="tuduam.data_structures.Wingbox.rib_loc">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rib_loc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Wingbox.rib_loc" title="Link to this definition">#</a></dt>
-<dd><p>A list of the rib locations in meters</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="tuduam.data_structures.Wingbox.spar_loc_dimless">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spar_loc_dimless</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Wingbox.spar_loc_dimless" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tuduam.data_structures.Wingbox.spar_loc_nondim">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spar_loc_nondim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Wingbox.spar_loc_nondim" title="Link to this definition">#</a></dt>
 <dd><p>“The location of the spar over the chord so dimensionless. Length should be n_cell - 1</p>
 </dd></dl>
 
@@ -2133,6 +2189,12 @@ positioning of the wing</p>
 <dt class="sig sig-object py" id="tuduam.data_structures.Wingbox.t_sp">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t_sp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Wingbox.t_sp" title="Link to this definition">#</a></dt>
 <dd><p>The thickness of the spars</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tuduam.data_structures.Wingbox.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#tuduam.data_structures.Wingbox.model_computed_fields" title="Link to this definition">#</a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2190,11 +2252,13 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Aerodynamics.cL_alpha"><code class="docutils literal notranslate"><span class="pre">Aerodynamics.cL_alpha</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Aerodynamics.cd0"><code class="docutils literal notranslate"><span class="pre">Aerodynamics.cd0</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Aerodynamics.spanwise_points"><code class="docutils literal notranslate"><span class="pre">Aerodynamics.spanwise_points</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Aerodynamics.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Aerodynamics.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Airfoil"><code class="docutils literal notranslate"><span class="pre">Airfoil</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Airfoil.cl_alpha"><code class="docutils literal notranslate"><span class="pre">Airfoil.cl_alpha</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Airfoil.thickness_to_chord"><code class="docutils literal notranslate"><span class="pre">Airfoil.thickness_to_chord</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Airfoil.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Airfoil.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Engine"><code class="docutils literal notranslate"><span class="pre">Engine</span></code></a><ul class="nav section-nav flex-column">
@@ -2208,6 +2272,7 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Engine.x_rotor_loc"><code class="docutils literal notranslate"><span class="pre">Engine.x_rotor_loc</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Engine.x_rotor_rel_loc"><code class="docutils literal notranslate"><span class="pre">Engine.x_rotor_rel_loc</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Engine.y_rotor_loc"><code class="docutils literal notranslate"><span class="pre">Engine.y_rotor_loc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Engine.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Engine.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.FlightPerformance"><code class="docutils literal notranslate"><span class="pre">FlightPerformance</span></code></a><ul class="nav section-nav flex-column">
@@ -2217,6 +2282,7 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.FlightPerformance.n_ult"><code class="docutils literal notranslate"><span class="pre">FlightPerformance.n_ult</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.FlightPerformance.v_cruise"><code class="docutils literal notranslate"><span class="pre">FlightPerformance.v_cruise</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.FlightPerformance.wingloading"><code class="docutils literal notranslate"><span class="pre">FlightPerformance.wingloading</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.FlightPerformance.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">FlightPerformance.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Fuselage"><code class="docutils literal notranslate"><span class="pre">Fuselage</span></code></a><ul class="nav section-nav flex-column">
@@ -2224,11 +2290,13 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Fuselage.length_fuselage"><code class="docutils literal notranslate"><span class="pre">Fuselage.length_fuselage</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Fuselage.mass"><code class="docutils literal notranslate"><span class="pre">Fuselage.mass</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Fuselage.width_fuselage"><code class="docutils literal notranslate"><span class="pre">Fuselage.width_fuselage</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Fuselage.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Fuselage.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.HybridPowertrain"><code class="docutils literal notranslate"><span class="pre">HybridPowertrain</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.HybridPowertrain.battery_mass"><code class="docutils literal notranslate"><span class="pre">HybridPowertrain.battery_mass</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.HybridPowertrain.fuel_cell_mass"><code class="docutils literal notranslate"><span class="pre">HybridPowertrain.fuel_cell_mass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.HybridPowertrain.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">HybridPowertrain.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Material"><code class="docutils literal notranslate"><span class="pre">Material</span></code></a><ul class="nav section-nav flex-column">
@@ -2243,10 +2311,12 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Material.sigma_ultimate"><code class="docutils literal notranslate"><span class="pre">Material.sigma_ultimate</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Material.sigma_yield"><code class="docutils literal notranslate"><span class="pre">Material.sigma_yield</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Material.young_modulus"><code class="docutils literal notranslate"><span class="pre">Material.young_modulus</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Material.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Material.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Parent"><code class="docutils literal notranslate"><span class="pre">Parent</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Parent.load_from_json"><code class="docutils literal notranslate"><span class="pre">Parent.load_from_json()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Parent.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Parent.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Propeller"><code class="docutils literal notranslate"><span class="pre">Propeller</span></code></a><ul class="nav section-nav flex-column">
@@ -2258,6 +2328,7 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Propeller.rpm_cruise"><code class="docutils literal notranslate"><span class="pre">Propeller.rpm_cruise</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Propeller.tc_ratio"><code class="docutils literal notranslate"><span class="pre">Propeller.tc_ratio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Propeller.xi_0"><code class="docutils literal notranslate"><span class="pre">Propeller.xi_0</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Propeller.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Propeller.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.SingleWing"><code class="docutils literal notranslate"><span class="pre">SingleWing</span></code></a><ul class="nav section-nav flex-column">
@@ -2287,11 +2358,13 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.SingleWing.x_le_root_global"><code class="docutils literal notranslate"><span class="pre">SingleWing.x_le_root_global</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.SingleWing.x_lemac_local"><code class="docutils literal notranslate"><span class="pre">SingleWing.x_lemac_local</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.SingleWing.y_mac"><code class="docutils literal notranslate"><span class="pre">SingleWing.y_mac</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.SingleWing.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SingleWing.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.VTOL"><code class="docutils literal notranslate"><span class="pre">VTOL</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.VTOL.mtom"><code class="docutils literal notranslate"><span class="pre">VTOL.mtom</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.VTOL.oem"><code class="docutils literal notranslate"><span class="pre">VTOL.oem</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.VTOL.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">VTOL.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox"><code class="docutils literal notranslate"><span class="pre">Wingbox</span></code></a><ul class="nav section-nav flex-column">
@@ -2299,11 +2372,11 @@ positioning of the wing</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.booms_sk"><code class="docutils literal notranslate"><span class="pre">Wingbox.booms_sk</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.booms_spar"><code class="docutils literal notranslate"><span class="pre">Wingbox.booms_spar</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.n_cell"><code class="docutils literal notranslate"><span class="pre">Wingbox.n_cell</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.rib_loc"><code class="docutils literal notranslate"><span class="pre">Wingbox.rib_loc</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.spar_loc_dimless"><code class="docutils literal notranslate"><span class="pre">Wingbox.spar_loc_dimless</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.spar_loc_nondim"><code class="docutils literal notranslate"><span class="pre">Wingbox.spar_loc_nondim</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.str_cell"><code class="docutils literal notranslate"><span class="pre">Wingbox.str_cell</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.t_sk_cell"><code class="docutils literal notranslate"><span class="pre">Wingbox.t_sk_cell</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.t_sp"><code class="docutils literal notranslate"><span class="pre">Wingbox.t_sp</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.data_structures.Wingbox.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Wingbox.model_computed_fields</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2331,8 +2404,8 @@ positioning of the wing</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2365,7 +2438,7 @@ positioning of the wing</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>
