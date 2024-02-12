@@ -1,4 +1,8 @@
 import numpy  as np
+import random
+import plotly.graph_objs as go
+import plotly.express as px
+import plotly.figure_factory as ff
 from typing import Tuple, List
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
@@ -311,6 +315,11 @@ class IdealWingbox():
         :rtype: Tuple[float, dict]
         """    
 
+        # Ensure all shear flows are set to none because the function relies on it
+        for pnl in self.panel_dict.values():
+            pnl.q_basic = None
+            pnl.q_total = None
+
         # First compute all the direct stresses
         for boom in self.boom_dict.values():
             boom.sigma = internal_mz*(boom.y - self.y_centroid)/self.Ixx
@@ -467,7 +476,7 @@ class IdealWingbox():
                 A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
             else: 
                 raise Exception(f"Something went wrong, more iterations were made then there were cells")
-        
+
         # Set up eqautions for twist per unit legnth but in b array
         for idx, cell in enumerate(pnl_per_cell_lst2):
             b_ele = 0
@@ -600,58 +609,153 @@ class IdealWingbox():
                                 pnl.set_b2_to_b1_vector()
                         else:
                             raise Exception(f"Line should not have been reached")
+
         return  qs_lst, dtheta_dz
 
     def plot_direct_stresses(self) -> None:
             plt.figure(figsize=(10,1))
             x_lst = np.array([i.x for i in self.boom_dict.values()])
             y_lst = np.array([i.y for i in self.boom_dict.values()])
-            stress_arr = np.array([i.sigma for i in self.boom_dict.values()])
-            norm = plt.Normalize(stress_arr.min(), stress_arr.max())
-            plt.scatter(x_lst, y_lst, c=stress_arr, cmap='viridis', norm=norm)
-            plt.colorbar(label='Direct Stress ')
+            stress_arr = np.array([i.sigma/1e6 for i in self.boom_dict.values()])
+            hover_data = [f"stress = {i.sigma/1e6} Mpa" for i in self.boom_dict.values()]
+            fig = px.scatter(x= x_lst, y= y_lst, color= stress_arr, title= "Direct stress")
+            fig.update_traces(marker=dict(size=12,
+                            line=dict(width=2,
+                            color='DarkSlateGrey')),
+                            selector=dict(mode='markers'))
+            fig.show()
 
-            y_arr  = [i.y for i in self.boom_dict.values()]
-            y_max = np.max(y_arr)
-            y_min = np.min(y_arr)
-            plt.ylim([ y_min - 0.1,y_max + 0.1])
-            plt.show()
+
 
     def plot_shear_stress(self) -> None:
-        fig = plt.figure(figsize=(10, 1))
-        ax = plt.gca()
-
-        # Assuming each panel has a 'stress' attribute for demonstration
-        stress_values = np.abs([panel.tau for panel in self.panel_dict.values()])/1e6
-        norm = plt.Normalize(stress_values.min(), stress_values.max())
-        cmap = plt.cm.viridis
-
-        for key, panel in self.panel_dict.items():
-            x = [panel.b1.x, panel.b2.x]
-            y = [panel.b1.y, panel.b2.y]
-            col = cmap(norm(abs(panel.tau/1e6)))
-            plt.plot(x, y, color=col, marker='>')
-
-        plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), label='Stress Value', ax=ax )
-
-        y_arr = [i.y for i in self.boom_dict.values()]
-        y_max = np.max(y_arr)
-        y_min = np.min(y_arr)
-        plt.ylim([y_min - 0.1, y_max + 0.1])
-        plt.show()
-
-
-    def plot_geometry(self) -> None:
-        plt.figure(figsize=(10,1))
-        for key, panel in self.panel_dict.items():
-            x = [panel.b1.x, panel.b2.x]
-            y = [panel.b1.y, panel.b2.y]
-            plt.plot(x,y, ">-")
         y_arr  = [i.y for i in self.boom_dict.values()]
         y_max = np.max(y_arr)
         y_min = np.min(y_arr)
-        plt.ylim([ y_min - 0.1,y_max + 0.1])
-        plt.show()
+
+        # Sample data and color mapping - replace with your actual data
+        stress_values = np.abs([panel.tau for panel in self.panel_dict.values()])/1e6
+        norm = (stress_values - stress_values.min()) / (stress_values.max() - stress_values.min())
+
+        # Modified traces and colorbar dummy trace
+        traces = []
+        colorbar_trace_x = []
+        colorbar_trace_y = []
+        colorbar_trace_stress = []
+
+        stress_values = np.abs([panel.tau for panel in self.panel_dict.values()])/1e6
+        norm = plt.Normalize(stress_values.min(), stress_values.max())
+        cmap = plt.cm.plasma
+
+        for key, panel in self.panel_dict.items():
+            x = [panel.b1.x, panel.b2.x]
+            y = [panel.b1.y, panel.b2.y]
+            stress = abs(panel.tau/1e6)
+            hover_text = f"Panel: {panel.pid}, Stress: {stress} MPa"  # Modify as needed
+            col = cmap(norm(stress))
+            col = "rgb" + str(col[:-1])
+
+            trace = go.Scatter(
+                x=x,
+                y=y,
+                mode='lines+markers',
+                marker=dict(color=col, symbol='circle'),
+                line=dict(color=col, width= 4),
+                showlegend=False,
+                hovertext= hover_text
+            )
+            traces.append(trace)
+
+            # For colorbar
+            colorbar_trace_x.extend(x)
+            colorbar_trace_y.extend(y)
+            colorbar_trace_stress.extend([stress, stress])  # Repeated for each point
+
+        # Layout configuration
+        layout = go.Layout(
+            title='Panel Stress Visualization',
+            xaxis=dict(title='X-axis'),
+            yaxis=dict(title='Y-axis', range=[y_min - 0.1, y_max + 0.1]),
+            coloraxis=dict(colorscale='Viridis', colorbar=dict(title='Stress Value')),
+        )
+
+        # Create figure and add traces
+        fig = go.Figure(data=traces, layout=layout)
+        fig.show()
+
+
+        # Rest of your layout and figure code
+    def plot_quiver_shear_stress(self, scale=.020, arrow_scale=0.4) -> None:
+        pnl_lst = [i for i in self.panel_dict.values()]
+
+        x = [(i.b1.x + i.b2.x)/2 for i in pnl_lst]
+        y = [(i.b1.y + i.b2.y)/2 for i in pnl_lst]
+        u = list()
+        v = list()
+
+        for pnl in pnl_lst:
+            pass 
+            if pnl.tau > 0:
+                u.append(pnl.dir_vec[0])
+                v.append(pnl.dir_vec[1])
+            elif pnl.tau <= 0:
+                u.append(-pnl.dir_vec[0])
+                v.append(-pnl.dir_vec[1])
+
+        # Create quiver figure
+        fig = ff.create_quiver(x, y, u, v,
+                            scale= scale,
+                            arrow_scale= arrow_scale,
+                            line= dict(color="red", width = 3),
+                            name='Direction of shear flows',
+                            line_width=1)
+
+
+        fig.show()
+
+
+
+
+    def plot_geometry(self) -> None:
+
+        # Modified traces and colorbar dummy trace
+        traces = []
+        col_lst = px.colors.qualitative.Dark24
+        colorbar_trace_x = []
+        colorbar_trace_y = []
+        colorbar_trace_stress = []
+
+        for key, panel in self.panel_dict.items():
+            x = [panel.b1.x, panel.b2.x]
+            y = [panel.b1.y, panel.b2.y]
+            hover_text = [f"Boom : {panel.bid1}, Area: {np.round(panel.b1.A*1e6, 2)} mm^2",
+                          f"Boom : {panel.bid2}, Area: {np.round(panel.b2.A*1e6,2 )} mm^2"]  # Modify as needed
+
+            trace = go.Scatter(
+                x=x,
+                y=y,
+                mode='lines+markers',
+                marker=dict(color= "red", symbol='circle', size=12),
+                line=dict(color= random.choice(col_lst), width= 4),
+                showlegend=False,
+                opacity=0.7,
+                hovertext= hover_text
+            )
+            traces.append(trace)
+
+            # For colorbar
+            colorbar_trace_x.extend(x)
+            colorbar_trace_y.extend(y)
+
+        # Layout configuration
+        layout = go.Layout(
+            title='Panel Stress Visualization',
+            xaxis=dict(title='X-axis'),
+            yaxis=dict(title='Y-axis'),
+        )
+
+        # Create figure and add traces
+        fig = go.Figure(data=traces, layout=layout)
+        fig.show()
 
 
 def read_coord(path_coord:str) -> np.ndarray:

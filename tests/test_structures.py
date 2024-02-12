@@ -74,15 +74,13 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
 def test_stress1(FixtWingbox1, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox1)
     res.stress_analysis(48e3, 200e4, 0.4, 80e9, validate=False)
-    # res.plot_shear_stress()
 
     assert all([i.sigma is not None for i in res.boom_dict.values()])
     assert all([i.tau is not None for i in res.panel_dict.values()])
 
 def test_stress2(FixtWingbox2, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    res.stress_analysis(48e3, 200e4, 0.3, 80e9, validate=False)
-    # res.plot_shear_stress()
+    res.stress_analysis(48e3, 20e4, 0.4, 80e9, validate=False)
 
     assert all([i.sigma is not None for i in res.boom_dict.values()])
     assert all([i.tau is not None for i in res.panel_dict.values()])
@@ -114,7 +112,6 @@ def test_contribution_stringers(case2):
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    # res.plot()
     area_lst = res.read_cell_areas()
     print(area_lst)
  

@@ -8,5 +8,6 @@ coveralls
 pydantic
 matplotlib
 plotly
+pandas
 ipython
 
