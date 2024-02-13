@@ -162,6 +162,8 @@ class PlotBlade:
 
             axs[0].plot(x_coords_n, y_coords_n)
         axs[0].hlines(0, -0.2, 0.3, label='Disk plane', colors='k', linewidths=0.75)
+        axs[0].set_xlabel("Disk Plane [m]")
+        axs[0].set_ylabel("Longitudinal direction [m]")
 
         y_mins = []
         y_maxs = []
@@ -185,13 +187,16 @@ class PlotBlade:
         # Plot actual points
         axs[1].scatter(self.radial_coords, y_maxs)
         axs[1].scatter(self.radial_coords, y_mins)
+        axs[1].set_xlabel("Radial direction [m]")
+        axs[1].set_ylabel("Tip-path direction [m]")
 
         # Plot smooth distribution  TODO: revise
         radius = np.linspace(self.xi_0*self.R, self.R, 200)
-        axs[1].plot(radius, y_min_fun(radius))
-        axs[1].plot(radius, y_max_fun(radius))
+        axs[1].plot(radius, y_min_fun(radius), label= "Lower Edge")
+        axs[1].plot(radius, y_max_fun(radius), label= "Upper Edge")
 
         axs[0].legend()
+        axs[1].legend()
         if not tst:
             plt.show()
 
