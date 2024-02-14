@@ -748,7 +748,7 @@ class IdealWingbox():
 
         # Layout configuration
         layout = go.Layout(
-            title='Panel Stress Visualization',
+            title='Discretization of airfoil',
             xaxis=dict(title='X-axis'),
             yaxis=dict(title='Y-axis'),
         )
