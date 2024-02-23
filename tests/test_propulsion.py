@@ -131,9 +131,9 @@ def test_offdesign(DSE2021OffDesignAnalysis):
 
 
 def test_plotblade(DSE2021OffDesignAnalysis, naca24012):
-    tst = True
+    test = True
     DSE2021OffDesignAnalysis.tc_ratio = 0.12
     plotblade = prop.PlotBlade(DSE2021OffDesignAnalysis, naca24012)
-    plotblade.plot_blade()
-    plotblade.plot_3D(tst)
-    plotblade.plot_3D_plotly(tst)
+    plotblade.plot_blade(test)
+    plotblade.plot_3D(test)
+    plotblade.plot_3D_plotly(test)

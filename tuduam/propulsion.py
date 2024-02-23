@@ -1,4 +1,5 @@
 import re
+from typing import List
 import plotly.graph_objs as go
 import numpy as np
 import os
@@ -18,7 +19,7 @@ def extract_data_dir(dir_path:str) -> np.ndarray:
     :return: An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]
     :rtype: np.ndarray
     """    
-    data_points = list()
+    data_points: List[List[float]] = list()
 
     for file in os.listdir(dir_path):
         try:
@@ -28,11 +29,13 @@ def extract_data_dir(dir_path:str) -> np.ndarray:
         with open(os.path.join(dir_path,file), "r") as f:
             write = False
             for line in f.readlines():
-                if  line.count("-") > 3:
+                if  line.count("-") > 10:  # increase the threshold to a number larger than the number of columns in the file
                     write = True
                     continue
+                if line == '\n': # skip any empty line
+                    continue
                 if write:
-                    value_lst = [float(value) for value in line.split()]
+                    value_lst: List[float]  = [float(value) for value in line.split()]
                     value_lst.append(reyn)
                     data_points.append(value_lst)
     return np.array(data_points)
