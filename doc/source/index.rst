@@ -12,23 +12,32 @@ department at the faculty of Aerospace Engineering from Delft University of
 Technology. This course also serves as an extension to the `UAM course
 <https://online-learning.tudelft.nl/courses/urban-air-mobility/>`_ 
 
+.. image:: ../_static/uam_course.png
+  :width: 500
+  :alt: Alternative text
 
+Overview of Modules
+===================
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :numbered:
 
    data_structures
    structures
+   propulsion
+   aerodynamics
+   performance
 
 
 Code repository
-===============
+----------------
+The code repository can be found in the link below.
 
 https://github.com/saullocastro/tuduam
 
 
 Indices and tables
-==================
+----------------
 
 * :ref:`genindex`
 * :ref:`modindex`

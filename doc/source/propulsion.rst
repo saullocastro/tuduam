@@ -1,8 +1,7 @@
-Structures 
+Propulsion 
 ------------------------
 
-
-.. automodule:: tuduam.structures
+.. automodule:: tuduam.propulsion
    :members:
    :undoc-members:
    :show-inheritance:

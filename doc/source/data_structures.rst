@@ -1,4 +1,4 @@
-tuduam.data\_structures module
+Data Structures 
 ------------------------------
 
 .. automodule:: tuduam.data_structures
