@@ -14,6 +14,13 @@ from warnings import warn
 def extract_data_dir(dir_path:str) -> np.ndarray:
     """ This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array. Information on how to do this can be found in the notebooks. 
 
+    **Assumptions**
+
+
+    1. The function expects the name to atleast have Rexxxx where the x's represent the Reynolds number
+
+
+
     :param dir_path: The path of the directory to read from can be absolute or relative
     :type dir_path: str
     :return: An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]
@@ -130,7 +137,7 @@ class PlotBlade:
 
         return airfoil_coord
 
-    def plot_blade(self,tst=False):
+    def plot_blade(self,tst=False) -> None:
         """ Returns two plots, one top down view of the propeller showing the amount of twist and the various chords
         and one plot showing a side view of the propeller
 
@@ -672,20 +679,19 @@ class BEM:
 
 
 class OffDesignAnalysisBEM:
-    """
+    r"""
     A class encapsulating the arbitrary analysis of a propeller blade as described in Adkins and Liebeck (1994).
 
-    General notes
-    ----------------------
-    -  Interferences factors were clipped to -0.7 and 0.7. Viterna and Janetzke11 give empirical arguments 
+    **General notes**
+
+    1. Interferences factors were clipped to -0.7 and 0.7. Viterna and Janetzke11 give empirical arguments 
        for clipping the magnitude of a and a' at the value of 0.7 in order to better convergence.  See a_fac and a_prime_fac
 
-    Future improvement
-    -----------------------------
-    -  TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)
-    - TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be
-            necessary in that case
-    - TODO: Make the off design analysis robust enough so a scipy.optimize could perhaps be used in the future.
+    **Future improvement**
+    
+    1. TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)
+    2. TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be necessary in that case
+    3. TODO: Make the off design analysis robust enough so a scipy.optimize could perhaps be used in the future.
 
     """    
     def __init__(self, dir_path:str, propclass: Propeller, V: float,

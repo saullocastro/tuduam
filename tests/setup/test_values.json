@@ -30,7 +30,7 @@
     },
     "Material":{ 
         "young_modulus":3e9,
-        "shear_modulus":4000000000.0,
+        "shear_modulus":80e9,
         "poisson":0.3,
         "density":1600,
         "beta_crippling":1.42,

@@ -71,7 +71,7 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
     assert [b.A != None and b.A != 0 for b in res.boom_dict.values()]
     assert res.Ixx != 0
 
-def test_stress1(FixtWingbox1, naca45112):
+def test_stress1(FixtWingbox1, FixtMaterial,  naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox1)
     res.stress_analysis(48e3, 200e4, 0.4, 80e9, validate=False)
 

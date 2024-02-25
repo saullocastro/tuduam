@@ -420,5 +420,5 @@ def case23_5_Megson():
 
     cell1 = Foo([[0.3175],[0.203]])
     cell2 = Foo([[1.0165],[0.203]])
-    wingbox._get_polygon_of_cells = lambda : [cell1, cell2]
+    wingbox.get_polygon_cells = lambda : [cell1, cell2]
     return wingbox
