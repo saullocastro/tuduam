@@ -118,9 +118,7 @@ def FixtWingbox2():
         "t_sk_cell":[0.004,0.004,0.004, 0.004],
         "area_str":20e-6,
         "t_sp":0.001,
-        "str_cell":[4,8,7,20],
-        "booms_sk": 100,
-        "booms_spar": 15,
+        "str_cell":[6,8,7,20],
     }
     return tud.Wingbox(**attr_dict)
 
@@ -135,8 +133,6 @@ def case1():
         "area_str":0,
         "t_sp":0,
         "str_cell":[1,1],
-        "booms_sk": 0,
-        "booms_spar": 0,
     }
     data_struct = tud.Wingbox(**attr_dict)
 
@@ -284,8 +280,6 @@ def case23_5_Megson():
         "area_str":0,
         "t_sp":0,
         "str_cell":[1,1],
-        "booms_sk": 0,
-        "booms_spar": 0,
     }
     data_struct = tud.Wingbox(**attr_dict)
 

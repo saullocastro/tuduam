@@ -60,7 +60,6 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
     tsk_cell3 = [i.t_pnl for i in panel_cell3 if i.b1.x != i.b2.x]
 
     spar_panels = [i.t_pnl for i in res.panel_dict.values() if i.b1.x == i.b2.x]
-    res.plot_geometry()
 
     assert  None not in tsk_cell1 and None not in  tsk_cell2 and None not in  tsk_cell3
     assert np.isclose(tsk_cell1, FixtWingbox1.t_sk_cell[0]).all()
@@ -114,7 +113,6 @@ def test_contribution_stringers(case2):
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
     area_lst = res.get_cell_areas()
-    print(area_lst)
  
 def test_shear_flows(case23_5_Megson):
     wingbox = case23_5_Megson

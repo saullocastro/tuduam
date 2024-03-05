@@ -103,13 +103,12 @@ class IdealPanel:
 class IdealWingbox():
     """ A class representing an idealized wingbox, containing methods to perform computations
     on that instants and some accessed methods. It is not recommended to use as a standalone tool but should 
-    be using in conjunction with the discretize_airfoil function.
+    be using in conjunction with the :func:`discretize_airfoil` function.
 
-    Assumptions
-    --------------------------------------------------------------------------------
-    - The x datum of the coordinate system should be attached to the leading edge of the 
+    **Assumptions**
+    1. The x datum of the coordinate system should be attached to the leading edge of the 
     wingbox
-    - Some methods such as the read_cell_area expect the first and last to begin and end on a vertex.
+    2. Some methods such as the read_cell_area expect the first and last to begin and end on a vertex.
 
 
     """    
@@ -168,10 +167,9 @@ class IdealWingbox():
         with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
         show you n plots of the cell polygon where n is the amount of cells.
 
-        Assumptions
-        ------------
+        **Assumptions**
 
-        - Function is built for a object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one point is the furthest ahead. The same goes for cell n but with the trailing edge
+        1. Function is built for a object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one point is the furthest ahead. The same goes for cell n but with the trailing edge
 
         :param validate: When True will show the 3 plots described above, defaults to False
         :type validate: bool, optional
@@ -814,7 +812,7 @@ def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, Cubi
     return top_interp, bot_interp
 
 def get_centroids(path_coord:str) -> Tuple[float, float]:
-    """ Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
+    r""" Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
     The centroids are computing assuming the following:
      
      **Assumptions**
@@ -844,19 +842,25 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
 
     **Assumptions**
-    1. Airfoil is idealized according Megson ch. 20
-    2. Each stringers will form one boom in the discretized airfoil
-    stringers in a certain cell  to all booms attached to the skin in that cell 
-    3. The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is 
-    determined by the ratio of their y positin thus $\frac{y_1}{y_2}$.
+
+    #. Airfoil is idealized according Megson ch. 20 
+    #. Each stringer will form one boom in the discretized airfoil 
+    #. Only an equal amount of stringers can be specified per cell, if that is not the case a warning is issued however. (due to the method of discretization)
+    #. The ratio of :math:`\frac{\sigma_1}{\sigma_2}` required for the skin contribution to the  boom size based on the skin is determined by the ratio of their y positin thus :math:`\frac{y_1}{y_2}`. \n
+    
 
     **General Procedure**
-    1. Create a spline of the top and bottom airfoil
-    2. Create array along which to sample this spline to create the booms, creating specific samples for the spar positions
-    3. Move over top surface creating booms and panel as we go
-    4. Do the same for the bottom surface moving in a circle like motion
-    5. Move over all the spars and create booms and panels as we go.
-    6. Iterate over all booms and add skin contribution and stringer contribution to all their areas
+
+    #. Create a spline of the top and bottom airfoil
+    #. Create array along which to sample this spline to create the booms, creating specific samples for the spar positions
+    #. Move over top surface creating booms and panel as we go
+    #. Do the same for the bottom surface moving in a circle like motion
+    #. Move over all the spars and create booms and panels as we go.
+    #. Iterate over all booms and add skin contribution and stringer contribution to all their areas
+
+    **Future Improvements**
+
+    #. Add contribution of spar caps (For now as been left out as I did not see the value of it at the time)
 
 
     :param path_coord: _description_
@@ -873,6 +877,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     assert len(wingbox_struct.t_sk_cell) == wingbox_struct.n_cell, "Length of t_sk_cell should be equal to the amount of cells"
     assert len(wingbox_struct.str_cell) == wingbox_struct.n_cell, "Length of str_cell should be equal to the amount of cells"
     assert len(wingbox_struct.spar_loc_nondim) == wingbox_struct.n_cell - 1, "Length of spar_loc should be equal to the amount of cells - 1"
+    assert all(np.round(wingbox_struct.str_cell,0) > 4), "Each cell must have atleast five stringers. The following configuration would results in an error during runtime"
 
     top_interp, bot_interp = spline_airfoil_coord(path_coord, chord)
     x_centr, y_centr = get_centroids(path_coord)
@@ -882,17 +887,39 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.y_centroid =  y_centr*chord
 
 
-    spar_loc: list = np.insert(wingbox_struct.spar_loc_nondim, [0, wingbox_struct.n_cell - 1], [0, 1])*chord
+    spar_loc_lst: list = np.insert(wingbox_struct.spar_loc_nondim, [0, wingbox_struct.n_cell - 1], [0, 1])*chord
     str_lst: list = wingbox_struct.str_cell # list with the amount of stringers per cell
 
     x_boom_loc = np.array([])
 
     #TODO create a new x_boom_loc 
-    for idx, loc in enumerate(spar_loc): 
-        if idx != len(spar_loc) - 1:
-            len_cell = spar_loc[idx + 1] - loc
-            # A 0.02 starting point is chosen to avoid 
-            loc_cell =  np.linspace(loc + 0.1*len_cell, spar_loc[idx + 1], int(str_lst[idx]/2))
+    for idx, loc in enumerate(spar_loc_lst): 
+        if idx != len(spar_loc_lst) - 1:
+            len_cell = spar_loc_lst[idx + 1] - loc
+            # A 0.1 starting point is chosen to avoid 
+            str_tot = str_lst[idx] 
+            
+            # See assumptions, the following make sure any float get rounded since
+            # the optimizer usually does not return nice integers. It then also gives a warning
+            # if the value was not an integer
+            if isinstance(str_tot, int):
+                if str_tot % 2 != 0:
+                    warn(f"{str_lst[idx]} was not an even number and will be floored for conservative reasons")
+                    n_str = np.floor(str_lst[idx]/2)
+                else: 
+                    n_str = str_lst[idx]/2
+            else: 
+                str_tot = np.round(str_tot,0)
+                if str_tot % 2 != 0:
+                    warn(f"{str_lst[idx]} was not an even number and will be floored for conservative reasons")
+                    n_str = np.floor(str_lst[idx]/2)
+                else: 
+                    n_str = str_lst[idx]/2
+
+            if idx != 0:
+                loc_cell =  np.linspace(loc , spar_loc_lst[idx + 1], int(n_str + 1))[1:]
+            else:
+                loc_cell =  np.linspace(loc , spar_loc_lst[idx + 1], int(n_str + 1))
             x_boom_loc = np.append(x_boom_loc, loc_cell)
         else: 
             pass
@@ -1013,7 +1040,8 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
 
 class SectionOptimization:
     """
-    The following class allows for the optimization of a single airfoil section.
+    The following class allows for the optimization of a single airfoil section. The clas assumes that the correct material properties
+     have been embedded in :class:`Material` has been chosen, an initial estimate should be embedded in the :class:`Wingbox` class.
 
     **Attributes**
 
@@ -1093,13 +1121,32 @@ class SectionOptimization:
 
     def optimize(self, shear: float, moment: float, applied_loc: float) -> sop._optimize.OptimizeResult:
 
+        n = self.box_struct.n_cell
         x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] + self.box_struct.str_cell
 
         constr_lst: List[dict] = [
             {'type': 'ineq', 'fun': self._get_constraint_vector, "args": [shear, moment, applied_loc]},
                 ]
 
-        res = sop.minimize(self._optimize_func, x0, args=(shear, moment, applied_loc), method="COBYLA" ,constraints= constr_lst)
+        lb_lst = []
+        ub_lst = []
+
+        for i in range(len(x0)):
+            if i <= n-1:
+                lb_lst.append(0)
+                ub_lst.append(0.2)
+            elif i == n :
+                lb_lst.append(0)
+                ub_lst.append(0.5)
+            elif i  ==  n + 1: 
+                lb_lst.append(0)
+                ub_lst.append(1)
+            else: 
+                lb_lst.append(5)
+                ub_lst.append(40)
+
+        bnds = sop.Bounds(lb_lst, ub_lst, keep_feasible=True)
+        res = sop.minimize(self._optimize_func, x0, args=(shear, moment, applied_loc), method="COBYLA" ,bounds= bnds, constraints= constr_lst)
         return res
     
 
@@ -1228,7 +1275,6 @@ def crit_instability_shear(wingbox:IdealWingbox, material_struct: Material, len_
     b_lst = []
     for pnl in pnl_lst:
         len_pnl: float = pnl.length()
-        raise Exception("This is wrong, should not be the length of the panel, but the length between stringers")
         # Make sure to divide by the shortest side
         if len_to_rib < len_pnl:
             asp_lst.append(len_pnl/len_to_rib)
@@ -1241,7 +1287,6 @@ def crit_instability_shear(wingbox:IdealWingbox, material_struct: Material, len_
     b_lst = np.array(b_lst)
     # Compute the shear buckling coefficient using poly fit described in the docstring
     kb_vec: np.ndarray = kb_coef[0]*asp_lst**3 + kb_coef[1]*asp_lst**2 + kb_coef[2]*asp_lst + kb_coef[3] 
-    pdb.set_trace()
 
     return  kb_vec* np.pi ** 2 * material_struct.young_modulus/(12*(1 - material_struct.poisson**2)) * (t_arr/ b_lst)**2
 
@@ -1267,27 +1312,27 @@ def crit_instability_shear(wingbox:IdealWingbox, material_struct: Material, len_
 
 
 
-def buckling(wingbox:IdealWingbox, material_struct: Material, len_to_rib: float):
-    r""" This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it
-    can also be used to check this specific constraints for any given design.
+# def buckling(wingbox:IdealWingbox, material_struct: Material, len_to_rib: float):
+#     r""" This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it
+#     can also be used to check this specific constraints for any given design.
 
-    :param wingbox: _description_
-    :type wingbox: IdealWingbox
-    :param material_struct: _description_
-    :type material_struct: Material
-    :param len_to_rib: _description_
-    :type len_to_rib: float
-    :return: _description_
-    :rtype: _type_
-    """    
+#     :param wingbox: _description_
+#     :type wingbox: IdealWingbox
+#     :param material_struct: _description_
+#     :type material_struct: Material
+#     :param len_to_rib: _description_
+#     :type len_to_rib: float
+#     :return: _description_
+#     :rtype: _type_
+#     """    
 
-    Nx = distrcompr_max_from_tip(x)
-    # print("Nx",Nx)
-    # print("Nxy",Nxy)
-    Nx_crit = local_buckling(t_sk)*t_sk
-    Nxy_crit = shear_buckling(t_sk)*t_sk
-    buck = Nx*material.safety_factor / Nx_crit + (Nxy*material.safety_factor / Nxy_crit) ** 2
-    return buck
+#     Nx = distrcompr_max_from_tip(x)
+#     # print("Nx",Nx)
+#     # print("Nxy",Nxy)
+#     Nx_crit = local_buckling(t_sk)*t_sk
+#     Nxy_crit = shear_buckling(t_sk)*t_sk
+#     buck = Nx*material.safety_factor / Nx_crit + (Nxy*material.safety_factor / Nxy_crit) ** 2
+#     return buck
 
 
 # def column_st(self, h_st, w_st, t_st, t_sk):#
