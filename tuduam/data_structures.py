@@ -156,10 +156,7 @@ class Wingbox(Parent):
     area_str:float
     """"Area of the stringer"""
     str_cell: list
-    """"List of stringers (both top and bottom) per cell. Length should be n_cell"""
-    booms_sk: int
-    """"Amount of booms on the skin """
-    booms_spar: int
-    """"Amount of booms on each spar"""
+    """"List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization
+    it also required to be an even number"""
 
 

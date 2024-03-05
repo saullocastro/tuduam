@@ -840,19 +840,17 @@ def get_centroids(path_coord:str) -> Tuple[float, float]:
 
 
 def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> IdealWingbox:
-    """ Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
+    r""" Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
     the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
 
-    Assumptions
-    -------------------------------------
-    - Airfoil is idealized according Megson ch. 20
-    - The stringers are modeled by equally smearing the total area of the combined 
+    **Assumptions**
+    1. Airfoil is idealized according Megson ch. 20
+    2. Each stringers will form one boom in the discretized airfoil
     stringers in a certain cell  to all booms attached to the skin in that cell 
-    - The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is 
+    3. The ratio of $\frac{\sigma_1}{\sigma_2}$  required for the boom size based on the skin is 
     determined by the ratio of their y positin thus $\frac{y_1}{y_2}$.
 
-    General Procedure
-    -----------------------------------------------
+    **General Procedure**
     1. Create a spline of the top and bottom airfoil
     2. Create array along which to sample this spline to create the booms, creating specific samples for the spar positions
     3. Move over top surface creating booms and panel as we go
@@ -875,7 +873,6 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     assert len(wingbox_struct.t_sk_cell) == wingbox_struct.n_cell, "Length of t_sk_cell should be equal to the amount of cells"
     assert len(wingbox_struct.str_cell) == wingbox_struct.n_cell, "Length of str_cell should be equal to the amount of cells"
     assert len(wingbox_struct.spar_loc_nondim) == wingbox_struct.n_cell - 1, "Length of spar_loc should be equal to the amount of cells - 1"
-    assert wingbox_struct.booms_spar > 4, "Length of spar_loc should be equal to the amount of cells - 1"
 
     top_interp, bot_interp = spline_airfoil_coord(path_coord, chord)
     x_centr, y_centr = get_centroids(path_coord)
@@ -885,13 +882,21 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.y_centroid =  y_centr*chord
 
 
-    x_boom_loc = np.linspace(0, chord, ceil(wingbox_struct.booms_sk/2 + 2))
+    spar_loc: list = np.insert(wingbox_struct.spar_loc_nondim, [0, wingbox_struct.n_cell - 1], [0, 1])*chord
+    str_lst: list = wingbox_struct.str_cell # list with the amount of stringers per cell
 
-    # Put booms at the spar locations
-    for spar_loc in wingbox_struct.spar_loc_nondim:
-        spar_loc *= chord
-        idx = np.argmin(np.abs(x_boom_loc - spar_loc))
-        x_boom_loc[idx] = spar_loc
+    x_boom_loc = np.array([])
+
+    #TODO create a new x_boom_loc 
+    for idx, loc in enumerate(spar_loc): 
+        if idx != len(spar_loc) - 1:
+            len_cell = spar_loc[idx + 1] - loc
+            # A 0.02 starting point is chosen to avoid 
+            loc_cell =  np.linspace(loc + 0.1*len_cell, spar_loc[idx + 1], int(str_lst[idx]/2))
+            x_boom_loc = np.append(x_boom_loc, loc_cell)
+        else: 
+            pass
+
 
     boom_dict = {}
     panel_dict = {}
@@ -979,57 +984,17 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             upper_b = spar_booms[1]
             lower_b = spar_booms[0]
 
-        y_locations = np.delete(np.linspace(upper_b.y, lower_b.y, wingbox_struct.booms_spar), [0,-1]) # delete padding as they already have booms
 
-        # Loop over the spar to create the booms
-        for idx, y_loc in enumerate(y_locations, start=0):
-            # Create boom
-            boom = Boom()
-            boom.bid = bid
-            boom.x =  spar_loc
-            boom.y = y_loc
-            if boom.bid not in boom_dict.keys():
-                boom_dict[boom.bid] = boom
-            else:
-                raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
-
-            if idx == 0:
-                pnl = IdealPanel()
-                pnl.pid = pid
-                pnl.bid1 = upper_b.bid 
-                pnl.bid2 = bid
-                pnl.t_pnl = wingbox_struct.t_sp
-                pnl.b1 =  boom_dict[pnl.bid1]
-                pnl.b2 =  boom_dict[pnl.bid2]
-                if pnl.pid not in panel_dict.keys():
-                    panel_dict[pid] = pnl
-                else:
-                    raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
-            else: 
-                pnl = IdealPanel()
-                pnl.pid = pid
-                pnl.bid1 = bid - 1
-                pnl.bid2 = bid
-                pnl.t_pnl = wingbox_struct.t_sp
-                pnl.b1 =  boom_dict[pnl.bid1]
-                pnl.b2 =  boom_dict[pnl.bid2]
-
-                if pnl.pid not in panel_dict.keys():
-                    panel_dict[pid] = pnl
-                else:
-                    raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
-
-            bid += 1
-            pid += 1
-
-        # Connect the last panel to the lower boom
+        # Create panel connecting upper boom and lower boom
         pnl = IdealPanel()
         pnl.pid = pid
-        pnl.bid1 = bid - 1
+        pnl.bid1 = upper_b.bid 
         pnl.bid2 = lower_b.bid
         pnl.t_pnl = wingbox_struct.t_sp
         pnl.b1 =  boom_dict[pnl.bid1]
         pnl.b2 =  boom_dict[pnl.bid2]
+
+
 
         if pnl.pid not in panel_dict.keys():
             panel_dict[pid] = pnl

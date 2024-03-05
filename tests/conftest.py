@@ -106,8 +106,6 @@ def FixtWingbox1():
         "area_str":20e-6,
         "t_sp":0.01,
         "str_cell":[6,8,6],
-        "booms_sk": 69,
-        "booms_spar": 5,
     }
     return tud.Wingbox(**attr_dict)
 

@@ -60,6 +60,7 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
     tsk_cell3 = [i.t_pnl for i in panel_cell3 if i.b1.x != i.b2.x]
 
     spar_panels = [i.t_pnl for i in res.panel_dict.values() if i.b1.x == i.b2.x]
+    res.plot_geometry()
 
     assert  None not in tsk_cell1 and None not in  tsk_cell2 and None not in  tsk_cell3
     assert np.isclose(tsk_cell1, FixtWingbox1.t_sk_cell[0]).all()
