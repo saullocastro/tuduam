@@ -112,7 +112,7 @@ def test_contribution_stringers(case2):
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    area_lst = res.read_cell_areas()
+    area_lst = res.get_cell_areas()
     print(area_lst)
  
 def test_shear_flows(case23_5_Megson):
@@ -149,3 +149,13 @@ def test_shear_flows(case23_5_Megson):
     # Check complementary shear flow
     assert np.isclose(qs_lst[0], -0.795e3,rtol=0.005) # Should be around -1100
     assert np.isclose(qs_lst[1],  7.2e3, rtol=0.02) 
+
+def test_shear_buckling(test_idealwingbox, FixtMaterial,  ):
+    res = struct.crit_instability_shear(test_idealwingbox, FixtMaterial, 0.2)
+
+def test_compr_buckling(test_idealwingbox, FixtMaterial,  ):
+    res = struct.crit_instability_compr(test_idealwingbox, FixtMaterial, 0.2)
+
+def test_wingbox_opt(naca45112, FixtWingbox2, FixtMaterial):
+    opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
+    opt.optimize(3000, 12e3, 0.3)

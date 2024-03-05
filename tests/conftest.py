@@ -268,6 +268,13 @@ def naca45112():
     return os.path.realpath(os.path.join(os.path.dirname(__file__), "naca45112.txt"))
 
 @pytest.fixture
+def test_idealwingbox(naca45112, FixtWingbox2):
+    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
+    res.stress_analysis(3000, 17e3, 0.25, 80e9)
+    return res
+
+
+@pytest.fixture
 def case23_5_Megson():
     """"This case set ups the wingbox of problem 23.5 shown in Megson and will serve as the main verification of the shear
     flows of values"""
@@ -405,7 +412,7 @@ def case23_5_Megson():
                               f=pnl6,
                               g=pnl7
                               )
-    wingbox.read_cell_areas = lambda : [0.232, 0.258]
+    wingbox.get_cell_areas = lambda : [0.232, 0.258]
     
     # Some placeholder classes so we can get the correct centroid without chaning 
     # the source code. The normal function for the centroids does not work
