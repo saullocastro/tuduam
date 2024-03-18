@@ -31,6 +31,8 @@
     "Material":{ 
         "young_modulus":3e9,
         "shear_modulus":80e9,
+        "safety_factor":1.5,
+        "load_factor":1,
         "poisson":0.3,
         "density":1600,
         "beta_crippling":1.42,

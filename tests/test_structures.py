@@ -103,12 +103,12 @@ def test_contribution_stringers(case2):
     assert case2.boom_dict["d"].A > 600e-6
     assert case2.boom_dict["f"].A > 760e-6
 
-    assert np.isclose(case2.boom_dict["a"].A, 750e-6 + 1.5e-3, atol=1e-7)
+    assert np.isclose(case2.boom_dict["a"].A, 750e-6 + 3e-4, atol=1e-7)
     assert np.isclose(case2.boom_dict["b"].A, 1191.7e-6, atol=1e-7)
     assert np.isclose(case2.boom_dict["c"].A, 591.7e-6  + 3e-4, atol=1e-7)
     assert np.isclose(case2.boom_dict["d"].A, 591.7e-6 + 3e-4, atol=1e-7)
     assert np.isclose(case2.boom_dict["e"].A, 1191.7e-6, atol= 1e-7)
-    assert np.isclose(case2.boom_dict["f"].A, 750e-6 + 1.5e-3, atol=1e-7)
+    assert np.isclose(case2.boom_dict["f"].A, 750e-6 + 3e-4, atol=1e-7)
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
@@ -150,11 +150,29 @@ def test_shear_flows(case23_5_Megson):
     assert np.isclose(qs_lst[1],  7.2e3, rtol=0.02) 
 
 def test_shear_buckling(test_idealwingbox, FixtMaterial,  ):
-    res = struct.crit_instability_shear(test_idealwingbox, FixtMaterial, 0.2)
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
+    res = setup._crit_instability_shear()
 
-def test_compr_buckling(test_idealwingbox, FixtMaterial,  ):
-    res = struct.crit_instability_compr(test_idealwingbox, FixtMaterial, 0.2)
+    assert all(res > 0)
+
+def test_compr_buckling(test_idealwingbox, FixtMaterial ):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
+    res = setup._crit_instability_compr()
+    
+    assert all(res > 0)
+
+def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
+    res1 = setup.interaction_curve_constr()
+
+    test_idealwingbox.stress_analysis(6000, 17e3, 0.25, 80e9)
+    res2 = setup.interaction_curve_constr()
+
+    test_idealwingbox.stress_analysis(3000, 50e3, 0.25, 80e9)
+    res3 = setup.interaction_curve_constr()
+    assert all(np.greater_equal(res1, res2))
+    assert all(np.greater_equal(res1, res3))
 
 def test_wingbox_opt(naca45112, FixtWingbox2, FixtMaterial):
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.optimize(3000, 12e3, 0.3)
+    opt.optimize_cobyla(3000, 12e3, 0.3)

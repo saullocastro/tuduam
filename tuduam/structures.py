@@ -277,16 +277,16 @@ class IdealWingbox():
         dictionary where all values have the full classes assigned. Function can be used by user manually
         but it is generall advised to use the discretize_airfoil function to create a wingbox.
 
-        Assumptions
-        --------------------------
-        - The idealizatin only takes into account a force in the vertical direction (that is tip-deflection path)
-        - The area of the stringers is smeared acrossed all skin booms in the respective cell
+        **Assumptions**
+
+        #. The idealizatin only takes into account a force in the vertical direction (that is tip-deflection path)
+        #. 
         """        
 
         # Find stringer area to add per cell
-        str_contrib = []
-        for idx, n_str in enumerate(self.wingbox_struct.str_cell):
-            str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._read_skin_panels_per_cell[idx]))
+        # str_contrib = []
+        # for idx, n_str in enumerate(self.wingbox_struct.str_cell):
+        #     str_contrib.append(n_str*self.wingbox_struct.area_str/len(self._read_skin_panels_per_cell[idx]))
 
         # Define absolute spar location for use within the loop
         spar_loc_abs = np.array(self.wingbox_struct.spar_loc_nondim)*chord
@@ -302,9 +302,11 @@ class IdealWingbox():
                     boom_area += pnl.t_pnl*pnl.length()/6*(2 + (pnl.b1.y - self.y_centroid)/(boom.y - self.y_centroid))
 
             boom.A = boom_area
+            # check if it is not a spar boom, this will get a flange addition in the future maybe
+            if not any(np.isclose(boom.x, spar_loc_abs )):
+                boom.A += self.wingbox_struct.area_str
+            warn("Negative boom areas are currently possible so watch out")
 
-            if len(str_contrib) != 0 and not any(np.isclose(boom.x, spar_loc_abs )):
-                boom.A += str_contrib[boom.get_cell_idx(self.wingbox_struct, chord )]
 
     def stress_analysis(self,  intern_shear:float, internal_mz:float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
         """ 
@@ -1096,19 +1098,17 @@ class SectionOptimization:
         
         n_cell = self.box_struct.n_cell
 
-        if len(x) != 2*(n_cell +  1):
+        if len(x) != n_cell + 2:
             raise RuntimeError("The flattened aray received does not match the specified wingbox")
         
         # Assing new properties to the wingbox struct assuming the specified length
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
         area_str = x[n_cell + 1]
-        str_cell = x[n_cell + 2:]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
         self.box_struct.area_str =  area_str
-        self.box_struct.str_cell = str_cell
 
         # Discretize airfoil from new given parameters
         wingbox_model = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
@@ -1119,10 +1119,24 @@ class SectionOptimization:
         return wingbox_model.get_total_area() 
     
 
-    def optimize(self, shear: float, moment: float, applied_loc: float) -> sop._optimize.OptimizeResult:
+    def optimize_cobyla(self, shear: float, moment: float, applied_loc: float) -> sop._optimize.OptimizeResult:
+        """ Optimizes the design using the COBYLA optimizers with the constraints defined in :class:` IsotropicWingboxConstraints`.  The optimization parameters
+        are the skin thickness in each cell, the spar thickness and the area of the stringers. The amount of stringers is not a optimization parameter here
+        as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a Nelder-Mead
+        optimizer.
+
+        :param shear: _description_
+        :type shear: float
+        :param moment: _description_
+        :type moment: float
+        :param applied_loc: _description_
+        :type applied_loc: float
+        :return: _description_
+        :rtype: sop._optimize.OptimizeResult
+        """        
 
         n = self.box_struct.n_cell
-        x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] + self.box_struct.str_cell
+        x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] 
 
         constr_lst: List[dict] = [
             {'type': 'ineq', 'fun': self._get_constraint_vector, "args": [shear, moment, applied_loc]},
@@ -1141,9 +1155,6 @@ class SectionOptimization:
             elif i  ==  n + 1: 
                 lb_lst.append(0)
                 ub_lst.append(1)
-            else: 
-                lb_lst.append(5)
-                ub_lst.append(40)
 
         bnds = sop.Bounds(lb_lst, ub_lst, keep_feasible=True)
         res = sop.minimize(self._optimize_func, x0, args=(shear, moment, applied_loc), method="COBYLA" ,bounds= bnds, constraints= constr_lst)
@@ -1175,259 +1186,305 @@ class SectionOptimization:
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
         area_str = x[n_cell + 1]
-        str_cell = x[n_cell + 2:]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
         self.box_struct.area_str =  area_str
-        self.box_struct.str_cell = str_cell
 
         ideal_wingbox: IdealWingbox = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         ideal_wingbox.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
+        constr_cls = IsotropicWingboxConstraints(ideal_wingbox, self.mat_struct, self.len_sec)
+        return constr_cls.get_constraint_vector()
         
 
 
 
 
 
-def crit_instability_compr(wingbox:IdealWingbox, material_struct: Material, len_to_rib: float) -> list:#TODO
-    r""" 
-    Compute the elastic instability of a flat sheet in compression for each panel in the idealized wingbox using 
-    the equation shown below.
+class IsotropicWingboxConstraints:
+    def __init__(self, wingbox:IdealWingbox, material_struct: Material, len_to_rib: float) -> None:
+        self.wingbox = wingbox
+        self.material_struct = material_struct
+        self.len_to_rib = len_to_rib
+        self.pnl_lst =  [i for i in self.wingbox.panel_dict.values()] # Panel which are in compression since the constraints should only matter here
+        self.tens_pnl_idx =  [idx for idx, i in enumerate(self.wingbox.panel_dict.values()) if (i.b1.sigma > 0) and (i.b2.sigma > 0)] # Panel which are in compression since the constraints should only matter here
+        x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ]
+        y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]
 
-
-    .. math::
-        \sigma_{cr} = k_c  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
-
-    Where b is the short dimension of plate or loaded edge. For :math:`K_c` a value of 4 was chosen. Please see the figure below for the reasoning.
-    Since all edges are considerded simpy supported from either the stringer or the ribs it is conservative to go for a value of 4.
-    For any other information please see source 1.
-
-    .. image:: ../_static/buckle_coef.png
-        :width: 300
+        self.kb_spline = CubicSpline(x,y, extrapolate=False) # Interpolator for critical shear function
     
-    **Future improvements**
-    1.  compute the proper buckling coefficient in real time using the sheet aspect ratio (or just check for aspect ratio's smaller than 1. These seem to be the most relevant to catch)
-    2. A plasticity factor could be implemented (see source 1, equation C5.2)
-
-    **Bibliography**
-
-    1. Chapter C5.2, Bruhn, Analysis & Design of Flight Vehicle Structures
-
-    :param wingbox: Ideal wingbox class which is utilized to create constraints per panel 
-    :type wingbox: IdealWingbox
-    :param material_struct: Data structure containing all material propertie
-    :type material_struct: Material
-    :param len_to_rib: The short dimensionof plate or loaded edge
-    :type len_to_rib: float
-    :return: The critical buckling stress due to compression
-    :rtype: float
-    """    
-    kc = 4 # buckling coefficient (currently very conservative but should be computed in real time using)
-    pnl_lst = [i for i in wingbox.panel_dict.values() if (i.b1.sigma < 0) and (i.b2.sigma <= 0)] # Panel which are in compression since the constraints should only matter here
-    t_arr = np.array([i.t_pnl for i in pnl_lst])  # thickness array of all the panels
-    len_to_rib = np.array([min(i.length(), len_to_rib) for i in pnl_lst])
-    return  4* np.pi ** 2 * material_struct.young_modulus/(12*(1 - material_struct.poisson ** 2)) * (t_arr/ len_to_rib) ** 2
-
-def crit_instability_shear(wingbox:IdealWingbox, material_struct: Material, len_to_rib: float) -> list:#TODO
-    r""" 
-    Compute the elastic instability of a flat sheet in shear for each panel in the idealized wingbox using  
-    the equation shown below. Very similar for the case in compression (see :func:`crit_instability_compr`) except for the shear buckling coefficient.
+    def _kb_interp(self, ar_lst: list):
+        res = self.kb_spline(ar_lst)
+        res = np.nan_to_num(res, nan= 5.)
+        return res
 
 
-    .. math::
-        \sigma_{cr} = k_b  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
-
-    Where b is the short dimension of plate or loaded edge. For :math:`K_b`, the shear buckling coefficient, 
-    the figure below was used to make a polynomial fit of the 3rd degree. The dataset used was as follows:
-
-    x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ]
-    y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]
-
-    For any other information please see source 1.
-
-    .. image:: ../_static/shear_buck_coef.png
-        :width: 300
-    
-    **Future improvements**
-    1. A plasticity factor could be implemented (see source 1, equation C5.2)
-
-    **Bibliography**
-
-    1. Chapter C5.7, Bruhn, Analysis & Design of Flight Vehicle Structures
-
-    :param wingbox: Ideal wingbox class which is utilized to create constraints per panel 
-    :type wingbox: IdealWingbox
-    :param material_struct: Data structure containing all material propertie
-    :type material_struct: Material
-    :param len_to_rib: The length to the next rib, thus the length to the next simply supported edge in the spanwise direction.
-    :type len_to_rib: float
-    :return: The critical buckling stress due to compression
-    :rtype: float
-    """    
-    kb_coef = np.array([-0.25252525,  2.66623377, -9.18427128, 16.11904762])
-    pnl_lst = [i for i in wingbox.panel_dict.values()] # Panel which are in compression since the constraints should only matter here
-    t_arr = np.array([i.t_pnl for i in pnl_lst])  # thickness array of all the panels
-
-    # For the length of each panel we must look at the stringers 
-
-    asp_lst = [] # Aspect ratio list
-    b_lst = []
-    for pnl in pnl_lst:
-        len_pnl: float = pnl.length()
-        # Make sure to divide by the shortest side
-        if len_to_rib < len_pnl:
-            asp_lst.append(len_pnl/len_to_rib)
-            b_lst.append(len_to_rib)
-        else: 
-            asp_lst.append(len_to_rib/len_pnl)
-            b_lst.append(len_pnl)
-
-    asp_lst = np.array(asp_lst)
-    b_lst = np.array(b_lst)
-    # Compute the shear buckling coefficient using poly fit described in the docstring
-    kb_vec: np.ndarray = kb_coef[0]*asp_lst**3 + kb_coef[1]*asp_lst**2 + kb_coef[2]*asp_lst + kb_coef[3] 
-
-    return  kb_vec* np.pi ** 2 * material_struct.young_modulus/(12*(1 - material_struct.poisson**2)) * (t_arr/ b_lst)**2
-
-# def flange_buckling(t_st, w_st):#TODO
-#     buck = 2 * np.pi ** 2 * material_struct.young_modulus / (12 * (1 - material_struct.poisson ** 2)) * (t_st / w_st) ** 2
-#     return buck
+    def _crit_instability_compr(self) -> list:#TODO
+        r""" 
+        Compute the elastic instability of a flat sheet in compression for each panel in the idealized wingbox using 
+        the equation shown below.
 
 
-# def web_buckling(t_st, h_st):#TODO
-#     buck = 4 * np.pi ** 2 *material.young_modulus / (12 * (1 -material.poisson ** 2)) * (t_st / h_st) ** 2
-#     return buck0
+        .. math::
+            \sigma_{cr} = k_c  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
+
+        Where b is the short dimension of plate or loaded edge. For :math:`K_c` a value of 4 was chosen. Please see the figure below for the reasoning.
+        Since all edges are considerded simpy supported from either the stringer or the ribs it is conservative to go for a value of 4.
+        For any other information please see source 1.
+
+        .. image:: ../_static/buckle_coef.png
+            :width: 300
+        
+        **Future improvements**
+        1.  compute the proper buckling coefficient in real time using the sheet aspect ratio (or just check for aspect ratio's smaller than 1. These seem to be the most relevant to catch)
+        2. A plasticity factor could be implemented (see source 1, equation C5.2)
+
+        **Bibliography**
+
+        1. Chapter C5.2, Bruhn, Analysis & Design of Flight Vehicle Structures
+
+        :param wingbox: Ideal wingbox class which is utilized to create constraints per panel 
+        :type wingbox: IdealWingbox
+        :param material_struct: Data structure containing all material propertie
+        :type material_struct: Material
+        :param len_to_rib: The  distance to the next rib
+        :type len_to_rib: float
+        :return: The critical buckling stress due to compression
+        :rtype: float
+        """    
+        kc = 4 # buckling coefficient (currently very conservative but should be computed in real time using)
+        t_arr = np.array([i.t_pnl for i in self.pnl_lst])  # thickness array of all the panels
+        b = np.array([min(i.length(), self.len_to_rib) for i in self.pnl_lst])
+        res = kc*np.pi**2*self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson ** 2)) * (t_arr/b) ** 2
+        res[self.tens_pnl_idx] = 1
+        return res
 
 
-# def global_buckling( h_st, t_st, t):#TODO
-#     # n = n_st(c_r, b_st)
-#     tsmr = (t *pitch_str + t_st *wing.n_str * (h_st - t)) /pitch_str
-#     return 4 * np.pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson ** 2)) * (tsmr / self.pitch_str) ** 2
+    def _crit_instability_shear(self) -> list:#TODO
+        r""" 
+        Compute the elastic instability of a flat sheet in shear for each panel in the idealized wingbox using  
+        the equation shown below. Very similar for the case in compression (see :func:`crit_instability_compr`) except for the shear buckling coefficient.
 
 
-# def shear_buckling(self,t_sk):#TODO
-#     buck = 5.35 * pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson)) * (t_sk / self.pitch_str) ** 2
-#     return buck
+        .. math::
+            \sigma_{cr} = k_b  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
+
+        Where b is the short dimension of plate or loaded edge. For :math:`K_b`, the shear buckling coefficient, 
+        the figure below was used to make a polynomial fit of the 3rd degree. The dataset used was as follows:
+
+        x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ] 
+        y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]
+
+
+        The interpolator was created in the initilisation of the class. For any other information please see source 1.
+
+        .. image:: ../_static/shear_buck_coef.png
+            :width: 300
+        
+        **Future improvements**
+        1. A plasticity factor could be implemented (see source 1, equation C5.2)
+
+        **Bibliography**
+
+        1. Chapter C5.7, Bruhn, Analysis & Design of Flight Vehicle Structures
+
+        :param wingbox: Ideal wingbox class which is utilized to create constraints per panel 
+        :type wingbox: IdealWingbox
+        :param material_struct: Data structure containing all material propertie
+        :type material_struct: Material
+        :param len_to_rib: The length to the next rib, thus the length to the next simply supported edge in the spanwise direction.
+        :type len_to_rib: float
+        :return: The critical buckling stress due to compression
+        :rtype: float
+        """    
+        t_arr = np.array([i.t_pnl for i in self.pnl_lst])  # thickness array of all the panels
+
+        # For the length of each panel we must look at the stringers 
+
+        asp_lst = [] # Aspect ratio list
+        b_lst = []
+        for pnl in self.pnl_lst:
+            len_pnl: float = pnl.length()
+            # Make sure to divide by the shortest side
+            if self.len_to_rib < len_pnl:
+                asp_lst.append(len_pnl/self.len_to_rib)
+                b_lst.append(self.len_to_rib)
+            else: 
+                asp_lst.append(self.len_to_rib/len_pnl)
+                b_lst.append(len_pnl)
+
+        asp_lst = np.array(asp_lst)
+        b_lst = np.array(b_lst)
+
+        # Compute the shear buckling coefficient using poly fit described in the docstring
+        kb_vec: np.ndarray =  self._kb_interp(asp_lst)
+
+        res = kb_vec* np.pi ** 2 * self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson**2)) * (t_arr/ b_lst)**2
+        res[self.tens_pnl_idx] = 1 # Panels in tension should be filtered out, but array should always keep the same size
+        return res
+
+    # def flange_buckling(t_st, w_st):#TODO
+    #     buck = 2 * np.pi ** 2 * material_struct.young_modulus / (12 * (1 - material_struct.poisson ** 2)) * (t_st / w_st) ** 2
+    #     return buck
+
+
+    # def web_buckling(t_st, h_st):#TODO
+    #     buck = 4 * np.pi ** 2 *material.young_modulus / (12 * (1 -material.poisson ** 2)) * (t_st / h_st) ** 2
+    #     return buck0
+
+
+    # def global_buckling( h_st, t_st, t):#TODO
+    #     # n = n_st(c_r, b_st)
+    #     tsmr = (t *pitch_str + t_st *wing.n_str * (h_st - t)) /pitch_str
+    #     return 4 * np.pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson ** 2)) * (tsmr / self.pitch_str) ** 2
+
+
+    # def shear_buckling(self,t_sk):#TODO
+    #     buck = 5.35 * pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson)) * (t_sk / self.pitch_str) ** 2
+    #     return buck
 
 
 
-# def buckling(wingbox:IdealWingbox, material_struct: Material, len_to_rib: float):
-#     r""" This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it
-#     can also be used to check this specific constraints for any given design.
+    def interaction_curve_constr(self):
+        r""" The following function ensures the panel remains below the interaction curve of a composite panel
+        under combined compression and shear forces. This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it
+        can also be used to check this specific constraints for any given design. The following equation is used for the 
+        interaction curve which has been rewritten from equation 6.38, page 144 in source [1]:
 
-#     :param wingbox: _description_
-#     :type wingbox: IdealWingbox
-#     :param material_struct: _description_
-#     :type material_struct: Material
-#     :param len_to_rib: _description_
-#     :type len_to_rib: float
-#     :return: _description_
-#     :rtype: _type_
-#     """    
-
-#     Nx = distrcompr_max_from_tip(x)
-#     # print("Nx",Nx)
-#     # print("Nxy",Nxy)
-#     Nx_crit = local_buckling(t_sk)*t_sk
-#     Nxy_crit = shear_buckling(t_sk)*t_sk
-#     buck = Nx*material.safety_factor / Nx_crit + (Nxy*material.safety_factor / Nxy_crit) ** 2
-#     return buck
+        ..math::
+            -\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right) + 1 > 0
 
 
-# def column_st(self, h_st, w_st, t_st, t_sk):#
-#     #Lnew=new_L(b,L)
-#     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
-#     i= pi ** 2 * self.material.young_modulus * Ist / (2*w_st* self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
-#     return i
+
+        **Bibliography**
+        [1] Kassapoglou. Design and Analysis of Composite Structures. 2nd Edition. John Wiley & Sons Ltd, 2013.
+
+        :param wingbox: _description_
+        :type wingbox: IdealWingbox
+        :param material_struct: _description_
+        :type material_struct: Material
+        :param len_to_rib: _description_
+        :type len_to_rib: float
+        :return: _description_
+        :rtype: _type_
+        """    
+
+        
+        area_pnl: list = [pnl.t_pnl*pnl.length() for pnl in self.pnl_lst]
+        Nx_crit = self._crit_instability_compr()*area_pnl
+        Nxy_crit = self._crit_instability_shear()*area_pnl
+
+        Nx: list = np.abs([max(pnl.b1.sigma*pnl.b1.A, pnl.b2.sigma*pnl.b2.A) for pnl in self.pnl_lst]) # Take the maximum of the two booms
+        Nxy: list = np.abs([pnl.q_tot*pnl.length() for pnl in self.pnl_lst])
+
+        interaction_constr = -Nx*self.material_struct.load_factor/ Nx_crit - (Nxy*self.material_struct.safety_factor / Nxy_crit) ** 2 + 1
+        interaction_constr[self.tens_pnl_idx] = 1
 
 
-# def f_ult(self, h_st,w_st,t_st,t_sk,y):#TODO
-#     A_st = self.get_area_str(h_st,w_st,t_st)
-#     # n=n_st(c_r,b_st)
-#     A=self.wing.n_str*A_st+self.width_wingbox*self.chord(y)*t_sk
-#     f_uts=self.sigma_uts*A
-#     return f_uts
+        return interaction_constr
 
 
-# def buckling_constr(self, x):
-#     buck = self.buckling(x)
-#     return -1*(buck - 1)
+    # def column_st(self, h_st, w_st, t_st, t_sk):#
+    #     #Lnew=new_L(b,L)
+    #     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
+    #     i= pi ** 2 * self.material.young_modulus * Ist / (2*w_st* self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
+    #     return i
 
 
-# def global_local(self, x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     glob = self.global_buckling(h_st, t_st, t_sk)
-#     loc = self.local_buckling(t_sk)
-#     diff = glob - loc
-#     return diff
+    # def f_ult(self, h_st,w_st,t_st,t_sk,y):#TODO
+    #     A_st = self.get_area_str(h_st,w_st,t_st)
+    #     # n=n_st(c_r,b_st)
+    #     A=self.wing.n_str*A_st+self.width_wingbox*self.chord(y)*t_sk
+    #     f_uts=self.sigma_uts*A
+    #     return f_uts
 
 
-# def local_column(self, x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     col = self.column_st(h_st,w_st,t_st, t_sk)
-#     loc = self.local_buckling(t_sk)
-#     # print("col=",col/1e6)
-#     # print("loc=",loc/1e6)
-#     diff = col - loc
-#     return diff
+    # def buckling_constr(self, x):
+    #     buck = self.buckling(x)
+    #     return -1*(buck - 1)
 
 
-# def flange_loc_loc(self, x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     flange = self.flange_buckling(t_st,w_st)
-#     loc = self.local_buckling(t_sk)
-#     diff = flange - loc
-#     return diff
+    # def global_local(self, x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     glob = self.global_buckling(h_st, t_st, t_sk)
+    #     loc = self.local_buckling(t_sk)
+    #     diff = glob - loc
+    #     return diff
 
 
-# def web_flange(self, x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     web = self.web_buckling(t_st, h_st)
-#     loc = self.local_buckling(t_sk)
-#     diff =web-loc
-#     return diff
+    # def local_column(self, x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     col = self.column_st(h_st,w_st,t_st, t_sk)
+    #     loc = self.local_buckling(t_sk)
+    #     # print("col=",col/1e6)
+    #     # print("loc=",loc/1e6)
+    #     diff = col - loc
+    #     return diff
 
 
-# def von_Mises(self, x):
-#     y = self.rib_loc
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     Nxy =self.shearflow_max_from_tip(x)
-#     bend_stress=self.bending_stress_y_from_tip(x)
-#     tau_shear_arr = Nxy/t_sk
-#     vm_lst =  np.sqrt(0.5 * (3 * tau_shear_arr ** 2+bend_stress**2))*self.material.safety_factor/self.material.sigma_yield
-#     return vm_lst
+    # def flange_loc_loc(self, x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     flange = self.flange_buckling(t_st,w_st)
+    #     loc = self.local_buckling(t_sk)
+    #     diff = flange - loc
+    #     return diff
 
 
-# def crippling(self, x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     A = self.get_area_str(h_st,w_st,t_st)
-#     col = self.column_st( h_st,w_st,t_st,t_sk)
-#     crip = t_st * self.material.beta_crippling * self.material.sigma_yield* ((self.material.g_crippling * t_st ** 2 / A) * np.sqrt(self.material.young_modulus / self.material.sigma_yield)) ** self.m_crip
-#     return crip
+    # def web_flange(self, x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     web = self.web_buckling(t_st, h_st)
+    #     loc = self.local_buckling(t_sk)
+    #     diff =web-loc
+    #     return diff
 
-# #----OWN CONSTRAINTS-----
-# def str_buckling_constr(self,x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
-#     i= pi ** 2 * self.material.young_modulus * Ist / (self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
-#     i_sigma = (i/self.get_area_str(h_st,w_st,t_st))#convert to stress
-#     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/(i_sigma) - 1)
 
-# def f_ult_constr(self,x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.material.sigma_ultimate - 1)
-# def flange_buckling_constr(self,x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.flange_buckling(t_st,w_st) - 1)
+    def von_Mises(self):
 
-# def web_buckling_constr(self,x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.web_buckling(t_st,h_st) - 1)
+        shear_arr = np.array([i.tau for i in  self.pnl_lst])
+        direct_stress_arr = np.array([(i.b1.sigma + i.b2.sigma)/2 for i in  self.pnl_lst])
+        res = np.sqrt(direct_stress_arr**2 + 3*shear_arr**2) - self.material_struct.sigma_yield
+        return res
 
-# def global_buckling_constr(self,x):
-#     t_sp, h_st, w_st, t_st, t_sk = x
-#     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
+
+    # def crippling(self, x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     A = self.get_area_str(h_st,w_st,t_st)
+    #     col = self.column_st( h_st,w_st,t_st,t_sk)
+    #     crip = t_st * self.material.beta_crippling * self.material.sigma_yield* ((self.material.g_crippling * t_st ** 2 / A) * np.sqrt(self.material.young_modulus / self.material.sigma_yield)) ** self.m_crip
+    #     return crip
+
+    # #----OWN CONSTRAINTS-----
+    # def str_buckling_constr(self,x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
+    #     i= pi ** 2 * self.material.young_modulus * Ist / (self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
+    #     i_sigma = (i/self.get_area_str(h_st,w_st,t_st))#convert to stress
+    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/(i_sigma) - 1)
+
+    # def f_ult_constr(self,x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.material.sigma_ultimate - 1)
+    # def flange_buckling_constr(self,x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.flange_buckling(t_st,w_st) - 1)
+
+    # def web_buckling_constr(self,x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.web_buckling(t_st,h_st) - 1)
+
+    # def global_buckling_constr(self,x):
+    #     t_sp, h_st, w_st, t_st, t_sk = x
+    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
+
+    def get_constraint_vector(self):
+        """
+        Appends all relevant constraints to each other for use in optimizatin
+        """        
+
+        res = np.concatenate([self.von_Mises(), self.interaction_curve_constr()])
+        return res
+
+
 
 def class2_wing_mass(vtol, flight_perf, wing ):
         """ Returns the structural weight of both wings 

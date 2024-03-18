@@ -115,7 +115,7 @@ def FixtWingbox2():
     attr_dict = {
         "n_cell":4,
         "spar_loc_nondim":[0.3, 0.5, 0.75],
-        "t_sk_cell":[0.004,0.004,0.004, 0.004],
+        "t_sk_cell":[0.004,0.001,0.007, 0.001],
         "area_str":20e-6,
         "t_sp":0.001,
         "str_cell":[6,8,7,20],

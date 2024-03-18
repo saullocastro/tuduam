@@ -110,8 +110,10 @@ class Aerodynamics(Parent):
     Odd integer"""
 
 class Material(Parent):
+    safety_factor: float
+    load_factor: float
     young_modulus: Optional[float] = None
-    safety_factor: Optional[float] = None
+    load_factor: Optional[float] = None
     shear_modulus: Optional[float] = None
     poisson: Optional[float] = None
     density: Optional[float] = None
