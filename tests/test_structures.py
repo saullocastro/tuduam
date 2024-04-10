@@ -173,6 +173,10 @@ def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     assert all(np.greater_equal(res1, res2))
     assert all(np.greater_equal(res1, res3))
 
-def test_wingbox_opt(naca45112, FixtWingbox2, FixtMaterial):
+def test_cobyla_opt(naca45112, FixtWingbox2, FixtMaterial):
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.optimize_cobyla(3000, 12e3, 0.3)
+    opt.optimize_cobyla(3000, 12e3, 0.3, FixtWingbox2.str_cell)
+
+# def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
+    # opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
+    # opt.full_section_optimization(3000, 12e3, 0.3)

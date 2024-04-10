@@ -1,4 +1,7 @@
 import numpy  as np
+from pymoo.core.problem import Problem, ElementwiseProblem
+from pymoo.algorithms.soo.nonconvex.ga import GA
+from pymoo.optimize import minimize
 import random
 import plotly.graph_objs as go
 import plotly.express as px
@@ -305,7 +308,9 @@ class IdealWingbox():
             # check if it is not a spar boom, this will get a flange addition in the future maybe
             if not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += self.wingbox_struct.area_str
-            warn("Negative boom areas are currently possible so watch out")
+            if boom.A < 0: 
+                warn("Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value")
+                boom.A = np.abs(boom.A)
 
 
     def stress_analysis(self,  intern_shear:float, internal_mz:float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
@@ -363,7 +368,7 @@ class IdealWingbox():
             elif idx ==  len(self.wingbox_struct.spar_loc_nondim) - 1:
                 for pnl in self.panel_dict.values():
                     cond1 = pnl.b1.x != pnl.b2.x
-                    cond2 = pnl.b2.y >= self.y_centroid and pnl.b1.y >= self.y_centroid
+                    cond2 = (pnl.b2.y + pnl.b1.y)/2 >= self.y_centroid 
                     cond3 = pnl.b1.x == spar_loc or pnl.b2.x == spar_loc
                     if cond1 and cond2 and cond3:
                         pnl.q_basic = 0
@@ -723,8 +728,6 @@ class IdealWingbox():
                             line= dict(color="red", width = 3),
                             name='Direction of shear flows',
                             line_width=1)
-
-
         fig.show()
 
 
@@ -1040,6 +1043,97 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     return wingbox
 
 
+class ProblemFreePanel(ElementwiseProblem):
+    """ The following problem sets up Discrete variable problem which optimises the amount of stringers per cell. This was done 
+    in a separate problem as changing the amount of stringers changes the amount of panels and hence the amount of constraints. Most optimizers
+    do not allow this, hence the following problem uses the output of the :class:`WingboxFixedPanel` to abide by the constraints.
+    """    
+
+    def __init__(self, shear: float, moment: float, box_struct: Wingbox ):
+        super().__init__(n_var= box_struct.n_cell, n_obj=1, n_ieq_constr=0, xl=5, xu=40, vtype= int)
+
+    def _evaluate(self, x, out, *args, **kwargs):
+        """ This function get evaluated for each 'element', where an element in this case is a single sequence of n_var long. For more info
+        please see the documentation of the pymoo library.
+
+        :param x: A list of n_var long containing the amount of stringers per cell
+        :type x: np.ndarray
+        :param out: _description_
+        :type out: _type_
+        """        
+        print(x)
+        print("\n")
+        out["F"] = np.sum((x - 0.5) ** 2)
+        out["G"] = 0.1 - out["F"]
+
+class ProblemFixedPanel(ElementwiseProblem):
+    """
+        The followinng problem sets up an exploration of a wingbox for a fixed amount of stringers per cell. Since it is difficult for an optimizer
+        like COBYLA to find a global minimum a genetica algorith is set up first to explore the design space. This problem sets up this search.
+    """    
+
+    def __init__(self, shear: float, moment: float, applied_loc: float, chord: float, len_sec: float,
+                 box_struct: Wingbox, mat_struct: Material, path_coord: str):
+
+        self.shear = shear
+        self.moment = moment
+        self.applied_loc = applied_loc
+        self.chord = chord
+        self.len_sec = len_sec
+        self.box_struct = box_struct
+        self.mat_struct = mat_struct
+        self.path_coord = path_coord
+
+        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr=np.sum(box_struct.str_cell), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2))
+
+    def _evaluate(self, x, out, *args, **kwargs):
+        """
+        This function is not to be intended by the user hence it is hinted to be a private method. The function passed to the scip.optimize.minmize function. The arguments that are passed should be in the following 
+        order t_sk_cell, t_sp, area_str. Together given a total length of N + 2 where N is the amount of cells.
+        This interally checked if it is not the case a runtime error will be raised
+
+        :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, area_str, str_cell]
+        :type x: list
+        :param shear: The shear force for which we're optimizing
+        :type shear: float
+        :param moment: The moment for which we're optimizing
+        :type moment: float
+        :param applied_loc: The applied location of the shear force on the wingbox.
+        :type applied_loc: float
+        :param str_lst: A list with the amount of stringers per cell.
+        :type str_lst: list
+        :raises RuntimeError: when the flattened design vector does not match the specified wingbox properties.
+        """        
+        
+        n_cell = self.box_struct.n_cell
+
+        if len(x) != n_cell + 2:
+            raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
+        
+        
+        # Assing new properties to the wingbox struct assuming the specified length
+        t_sk_cell =  x[:n_cell]
+        t_sp = x[n_cell]
+        area_str = x[n_cell + 1]
+
+        self.box_struct.t_sk_cell = t_sk_cell
+        self.box_struct.t_sp = t_sp
+        self.box_struct.area_str =  area_str
+
+        # Discretize airfoil from new given parameters
+        wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+
+        # Perform stress analysis
+        wingbox_obj.stress_analysis(self.shear, self.moment, self.applied_loc, self.mat_struct.shear_modulus)
+
+        #================ Get constraints ======================================
+        constr_cls = IsotropicWingboxConstraints(wingbox_obj, self.mat_struct, self.len_sec)
+        # return  np.concatenate((constr_cls.von_Mises(), constr_cls.interaction_curve_constr()))
+        # return constr_cls.von_Mises()
+        out["F"] = wingbox_obj.get_total_area() 
+        # out["G"] = -1*np.concatenate((constr_cls.interaction_curve_constr(), constr_cls.von_Mises()))
+        out["G"] = np.negative(constr_cls.interaction_curve_constr()) # negative is necessary because pymoo handles inequality constraints differently
+
 class SectionOptimization:
     """
     The following class allows for the optimization of a single airfoil section. The clas assumes that the correct material properties
@@ -1079,10 +1173,50 @@ class SectionOptimization:
         self.box_struct: Wingbox = wingbox_struct
         self.mat_struct: Material  = material_struct
 
-    def _optimize_func(self, x: list, shear: float, moment: float, applied_loc: float):
+        # Required Overhead
+        self.wingbox_obj: None | IdealWingbox = None
+
+    def GA_optimize(self, shear: float, moment: float, applied_loc: float,
+                     n_gen: int = 50, # Possible keywords
+                     pop: int = 50,
+                     verbose: bool = True,
+                     seed: int = 1,
+                     save_hist: bool = True):
+        
+        """ The following function executes the Genetic Algorithm (`GA <https://pymoo.org/algorithms/soo/ga.html>`_) to optimize the wingbox given to the overarching class
+        and with the loads fed to the function. Additionally there are some keywords which are explained below.
+
+        :param shear: The internal shear force acting at the section
+        :type shear: float
+        :param moment: The internal moment acting at the section
+        :type moment: float
+        :param applied_loc: The position of the internal shear force given as a ratio to the chord.
+        :type applied_loc: float
+        :param n_gen: The amount of generations allowed before termination, defaults to 50
+        :type n_gen: int, optional
+        :param pop: The generation size, defaults to 50
+        :type pop: int, optional
+        :param verbose: If true will print the results of all generations, defaults to True
+        :type verbose: bool, optional
+        :param seed: The seed for the random generations of the samples, defaults to 1
+        :type seed: int, optional
+        :param save_hist: Saves the history in the result object if true, defaults to True
+        :type save_hist: bool, optional
+        :return: Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example <https://pymoo.org/getting_started/part_4.html>`_) .
+        :rtype: pymoo.core.result.Result
+        """        
+
+        problem = ProblemFixedPanel(shear, moment, applied_loc, self.chord,  self.len_sec, 
+                                    self.box_struct, self.mat_struct, self.path_coord)
+        method = GA(pop_size=pop, eliminate_duplicates=True)
+        resGA = minimize(problem, method, termination=('n_gen', n_gen   ), seed= seed,
+                        save_history=save_hist, verbose=verbose)
+        return resGA
+
+    def _obj_func_cobyla(self, x: list, shear: float, moment: float, applied_loc: float, str_lst: list):
         """
         This function is not to be intended by the user hence it is hinted to be a private method. The function passed to the scip.optimize.minmize function. The arguments that are passed should be in the following 
-        order t_sk_cell, t_sp, area_str, str_cell. Together given a total length of 2(N + 1) where N is the amount of cells.
+        order t_sk_cell, t_sp, area_str. Together given a total length of N + 2 where N is the amount of cells.
         This interally checked if it is not the case a runtime error will be raised
 
         :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, area_str, str_cell]
@@ -1093,13 +1227,16 @@ class SectionOptimization:
         :type moment: float
         :param applied_loc: The applied location of the shear force on the wingbox.
         :type applied_loc: float
-        :raises RuntimeError: when the flattened array does not match the specified wingbox
+        :param str_lst: A list with the amount of stringers per cell.
+        :type str_lst: list
+        :raises RuntimeError: when the flattened design vector does not match the specified wingbox properties.
         """        
         
         n_cell = self.box_struct.n_cell
 
         if len(x) != n_cell + 2:
-            raise RuntimeError("The flattened aray received does not match the specified wingbox")
+            raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
+        
         
         # Assing new properties to the wingbox struct assuming the specified length
         t_sk_cell =  x[:n_cell]
@@ -1109,20 +1246,21 @@ class SectionOptimization:
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
         self.box_struct.area_str =  area_str
+        self.box_struct.str_cell = str_lst
 
         # Discretize airfoil from new given parameters
-        wingbox_model = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+        self.wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
 
         # Perform stress analysis
-        wingbox_model.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
+        self.wingbox_obj.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
 
-        return wingbox_model.get_total_area() 
-    
+        return self.wingbox_obj.get_total_area() 
 
-    def optimize_cobyla(self, shear: float, moment: float, applied_loc: float) -> sop._optimize.OptimizeResult:
+
+    def optimize_cobyla(self, shear: float, moment: float, applied_loc: float, str_lst: list) -> sop._optimize.OptimizeResult:
         """ Optimizes the design using the COBYLA optimizers with the constraints defined in :class:` IsotropicWingboxConstraints`.  The optimization parameters
-        are the skin thickness in each cell, the spar thickness and the area of the stringers. The amount of stringers is not a optimization parameter here
-        as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a Nelder-Mead
+        are the skin thickness in each cell, the spar thickness and the area of the stringers. Hence the resulting design vector is x = [] The amount of stringers is not a optimization parameter here
+        as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different 
         optimizer.
 
         :param shear: _description_
@@ -1131,35 +1269,51 @@ class SectionOptimization:
         :type moment: float
         :param applied_loc: _description_
         :type applied_loc: float
+        :param str_list: List of the amount of stringers per cell
+        :type str_list: list
         :return: _description_
         :rtype: sop._optimize.OptimizeResult
         """        
 
-        n = self.box_struct.n_cell
+        n = self.box_struct.n_cell # quick reference to number of cells
+        # Whatever parameters were given in the datastrucrtre are used as inital estimate
         x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] 
 
         constr_lst: List[dict] = [
             {'type': 'ineq', 'fun': self._get_constraint_vector, "args": [shear, moment, applied_loc]},
                 ]
 
+        #FIXME Cobyla does not take bounds class
         lb_lst = []
         ub_lst = []
 
         for i in range(len(x0)):
             if i <= n-1:
-                lb_lst.append(0)
-                ub_lst.append(0.2)
+                lb_lst.append(1e-5)
+                ub_lst.append(0.3)
             elif i == n :
-                lb_lst.append(0)
+                lb_lst.append(1e-5)
                 ub_lst.append(0.5)
             elif i  ==  n + 1: 
-                lb_lst.append(0)
+                lb_lst.append(1e-8)
                 ub_lst.append(1)
+        
+        # Apply bounds through constraints manually so we can penalize them with a greater quantity
+        # Otherwise they migt be ignored compared to other constraints
+        for i in range(len(lb_lst)):
+            def upper_constraint(x, idx):
+                return 1e3*(ub_lst[idx] - x[idx])
 
-        bnds = sop.Bounds(lb_lst, ub_lst, keep_feasible=True)
-        res = sop.minimize(self._optimize_func, x0, args=(shear, moment, applied_loc), method="COBYLA" ,bounds= bnds, constraints= constr_lst)
+            def lower_constraint(x, idx):
+                return 1e3*(x[idx] - lb_lst[idx])
+
+            constr_lst.append({'type':'ineq', 'args': [i], 'fun':upper_constraint})
+            constr_lst.append({'type':'ineq', 'args':[i], 'fun':lower_constraint})
+
+        res = sop.minimize(self._obj_func_cobyla, x0, args=(shear, moment, applied_loc, str_lst), method="COBYLA" , constraints= constr_lst)
         return res
-    
+
+
 
     def _get_constraint_vector(self, x: list, shear: float, moment: float, applied_loc: float) -> list:
         r""" 
@@ -1194,11 +1348,10 @@ class SectionOptimization:
         ideal_wingbox: IdealWingbox = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         ideal_wingbox.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
         constr_cls = IsotropicWingboxConstraints(ideal_wingbox, self.mat_struct, self.len_sec)
-        return constr_cls.get_constraint_vector()
-        
-
-
-
+        # return  np.concatenate((constr_cls.von_Mises(), constr_cls.interaction_curve_constr()))
+        # return constr_cls.von_Mises()
+        res = constr_cls.interaction_curve_constr()
+    #     return res
 
 
 class IsotropicWingboxConstraints:
@@ -1206,16 +1359,19 @@ class IsotropicWingboxConstraints:
         self.wingbox = wingbox
         self.material_struct = material_struct
         self.len_to_rib = len_to_rib
-        self.pnl_lst =  [i for i in self.wingbox.panel_dict.values()] # Panel which are in compression since the constraints should only matter here
-        self.tens_pnl_idx =  [idx for idx, i in enumerate(self.wingbox.panel_dict.values()) if (i.b1.sigma > 0) and (i.b2.sigma > 0)] # Panel which are in compression since the constraints should only matter here
+        self.pnl_lst =  [i for i in self.wingbox.panel_dict.values()] 
+        self.tens_pnl_idx =  [idx for idx, i in enumerate(self.wingbox.panel_dict.values()) if (i.b1.sigma > 0) and (i.b2.sigma > 0)] # Panel which are in tension since for some of the constraints it is not relevant here
+
+        # Value used for the interpolation to get Kb
         x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ]
         y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]
 
-        self.kb_spline = CubicSpline(x,y, extrapolate=False) # Interpolator for critical shear function
+        # Interpolator for critical shear function
+        self.kb_spline = CubicSpline(x,y, extrapolate=False) 
     
     def _kb_interp(self, ar_lst: list):
         res = self.kb_spline(ar_lst)
-        res = np.nan_to_num(res, nan= 5.)
+        res = np.nan_to_num(res, nan= 5.) # Set values that were outside of the interpolation range to 5.
         return res
 
 
@@ -1256,7 +1412,7 @@ class IsotropicWingboxConstraints:
         t_arr = np.array([i.t_pnl for i in self.pnl_lst])  # thickness array of all the panels
         b = np.array([min(i.length(), self.len_to_rib) for i in self.pnl_lst])
         res = kc*np.pi**2*self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson ** 2)) * (t_arr/b) ** 2
-        res[self.tens_pnl_idx] = 1
+        # res[self.tens_pnl_idx] = 1
         return res
 
 
@@ -1320,7 +1476,6 @@ class IsotropicWingboxConstraints:
         kb_vec: np.ndarray =  self._kb_interp(asp_lst)
 
         res = kb_vec* np.pi ** 2 * self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson**2)) * (t_arr/ b_lst)**2
-        res[self.tens_pnl_idx] = 1 # Panels in tension should be filtered out, but array should always keep the same size
         return res
 
     # def flange_buckling(t_st, w_st):#TODO
@@ -1374,10 +1529,10 @@ class IsotropicWingboxConstraints:
         Nx_crit = self._crit_instability_compr()*area_pnl
         Nxy_crit = self._crit_instability_shear()*area_pnl
 
-        Nx: list = np.abs([max(pnl.b1.sigma*pnl.b1.A, pnl.b2.sigma*pnl.b2.A) for pnl in self.pnl_lst]) # Take the maximum of the two booms
+        Nx: list = np.abs([min(pnl.b1.sigma*pnl.b1.A, pnl.b2.sigma*pnl.b2.A) for pnl in self.pnl_lst]) # Take the maximum of the two booms
         Nxy: list = np.abs([pnl.q_tot*pnl.length() for pnl in self.pnl_lst])
 
-        interaction_constr = -Nx*self.material_struct.load_factor/ Nx_crit - (Nxy*self.material_struct.safety_factor / Nxy_crit) ** 2 + 1
+        interaction_constr = -Nx/ Nx_crit - (Nxy/Nxy_crit) ** 2 + 1
         interaction_constr[self.tens_pnl_idx] = 1
 
 
@@ -1476,13 +1631,7 @@ class IsotropicWingboxConstraints:
     #     t_sp, h_st, w_st, t_st, t_sk = x
     #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
 
-    def get_constraint_vector(self):
-        """
-        Appends all relevant constraints to each other for use in optimizatin
-        """        
-
-        res = np.concatenate([self.von_Mises(), self.interaction_curve_constr()])
-        return res
+ 
 
 
 

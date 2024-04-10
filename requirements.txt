@@ -10,4 +10,5 @@ matplotlib
 plotly
 pandas
 ipython
+pymoo
 

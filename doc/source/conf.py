@@ -25,6 +25,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.graphviz',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.todo',
     'sphinxcontrib.autodoc_pydantic',
     'sphinx.ext.inheritance_diagram',
