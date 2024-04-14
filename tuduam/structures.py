@@ -1,5 +1,7 @@
 import numpy  as np
 from pymoo.core.problem import Problem, ElementwiseProblem
+from pymoo.core.problem import StarmapParallelization
+import multiprocessing
 from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.optimize import minimize
 import random
@@ -1073,7 +1075,7 @@ class ProblemFixedPanel(ElementwiseProblem):
     """    
 
     def __init__(self, shear: float, moment: float, applied_loc: float, chord: float, len_sec: float,
-                 box_struct: Wingbox, mat_struct: Material, path_coord: str):
+                 box_struct: Wingbox, mat_struct: Material, path_coord: str, **kwargs):
 
         self.shear = shear
         self.moment = moment
@@ -1084,7 +1086,7 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.mat_struct = mat_struct
         self.path_coord = path_coord
 
-        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr=np.sum(box_struct.str_cell), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2))
+        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr=2*np.sum(box_struct.str_cell), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
@@ -1132,7 +1134,7 @@ class ProblemFixedPanel(ElementwiseProblem):
         # return constr_cls.von_Mises()
         out["F"] = wingbox_obj.get_total_area() 
         # out["G"] = -1*np.concatenate((constr_cls.interaction_curve_constr(), constr_cls.von_Mises()))
-        out["G"] = np.negative(constr_cls.interaction_curve_constr()) # negative is necessary because pymoo handles inequality constraints differently
+        out["G"] = np.negative(np.concatenate((constr_cls.interaction_curve_constr(), constr_cls.von_Mises()))) # negative is necessary because pymoo handles inequality constraints differently
 
 class SectionOptimization:
     """
@@ -1178,9 +1180,10 @@ class SectionOptimization:
 
     def GA_optimize(self, shear: float, moment: float, applied_loc: float,
                      n_gen: int = 50, # Possible keywords
-                     pop: int = 50,
+                     pop: int = 100,
                      verbose: bool = True,
                      seed: int = 1,
+                     cores: int = multiprocessing.cpu_count(),
                      save_hist: bool = True):
         
         """ The following function executes the Genetic Algorithm (`GA <https://pymoo.org/algorithms/soo/ga.html>`_) to optimize the wingbox given to the overarching class
@@ -1200,14 +1203,21 @@ class SectionOptimization:
         :type verbose: bool, optional
         :param seed: The seed for the random generations of the samples, defaults to 1
         :type seed: int, optional
+        :param cores: The amount of cores used for the parallelization of the evaluations , defaults to multiprocesing.cpu_count()
+        :type cores: int, optional 
         :param save_hist: Saves the history in the result object if true, defaults to True
         :type save_hist: bool, optional
         :return: Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example <https://pymoo.org/getting_started/part_4.html>`_) .
         :rtype: pymoo.core.result.Result
         """        
 
+        # initialize the thread pool and create the runner
+        n_proccess =  cores
+        pool = multiprocessing.Pool(n_proccess)
+        runner = StarmapParallelization(pool.starmap)
+
         problem = ProblemFixedPanel(shear, moment, applied_loc, self.chord,  self.len_sec, 
-                                    self.box_struct, self.mat_struct, self.path_coord)
+                                    self.box_struct, self.mat_struct, self.path_coord, elementwise_runner=runner)
         method = GA(pop_size=pop, eliminate_duplicates=True)
         resGA = minimize(problem, method, termination=('n_gen', n_gen   ), seed= seed,
                         save_history=save_hist, verbose=verbose)
@@ -1257,7 +1267,8 @@ class SectionOptimization:
         return self.wingbox_obj.get_total_area() 
 
 
-    def optimize_cobyla(self, shear: float, moment: float, applied_loc: float, str_lst: list) -> sop._optimize.OptimizeResult:
+    def optimize_cobyla(self, shear: float, moment: float, applied_loc: float, str_lst: list,
+                        bnd_mult: int = 1e3) -> sop._optimize.OptimizeResult:
         """ Optimizes the design using the COBYLA optimizers with the constraints defined in :class:` IsotropicWingboxConstraints`.  The optimization parameters
         are the skin thickness in each cell, the spar thickness and the area of the stringers. Hence the resulting design vector is x = [] The amount of stringers is not a optimization parameter here
         as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different 
@@ -1271,6 +1282,8 @@ class SectionOptimization:
         :type applied_loc: float
         :param str_list: List of the amount of stringers per cell
         :type str_list: list
+        :param bnd_mult: A multiplier to increase the enforcement of the boudns on the variables, default to 1000
+        :type bnd_mult: int, optional
         :return: _description_
         :rtype: sop._optimize.OptimizeResult
         """        
@@ -1343,15 +1356,12 @@ class SectionOptimization:
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
-        self.box_struct.area_str =  area_str
+        self.box_struct.area_str =  area_str 
 
         ideal_wingbox: IdealWingbox = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         ideal_wingbox.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
         constr_cls = IsotropicWingboxConstraints(ideal_wingbox, self.mat_struct, self.len_sec)
-        # return  np.concatenate((constr_cls.von_Mises(), constr_cls.interaction_curve_constr()))
-        # return constr_cls.von_Mises()
-        res = constr_cls.interaction_curve_constr()
-    #     return res
+        return np.concatenate(constr_cls.interaction_curv_constr(), constr_cls.von_Mises())
 
 
 class IsotropicWingboxConstraints:
@@ -1506,7 +1516,7 @@ class IsotropicWingboxConstraints:
         can also be used to check this specific constraints for any given design. The following equation is used for the 
         interaction curve which has been rewritten from equation 6.38, page 144 in source [1]:
 
-        ..math::
+        .. math::
             -\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right) + 1 > 0
 
 
@@ -1594,11 +1604,21 @@ class IsotropicWingboxConstraints:
 
 
     def von_Mises(self):
+        r""" THe following constraint implemetns the von mises failure criterion which is defined as follows for the case where only a direct stress
+        in the y axis occurs and one shear stress is present.
+
+        .. math::
+             \sigma_y & \geq  \sigma_v \\
+              \sigma_y  - \sqrt{\sigma_{11}^2 + 3\tau^2} & \geq  0 \\
+
+
+        :return: _description_
+        :rtype: _type_
+        """        
 
         shear_arr = np.array([i.tau for i in  self.pnl_lst])
         direct_stress_arr = np.array([(i.b1.sigma + i.b2.sigma)/2 for i in  self.pnl_lst])
-        res = np.sqrt(direct_stress_arr**2 + 3*shear_arr**2) - self.material_struct.sigma_yield
-        return res
+        return self.material_struct.sigma_yield - np.sqrt(direct_stress_arr**2 + 3*shear_arr**2)
 
 
     # def crippling(self, x):
