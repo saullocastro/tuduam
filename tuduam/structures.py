@@ -1,15 +1,5 @@
 import numpy  as np
-from pymoo.core.problem import Problem, ElementwiseProblem
-from pymoo.core.problem import StarmapParallelization
-import multiprocessing
-from pymoo.algorithms.soo.nonconvex.ga import GA
-from pymoo.optimize import minimize
-import random
-import plotly.graph_objs as go
-import plotly.express as px
-import plotly.figure_factory as ff
 from typing import Tuple, List
-import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 import scipy.optimize as sop
 import scipy.constants as const
@@ -17,7 +7,26 @@ from .data_structures import Wingbox, Material
 from math import ceil
 from shapely.geometry import Polygon
 from warnings import warn
+import random
 import pdb
+
+# Pymoo relevant imports
+from pymoo.core.problem import Problem, ElementwiseProblem
+from pymoo.core.problem import StarmapParallelization
+from pymoo.operators.crossover.sbx import SBX
+from pymoo.operators.mutation.pm import PM
+from pymoo.operators.repair.rounding import RoundingRepair
+from pymoo.operators.sampling.rnd import IntegerRandomSampling
+import multiprocessing
+from pymoo.algorithms.soo.nonconvex.ga import GA
+from pymoo.optimize import minimize
+
+# grahphing import
+import plotly.graph_objs as go
+import plotly.express as px
+import plotly.figure_factory as ff
+import matplotlib.pyplot as plt
+
 
 class Boom:
     """ A class to represent an idealized boom
@@ -1051,22 +1060,54 @@ class ProblemFreePanel(ElementwiseProblem):
     do not allow this, hence the following problem uses the output of the :class:`WingboxFixedPanel` to abide by the constraints.
     """    
 
-    def __init__(self, shear: float, moment: float, box_struct: Wingbox ):
-        super().__init__(n_var= box_struct.n_cell, n_obj=1, n_ieq_constr=0, xl=5, xu=40, vtype= int)
+    def __init__(self, shear: float, moment: float, applied_loc: float, chord: float, len_sec: float, box_struct: Wingbox, mat_struct: Material,
+                 path_coord: str, **kwargs_intern ):
 
-    def _evaluate(self, x, out, *args, **kwargs):
+        self.box_params: list =  list()
+        self.shear = shear
+        self.moment = moment
+        self.applied_loc = applied_loc
+        self.chord = chord
+        self.len_sec = len_sec
+        self.box_struct = box_struct
+        self.mat_struct = mat_struct
+        self.path_coord = path_coord
+        self.kwargs_intern = kwargs_intern #  Used to pass any settings to GA_optimize functions
+
+        super().__init__(n_var= box_struct.n_cell, n_obj=1, n_ieq_constr=0, xl=5, xu=40, vtype= int, **kwargs_intern)
+
+    def _evaluate(self, x, out, *args, **kwargs) -> None:
         """ This function get evaluated for each 'element', where an element in this case is a single sequence of n_var long. For more info
         please see the documentation of the pymoo library.
 
         :param x: A list of n_var long containing the amount of stringers per cell
         :type x: np.ndarray
-        :param out: _description_
-        :type out: _type_
+        :param out: A dictionary containing the constraitns and objective
+        :type out: dict
         """        
-        print(x)
-        print("\n")
-        out["F"] = np.sum((x - 0.5) ** 2)
-        out["G"] = 0.1 - out["F"]
+
+        
+        n_cell = self.box_struct.n_cell
+
+        if len(x) != n_cell:
+            raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
+        
+        sec_opt =  SectionOptimization(self.path_coord, self.chord, self.len_sec,  self.box_struct, self.mat_struct)
+
+        try:
+            self.kwargs_intern.pop("elementwise_runner")
+        except KeyError:
+            pass
+
+        GA_res = sec_opt.GA_optimize(self.shear, self.moment, self.applied_loc, **self.kwargs_intern)
+
+        if GA_res.X is None:
+            raise ValueError(f"Internal optimization for stringers {x} was not successful and the outer optimization could not continue")
+
+        # Discretize airfoil from new given parameters
+        wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+
+        out["F"] = wingbox_obj.get_total_area() 
 
 class ProblemFixedPanel(ElementwiseProblem):
     """
@@ -1085,12 +1126,13 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.box_struct = box_struct
         self.mat_struct = mat_struct
         self.path_coord = path_coord
+        sample = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
 
-        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr=2*np.sum(box_struct.str_cell), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2), **kwargs)
+        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr= 2*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
-        This function is not to be intended by the user hence it is hinted to be a private method. The function passed to the scip.optimize.minmize function. The arguments that are passed should be in the following 
+        The function is excecuted at each element in the optimization. The arguments that are passed should be in the following 
         order t_sk_cell, t_sp, area_str. Together given a total length of N + 2 where N is the amount of cells.
         This interally checked if it is not the case a runtime error will be raised
 
@@ -1130,11 +1172,8 @@ class ProblemFixedPanel(ElementwiseProblem):
 
         #================ Get constraints ======================================
         constr_cls = IsotropicWingboxConstraints(wingbox_obj, self.mat_struct, self.len_sec)
-        # return  np.concatenate((constr_cls.von_Mises(), constr_cls.interaction_curve_constr()))
-        # return constr_cls.von_Mises()
         out["F"] = wingbox_obj.get_total_area() 
-        # out["G"] = -1*np.concatenate((constr_cls.interaction_curve_constr(), constr_cls.von_Mises()))
-        out["G"] = np.negative(np.concatenate((constr_cls.interaction_curve_constr(), constr_cls.von_Mises()))) # negative is necessary because pymoo handles inequality constraints differently
+        out["G"] = np.negative(np.concatenate((constr_cls.interaction_curve(), constr_cls.von_Mises()))) # negative is necessary because pymoo handles inequality constraints differently
 
 class SectionOptimization:
     """
@@ -1163,7 +1202,7 @@ class SectionOptimization:
         :type chord: float
         :param len_sec: The length of the section, that is the lengt to the next rib
         :type len_sec: float
-        :param wingbox_struct: _description_
+        :param wingbox_struct: THe wingbox datastructure
         :type wingbox_struct: Wingbox
         :param material_struct: _description_
         :type material_struct: Material
@@ -1183,6 +1222,7 @@ class SectionOptimization:
                      pop: int = 100,
                      verbose: bool = True,
                      seed: int = 1,
+                     multiprocess: bool =  False,
                      cores: int = multiprocessing.cpu_count(),
                      save_hist: bool = True):
         
@@ -1212,14 +1252,19 @@ class SectionOptimization:
         """        
 
         # initialize the thread pool and create the runner
-        n_proccess =  cores
-        pool = multiprocessing.Pool(n_proccess)
-        runner = StarmapParallelization(pool.starmap)
+        if multiprocess:
+            n_proccess =  cores
+            pool = multiprocessing.Pool(n_proccess)
+            runner = StarmapParallelization(pool.starmap)
 
-        problem = ProblemFixedPanel(shear, moment, applied_loc, self.chord,  self.len_sec, 
-                                    self.box_struct, self.mat_struct, self.path_coord, elementwise_runner=runner)
+            problem = ProblemFixedPanel(shear, moment, applied_loc, self.chord,  self.len_sec, 
+                                        self.box_struct, self.mat_struct, self.path_coord, elementwise_runner=runner)
+        else:
+            problem = ProblemFixedPanel(shear, moment, applied_loc, self.chord,  self.len_sec, 
+                                        self.box_struct, self.mat_struct, self.path_coord)
+
         method = GA(pop_size=pop, eliminate_duplicates=True)
-        resGA = minimize(problem, method, termination=('n_gen', n_gen   ), seed= seed,
+        resGA = minimize(problem, method, termination=('n_gen', n_gen), seed= seed,
                         save_history=save_hist, verbose=verbose)
         return resGA
 
@@ -1268,7 +1313,8 @@ class SectionOptimization:
 
 
     def optimize_cobyla(self, shear: float, moment: float, applied_loc: float, str_lst: list,
-                        bnd_mult: int = 1e3) -> sop._optimize.OptimizeResult:
+                        bnd_mult: int = 1e3, 
+                        x0: list | None = None) -> sop._optimize.OptimizeResult:
         """ Optimizes the design using the COBYLA optimizers with the constraints defined in :class:` IsotropicWingboxConstraints`.  The optimization parameters
         are the skin thickness in each cell, the spar thickness and the area of the stringers. Hence the resulting design vector is x = [] The amount of stringers is not a optimization parameter here
         as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different 
@@ -1284,13 +1330,18 @@ class SectionOptimization:
         :type str_list: list
         :param bnd_mult: A multiplier to increase the enforcement of the boudns on the variables, default to 1000
         :type bnd_mult: int, optional
+        :param x0: A more explicit way to define the intial estimate instead of taking it from the wingbox struct, default to None
+        :type x0: list, optional
         :return: _description_
         :rtype: sop._optimize.OptimizeResult
         """        
 
         n = self.box_struct.n_cell # quick reference to number of cells
         # Whatever parameters were given in the datastrucrtre are used as inital estimate
-        x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] 
+        if x0 is None:
+            x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] 
+        else:
+            pass
 
         constr_lst: List[dict] = [
             {'type': 'ineq', 'fun': self._get_constraint_vector, "args": [shear, moment, applied_loc]},
@@ -1325,6 +1376,59 @@ class SectionOptimization:
 
         res = sop.minimize(self._obj_func_cobyla, x0, args=(shear, moment, applied_loc, str_lst), method="COBYLA" , constraints= constr_lst)
         return res
+    
+    def full_section_opt(self, shear: float, moment: float, applied_loc: float,
+                     n_gen_full: int = 50, # Possible keywords
+                     pop_full: int = 100,
+                     verbose_full: bool = True,
+                     cores: int = multiprocessing.cpu_count(),
+                     seed: int = 1,
+                     save_hist_full: bool = True, **kwargs):
+        """ 
+        The following functions handles the full optimization of the wingbox. Compared to the func:`GA_optimize` the following functions also varies
+        the amount of stringers per cell to find the optimum design. In order to do this it utlizes all previously defined optimization in combination 
+        with a discrete Geentic algoirth variabled optimization. 
+
+        :param shear: _description_
+        :type shear: float
+        :param moment: _description_
+        :type moment: float
+        :param applied_loc: _description_
+        :type applied_loc: float
+        :param n_gen_full: _description_, defaults to 50
+        :type n_gen_full: int, optional
+        :param verbose_full: _description_, defaults to True
+        :type verbose_full: bool, optional
+        :param seed: _description_, defaults to 1
+        :type seed: int, optional
+        :param save_hist_full: _description_, defaults to True
+        :type save_hist_full: bool, optional
+        """        
+
+        n_proccess =  cores
+        pool = multiprocessing.Pool(n_proccess)
+        runner = StarmapParallelization(pool.starmap)
+        prob = ProblemFreePanel(shear, moment, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
+                                self.path_coord, elementwise_runner=runner, **kwargs)
+        
+
+        method = GA(pop_size=pop_full,
+                    sampling=IntegerRandomSampling(),
+                    crossover=SBX(prob=1.0, eta=3.0, vtype=float, repair=RoundingRepair()),
+                    mutation=PM(prob=1.0, eta=3.0, vtype=float, repair=RoundingRepair()),
+                    eliminate_duplicates=True,
+                    )
+
+        res = minimize(prob,
+                    method,
+                    termination=('n_gen', n_gen_full),
+                    seed=seed,
+                    save_history= save_hist_full,
+                    verbose= verbose_full
+                    )
+        return res
+
+
 
 
 
@@ -1361,7 +1465,7 @@ class SectionOptimization:
         ideal_wingbox: IdealWingbox = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         ideal_wingbox.stress_analysis(shear, moment, applied_loc, self.mat_struct.shear_modulus)
         constr_cls = IsotropicWingboxConstraints(ideal_wingbox, self.mat_struct, self.len_sec)
-        return np.concatenate(constr_cls.interaction_curv_constr(), constr_cls.von_Mises())
+        return np.concatenate((constr_cls.interaction_curve(), constr_cls.von_Mises()))
 
 
 class IsotropicWingboxConstraints:
@@ -1510,7 +1614,7 @@ class IsotropicWingboxConstraints:
 
 
 
-    def interaction_curve_constr(self):
+    def interaction_curve(self):
         r""" The following function ensures the panel remains below the interaction curve of a composite panel
         under combined compression and shear forces. This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it
         can also be used to check this specific constraints for any given design. The following equation is used for the 

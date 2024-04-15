@@ -163,19 +163,23 @@ def test_compr_buckling(test_idealwingbox, FixtMaterial ):
 
 def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
-    res1 = setup.interaction_curve_constr()
+    res1 = setup.interaction_curve()
 
     test_idealwingbox.stress_analysis(6000, 17e3, 0.25, 80e9)
-    res2 = setup.interaction_curve_constr()
+    res2 = setup.interaction_curve()
 
     test_idealwingbox.stress_analysis(3000, 50e3, 0.25, 80e9)
-    res3 = setup.interaction_curve_constr()
+    res3 = setup.interaction_curve()
     assert all(np.greater_equal(res1, res2))
     assert all(np.greater_equal(res1, res3))
 
 def test_cobyla_opt(naca45112, FixtWingbox2, FixtMaterial):
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
     opt.optimize_cobyla(3000, 12e3, 0.3, FixtWingbox2.str_cell)
+
+def test_GA_opt(naca45112, FixtWingbox2, FixtMaterial):
+    opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
+    opt.GA_optimize(3000, 12e3, 0.3, n_gen= 20 )
 
 # def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
     # opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)

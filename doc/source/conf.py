@@ -28,7 +28,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.todo',
     'sphinxcontrib.autodoc_pydantic',
-    'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.inheritance_diagram'
 ]
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "..")))
