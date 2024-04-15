@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2. Structures &#8212; tuduam  documentation</title>
+    <title>5. Performance &#8212; tuduam  documentation</title>
   
   
   
@@ -40,11 +40,10 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'structures';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'performance';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Propulsion" href="propulsion.html" />
-    <link rel="prev" title="1. Data Structures" href="data_structures.html" />
+    <link rel="prev" title="4. Aerodynamics" href="aerodynamics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -138,8 +137,8 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="structures.html">
                         Structures
                       </a>
                     </li>
@@ -159,8 +158,8 @@
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="performance.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
                         Performance
                       </a>
                     </li>
@@ -254,8 +253,8 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="structures.html">
                         Structures
                       </a>
                     </li>
@@ -275,8 +274,8 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="performance.html">
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
                         Performance
                       </a>
                     </li>
@@ -364,8 +363,62 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="structures">
-<h1><span class="section-number">2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading">#</a></h1>
+  <section id="module-tuduam.performance">
+<span id="performance"></span><h1><span class="section-number">5. </span>Performance<a class="headerlink" href="#module-tuduam.performance" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.performance.ISA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.performance.</span></span><span class="sig-name descname"><span class="pre">ISA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculates the atmospheric parameters at a specified altitude h (in meters).
+An offset in sea level temperature can be specified to allow for variations.</p>
+<p>Note: Since our aircraft probably doesn’t fly too high, this is only valid in the troposphere</p>
+<p class="rubric">Methods</p>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>density</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>pressure</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>soundspeed</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>temperature</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>viscosity_dyn</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.performance.ISA.density">
+<span class="sig-name descname"><span class="pre">density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA.density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA.density" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.performance.ISA.pressure">
+<span class="sig-name descname"><span class="pre">pressure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA.pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA.pressure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.performance.ISA.soundspeed">
+<span class="sig-name descname"><span class="pre">soundspeed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA.soundspeed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA.soundspeed" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.performance.ISA.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA.temperature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA.temperature" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.performance.ISA.viscosity_dyn">
+<span class="sig-name descname"><span class="pre">viscosity_dyn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/performance.html#ISA.viscosity_dyn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.performance.ISA.viscosity_dyn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -379,22 +432,13 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="data_structures.html"
+       href="aerodynamics.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1. </span>Data Structures</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Aerodynamics</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="propulsion.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Propulsion</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -407,9 +451,28 @@ document.write(`
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA"><code class="docutils literal notranslate"><span class="pre">ISA</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA.density"><code class="docutils literal notranslate"><span class="pre">ISA.density()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA.pressure"><code class="docutils literal notranslate"><span class="pre">ISA.pressure()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA.soundspeed"><code class="docutils literal notranslate"><span class="pre">ISA.soundspeed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA.temperature"><code class="docutils literal notranslate"><span class="pre">ISA.temperature()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.performance.ISA.viscosity_dyn"><code class="docutils literal notranslate"><span class="pre">ISA.viscosity_dyn()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/structures.rst.txt">
+    <a href="_sources/performance.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

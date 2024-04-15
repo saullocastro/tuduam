@@ -130,14 +130,35 @@
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../data_structures.html">
-                        tuduam.data_structures module
+                        Data Structures
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../structures.html">
-                        tuduam.structures module
+                        Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../performance.html">
+                        Performance
                       </a>
                     </li>
                 
@@ -223,14 +244,35 @@ document.write(`
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../data_structures.html">
-                        tuduam.data_structures module
+                        Data Structures
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../structures.html">
-                        tuduam.structures module
+                        Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../performance.html">
+                        Performance
                       </a>
                     </li>
                 
@@ -317,13 +359,13 @@ document.write(`
 <span class="kn">import</span> <span class="nn">json</span>
 
 <div class="viewcode-block" id="Parent">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Parent">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Parent">[docs]</a>
 <span class="k">class</span> <span class="nc">Parent</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;forbid&#39;</span><span class="p">,</span>
                               <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Parent.load_from_json">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Parent.load_from_json">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Parent.load_from_json">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load_from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span><span class="n">FilePath</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsonFile</span><span class="p">:</span>
@@ -333,7 +375,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="SingleWing">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.SingleWing">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.SingleWing">[docs]</a>
 <span class="k">class</span> <span class="nc">SingleWing</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">aspect_ratio</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -374,14 +416,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="Airfoil">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Airfoil">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Airfoil">[docs]</a>
 <span class="k">class</span> <span class="nc">Airfoil</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">cl_alpha</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">thickness_to_chord</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Fuselage">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Fuselage">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Fuselage">[docs]</a>
 <span class="k">class</span> <span class="nc">Fuselage</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">length_fuselage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">width_fuselage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -390,14 +432,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="HybridPowertrain">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.HybridPowertrain">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.HybridPowertrain">[docs]</a>
 <span class="k">class</span> <span class="nc">HybridPowertrain</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">fuel_cell_mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">battery_mass</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="Engine">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Engine">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Engine">[docs]</a>
 <span class="k">class</span> <span class="nc">Engine</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">n_engines</span><span class="p">:</span> <span class="nb">int</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">diameter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -423,14 +465,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="VTOL">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.VTOL">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.VTOL">[docs]</a>
 <span class="k">class</span> <span class="nc">VTOL</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">mtom</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">oem</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="FlightPerformance">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.FlightPerformance">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.FlightPerformance">[docs]</a>
 <span class="k">class</span> <span class="nc">FlightPerformance</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">wingloading</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">cL_cruise</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -442,7 +484,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Aerodynamics">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Aerodynamics">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Aerodynamics">[docs]</a>
 <span class="k">class</span> <span class="nc">Aerodynamics</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">cL_alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">alpha_zero_lift</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -454,10 +496,12 @@ document.write(`
 
 
 <div class="viewcode-block" id="Material">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Material">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Material">[docs]</a>
 <span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
+    <span class="n">safety_factor</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">load_factor</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">young_modulus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">safety_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">load_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">shear_modulus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">poisson</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">density</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -473,7 +517,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Propeller">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Propeller">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Propeller">[docs]</a>
 <span class="k">class</span> <span class="nc">Propeller</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">n_blades</span><span class="p">:</span><span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The number of blades on the propellor&quot;&quot;&quot;</span>    
@@ -495,7 +539,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="Wingbox">
-<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Wingbox">[docs]</a>
+<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Wingbox">[docs]</a>
 <span class="k">class</span> <span class="nc">Wingbox</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">n_cell</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The amount of cells in the wingbox structure&quot;&quot;&quot;</span>
@@ -508,11 +552,8 @@ document.write(`
     <span class="n">area_str</span><span class="p">:</span><span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Area of the stringer&quot;&quot;&quot;</span>
     <span class="n">str_cell</span><span class="p">:</span> <span class="nb">list</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;List of stringers (both top and bottom) per cell. Length should be n_cell&quot;&quot;&quot;</span>
-    <span class="n">booms_sk</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Amount of booms on the skin &quot;&quot;&quot;</span>
-    <span class="n">booms_spar</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Amount of booms on each spar&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization</span>
+<span class="sd">    it also required to be an even number&quot;&quot;&quot;</span></div>
 
 
 

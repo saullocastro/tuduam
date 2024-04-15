@@ -1,0 +1,1089 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. Propulsion &#8212; tuduam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'propulsion';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Aerodynamics" href="aerodynamics.html" />
+    <link rel="prev" title="2. Structures" href="structures.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">tuduam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="structures.html">
+                        Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="structures.html">
+                        Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-tuduam.propulsion">
+<span id="propulsion"></span><h1><span class="section-number">3. </span>Propulsion<a class="headerlink" href="#module-tuduam.propulsion" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">BEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Propeller" title="tuduam.data_structures.Propeller"><span class="pre">Propeller</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyn_vis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.F" title="tuduam.propulsion.BEM.F"><code class="xref py py-obj docutils literal notranslate"><span class="pre">F</span></code></a>(r, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.F_int" title="tuduam.propulsion.BEM.F_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">F_int</span></code></a>(xi, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.G_int" title="tuduam.propulsion.BEM.G_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">G_int</span></code></a>(xi, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.I_prim_1" title="tuduam.propulsion.BEM.I_prim_1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">I_prim_1</span></code></a>(xi, zeta, eps)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.J" title="tuduam.propulsion.BEM.J"><code class="xref py py-obj docutils literal notranslate"><span class="pre">J</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.M" title="tuduam.propulsion.BEM.M"><code class="xref py py-obj docutils literal notranslate"><span class="pre">M</span></code></a>(r)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.PG" title="tuduam.propulsion.BEM.PG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PG</span></code></a>(M)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.RN" title="tuduam.propulsion.BEM.RN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RN</span></code></a>(Wc)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.Wc" title="tuduam.propulsion.BEM.Wc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wc</span></code></a>(F, phi, zeta, Cl)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.Xi" title="tuduam.propulsion.BEM.Xi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Xi</span></code></a>(r)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.efficiency" title="tuduam.propulsion.BEM.efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efficiency</span></code></a>(Tc, Pc)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.f" title="tuduam.propulsion.BEM.f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f</span></code></a>(r, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.f_int" title="tuduam.propulsion.BEM.f_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f_int</span></code></a>(xi, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.phi" title="tuduam.propulsion.BEM.phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi</span></code></a>(r, zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.phi_t" title="tuduam.propulsion.BEM.phi_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_t</span></code></a>(zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.run_BEM" title="tuduam.propulsion.BEM.run_BEM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_BEM</span></code></a>(zeta)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.BEM.x" title="tuduam.propulsion.BEM.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a>(r)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>I_prim_2</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>J_prim_1</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>J_prim_2</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>optimise_blade</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>phi_int</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.F">
+<span class="sig-name descname"><span class="pre">F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.F" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.F_int">
+<span class="sig-name descname"><span class="pre">F_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.F_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.F_int" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.G_int">
+<span class="sig-name descname"><span class="pre">G_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.G_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.G_int" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.I_prim_1">
+<span class="sig-name descname"><span class="pre">I_prim_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.I_prim_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.I_prim_1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.I_prim_2">
+<span class="sig-name descname"><span class="pre">I_prim_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.I_prim_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.I_prim_2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.J">
+<span class="sig-name descname"><span class="pre">J</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.J_prim_1">
+<span class="sig-name descname"><span class="pre">J_prim_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J_prim_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J_prim_1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.J_prim_2">
+<span class="sig-name descname"><span class="pre">J_prim_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J_prim_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J_prim_2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.M">
+<span class="sig-name descname"><span class="pre">M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.M" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.PG">
+<span class="sig-name descname"><span class="pre">PG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.PG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.PG" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.RN">
+<span class="sig-name descname"><span class="pre">RN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Wc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.RN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.RN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.Wc">
+<span class="sig-name descname"><span class="pre">Wc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.Wc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.Wc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.Xi">
+<span class="sig-name descname"><span class="pre">Xi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.Xi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.Xi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.efficiency">
+<span class="sig-name descname"><span class="pre">efficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.efficiency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.efficiency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.f">
+<span class="sig-name descname"><span class="pre">f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.f" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.f_int">
+<span class="sig-name descname"><span class="pre">f_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.f_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.f_int" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.optimise_blade">
+<span class="sig-name descname"><span class="pre">optimise_blade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_init</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.optimise_blade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.optimise_blade" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi_int">
+<span class="sig-name descname"><span class="pre">phi_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi_int" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi_t">
+<span class="sig-name descname"><span class="pre">phi_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi_t" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.run_BEM">
+<span class="sig-name descname"><span class="pre">run_BEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.run_BEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.run_BEM" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.BEM.x">
+<span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">OffDesignAnalysisBEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Propeller" title="tuduam.data_structures.Propeller"><span class="pre">Propeller</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyn_vis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class encapsulating the arbitrary analysis of a propeller blade as described in Adkins and Liebeck (1994).</p>
+<p><strong>General notes</strong></p>
+<ol class="arabic simple">
+<li><p>Interferences factors were clipped to -0.7 and 0.7. Viterna and Janetzke11 give empirical arguments 
+for clipping the magnitude of a and a’ at the value of 0.7 in order to better convergence.  See a_fac and a_prime_fac</p></li>
+</ol>
+<p><strong>Future improvement</strong></p>
+<ol class="arabic simple">
+<li><p>TODO: Also compare to sample example in original paper of Adkins and Liebeck (1994)</p></li>
+<li><p>TODO: Refactor such that rpm and V can be changed in the  self.analyse_propeller method. Reinstantiating the class would not be necessary in that case</p></li>
+<li><p>TODO: Make the off design analysis robust enough so a scipy.optimize could perhaps be used in the future.</p></li>
+</ol>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.Cy" title="tuduam.propulsion.OffDesignAnalysisBEM.Cy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cy</span></code></a>(Cl, Cd, phi)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.F" title="tuduam.propulsion.OffDesignAnalysisBEM.F"><code class="xref py py-obj docutils literal notranslate"><span class="pre">F</span></code></a>(r, phi_t)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.K" title="tuduam.propulsion.OffDesignAnalysisBEM.K"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K</span></code></a>(Cl, Cd, phi)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.M" title="tuduam.propulsion.OffDesignAnalysisBEM.M"><code class="xref py py-obj docutils literal notranslate"><span class="pre">M</span></code></a>(W)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.PG_correct" title="tuduam.propulsion.OffDesignAnalysisBEM.PG_correct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PG_correct</span></code></a>(M)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.RN" title="tuduam.propulsion.OffDesignAnalysisBEM.RN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RN</span></code></a>(W, c)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.Xi" title="tuduam.propulsion.OffDesignAnalysisBEM.Xi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Xi</span></code></a>(r)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.a_fac" title="tuduam.propulsion.OffDesignAnalysisBEM.a_fac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a_fac</span></code></a>(Cl, Cd, phi, c, r, phi_t)</p></td>
+<td><p>Returns the rotational interferene factor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac" title="tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a_prim_fac</span></code></a>(Cl, Cd, phi, c, r, phi_t)</p></td>
+<td><p>Returns the rotational interferene factor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller" title="tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyse_propeller</span></code></a>(delta_pitch[, max_iter, ...])</p></td>
+<td><p>Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the  keys as specified below.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.f" title="tuduam.propulsion.OffDesignAnalysisBEM.f"><code class="xref py py-obj docutils literal notranslate"><span class="pre">f</span></code></a>(r, phi_t)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.OffDesignAnalysisBEM.solidity_local" title="tuduam.propulsion.OffDesignAnalysisBEM.solidity_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solidity_local</span></code></a>(c, r)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>Cx</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>K_prim</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>W</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>eff</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>phi</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.Cx">
+<span class="sig-name descname"><span class="pre">Cx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.Cx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.Cx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.Cy">
+<span class="sig-name descname"><span class="pre">Cy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.Cy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.Cy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.F">
+<span class="sig-name descname"><span class="pre">F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.F" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.K">
+<span class="sig-name descname"><span class="pre">K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.K" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.K_prim">
+<span class="sig-name descname"><span class="pre">K_prim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.K_prim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.K_prim" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.M">
+<span class="sig-name descname"><span class="pre">M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.M" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.PG_correct">
+<span class="sig-name descname"><span class="pre">PG_correct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.PG_correct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.PG_correct" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.RN">
+<span class="sig-name descname"><span class="pre">RN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.RN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.RN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.W">
+<span class="sig-name descname"><span class="pre">W</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_prim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.W"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.W" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.Xi">
+<span class="sig-name descname"><span class="pre">Xi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.Xi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.Xi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.a_fac">
+<span class="sig-name descname"><span class="pre">a_fac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.a_fac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.a_fac" title="Link to this definition">#</a></dt>
+<dd><p>Returns the rotational interferene factor. Note that Viterna and Janetzke11 give empirical arguments 
+for clipping the magnitude of a and a’ at the value of 0.7 in order to better convergence.</p>
+<p>Viterna, A., and Janetzke, D., “Theoretical and Experimental Power from Large Horizontal-Axis Wind Turbines,” Proceedings from
+the Large Horizontal-Axis Wind Turbine Conference, DOE/NASA-LeRC, July 1981.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Cl</strong> (<em>np.ndarray</em>) – _description_</p></li>
+<li><p><strong>Cd</strong> (<em>np.ndarray</em>) – _description_</p></li>
+<li><p><strong>phi</strong> (<em>np.ndarray</em>) – _description_</p></li>
+<li><p><strong>c</strong> (<em>np.ndarray</em>) – _description_</p></li>
+<li><p><strong>r</strong> (<em>np.ndarray</em>) – _description_</p></li>
+<li><p><strong>phi_t</strong> (<em>np.ndarray</em>) – _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac">
+<span class="sig-name descname"><span class="pre">a_prim_fac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.a_prim_fac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac" title="Link to this definition">#</a></dt>
+<dd><p>Returns the rotational interferene factor. Note that Viterna and Janetzke11 give empirical arguments 
+for clipping the magnitude of a and a’ at the value of 0.7 in order to better convergence.</p>
+<p>Viterna, A., and Janetzke, D., “Theoretical and Experimental Power from Large Horizontal-Axis Wind Turbines,” Proceedings from
+the Large Horizontal-Axis Wind Turbine Conference, DOE/NASA-LeRC, July 1981.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Cl</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>Cd</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>phi</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>c</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>r</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>phi_t</strong> (<em>_type_</em>) – _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller">
+<span class="sig-name descname"><span class="pre">analyse_propeller</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta_pitch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_extrapolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.analyse_propeller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller" title="Link to this definition">#</a></dt>
+<dd><p>Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the 
+keys as specified below.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delta_pitch</strong> – A change in pitch of the entire blade in radians. A positive value will further in crease the pitch</p>
+</dd>
+</dl>
+<p>and vice versa.
+:type delta_pitch: float
+:param abs_extrapolation: The maximum extrapolation out of the given dataset allowed before a near zero thrust is returned  in degrees
+:type abs_extrapolation: float
+:return: A dictionary with the following keys:</p>
+<blockquote>
+<div><p>“thrust”: thrust created by the propeller,
+“torque”: torque required for the propeller ,
+“eff”: propulsive efficiency of the propeller,
+“thrust_coeff”: thrust coefficient of the propeller,
+“power_coeff”: power coefficien of the propeller,
+“AoA”: Angle of attack at each station of the propeller,
+“lift_coeff”: Lift coefficient at each station of the propeller,
+“drag_coeff”: Drag coefficient at each station of the propller,</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.eff">
+<span class="sig-name descname"><span class="pre">eff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C_T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_P</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.eff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.eff" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.f">
+<span class="sig-name descname"><span class="pre">f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.f" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_prim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.phi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.OffDesignAnalysisBEM.solidity_local">
+<span class="sig-name descname"><span class="pre">solidity_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#OffDesignAnalysisBEM.solidity_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.OffDesignAnalysisBEM.solidity_local" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">PlotBlade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Propeller" title="tuduam.data_structures.Propeller"><span class="pre">Propeller</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.PlotBlade.plot_3D" title="tuduam.propulsion.PlotBlade.plot_3D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_3D</span></code></a>([tst])</p></td>
+<td><p>Plot a 3D plot of one propeller blade.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tuduam.html#tuduam.propulsion.PlotBlade.plot_blade" title="tuduam.propulsion.PlotBlade.plot_blade"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_blade</span></code></a>([tst])</p></td>
+<td><p>Returns two plots, one top down view of the propeller showing the amount of twist and the various chords and one plot showing a side view of the propeller</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>plot_3D_plotly</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_3D">
+<span class="sig-name descname"><span class="pre">plot_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_3D" title="Link to this definition">#</a></dt>
+<dd><p>Plot a 3D plot of one propeller blade. The user can drag his mouse around to see
+the blade from various angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tst</strong> (<em>bool</em><em>, </em><em>optional</em>) – A boolean which is used for testing to surpess the output, defaults to False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_3D_plotly">
+<span class="sig-name descname"><span class="pre">plot_3D_plotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_3D_plotly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_3D_plotly" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_blade">
+<span class="sig-name descname"><span class="pre">plot_blade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_blade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_blade" title="Link to this definition">#</a></dt>
+<dd><p>Returns two plots, one top down view of the propeller showing the amount of twist and the various chords
+and one plot showing a side view of the propeller</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tst</strong> (<em>bool</em><em>, </em><em>optional</em>) – A boolean which is used for testing to surpess the output, defaults to False</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.propulsion.alpha_xfoil_interp">
+<span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">alpha_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#alpha_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.alpha_xfoil_interp" title="Link to this definition">#</a></dt>
+<dd><p>summary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – _description_</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NearestNDInterpolator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.propulsion.cd_xfoil_interp">
+<span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">cd_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#cd_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.cd_xfoil_interp" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – Directory of the files containting the xfoil polar</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interpolator with the input cl and the Reynolds number. In that order.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.propulsion.cl_xfoil_interp">
+<span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">cl_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#cl_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.cl_xfoil_interp" title="Link to this definition">#</a></dt>
+<dd><p>summary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – Directory of the files containting the xfoil polar</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interpolator with the input angle of attack and the Reynolds number. In that order.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.propulsion.extract_data_dir">
+<span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">extract_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#extract_data_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.extract_data_dir" title="Link to this definition">#</a></dt>
+<dd><p>This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array. Information on how to do this can be found in the notebooks.</p>
+<p><strong>Assumptions</strong></p>
+<ol class="arabic simple">
+<li><p>The function expects the name to atleast have Rexxxx where the x’s represent the Reynolds number</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – The path of the directory to read from can be absolute or relative</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="structures.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Structures</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="aerodynamics.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Aerodynamics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM"><code class="docutils literal notranslate"><span class="pre">BEM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.F"><code class="docutils literal notranslate"><span class="pre">BEM.F()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.F_int"><code class="docutils literal notranslate"><span class="pre">BEM.F_int()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.G_int"><code class="docutils literal notranslate"><span class="pre">BEM.G_int()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.I_prim_1"><code class="docutils literal notranslate"><span class="pre">BEM.I_prim_1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.I_prim_2"><code class="docutils literal notranslate"><span class="pre">BEM.I_prim_2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.J"><code class="docutils literal notranslate"><span class="pre">BEM.J()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.J_prim_1"><code class="docutils literal notranslate"><span class="pre">BEM.J_prim_1()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.J_prim_2"><code class="docutils literal notranslate"><span class="pre">BEM.J_prim_2()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.M"><code class="docutils literal notranslate"><span class="pre">BEM.M()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.PG"><code class="docutils literal notranslate"><span class="pre">BEM.PG()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.RN"><code class="docutils literal notranslate"><span class="pre">BEM.RN()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.Wc"><code class="docutils literal notranslate"><span class="pre">BEM.Wc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.Xi"><code class="docutils literal notranslate"><span class="pre">BEM.Xi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.efficiency"><code class="docutils literal notranslate"><span class="pre">BEM.efficiency()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.f"><code class="docutils literal notranslate"><span class="pre">BEM.f()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.f_int"><code class="docutils literal notranslate"><span class="pre">BEM.f_int()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.optimise_blade"><code class="docutils literal notranslate"><span class="pre">BEM.optimise_blade()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.phi"><code class="docutils literal notranslate"><span class="pre">BEM.phi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.phi_int"><code class="docutils literal notranslate"><span class="pre">BEM.phi_int()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.phi_t"><code class="docutils literal notranslate"><span class="pre">BEM.phi_t()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.run_BEM"><code class="docutils literal notranslate"><span class="pre">BEM.run_BEM()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.BEM.x"><code class="docutils literal notranslate"><span class="pre">BEM.x()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.Cx"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.Cx()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.Cy"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.Cy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.F"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.F()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.K"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.K()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.K_prim"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.K_prim()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.M"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.M()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.PG_correct"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.PG_correct()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.RN"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.RN()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.W"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.W()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.Xi"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.Xi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.a_fac"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.a_fac()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.a_prim_fac()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.analyse_propeller()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.eff"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.eff()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.f"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.f()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.phi"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.phi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.OffDesignAnalysisBEM.solidity_local"><code class="docutils literal notranslate"><span class="pre">OffDesignAnalysisBEM.solidity_local()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade"><code class="docutils literal notranslate"><span class="pre">PlotBlade</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_3D"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_3D()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_3D_plotly"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_3D_plotly()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_blade"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_blade()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.alpha_xfoil_interp"><code class="docutils literal notranslate"><span class="pre">alpha_xfoil_interp()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.cd_xfoil_interp"><code class="docutils literal notranslate"><span class="pre">cd_xfoil_interp()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.cl_xfoil_interp"><code class="docutils literal notranslate"><span class="pre">cl_xfoil_interp()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.extract_data_dir"><code class="docutils literal notranslate"><span class="pre">extract_data_dir()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/propulsion.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
