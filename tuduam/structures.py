@@ -3,7 +3,7 @@ from typing import Tuple, List
 from scipy.interpolate import CubicSpline
 import scipy.optimize as sop
 import scipy.constants as const
-from .data_structures import Wingbox, Material
+from tuduam.data_structures import Wingbox, Material
 from math import ceil
 from shapely.geometry import Polygon
 from warnings import warn
