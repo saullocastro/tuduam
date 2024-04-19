@@ -4,6 +4,7 @@ pydantic
 matplotlib
 plotly
 shapely
+pandas
 sphinx
 numpydoc
 pydata-sphinx-theme
