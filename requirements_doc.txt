@@ -7,5 +7,7 @@ shapely
 sphinx
 numpydoc
 pydata-sphinx-theme
+pymoo
 sphinx-pydantic
+plotly
 autodoc_pydantic
