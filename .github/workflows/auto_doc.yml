@@ -2,7 +2,8 @@ name: doc
 permissions:
   contents: write
 
-on:
+on: 
+  workflow_dispatch:
   push:
     tags:
       - '20*.*'

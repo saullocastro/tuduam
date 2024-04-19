@@ -3,6 +3,7 @@ scipy
 pydantic
 matplotlib
 plotly
+shapely
 sphinx
 numpydoc
 pydata-sphinx-theme
