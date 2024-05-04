@@ -1,13 +1,13 @@
+import random
+
 import numpy  as np
 from typing import Tuple, List
 from scipy.interpolate import CubicSpline
 import scipy.optimize as sop
 import scipy.constants as const
-from tuduam.data_structures import Wingbox, Material
 from math import ceil
 from shapely.geometry import Polygon
 from warnings import warn
-import random
 import pdb
 
 # Pymoo relevant imports
@@ -27,19 +27,35 @@ import plotly.express as px
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
 
+from tuduam.data_structures import Wingbox, Material
+
 
 class Boom:
-    """ A class to represent an idealized boom
+    """ 
+    A class to represent an idealized boom.
+
+    :param bid: Boom id 
+    :type bid: int
+    :param A: Boom area
+    :type bid: int
+    :param x: Boom x position
+    :type x: float
+    :param y: Boom y position 
+    :type y: float
+    :param sigma:  The direct stress the boom experiences
+    :type sigma: float
+
     """
     def __init__(self) -> None:
-        self.bid = None #  Boom ID
-        self.A = None  # Area boom
-        self.x = None # X location
-        self.y = None # Y location
-        self.sigma = None
+        self.bid: int| None = None  #  Boom ID
+        self.A: float | None = None   # Area boom
+        self.x: float | None = None  # X location
+        self.y: float | None = None  # Y location
+        self.sigma: float| None = None 
 
     def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
-        """ Returns the cell index of where the panel is located.
+        """ Returns the cell index  of where the panel is located for the specified
+        wingbox struct
 
             :param wingbox_struct: The wingbox data structure containing the locations of the spars
             :type wingbox_struct: Wingbox
@@ -47,8 +63,9 @@ class Boom:
             :type chord: float
             :return: The cell index of where the panel is located
             :rtype: int
-        """        
-        cell_idx = np.asarray(self.x >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        """       
+        # Get index of the cell
+        cell_idx = np.asarray(self.x >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord)  # type: ignore # type: ignore
         if  not any(cell_idx):
             cell_idx = 0
         else:
@@ -59,18 +76,33 @@ class Boom:
 class IdealPanel:
     """
     A class representing a panel in an idealized wingbox
+
+    :param pid:  Panel id 
+    :type pid: int
+    :param bid1:  
+    :type bid1: int
+    :param bid2:  Panel id 
+    :type bid2: int
+    :param b1:  Instance  of one of the two :class:`Boom` connecting the panels
+    :type b1: :class:`Boom`
+    :param b2: Instance of one of the to the other :class:`Boom`connecting the panel.
+    :type b2: :class:`Boom`
+    :param t_pnl: Boom id 
+    :type bid: int
+    :param bid: Boom id 
+    :type bid: int
     """
     def __init__(self):
         self.pid = None # Panel ID
         self.bid1 = None  # The boom id of its corresponding first boom id
         self.bid2 = None # The boom id of its corresponding second boom id
-        self.b1 = None
-        self.b2  = None
-        self.t_pnl = None
-        self.q_basic = None
-        self.q_tot = None
-        self.tau = None
-        self.dir_vec = None
+        self.b1: Boom | None = None 
+        self.b2: Boom | None  = None
+        self.t_pnl: float | None = None
+        self.q_basic: float | None = None
+        self.q_tot: float | None = None
+        self.tau: float | None = None
+        self.dir_vec: float | None = None
     
     def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
         """ Returns the cell index of where the panel is located.
@@ -81,8 +113,8 @@ class IdealPanel:
         :type chord: float
         :return: The cell index of where the panel is located
         :rtype: int
-        """        
-        cell_idx = np.asarray((self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # Get index of the cell
+        """      
+        cell_idx = np.asarray((self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # type: ignore # Get index of the cell
         if  not any(cell_idx):
             cell_idx = 0
         else:
@@ -96,15 +128,15 @@ class IdealPanel:
         :return: The length of the panel
         :rtype: float
         """        
-        return np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2)
+        return np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2) # type: ignore
 
     def set_b1_to_b2_vector(self) -> tuple:
         try:
-            x_comp = (self.b2.x - self.b1.x)/self.length()
-            y_comp = (self.b2.y - self.b1.y)/self.length()
+            x_comp = (self.b2.x - self.b1.x)/self.length() # type: ignore
+            y_comp = (self.b2.y - self.b1.y)/self.length() # type: ignore
         except AttributeError as err:
             raise err("The boom instance has not been assigned yet or is missing the attribute x and y")
-        self.dir_vec = [x_comp, y_comp]
+        self.dir_vec = [x_comp, y_comp] # type: ignore
 
     def set_b2_to_b1_vector(self) -> tuple:
         try:
@@ -141,6 +173,20 @@ class IdealWingbox():
         for boom in self.boom_dict.values():
             Ixx += boom.A*(boom.y - self.y_centroid)**2
         return Ixx
+
+    @property
+    def Ixy(self):
+        Iyy = 0
+        for boom in self.boom_dict.values():
+            Iyy += boom.A*(boom.x - self.x_centroid)*(boom.y - self.y_centroid)
+        return Iyy
+
+    @property
+    def Iyy(self):
+        Iyy = 0
+        for boom in self.boom_dict.values():
+            Iyy += boom.A*(boom.x - self.x_centroid)**2
+        return Iyy
 
     @property
     def _read_skin_panels_per_cell(self) -> List[int]:
@@ -322,20 +368,58 @@ class IdealWingbox():
             if boom.A < 0: 
                 warn("Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value")
                 boom.A = np.abs(boom.A)
+                
 
 
-    def stress_analysis(self,  intern_shear:float, internal_mz:float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
+    def stress_analysis(self,  shear_y: float, shear_x: float,  moment_x: float, moment_y: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
         """ 
-        Perform stress analysis on  a wingbox section 
+        Perform stress analysis on  a wingbox section  based on the internal shear loads and moments. All data is stored within
+        the :class:`IdealPanel` and :class:`Boom`  classes.
 
+        
+        In the figure above we can see the coordinate system that is used for computing the stresses inside the wingbox. 
+        Together with the sign convention it is important that the user applies the correct sign to their absolute forces.
+
+        -------------------------
+        Sign convention forces and coordinate system
+        -------------------------
+
+        .. image:: ../_static/sign_convention_forces.png
+            :width: 300
+        
+        The sign convention above is applied for the forces . Please consider that Figure 16.9 shows positive directions and senses for the above loads and moments applied externally to
+        a beam and also the positive directions of the components of displacement u, v and w
+        of any point in the beam cross-section parallel to the x, y and z axes, respectively. If we refer internal forces and moments to that face of a section which is seen when
+        viewed in the direction zO then, as shown in Fig. 16.10, positive internal forces and
+        moments are in the same direction and sense as the externally applied loads whereas
+        on the opposite face they form an opposing system. 
+
+        Additionally, the beam seen in figure 16.10 is also immediateley the coordinate system used. Where the aircraft flies
+        in the x direction. Thus, analysing the right wing structure.
+
+        **Moments**
+
+        A further condition defining the signs of the bending moments Mx and My is that they are
+        positive when they induce tension in the positive xy quadrant of the beam cross-section.
+
+        -------------------------------------------------------------------------------
         List of assumptions (Most made in Megson, some for simplificatoin of code)
-        ---------------------------------------------------------------------------
-        - The effect of taper are not included see 21.2 (See megson) TODO: future implementation
-        - Lift acts through the shear centre (no torque is created) TODO: future implementation
-        - Stresses due to drag are not considered. 
+        -------------------------------------------------------------------------------
+
+        #. The effect of taper are not included see 21.2 (See megson) TODO: future implementation
+        #. Lift acts through the shear centre (no torque is created) TODO: future implementation
+        #. Stresses due to drag are not considered. 
+
+        --------------------------
+        sources
+        --------------------------
+
+        [1] section 16.2.2, T.H.G Megson, Aircraft  Structures For Engineering Students, 4th Edition
 
 
 
+        :param intern_shear: _description_
+        :type intern_shear: float
         :param intern_shear: _description_
         :type intern_shear: float
         :param internal_mz: _description_
@@ -353,7 +437,7 @@ class IdealWingbox():
 
         # First compute all the direct stresses
         for boom in self.boom_dict.values():
-            boom.sigma = internal_mz*(boom.y - self.y_centroid)/self.Ixx
+            boom.sigma = moment_x*(boom.y - self.y_centroid)/self.Ixx
 
         
         # Start by computing basic shear stresses
@@ -401,7 +485,8 @@ class IdealWingbox():
             else:
                 pnl_per_cell_lst.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc])
             
-        shear_const = -intern_shear/self.Ixx # define -Sy/Ixx which is used repeatdly
+        shear_const_y = -(shear_y*self.Iyy - shear_x*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy) # define -Sy/Ixx which is used repeatdly
+        shear_const_x = -(shear_x*self.Ixx - shear_y*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy) # define -Sy/Ixx which is used repeatdly
 
         # Chain from the cut panel per cell until all q_basic have been defined
         for idx, cell in enumerate(pnl_per_cell_lst):
@@ -424,13 +509,13 @@ class IdealWingbox():
                     # Check if it was to boom 1
                     if curr_pnl.b1 == b1_lst[0].b1:
                         curr_pnl = b1_lst[0]
-                        q_basic += shear_const*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid)
+                        q_basic += shear_const_y*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid) + shear_const_x*curr_pnl.b1.A*(curr_pnl.b1.x - self.x_centroid)
                         curr_pnl.q_basic =  q_basic
                         curr_pnl.set_b1_to_b2_vector()
                     # if not boom 1 then it was boom 2
                     else:
                         curr_pnl = b1_lst[0]
-                        q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
+                        q_basic += shear_const_y*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid) + shear_const_x*curr_pnl.b2.A*(curr_pnl.b2.x - self.x_centroid)
                         curr_pnl.q_basic =  q_basic
                         curr_pnl.set_b2_to_b1_vector() # Set the direction in which the shear flow was defined
                 # If b2 is attached to another panel and q_basic is not attached yet continue from this panel
@@ -438,13 +523,13 @@ class IdealWingbox():
                     # Check if it was to boom 1
                     if curr_pnl.b2 == b2_lst[0].b2:
                         curr_pnl = b2_lst[0]
-                        q_basic += shear_const*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid)
+                        q_basic += shear_const_y*curr_pnl.b2.A*(curr_pnl.b2.y - self.y_centroid) + shear_const_x*curr_pnl.b2.A*(curr_pnl.b2.x - self.x_centroid)
                         curr_pnl.q_basic =  q_basic
                         curr_pnl.set_b2_to_b1_vector() # Set the direction in which the shear flow was defined
                     # if not boom 1 then it was boom 2
                     else:
                         curr_pnl = b2_lst[0]
-                        q_basic += shear_const*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid)
+                        q_basic += shear_const_y*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid) + shear_const_x*curr_pnl.b1.A*(curr_pnl.b1.x - self.x_centroid)
                         curr_pnl.q_basic =  q_basic
                         curr_pnl.set_b1_to_b2_vector()
                 else: 
@@ -540,7 +625,7 @@ class IdealWingbox():
                 moment = pnl.q_basic*np.cross(r_abs_vec, pnl.dir_vec)*pnl.length()
                 sum += moment
 
-        b_arr[n_cell, 0] = -1*sum + intern_shear*shear_centre_rel*self.chord
+        b_arr[n_cell, 0] = -1*sum + shear_y*shear_centre_rel*self.chord + shear_x*self.y_centroid
 
         # Get the actual solution
         X = np.linalg.solve(A_arr, b_arr)
@@ -724,7 +809,6 @@ class IdealWingbox():
         v = list()
 
         for pnl in pnl_lst:
-            pass 
             if pnl.tau > 0:
                 u.append(pnl.dir_vec[0])
                 v.append(pnl.dir_vec[1])
@@ -1347,7 +1431,6 @@ class SectionOptimization:
             {'type': 'ineq', 'fun': self._get_constraint_vector, "args": [shear, moment, applied_loc]},
                 ]
 
-        #FIXME Cobyla does not take bounds class
         lb_lst = []
         ub_lst = []
 
@@ -1487,7 +1570,6 @@ class IsotropicWingboxConstraints:
         res = self.kb_spline(ar_lst)
         res = np.nan_to_num(res, nan= 5.) # Set values that were outside of the interpolation range to 5.
         return res
-
 
     def _crit_instability_compr(self) -> list:#TODO
         r""" 
@@ -1778,25 +1860,25 @@ def class2_wing_mass(vtol, flight_perf, wing ):
 
 
 def class2_fuselage_mass(vtol, flight_perf, fuselage):
-        """ Returns the mass of the fuselage
+    """ Returns the mass of the fuselage
 
-        :param vtol: VTOL data structure, requires: mtom
-        :type vtol: VTOL
-        :param flight_perf: FlightPerformance data structure
-        :type flight_perf: FlightPerformance
-        :param fuselage: Fuselage data structure
-        :type fuselage: Fuselage
-        :return: Fuselage mass
-        :rtype: float
-        """        
-        mtow_lbs = 1/const.pound * vtol.mtom
-        lf_ft, lf = fuselage.length_fuselage*1/const.foot, fuselage.length_fuselage
+    :param vtol: VTOL data structure, requires: mtom
+    :type vtol: VTOL
+    :param flight_perf: FlightPerformance data structure
+    :type flight_perf: FlightPerformance
+    :param fuselage: Fuselage data structure
+    :type fuselage: Fuselage
+    :return: Fuselage mass
+    :rtype: float
+    """        
+    mtow_lbs = 1/const.pound * vtol.mtom
+    lf_ft, lf = fuselage.length_fuselage*1/const.foot, fuselage.length_fuselage
 
-        nult = flight_perf.n_ult # ultimate load factor
-        wf_ft = fuselage.width_fuselage*1/const.foot # width fuselage [ft]
-        hf_ft = fuselage.height_fuselage*1/const.foot # height fuselage [ft]
-        Vc_kts = flight_perf.v_cruise*1/const.foot # design cruise speed [kts]
+    nult = flight_perf.n_ult # ultimate load factor
+    wf_ft = fuselage.width_fuselage*1/const.foot # width fuselage [ft]
+    hf_ft = fuselage.height_fuselage*1/const.foot # height fuselage [ft]
+    Vc_kts = flight_perf.v_cruise*1/const.foot # design cruise speed [kts]
 
-        fweigh_USAF = 200*((mtow_lbs*nult/10**5)**0.286*(lf_ft/10)**0.857*((wf_ft + hf_ft)/10)*(Vc_kts/100)**0.338)**1.1
-        fuselage.mass= fweigh_USAF*const.pound
-        return fuselage.mass
+    fweigh_USAF = 200*((mtow_lbs*nult/10**5)**0.286*(lf_ft/10)**0.857*((wf_ft + hf_ft)/10)*(Vc_kts/100)**0.338)**1.1
+    fuselage.mass= fweigh_USAF*const.pound
+    return fuselage.mass
