@@ -8,6 +8,7 @@ coveralls
 pydantic
 matplotlib
 plotly
+setuptools
 pandas
 ipython
 pymoo
