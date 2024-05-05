@@ -363,7 +363,7 @@ class IdealWingbox():
                 
 
 
-    def stress_analysis(self,  shear_y: float, shear_x: float,  moment_x: float, moment_y: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
+    def stress_analysis(self,  shear_y: float, shear_x: float,   moment_y: float, moment_x: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
         """ 
         Perform stress analysis on  a wingbox section  based on the internal shear loads and moments. All data is stored within
         the :class:`IdealPanel` and :class:`Boom`  classes.
@@ -1172,3 +1172,6 @@ def class2_fuselage_mass(vtol, flight_perf, fuselage):
     fweigh_USAF = 200*((mtow_lbs*nult/10**5)**0.286*(lf_ft/10)**0.857*((wf_ft + hf_ft)/10)*(Vc_kts/100)**0.338)**1.1
     fuselage.mass= fweigh_USAF*const.pound
     return fuselage.mass
+
+if __name__ == "__main__":
+    print("Hello World")

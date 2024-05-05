@@ -73,14 +73,14 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
 
 def test_stress1(FixtWingbox1, FixtMaterial,  naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox1)
-    res.stress_analysis(48e3, 200e4, 0.4, 80e9, validate=False)
+    res.stress_analysis(48e3,0, 0, 200e4, 0.4, 80e9, validate=False)
 
     assert all([i.sigma is not None for i in res.boom_dict.values()])
     assert all([i.tau is not None for i in res.panel_dict.values()])
 
 def test_stress2(FixtWingbox2, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    res.stress_analysis(48e3, 20e4, 0.4, 80e9, validate=False)
+    res.stress_analysis(48e3,0, 0,20e4, 0.4, 80e9, validate=False)
 
     assert all([i.sigma is not None for i in res.boom_dict.values()])
     assert all([i.tau is not None for i in res.panel_dict.values()])
@@ -115,9 +115,21 @@ def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     area_lst = res.get_cell_areas()
  
 def test_shear_flows(case23_5_Megson):
+    """ The following case tests the computation of the shear flow using problem 23.5 from source [1].
+
+    
+    ---------------------------------------
+    Source
+    ------------------------------------
+
+    [1] problem 23.5, page 634, T.H.G Megson, Aircraft  Structures For Engineering Students, 4th Edition
+
+    :param case23_5_Megson: Fixture building the example
+    :type case23_5_Megson:Fixture
+    """    
     wingbox = case23_5_Megson
     assert np.isclose(np.round(wingbox.Ixx*1e6,1)*1e6,214.3e6)
-    qs_lst, dtheta_dz = wingbox.stress_analysis(44.5e3, 20e3, 635/1398, 80e9, validate=False)
+    qs_lst, dtheta_dz = wingbox.stress_analysis(44.5e3, 0, 0,20e3, 635/1398, 80e9, validate=False)
     pnl1 = [i for i in wingbox.panel_dict.values() if i.pid == 1][0]
     pnl2 = [i for i in wingbox.panel_dict.values() if i.pid == 2][0]
     pnl3 = [i for i in wingbox.panel_dict.values() if i.pid == 3][0]
@@ -165,21 +177,21 @@ def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
     res1 = setup.interaction_curve()
 
-    test_idealwingbox.stress_analysis(6000, 17e3, 0.25, 80e9)
+    test_idealwingbox.stress_analysis(6000,0, 0,17e3, 0.25, 80e9)
     res2 = setup.interaction_curve()
 
-    test_idealwingbox.stress_analysis(3000, 50e3, 0.25, 80e9)
+    test_idealwingbox.stress_analysis(3000, 0, 0, 50e3, 0.25, 80e9)
     res3 = setup.interaction_curve()
     assert all(np.greater_equal(res1, res2))
     assert all(np.greater_equal(res1, res3))
 
 def test_cobyla_opt(naca45112, FixtWingbox2, FixtMaterial):
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.optimize_cobyla(3000, 12e3, 0.3, FixtWingbox2.str_cell)
+    opt.optimize_cobyla(3000, 0, 0, 12e3, 0.3, FixtWingbox2.str_cell)
 
 def test_GA_opt(naca45112, FixtWingbox2, FixtMaterial):
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.GA_optimize(3000, 12e3, 0.3, n_gen= 20 )
+    opt.GA_optimize(3000,0, 0, 12e3, 0.3, n_gen= 20 )
 
 # def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
     # opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)

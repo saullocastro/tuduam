@@ -263,8 +263,11 @@ def naca45112():
 
 @pytest.fixture
 def test_idealwingbox(naca45112, FixtWingbox2):
+    """ 
+    A fixture for easy access to a instance of an ideal wingbox
+    """    
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    res.stress_analysis(3000, 17e3, 0.25, 80e9)
+    res.stress_analysis(3000, 0, 0,17e3, 0.25, 80e9)
     return res
 
 
