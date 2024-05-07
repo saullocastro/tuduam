@@ -163,7 +163,7 @@ class IsotropicWingboxConstraints:
 
 
         **Bibliography**
-        [1] Kassapoglou. Design and Analysis of Composite Structures. 2nd Edition. John Wiley & Sons Ltd, 2013.
+        [1] Kassapoglou, C. (2010). page 137, equation 6.38, Design and analysis of composite structures: With applications to aerospace structures. John Wiley & Sons.
 
         :param wingbox: _description_
         :type wingbox: IdealWingbox
