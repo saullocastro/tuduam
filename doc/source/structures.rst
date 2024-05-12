@@ -1,10 +1,15 @@
-Structures 
-------------------------
+
+Structures subpackage documentation
+------------------------------------
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   optimization
+   wingbox 
+   constraints
 
 
-.. automodule:: tuduam.structures
-   :members:
-   :undoc-members:
-   :special-members: __init__
-   :private-members:
-   :show-inheritance:
+

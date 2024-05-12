@@ -16,8 +16,8 @@ Technology. This course also serves as an extension to the `UAM course
   :width: 500
   :alt: Alternative text
 
-Overview of Modules
-===================
+Overview of Modules and subpackages
+=========================================
 .. toctree::
    :maxdepth: 1
    :numbered:
