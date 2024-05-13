@@ -7,6 +7,23 @@ from ..data_structures import *
 
 
 class IsotropicWingboxConstraints:
+    """
+          Some description.
+    
+        Parameters
+        ----------
+        features_to_drop : str or list, default=None
+            Variable(s) to be dropped from the dataframe
+    
+        Methods
+        -------
+        fit:
+           some description
+        transform:
+          some description
+        fit_transform:
+          some description
+        """
     def __init__(self, wingbox:IdealWingbox, material_struct: Material, len_to_rib: float) -> None:
         self.wingbox = wingbox
         self.material_struct = material_struct
@@ -21,12 +38,19 @@ class IsotropicWingboxConstraints:
         # Interpolator for critical shear function
         self.kb_spline = CubicSpline(x,y, extrapolate=False) 
     
-    def _kb_interp(self, ar_lst: list):
+    def _kb_interp(self, ar_lst: list) -> np.ndarray:
+        """ Computes the coefficients for the critical shear stability of a sheet.
+
+        :param ar_lst: List containing the aspect ratio of each sheet
+        :type ar_lst: list
+        :return: Returns an array with the criticial shear coefficients
+        :rtype: np.ndarray
+        """        
         res = self.kb_spline(ar_lst)
         res = np.nan_to_num(res, nan= 5.) # Set values that were outside of the interpolation range to 5.
         return res
 
-    def _crit_instability_compr(self) -> list:#TODO
+    def _crit_instability_compr(self) -> list:
         r""" 
         Compute the elastic instability of a flat sheet in compression for each panel in the idealized wingbox using 
         the equation shown below.
@@ -158,7 +182,7 @@ class IsotropicWingboxConstraints:
         interaction curve which has been rewritten from equation 6.38, page 144 in source [1]:
 
         .. math::
-            -\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right) + 1 > 0
+            -\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right)^2 + 1 > 0
 
 
 
@@ -183,7 +207,7 @@ class IsotropicWingboxConstraints:
         Nx: list = np.abs([min(pnl.b1.sigma*pnl.b1.A, pnl.b2.sigma*pnl.b2.A) for pnl in self.pnl_lst]) # Take the maximum of the two booms
         Nxy: list = np.abs([pnl.q_tot*pnl.length() for pnl in self.pnl_lst])
 
-        interaction_constr = -Nx/ Nx_crit - (Nxy/Nxy_crit) ** 2 + 1
+        interaction_constr = -Nx/ Nx_crit - (Nxy/Nxy_crit)**2 + 1
         interaction_constr[self.tens_pnl_idx] = 1
 
 

@@ -172,6 +172,8 @@ class SectionOptimization:
         :type material_struct: Material
         """        
 
+        # Perform checks on whether correct data was loaded in
+
         self.path_coord = path_coord
         self.chord = chord
         self.len_sec =  len_sec

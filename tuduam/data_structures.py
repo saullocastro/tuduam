@@ -149,15 +149,15 @@ class Propeller(Parent):
 class Wingbox(Parent):
     n_cell: int
     """"The amount of cells in the wingbox structure"""
-    spar_loc_nondim:list
+    spar_loc_nondim: list
     """"The location of the spar over the chord so dimensionless. Length should be n_cell - 1 """
-    t_sk_cell:list
+    t_sk_cell:Optional[list] = None
     """The thickness of the skin in each cell, length should be equal to n_cell"""
-    t_sp: float
+    t_sp: Optional[float] = None
     """The thickness of the spars"""
-    area_str:float
+    area_str:Optional[float] = None
     """"Area of the stringer"""
-    str_cell: list
+    str_cell: Optional[list] = None
     """"List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization
     it also required to be an even number"""
 

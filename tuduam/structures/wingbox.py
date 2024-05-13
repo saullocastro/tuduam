@@ -372,9 +372,9 @@ class IdealWingbox():
         In the figure above we can see the coordinate system that is used for computing the stresses inside the wingbox. 
         Together with the sign convention it is important that the user applies the correct sign to their absolute forces.
 
-        -------------------------
+        ------------------------------------------------
         Sign convention forces and coordinate system
-        -------------------------
+        ------------------------------------------------
 
         .. image:: ../_static/sign_convention_forces.png
             :width: 300
