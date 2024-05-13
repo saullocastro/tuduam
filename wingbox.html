@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2. Strucutres Wingbox Documentation &#8212; tuduam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'wingbox';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2.3. Structures constraints Documentation" href="constraints.html" />
+    <link rel="prev" title="2.1. Structures optimization Documentation" href="optimization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">tuduam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="structures.html">
+                        Structures subpackage documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="structures.html">
+                        Structures subpackage documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">2.1. Structures optimization Documentation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.2. Strucutres Wingbox Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constraints.html">2.3. Structures constraints Documentation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="structures.html" class="nav-link"><span class="section-number">2. </span>Structures subpackage documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-tuduam.structures.wingbox">
+<span id="strucutres-wingbox-documentation"></span><h1><span class="section-number">2.2. </span>Strucutres Wingbox Documentation<a class="headerlink" href="#module-tuduam.structures.wingbox" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.Boom">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">Boom</span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#Boom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.Boom" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to represent an idealized boom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bid</strong> (<em>int</em>) – Boom id</p></li>
+<li><p><strong>A</strong> – Boom area</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Boom x position</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Boom y position</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – The direct stress the boom experiences</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.Boom.get_cell_idx" title="tuduam.structures.wingbox.Boom.get_cell_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cell_idx</span></code></a>(wingbox_struct, chord)</p></td>
+<td><p>Returns the cell index  of where the panel is located for the specified wingbox struct</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.Boom.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#Boom.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.Boom.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.Boom.get_cell_idx">
+<span class="sig-name descname"><span class="pre">get_cell_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wingbox_struct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><span class="pre">Wingbox</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#Boom.get_cell_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.Boom.get_cell_idx" title="Link to this definition">#</a></dt>
+<dd><p>Returns the cell index  of where the panel is located for the specified
+wingbox struct</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param wingbox_struct<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The wingbox data structure containing the locations of the spars</p>
+</dd>
+<dt class="field-even">type wingbox_struct<span class="colon">:</span></dt>
+<dd class="field-even"><p>Wingbox</p>
+</dd>
+<dt class="field-odd">param chord<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The local chord of the wing section</p>
+</dd>
+<dt class="field-even">type chord<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cell index of where the panel is located</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">IdealPanel</span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing a panel in an idealized wingbox</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pid</strong> (<em>int</em>) – Panel id</p></li>
+<li><p><strong>bid1</strong> (<em>int</em>)</p></li>
+<li><p><strong>bid2</strong> (<em>int</em>) – Panel id</p></li>
+<li><p><strong>b1</strong> (<a class="reference internal" href="#tuduam.structures.wingbox.Boom" title="tuduam.structures.wingbox.Boom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Boom</span></code></a>) – Instance  of one of the two <a class="reference internal" href="#tuduam.structures.wingbox.Boom" title="tuduam.structures.wingbox.Boom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Boom</span></code></a> connecting the panels</p></li>
+<li><p><strong>b2</strong> (<a class="reference internal" href="#tuduam.structures.wingbox.Boom" title="tuduam.structures.wingbox.Boom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Boom</span></code></a>) – Instance of one of the to the other :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>Boom`connecting the panel.</p></li>
+<li><p><strong>t_pnl</strong> – Boom id</p></li>
+<li><p><strong>bid</strong> (<em>int</em>) – Boom id</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealPanel.get_cell_idx" title="tuduam.structures.wingbox.IdealPanel.get_cell_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_cell_idx</span></code></a>(wingbox_struct, chord)</p></td>
+<td><p>Returns the cell index of where the panel is located.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealPanel.length" title="tuduam.structures.wingbox.IdealPanel.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a>()</p></td>
+<td><p>Length of the panel based on the coordinates of the boom.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>set_b1_to_b2_vector</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_b2_to_b1_vector</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel.get_cell_idx">
+<span class="sig-name descname"><span class="pre">get_cell_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wingbox_struct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><span class="pre">Wingbox</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel.get_cell_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel.get_cell_idx" title="Link to this definition">#</a></dt>
+<dd><p>Returns the cell index of where the panel is located.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wingbox_struct</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><em>Wingbox</em></a>) – The wingbox data structure containing the locations of the spars</p></li>
+<li><p><strong>chord</strong> (<em>float</em>) – The local chord of the wing section</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cell index of where the panel is located</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel.length">
+<span class="sig-name descname"><span class="pre">length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel.length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel.length" title="Link to this definition">#</a></dt>
+<dd><p>Length of the panel based on the coordinates of the boom. Boom center is used as the 
+assumption is that the booms are infitestimally small.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length of the panel</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel.set_b1_to_b2_vector">
+<span class="sig-name descname"><span class="pre">set_b1_to_b2_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel.set_b1_to_b2_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel.set_b1_to_b2_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealPanel.set_b2_to_b1_vector">
+<span class="sig-name descname"><span class="pre">set_b2_to_b1_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealPanel.set_b2_to_b1_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealPanel.set_b2_to_b1_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">IdealWingbox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wingbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><span class="pre">Wingbox</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class representing an idealized wingbox, containing methods to perform computations
+on that instants and some accessed methods. It is not recommended to use as a standalone tool but should 
+be using in conjunction with the <a class="reference internal" href="#tuduam.structures.wingbox.discretize_airfoil" title="tuduam.structures.wingbox.discretize_airfoil"><code class="xref py py-func docutils literal notranslate"><span class="pre">discretize_airfoil()</span></code></a> function.</p>
+<p><strong>Assumptions</strong>
+1. The x datum of the coordinate system should be attached to the leading edge of the 
+wingbox
+2. Some methods such as the read_cell_area expect the first and last to begin and end on a vertex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Ixx</strong></dt><dd></dd>
+<dt><strong>Ixy</strong></dt><dd></dd>
+<dt><strong>Iyy</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealWingbox.get_polygon_cells" title="tuduam.structures.wingbox.IdealWingbox.get_polygon_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_polygon_cells</span></code></a>([validate])</p></td>
+<td><p>Compute the area of each cell with the help of the shapely.geometry.Polygon class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealWingbox.get_total_area" title="tuduam.structures.wingbox.IdealWingbox.get_total_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_total_area</span></code></a>()</p></td>
+<td><p>Returns the total area of all the booms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealWingbox.stress_analysis" title="tuduam.structures.wingbox.IdealWingbox.stress_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stress_analysis</span></code></a>(shear_y, shear_x, moment_y, ...)</p></td>
+<td><p>Perform stress analysis on  a wingbox section  based on the internal shear loads and moments.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<tbody>
+<tr class="row-odd"><td><p><strong>get_cell_areas</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_direct_stresses</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>plot_geometry</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_quiver_shear_stress</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>plot_shear_stress</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.Ixx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Ixx</span></span><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.Ixx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.Ixy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Ixy</span></span><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.Ixy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.Iyy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Iyy</span></span><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.Iyy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wingbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><span class="pre">Wingbox</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox._compute_boom_areas">
+<span class="sig-name descname"><span class="pre">_compute_boom_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chord</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox._compute_boom_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox._compute_boom_areas" title="Link to this definition">#</a></dt>
+<dd><p>Function that creates all boom areas, program assumes a fully functional panel and boom
+dictionary where all values have the full classes assigned. Function can be used by user manually
+but it is generall advised to use the discretize_airfoil function to create a wingbox.</p>
+<p><strong>Assumptions</strong></p>
+<ol class="arabic simple">
+<li><p>The idealizatin only takes into account a force in the vertical direction (that is tip-deflection path)</p></li>
+<li></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox._compute_direct_stress">
+<span class="sig-name descname"><span class="pre">_compute_direct_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tuduam.structures.wingbox.Boom" title="tuduam.structures.wingbox.Boom"><span class="pre">Boom</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox._compute_direct_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox._compute_direct_stress" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox._read_skin_panels_per_cell">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_read_skin_panels_per_cell</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox._read_skin_panels_per_cell" title="Link to this definition">#</a></dt>
+<dd><p>Returns a list with the amount of panels on the skin per cell. That is ignoring the panels
+which are part of one the spars. This functions requires a fully filled out boom and panel dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An n x m 2d list where n is the amount cells and m the amount of panels (might not be identical for each cell)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.get_cell_areas">
+<span class="sig-name descname"><span class="pre">get_cell_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.get_cell_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.get_cell_areas" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.get_polygon_cells">
+<span class="sig-name descname"><span class="pre">get_polygon_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.get_polygon_cells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.get_polygon_cells" title="Link to this definition">#</a></dt>
+<dd><p>Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the 
+class using the idealized_airfoil function. Errenous results or an error will be given in case this is not the case! When using this function for the first time
+with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
+show you n plots of the cell polygon where n is the amount of cells.</p>
+<p><strong>Assumptions</strong></p>
+<ol class="arabic simple">
+<li><p>Function is built for a object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one point is the furthest ahead. The same goes for cell n but with the trailing edge</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>validate</strong> (<em>bool</em><em>, </em><em>optional</em>) – When True will show the 3 plots described above, defaults to False</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list whic is m long where m is the amount of cells. Each element is the area of the respective cell.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.get_total_area">
+<span class="sig-name descname"><span class="pre">get_total_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.get_total_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.get_total_area" title="Link to this definition">#</a></dt>
+<dd><p>Returns the total area of all the booms. These booms also contain the addition of the skin thicknesses. This function in the library is used 
+for the optimizatio of a wingbox.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The total area of all the booms combined</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.plot_direct_stresses">
+<span class="sig-name descname"><span class="pre">plot_direct_stresses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.plot_direct_stresses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.plot_direct_stresses" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.plot_geometry">
+<span class="sig-name descname"><span class="pre">plot_geometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.plot_geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.plot_geometry" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.plot_quiver_shear_stress">
+<span class="sig-name descname"><span class="pre">plot_quiver_shear_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.plot_quiver_shear_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.plot_quiver_shear_stress" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.plot_shear_stress">
+<span class="sig-name descname"><span class="pre">plot_shear_stress</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.plot_shear_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.plot_shear_stress" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.IdealWingbox.stress_analysis">
+<span class="sig-name descname"><span class="pre">stress_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shear_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_centre_rel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_mod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#IdealWingbox.stress_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.IdealWingbox.stress_analysis" title="Link to this definition">#</a></dt>
+<dd><p>Perform stress analysis on  a wingbox section  based on the internal shear loads and moments. All data is stored within
+the <a class="reference internal" href="#tuduam.structures.wingbox.IdealPanel" title="tuduam.structures.wingbox.IdealPanel"><code class="xref py py-class docutils literal notranslate"><span class="pre">IdealPanel</span></code></a> and <a class="reference internal" href="#tuduam.structures.wingbox.Boom" title="tuduam.structures.wingbox.Boom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Boom</span></code></a>  classes.</p>
+<p>In the figure above we can see the coordinate system that is used for computing the stresses inside the wingbox. 
+Together with the sign convention it is important that the user applies the correct sign to their absolute forces.</p>
+<section id="sign-convention-forces-and-coordinate-system">
+<h2><span class="section-number">2.2. </span>Sign convention forces and coordinate system<a class="headerlink" href="#sign-convention-forces-and-coordinate-system" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="_images/sign_convention_forces.png"><img alt="_images/sign_convention_forces.png" src="_images/sign_convention_forces.png" style="width: 300px;" />
+</a>
+<p>The sign convention above is applied for the forces . Please consider that Figure 16.9 shows positive directions and senses for the above loads and moments applied externally to
+a beam and also the positive directions of the components of displacement u, v and w
+of any point in the beam cross-section parallel to the x, y and z axes, respectively. If we refer internal forces and moments to that face of a section which is seen when
+viewed in the direction zO then, as shown in Fig. 16.10, positive internal forces and
+moments are in the same direction and sense as the externally applied loads whereas
+on the opposite face they form an opposing system.</p>
+<p>Additionally, the beam seen in figure 16.10 is also immediateley the coordinate system used. Where the aircraft flies
+in the x direction. Thus, analysing the right wing structure.</p>
+<p><strong>Moments</strong></p>
+<p>A further condition defining the signs of the bending moments Mx and My is that they are
+positive when they induce tension in the positive xy quadrant of the beam cross-section.</p>
+</section>
+<section id="list-of-assumptions-most-made-in-megson-some-for-simplificatoin-of-code">
+<h2><span class="section-number">2.2. </span>List of assumptions (Most made in Megson, some for simplificatoin of code)<a class="headerlink" href="#list-of-assumptions-most-made-in-megson-some-for-simplificatoin-of-code" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>The effect of taper are not included see 21.2 (See megson) TODO: future implementation</p></li>
+<li><p>Lift acts through the shear centre (no torque is created) TODO: future implementation</p></li>
+<li><p>Stresses due to drag are not considered.</p></li>
+</ol>
+</section>
+<section id="sources">
+<h2><span class="section-number">2.2. </span>sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
+<p>[1] section 16.2.2, T.H.G Megson, Aircraft  Structures For Engineering Students, 4th Edition</p>
+<dl class="field-list simple">
+<dt class="field-odd">param intern_shear<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">type intern_shear<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param intern_shear<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">type intern_shear<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param internal_mz<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">type internal_mz<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">param shear_mod<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shear_modulus</p>
+</dd>
+<dt class="field-even">type shear_mod<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[float, dict]</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.class2_fuselage_mass">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">class2_fuselage_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flight_perf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fuselage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#class2_fuselage_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.class2_fuselage_mass" title="Link to this definition">#</a></dt>
+<dd><p>Returns the mass of the fuselage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vtol</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.VTOL" title="tuduam.data_structures.VTOL"><em>VTOL</em></a>) – VTOL data structure, requires: mtom</p></li>
+<li><p><strong>flight_perf</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.FlightPerformance" title="tuduam.data_structures.FlightPerformance"><em>FlightPerformance</em></a>) – FlightPerformance data structure</p></li>
+<li><p><strong>fuselage</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.Fuselage" title="tuduam.data_structures.Fuselage"><em>Fuselage</em></a>) – Fuselage data structure</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fuselage mass</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.class2_wing_mass">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">class2_wing_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flight_perf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#class2_wing_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.class2_wing_mass" title="Link to this definition">#</a></dt>
+<dd><p>Returns the structural weight of both wings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vtol</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.VTOL" title="tuduam.data_structures.VTOL"><em>VTOL</em></a>) – VTOL data structure</p></li>
+<li><p><strong>flight_perf</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.FlightPerformance" title="tuduam.data_structures.FlightPerformance"><em>FlightPerformance</em></a>) – FlightPerformance data structure</p></li>
+<li><p><strong>wing</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.SingleWing" title="tuduam.data_structures.SingleWing"><em>SingleWing</em></a>) – SingleWing datastructure</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mass of both wings</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.discretize_airfoil">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">discretize_airfoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wingbox_struct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><span class="pre">Wingbox</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tuduam.structures.wingbox.IdealWingbox" title="tuduam.structures.wingbox.IdealWingbox"><span class="pre">IdealWingbox</span></a></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#discretize_airfoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.discretize_airfoil" title="Link to this definition">#</a></dt>
+<dd><p>Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
+the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.</p>
+<p><strong>Assumptions</strong></p>
+<ol class="arabic simple">
+<li><p>Airfoil is idealized according Megson ch. 20</p></li>
+<li><p>Each stringer will form one boom in the discretized airfoil</p></li>
+<li><p>Only an equal amount of stringers can be specified per cell, if that is not the case a warning is issued however. (due to the method of discretization)</p></li>
+<li><p>The ratio of <span class="math notranslate nohighlight">\(\frac{\sigma_1}{\sigma_2}\)</span> required for the skin contribution to the  boom size based on the skin is determined by the ratio of their y positin thus <span class="math notranslate nohighlight">\(\frac{y_1}{y_2}\)</span>. n</p></li>
+</ol>
+<p><strong>General Procedure</strong></p>
+<ol class="arabic simple">
+<li><p>Create a spline of the top and bottom airfoil</p></li>
+<li><p>Create array along which to sample this spline to create the booms, creating specific samples for the spar positions</p></li>
+<li><p>Move over top surface creating booms and panel as we go</p></li>
+<li><p>Do the same for the bottom surface moving in a circle like motion</p></li>
+<li><p>Move over all the spars and create booms and panels as we go.</p></li>
+<li><p>Iterate over all booms and add skin contribution and stringer contribution to all their areas</p></li>
+</ol>
+<p><strong>Future Improvements</strong></p>
+<ol class="arabic simple">
+<li><p>Add contribution of spar caps (For now as been left out as I did not see the value of it at the time)</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_coord</strong> (<em>str</em>) – _description_</p></li>
+<li><p><strong>chord</strong> (<em>float</em>) – _description_</p></li>
+<li><p><strong>wingbox_struct</strong> (<a class="reference internal" href="tuduam.html#tuduam.data_structures.Wingbox" title="tuduam.data_structures.Wingbox"><em>Wingbox</em></a>) – _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tuduam.structures.wingbox.IdealWingbox" title="tuduam.structures.wingbox.IdealWingbox">IdealWingbox</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.get_centroids">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">get_centroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#get_centroids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.get_centroids" title="Link to this definition">#</a></dt>
+<dd><p>Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
+The centroids are computing assuming the following:</p>
+<blockquote>
+<div><p><strong>Assumptions</strong></p>
+<p>1. It is only based on the skin, i.e  the spar webs and stringers are ignored. Additionally the different thickness of the skin are not taken into account 
+The implication being that the x centroid should be at x/c = 0.5. Unless there was a bias in the sampling points</p>
+</div></blockquote>
+<p><strong>Future improvement</strong></p>
+<blockquote>
+<div><p>1. Take into account the spar webs for a better x centroid. However irrelevant for now as we only
+take into account forces in the vertical directoin</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_coord</strong> (<em>str</em>) – Path to the geometry file using the Selig format</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The nondimensional x and y centroid of the airfoil</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.read_coord">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">read_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#read_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.read_coord" title="Link to this definition">#</a></dt>
+<dd><p>Returns an  m x 2 array of the airfoil coordinates based on a Selig formatted dat file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_coord</strong> (<em>str</em>) – m x 2 array with the airfoil coordinates where x goes top trailing edge to top leading edge and then back to  lower trailing edge. I.e it keeps the Selig format</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tuduam.structures.wingbox.spline_airfoil_coord">
+<span class="sig-prename descclassname"><span class="pre">tuduam.structures.wingbox.</span></span><span class="sig-name descname"><span class="pre">spline_airfoil_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">CubicSpline</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">CubicSpline</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/tuduam/structures/wingbox.html#spline_airfoil_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.wingbox.spline_airfoil_coord" title="Link to this definition">#</a></dt>
+<dd><p>Return two function which interpolate the coordinates of the airfoil given. Two functions are returned
+the first interpolates the top skin and the second function interpolates the bottom skin. The result interpolation functions 
+take into account an airfoil scaled by the given chord.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_coord</strong> (<em>str</em>) – Path to the airfoil coordinates using the Selig format.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A cubic spline of the top skin and lower skin, respectively.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[CubicSpline, CubicSpline]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="optimization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>Structures optimization Documentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="constraints.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>Structures constraints Documentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.Boom"><code class="docutils literal notranslate"><span class="pre">Boom</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.Boom.__init__"><code class="docutils literal notranslate"><span class="pre">Boom.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.Boom.get_cell_idx"><code class="docutils literal notranslate"><span class="pre">Boom.get_cell_idx()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel"><code class="docutils literal notranslate"><span class="pre">IdealPanel</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel.__init__"><code class="docutils literal notranslate"><span class="pre">IdealPanel.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel.get_cell_idx"><code class="docutils literal notranslate"><span class="pre">IdealPanel.get_cell_idx()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel.length"><code class="docutils literal notranslate"><span class="pre">IdealPanel.length()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel.set_b1_to_b2_vector"><code class="docutils literal notranslate"><span class="pre">IdealPanel.set_b1_to_b2_vector()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealPanel.set_b2_to_b1_vector"><code class="docutils literal notranslate"><span class="pre">IdealPanel.set_b2_to_b1_vector()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox"><code class="docutils literal notranslate"><span class="pre">IdealWingbox</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.Ixx"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.Ixx</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.Ixy"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.Ixy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.Iyy"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.Iyy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.__init__"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox._compute_boom_areas"><code class="docutils literal notranslate"><span class="pre">IdealWingbox._compute_boom_areas()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox._compute_direct_stress"><code class="docutils literal notranslate"><span class="pre">IdealWingbox._compute_direct_stress()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox._read_skin_panels_per_cell"><code class="docutils literal notranslate"><span class="pre">IdealWingbox._read_skin_panels_per_cell</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.get_cell_areas"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.get_cell_areas()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.get_polygon_cells"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.get_polygon_cells()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.get_total_area"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.get_total_area()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.plot_direct_stresses"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.plot_direct_stresses()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.plot_geometry"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.plot_geometry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.plot_quiver_shear_stress"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.plot_quiver_shear_stress()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.plot_shear_stress"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.plot_shear_stress()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.IdealWingbox.stress_analysis"><code class="docutils literal notranslate"><span class="pre">IdealWingbox.stress_analysis()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.class2_fuselage_mass"><code class="docutils literal notranslate"><span class="pre">class2_fuselage_mass()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.class2_wing_mass"><code class="docutils literal notranslate"><span class="pre">class2_wing_mass()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.discretize_airfoil"><code class="docutils literal notranslate"><span class="pre">discretize_airfoil()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.get_centroids"><code class="docutils literal notranslate"><span class="pre">get_centroids()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.read_coord"><code class="docutils literal notranslate"><span class="pre">read_coord()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.structures.wingbox.spline_airfoil_coord"><code class="docutils literal notranslate"><span class="pre">spline_airfoil_coord()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/wingbox.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
