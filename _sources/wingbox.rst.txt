@@ -1,5 +1,5 @@
 
-Strucutres Wingbox Documentation
+Structures Wingbox Documentation
 ------------------------------------
 
 .. automodule:: tuduam.structures.wingbox
