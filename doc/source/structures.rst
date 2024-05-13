@@ -1,5 +1,5 @@
 
-Structures subpackage documentation
+Structures subpackage 
 ------------------------------------
 
 Contents:

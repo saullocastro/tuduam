@@ -40,6 +40,11 @@ source_suffix = ".rst"
 html_theme = 'pydata_sphinx_theme'
 autosummary_generate = True
 
+# Set default options for autodoc
+autodoc_default_options = {
+    'inherited-members': False,
+}
+
 
 
 # -- Options for HTML output -------------------------------------------------
