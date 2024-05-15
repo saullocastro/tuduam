@@ -379,14 +379,28 @@ document.write(`
 <dt class="sig sig-object py" id="tuduam.structures.constraints.IsotropicWingboxConstraints">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.structures.constraints.</span></span><span class="sig-name descname"><span class="pre">IsotropicWingboxConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wingbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="wingbox.html#tuduam.structures.wingbox.IdealWingbox" title="tuduam.structures.wingbox.IdealWingbox"><span class="pre">IdealWingbox</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">material_struct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tuduam.html#tuduam.data_structures.Material" title="tuduam.data_structures.Material"><span class="pre">Material</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_to_rib</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/constraints.html#IsotropicWingboxConstraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.constraints.IsotropicWingboxConstraints" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<blockquote>
+<div><p>Some description.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>features_to_drop</strong><span class="classifier">str or list, default=None</span></dt><dd><p>Variable(s) to be dropped from the dataframe</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table class="autosummary longtable table autosummary">
+<table class="table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#tuduam.structures.constraints.IsotropicWingboxConstraints.interaction_curve" title="tuduam.structures.constraints.IsotropicWingboxConstraints.interaction_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interaction_curve</span></code></a>()</p></td>
-<td><p>The following function ensures the panel remains below the interaction curve of a composite panel under combined compression and shear forces.</p></td>
+<tr class="row-odd"><td><p><strong>fit:</strong></p></td>
+<td><p>some description</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#tuduam.structures.constraints.IsotropicWingboxConstraints.von_Mises" title="tuduam.structures.constraints.IsotropicWingboxConstraints.von_Mises"><code class="xref py py-obj docutils literal notranslate"><span class="pre">von_Mises</span></code></a>()</p></td>
-<td><p>THe following constraint implemetns the von mises failure criterion which is defined as follows for the case where only a direct stress in the y axis occurs and one shear stress is present.</p></td>
+<tr class="row-even"><td><p><strong>transform:</strong></p></td>
+<td><p>some description</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>fit_transform:</strong></p></td>
+<td><p>some description</p></td>
 </tr>
 </tbody>
 </table>
@@ -470,8 +484,20 @@ y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.structures.constraints.IsotropicWingboxConstraints._kb_interp">
-<span class="sig-name descname"><span class="pre">_kb_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ar_lst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/structures/constraints.html#IsotropicWingboxConstraints._kb_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.constraints.IsotropicWingboxConstraints._kb_interp" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">_kb_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ar_lst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/structures/constraints.html#IsotropicWingboxConstraints._kb_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.structures.constraints.IsotropicWingboxConstraints._kb_interp" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients for the critical shear stability of a sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ar_lst</strong> (<em>list</em>) – List containing the aspect ratio of each sheet</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns an array with the criticial shear coefficients</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.structures.constraints.IsotropicWingboxConstraints.interaction_curve">
@@ -481,7 +507,7 @@ under combined compression and shear forces. This function is designed to be use
 can also be used to check this specific constraints for any given design. The following equation is used for the 
 interaction curve which has been rewritten from equation 6.38, page 144 in source [1]:</p>
 <div class="math notranslate nohighlight">
-\[-\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right) + 1 &gt; 0\]</div>
+\[-\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right)^2 + 1 &gt; 0\]</div>
 <p><strong>Bibliography</strong>
 [1] Kassapoglou, C. (2010). page 137, equation 6.38, Design and analysis of composite structures: With applications to aerospace structures. John Wiley &amp; Sons.</p>
 <dl class="field-list simple">

@@ -543,15 +543,15 @@ document.write(`
 <span class="k">class</span> <span class="nc">Wingbox</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">n_cell</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The amount of cells in the wingbox structure&quot;&quot;&quot;</span>
-    <span class="n">spar_loc_nondim</span><span class="p">:</span><span class="nb">list</span>
+    <span class="n">spar_loc_nondim</span><span class="p">:</span> <span class="nb">list</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The location of the spar over the chord so dimensionless. Length should be n_cell - 1 &quot;&quot;&quot;</span>
-    <span class="n">t_sk_cell</span><span class="p">:</span><span class="nb">list</span>
+    <span class="n">t_sk_cell</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The thickness of the skin in each cell, length should be equal to n_cell&quot;&quot;&quot;</span>
-    <span class="n">t_sp</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">t_sp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The thickness of the spars&quot;&quot;&quot;</span>
-    <span class="n">area_str</span><span class="p">:</span><span class="nb">float</span>
+    <span class="n">area_str</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Area of the stringer&quot;&quot;&quot;</span>
-    <span class="n">str_cell</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">str_cell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization</span>
 <span class="sd">    it also required to be an even number&quot;&quot;&quot;</span></div>
 
