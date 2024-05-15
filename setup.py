@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 is_released = True
-version = '2024.11'
+version = '2024.13'
 
 
 def git_version():
