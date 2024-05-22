@@ -601,7 +601,7 @@ class IdealWingbox():
             b_arr[idx,0] = b_ele
 
 
-        #------------------------------- Fill in the final equatin, moment equivalence ------------------
+        #------------------------------- Fill in the final equation, moment equivalence ------------------
         # Contribution from the complementary shear flows
         for idx, cell in enumerate(pnl_per_cell_lst2):
             A_arr[n_cell, idx] = 2*area_lst[idx]

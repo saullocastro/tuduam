@@ -39,6 +39,7 @@ exclude_patterns = []
 source_suffix = ".rst"
 html_theme = 'pydata_sphinx_theme'
 autosummary_generate = True
+numfig = False
 
 # Set default options for autodoc
 autodoc_default_options = {

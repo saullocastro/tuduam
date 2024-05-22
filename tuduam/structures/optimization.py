@@ -193,7 +193,7 @@ class SectionOptimization:
                      save_hist: bool = True):
         
         """ The following function executes the Genetic Algorithm (`GA <https://pymoo.org/algorithms/soo/ga.html>`_) to optimize the wingbox given to the overarching class
-        and with the loads fed to the function. Additionally there are some keywords which are explained below.
+        and with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis <tuduam.structures.wingbox.IdealWingbox.stress_analysis>`. Additionally there are some keywords which are explained below.
 
         :param shear: The internal shear force acting at the section
         :type shear: float
