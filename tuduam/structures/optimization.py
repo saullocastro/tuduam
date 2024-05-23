@@ -122,11 +122,17 @@ class ProblemFixedPanel(ElementwiseProblem):
         # Assing new properties to the wingbox struct assuming the specified length
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
-        area_str = x[n_cell + 1]
+        # area_str = x[n_cell + 1]
+        t_st = x[n_cell + 1]
+        w_st = x[n_cell + 2]
+        h_st = x[n_cell + 3]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
-        self.box_struct.area_str =  area_str
+        # self.box_struct.area_str =  area_str
+        self.box_struct.t_st = t_st
+        self.box_struct.w_st = w_st
+        self.box_struct.h_st = h_st
 
         # Discretize airfoil from new given parameters
         wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
@@ -263,6 +269,9 @@ class SectionOptimization:
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
         area_str = x[n_cell + 1]
+        t_st = x[n_cell + 2]
+        w_st = x[n_cell + 3]
+        h_st = x[n_cell + 4]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp

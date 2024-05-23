@@ -151,14 +151,23 @@ class Wingbox(Parent):
     """"The amount of cells in the wingbox structure"""
     spar_loc_nondim: list
     """"The location of the spar over the chord so dimensionless. Length should be n_cell - 1 """
+    str_cell: Optional[list] = None
+    """"List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization
+    it also required to be an even number"""
     t_sk_cell:Optional[list] = None
     """The thickness of the skin in each cell, length should be equal to n_cell"""
     t_sp: Optional[float] = None
     """The thickness of the spars"""
-    area_str:Optional[float] = None
-    """"Area of the stringer"""
-    str_cell: Optional[list] = None
-    """"List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization
-    it also required to be an even number"""
+    area_str: Optional[float] = None
+    """"Area of the stringer. Note that if you define area of the stringer. You can't define stringers dimensions.
+    The reason both options exists is a result of how the API developped over time and the requirement for stringer geometry
+    for constraints."""
+    t_st: Optional[float] = None
+    """" Thickness of the stringer"""
+    w_st: Optional[float] = None
+    """" Thickness of the stringer"""
+    h_st: Optional[float] = None
+    """" Thickness of the stringer"""
+
 
 

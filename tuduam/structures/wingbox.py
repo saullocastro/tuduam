@@ -135,8 +135,8 @@ class IdealPanel:
 
 class IdealWingbox():
     """ A class representing an idealized wingbox, containing methods to perform computations
-    on that instants and some accessed methods. It is not recommended to use as a standalone tool but should 
-    be using in conjunction with the :func:`discretize_airfoil` function.
+    on that instants and some accessed methods. It is strongly disadvised to use this class  without the :func:`discretize_airfoil` function. 
+    As all functions rely on the :class:`Wingbox` to be properly loaded with geometry.
 
     **Assumptions**
     1. The x datum of the coordinate system should be attached to the leading edge of the 
@@ -147,6 +147,26 @@ class IdealWingbox():
     """    
     def __init__(self, wingbox: Wingbox, chord:float) -> None:
         self.wingbox_struct = wingbox
+        t_st = self.wingbox_struct.t_st
+        w_st = self.wingbox_struct.w_st
+        h_st = self.wingbox_struct.h_st
+        # Boolean expressoin below check if any of the stringer geometry were specified
+        bool_expr_str = (t_st is not None) or (w_st is not None) or (h_st is not None)
+        if self.wingbox_struct.area_str is not None and (bool_expr_str):
+            raise UserWarning("Both stringer area and stringer geometry were specified")
+
+        elif bool_expr_str:
+            try:
+                self.area_str = 2*w_st*t_st + (h_st - 2*t_st)*t_st
+            except AttributeError as err:
+                raise UserWarning(f"Not all stringer geometry was specified, resultingin the following error: {err} please refer to API docs")
+
+        elif self.wingbox_struct.area_str is not None:
+            self.area_str = self.wingbox_struct.area_str
+
+        else:
+            raise UserWarning("This line should not have been reached, check your geometry specifications")
+
         self.chord = chord
         self.x_centroid = None # datum attached to leading edge
         self.y_centroid = None
@@ -356,7 +376,7 @@ class IdealWingbox():
             boom.A = boom_area
             # check if it is not a spar boom, this will get a flange addition in the future maybe
             if not any(np.isclose(boom.x, spar_loc_abs )):
-                boom.A += self.wingbox_struct.area_str
+                boom.A += self.area_str
             if boom.A < 0: 
                 warn("Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value")
                 boom.A = np.abs(boom.A)
@@ -990,9 +1010,9 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             # A 0.1 starting point is chosen to avoid 
             str_tot = str_lst[idx] 
             
-            # See assumptions, the following make sure any float get rounded since
-            # the optimizer usually does not return nice integers. It then also gives a warning
-            # if the value was not an integer
+
+            # See assumptions, the amount of stringers is supposed to be an even numbers hence 
+            # the code below
             if isinstance(str_tot, int):
                 if str_tot % 2 != 0:
                     warn(f"{str_lst[idx]} was not an even number and will be floored for conservative reasons")
