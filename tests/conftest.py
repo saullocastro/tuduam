@@ -242,11 +242,12 @@ def case1():
 
 @pytest.fixture
 def case2(case1):
-    case2 =  case1
+    case2: struct.IdealWingbox =  case1
     data_struct = case2.wingbox_struct
 
     data_struct.str_cell = [10, 2]
     data_struct.area_str = 3e-4
+    case2.area_str = 3e-4
     return case2
 
 @pytest.fixture

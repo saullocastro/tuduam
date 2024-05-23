@@ -154,7 +154,6 @@ class IdealWingbox():
         bool_expr_str = (t_st is not None) or (w_st is not None) or (h_st is not None)
         if self.wingbox_struct.area_str is not None and (bool_expr_str):
             raise UserWarning("Both stringer area and stringer geometry were specified")
-
         elif bool_expr_str:
             try:
                 self.area_str = 2*w_st*t_st + (h_st - 2*t_st)*t_st
