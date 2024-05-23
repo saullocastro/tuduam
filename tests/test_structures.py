@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 import tuduam.structures as struct
+import tuduam as tud
 
 def test_wing_weight(FixtVTOL, FixtFlightPerformance, FixtSingleWing):
     wing_mass = struct.class2_wing_mass(FixtVTOL, FixtFlightPerformance, FixtSingleWing)
@@ -185,13 +186,22 @@ def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     assert all(np.greater_equal(res1, res2))
     assert all(np.greater_equal(res1, res3))
 
-def test_cobyla_opt(naca45112, FixtWingbox2, FixtMaterial):
+def test_cobyla_opt(naca45112, FixtWingbox2: tud.Wingbox, FixtMaterial):
+    # To keep backwards compatibility we change some of the properties here instead of
+    # in the actual fixture
+
+    FixtWingbox2.area_str = None
+    FixtWingbox2.t_st = 0.001
+    FixtWingbox2.w_st = 0.01
+    FixtWingbox2.h_st = 0.01
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
     opt.optimize_cobyla(3000, 0, 0, 12e3, 0.3, FixtWingbox2.str_cell)
 
-def test_GA_opt(naca45112, FixtWingbox2, FixtMaterial):
+def test_GA_opt(naca45112, FixtWingbox2: tud.Wingbox, FixtMaterial):
+    FixtWingbox2.area_str = None
+
     opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.GA_optimize(3000,0, 0, 12e3, 0.3, n_gen= 20 )
+    opt.GA_optimize(3000,0, 0, 12e3, 0.3, n_gen= 20, multiprocess= True)
 
 # def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
     # opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)

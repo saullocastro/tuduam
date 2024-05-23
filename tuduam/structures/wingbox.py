@@ -164,7 +164,7 @@ class IdealWingbox():
             self.area_str = self.wingbox_struct.area_str
 
         else:
-            raise UserWarning("This line should not have been reached, check your geometry specifications")
+            raise UserWarning("No stringer area nor stringer geometry were specified")
 
         self.chord = chord
         self.x_centroid = None # datum attached to leading edge

@@ -75,6 +75,11 @@ class ProblemFixedPanel(ElementwiseProblem):
     """
         The followinng problem sets up an exploration of a wingbox for a fixed amount of stringers per cell. Since it is difficult for an optimizer
         like COBYLA to find a global minimum a genetica algorith is set up first to explore the design space. This problem sets up this search.
+
+        ---------------------------
+        Important notes
+        ---------------------------
+        #. This optimization is *not* compatible with stringer area because of the constraints requiring stringer geometry
     """    
 
     def __init__(self, shear_y: float, shear_x: float, moment_y: float, moment_x: float, applied_loc: float, chord: float, len_sec: float,
@@ -90,17 +95,21 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.box_struct = box_struct
         self.mat_struct = mat_struct
         self.path_coord = path_coord
-        sample = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
 
-        super().__init__(n_var= box_struct.n_cell + 2, n_obj=1, n_ieq_constr= 2*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 2)*1e-8, xu=np.ones(self.box_struct.n_cell + 2), **kwargs)
+        self.box_struct.area_str = 1e-5 # Stops discretize airfoil from complaining
+        # sample to get the right number of constraints
+        sample = discretize_airfoil(self.path_coord, self.chord, self.box_struct) 
+        self.box_struct.area_str = None # Remove from data struct again to stop from interferitg
+
+        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 2*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=np.ones(self.box_struct.n_cell + 4), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
         The function is excecuted at each element in the optimization. The arguments that are passed should be in the following 
-        order t_sk_cell, t_sp, area_str. Together given a total length of N + 2 where N is the amount of cells.
+        order t_sk_cell, t_sp, t_st, w_st, h_st . Together given a total length of N + 2 where N is the amount of cells.
         This interally checked if it is not the case a runtime error will be raised
 
-        :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, area_str, str_cell]
+        :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, t_st, w_st, h_st]
         :type x: list
         :param shear: The shear force for which we're optimizing
         :type shear: float
@@ -115,21 +124,19 @@ class ProblemFixedPanel(ElementwiseProblem):
         
         n_cell = self.box_struct.n_cell
 
-        if len(x) != n_cell + 2:
+        if len(x) != n_cell + 4:
             raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
         
         
         # Assing new properties to the wingbox struct assuming the specified length
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
-        # area_str = x[n_cell + 1]
         t_st = x[n_cell + 1]
         w_st = x[n_cell + 2]
         h_st = x[n_cell + 3]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
-        # self.box_struct.area_str =  area_str
         self.box_struct.t_st = t_st
         self.box_struct.w_st = w_st
         self.box_struct.h_st = h_st
@@ -246,7 +253,7 @@ class SectionOptimization:
         order t_sk_cell, t_sp, area_str. Together given a total length of N + 2 where N is the amount of cells.
         This interally checked if it is not the case a runtime error will be raised
 
-        :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, area_str, str_cell]
+        :param x: The design variable vector which is in the following format [t_sk_cell, t_sp, t_st, w_st, h_st ]
         :type x: list
         :param shear: The shear force for which we're optimizing
         :type shear: float
@@ -261,21 +268,22 @@ class SectionOptimization:
         
         n_cell = self.box_struct.n_cell
 
-        if len(x) != n_cell + 2:
+        if len(x) != n_cell + 4:
             raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
         
         
         # Assing new properties to the wingbox struct assuming the specified length
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
-        area_str = x[n_cell + 1]
-        t_st = x[n_cell + 2]
-        w_st = x[n_cell + 3]
-        h_st = x[n_cell + 4]
+        t_st = x[n_cell + 1]
+        w_st = x[n_cell + 2]
+        h_st = x[n_cell + 3]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
-        self.box_struct.area_str =  area_str
+        self.box_struct.t_st = t_st
+        self.box_struct.w_st = w_st
+        self.box_struct.h_st = h_st
         self.box_struct.str_cell = str_lst
 
         # Discretize airfoil from new given parameters
@@ -314,7 +322,7 @@ class SectionOptimization:
         n = self.box_struct.n_cell # quick reference to number of cells
         # Whatever parameters were given in the datastrucrtre are used as inital estimate
         if x0 is None:
-            x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.area_str] 
+            x0 = self.box_struct.t_sk_cell + [self.box_struct.t_sp] + [self.box_struct.t_st] + [self.box_struct.w_st] + [self.box_struct.h_st]  
         else:
             pass
 
@@ -430,11 +438,15 @@ class SectionOptimization:
         n_cell = self.box_struct.n_cell
         t_sk_cell =  x[:n_cell]
         t_sp = x[n_cell]
-        area_str = x[n_cell + 1]
+        t_st = x[n_cell + 1]
+        w_st = x[n_cell + 2]
+        h_st = x[n_cell + 3]
 
         self.box_struct.t_sk_cell = t_sk_cell
         self.box_struct.t_sp = t_sp
-        self.box_struct.area_str =  area_str 
+        self.box_struct.t_st = t_st
+        self.box_struct.w_st = w_st
+        self.box_struct.h_st = h_st 
 
         ideal_wingbox: IdealWingbox = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         ideal_wingbox.stress_analysis(shear_y,shear_x, moment_y, moment_x, applied_loc, self.mat_struct.shear_modulus)
