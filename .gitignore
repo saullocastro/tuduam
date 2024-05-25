@@ -1,6 +1,7 @@
 version.py
 # Build related
 build
+utils
 dist
 .coverage
 .pytest_cache

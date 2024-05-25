@@ -50,12 +50,15 @@ class ProblemFreePanel(ElementwiseProblem):
 
         
         n_cell = self.box_struct.n_cell
+        copy_struct = self.box_struct.model_copy()
+        copy_struct.str_cell = x
 
         if len(x) != n_cell:
             raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
         
-        sec_opt =  SectionOptimization(self.path_coord, self.chord, self.len_sec,  self.box_struct, self.mat_struct)
+        sec_opt =  SectionOptimization(self.path_coord, self.chord, self.len_sec, copy_struct, self.mat_struct)
 
+        # Elementwise runner is removed otherwise it clashes in the GA_optimize function
         try:
             self.kwargs_intern.pop("elementwise_runner")
         except KeyError:
@@ -67,7 +70,7 @@ class ProblemFreePanel(ElementwiseProblem):
             raise ValueError(f"Internal optimization for stringers {x} was not successful and the outer optimization could not continue")
 
         # Discretize airfoil from new given parameters
-        wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+        wingbox_obj = discretize_airfoil(self.path_coord, self.chord, copy_struct)
 
         out["F"] = wingbox_obj.get_total_area() 
 
@@ -298,6 +301,7 @@ class SectionOptimization:
     def optimize_cobyla(self, shear_y: float, shear_x: float, moment_y: float, moment_x: float, applied_loc: float, str_lst: list,
                         bnd_mult: int = 1e3, 
                         x0: list | None = None) -> sop._optimize.OptimizeResult:
+
         """ Optimizes the design using the COBYLA optimizers with the constraints defined in :class:` IsotropicWingboxConstraints`.  The optimization parameters
         are the skin thickness in each cell, the spar thickness and the area of the stringers. Hence the resulting design vector is x = [] The amount of stringers is not a optimization parameter here
         as this would results in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different 
@@ -359,7 +363,7 @@ class SectionOptimization:
         res = sop.minimize(self._obj_func_cobyla, x0, args=(shear_y, shear_x, moment_y, moment_x, applied_loc, str_lst), method="COBYLA" , constraints= constr_lst)
         return res
     
-    def full_section_opt(self, shear: float, moment: float, applied_loc: float,
+    def full_section_opt(self, shear_y: float, shear_x: float, moment_x: float, moment_y: float, applied_loc: float,
                      n_gen_full: int = 50, # Possible keywords
                      pop_full: int = 100,
                      verbose_full: bool = True,
@@ -390,7 +394,7 @@ class SectionOptimization:
         n_proccess =  cores
         pool = multiprocessing.Pool(n_proccess)
         runner = StarmapParallelization(pool.starmap)
-        prob = ProblemFreePanel(shear, moment, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
+        prob = ProblemFreePanel(shear_y, shear_x, moment_y, moment_x, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
                                 self.path_coord, elementwise_runner=runner, **kwargs)
         
 
