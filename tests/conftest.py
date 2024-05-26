@@ -123,6 +123,21 @@ def FixtWingbox2():
     return tud.Wingbox(**attr_dict)
 
 @pytest.fixture
+def FixtWingbox_str():
+    pass
+    attr_dict = {
+        "n_cell":4,
+        "spar_loc_nondim":[0.3, 0.5, 0.75],
+        "t_sk_cell":[0.004,0.001,0.007, 0.001],
+        "t_sp": 0.001,
+        "h_st": 0.010,
+        "w_st": 0.010,
+        "t_st": 0.002,
+        "str_cell":[6,8,7,20],
+    }
+    return tud.Wingbox(**attr_dict)
+
+@pytest.fixture
 def case1():
     """"This case set ups the wingbox shown on page 560 of Megson"""
     pass
@@ -268,6 +283,15 @@ def test_idealwingbox(naca45112, FixtWingbox2):
     A fixture for easy access to a instance of an ideal wingbox
     """    
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
+    res.stress_analysis(3000, 0, 0,17e3, 0.25, 80e9)
+    return res
+
+@pytest.fixture
+def test_idealwingbox_with_str(naca45112, FixtWingbox_str):
+    """ 
+    A fixture for easy access to a instance of an ideal wingbox
+    """    
+    res = struct.discretize_airfoil(naca45112, 2, FixtWingbox_str)
     res.stress_analysis(3000, 0, 0,17e3, 0.25, 80e9)
     return res
 

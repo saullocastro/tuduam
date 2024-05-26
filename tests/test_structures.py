@@ -164,15 +164,34 @@ def test_shear_flows(case23_5_Megson):
 
 def test_shear_buckling(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
-    res = setup._crit_instability_shear()
+    res = setup.crit_instability_shear()
 
     assert all(res > 0)
 
 def test_compr_buckling(test_idealwingbox, FixtMaterial ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
-    res = setup._crit_instability_compr()
+    res = setup.crit_instability_compr()
     
     assert all(res > 0)
+
+def test_column_str_buckling(test_idealwingbox_with_str, FixtMaterial ):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
+    res = setup.column_str_buckling()
+
+    # TODO: Find test case
+    assert True
+    
+def test_flange_str_buckling(test_idealwingbox_with_str, FixtMaterial):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
+    res = setup.stringer_flange_buckling()
+
+    assert True
+
+def test_web_str_buckling(test_idealwingbox_with_str, FixtMaterial):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
+    res = setup.stringer_web_buckling()
+
+    assert True
 
 def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)

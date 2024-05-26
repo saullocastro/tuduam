@@ -50,7 +50,7 @@ class IsotropicWingboxConstraints:
         res = np.nan_to_num(res, nan= 5.) # Set values that were outside of the interpolation range to 5.
         return res
 
-    def _crit_instability_compr(self) -> list:
+    def crit_instability_compr(self) -> list:
         r""" 
         Compute the elastic instability of a flat sheet in compression for each panel in the idealized wingbox using 
         the equation shown below.
@@ -91,7 +91,7 @@ class IsotropicWingboxConstraints:
         return res
 
 
-    def _crit_instability_shear(self) -> list:#TODO
+    def crit_instability_shear(self) -> list:#TODO
         r""" 
         Compute the elastic instability of a flat sheet in shear for each panel in the idealized wingbox using  
         the equation shown below. Very similar for the case in compression (see :func:`crit_instability_compr`) except for the shear buckling coefficient.
@@ -153,27 +153,6 @@ class IsotropicWingboxConstraints:
         res = kb_vec* np.pi ** 2 * self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson**2)) * (t_arr/ b_lst)**2
         return res
 
-    # def flange_buckling(t_st, w_st):#TODO
-    #     buck = 2 * np.pi ** 2 * material_struct.young_modulus / (12 * (1 - material_struct.poisson ** 2)) * (t_st / w_st) ** 2
-    #     return buck
-
-
-    # def web_buckling(t_st, h_st):#TODO
-    #     buck = 4 * np.pi ** 2 *material.young_modulus / (12 * (1 -material.poisson ** 2)) * (t_st / h_st) ** 2
-    #     return buck0
-
-
-    # def global_buckling( h_st, t_st, t):#TODO
-    #     # n = n_st(c_r, b_st)
-    #     tsmr = (t *pitch_str + t_st *wing.n_str * (h_st - t)) /pitch_str
-    #     return 4 * np.pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson ** 2)) * (tsmr / self.pitch_str) ** 2
-
-
-    # def shear_buckling(self,t_sk):#TODO
-    #     buck = 5.35 * pi ** 2 * self.material.young_modulus / (12 * (1 - self.material.poisson)) * (t_sk / self.pitch_str) ** 2
-    #     return buck
-
-
 
     def interaction_curve(self):
         r""" The following function ensures the panel remains below the interaction curve of a composite panel
@@ -201,37 +180,83 @@ class IsotropicWingboxConstraints:
 
         
         area_pnl: list = [pnl.t_pnl*pnl.length() for pnl in self.pnl_lst]
-        Nx_crit = self._crit_instability_compr()*area_pnl
-        Nxy_crit = self._crit_instability_shear()*area_pnl
+        Nx_crit = self.crit_instability_compr()*area_pnl
+        Nxy_crit = self.crit_instability_shear()*area_pnl
 
         Nx: list = np.abs([min(pnl.b1.sigma*pnl.b1.A, pnl.b2.sigma*pnl.b2.A) for pnl in self.pnl_lst]) # Take the maximum of the two booms
         Nxy: list = np.abs([pnl.q_tot*pnl.length() for pnl in self.pnl_lst])
 
         interaction_constr = -Nx/ Nx_crit - (Nxy/Nxy_crit)**2 + 1
-        interaction_constr[self.tens_pnl_idx] = 1
+        # interaction_constr[self.tens_pnl_idx] = 1
 
 
         return interaction_constr
 
 
-    # def column_st(self, h_st, w_st, t_st, t_sk):#
-    #     #Lnew=new_L(b,L)
-    #     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
-    #     i= pi ** 2 * self.material.young_modulus * Ist / (2*w_st* self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
-    #     return i
+    def column_str_buckling(self) -> list:#
+        r"""
+        The following contraints ensure that local skin buckling occurs before colum stringer buckling, which makes failure of the structure
+        more predictable. In order to be able to compare it to the skin buckling load, the critical distributed compressive load
+        acting on all stringers is computed in Equation 50, this approach being also conservative, given that in reality
+        the skin beneath the stringer takes part of the compression load. The constraint is expressed below as well.
+
+        .. math::
+            N_{col} = \frac{\pi^2 E I}{L^2 2 w_{st}}
+
+        .. math::
+             N_{col} - \sigma_{cr}*t_{sk} \geq 0
+        
+
+        :return: list
+        :rtype:list
+        """        
+        t_st = self.wingbox.wingbox_struct.t_st
+        h_st = self.wingbox.wingbox_struct.h_st
+        w_st = self.wingbox.wingbox_struct.w_st
+
+        I_arr = np.array([t_st*h_st**3/12 + 2*(w_st - t_st)*t_st**3/12 +  i.t_pnl*w_st*(0.5*h_st)**2 for i in self.pnl_lst])
+        n_col = (np.pi**2*self.material_struct.young_modulus*I_arr)/(self.len_to_rib**2*2*w_st)
+
+        t_sk_arr = np.array([i.t_pnl for i in self.pnl_lst])
+        crit_stress_arr = self.crit_instability_compr()
+
+        return n_col - t_sk_arr*crit_stress_arr
 
 
-    # def f_ult(self, h_st,w_st,t_st,t_sk,y):#TODO
-    #     A_st = self.get_area_str(h_st,w_st,t_st)
-    #     # n=n_st(c_r,b_st)
-    #     A=self.wing.n_str*A_st+self.width_wingbox*self.chord(y)*t_sk
-    #     f_uts=self.sigma_uts*A
-    #     return f_uts
 
+    def stringer_flange_buckling(self):
+        r"""
+        The individual flanges of the stringer can also buckle, (see :meth:`crit_instability_compr` for the equation and its parameters). The buckling coefficient changes as one edge is free and one is simply supported, thus k is conser-
+        vatively chosen to be 2. The constraint is expressed in Equation 52.
 
-    # def buckling_constr(self, x):
-    #     buck = self.buckling(x)
-    #     return -1*(buck - 1)
+        .. math::
+            \sigma_{cr,fl} - \sigma_{cr,loc} \geq 0
+        """        
+
+        sigma_loc = self.crit_instability_compr()
+
+        kc = 2 # buckling coefficient 
+        t_st =  self.wingbox.wingbox_struct.t_st
+        b =  self.wingbox.wingbox_struct.w_st
+        sigma_fl= kc*np.pi**2*self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson ** 2)) * (t_st/b) ** 2
+        return sigma_fl - sigma_loc
+
+    def stringer_web_buckling(self):
+        r"""
+        The individual webs of the stringers can also buckle, (see :meth:`crit_instability_compr` for the equation and its parameters). 
+        he edges can be conservatively considered simply supported, the buckling coefficient k being 4. The constraints is expressed below:
+
+        .. math::
+            \sigma_{cr,web} - \sigma_{cr,loc} \geq 0
+        """        
+
+        sigma_loc = self.crit_instability_compr()
+
+        kc = 4 # buckling coefficient 
+        t_st =  self.wingbox.wingbox_struct.t_st
+        b =  self.wingbox.wingbox_struct.h_st
+        sigma_web= kc*np.pi**2*self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson ** 2)) * (t_st/b) ** 2
+        return sigma_web - sigma_loc
 
 
     # def global_local(self, x):
