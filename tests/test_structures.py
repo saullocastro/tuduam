@@ -193,6 +193,18 @@ def test_web_str_buckling(test_idealwingbox_with_str, FixtMaterial):
 
     assert True
 
+def test_str_crippling(test_idealwingbox_with_str, FixtMaterial):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
+    res = setup.crippling()
+
+    assert True
+
+def test_global_constr(test_idealwingbox_with_str, FixtMaterial):
+    setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
+    res = setup.global_skin_buckling()
+
+    pdb.set_trace()
+    assert True
 def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
     res1 = setup.interaction_curve()

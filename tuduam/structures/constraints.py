@@ -30,6 +30,10 @@ class IsotropicWingboxConstraints:
         self.len_to_rib = len_to_rib
         self.pnl_lst =  [i for i in self.wingbox.panel_dict.values()] 
         self.tens_pnl_idx =  [idx for idx, i in enumerate(self.wingbox.panel_dict.values()) if (i.b1.sigma > 0) and (i.b2.sigma > 0)] # Panel which are in tension since for some of the constraints it is not relevant here
+        self.t_st = self.wingbox.wingbox_struct.t_st
+        self.w_st = self.wingbox.wingbox_struct.w_st
+        self.h_st = self.wingbox.wingbox_struct.h_st
+        self.area_str = 2*self.w_st*self.t_st + (self.h_st - 2*self.t_st)*self.t_st
 
         # Value used for the interpolation to get Kb
         x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ]
@@ -193,6 +197,25 @@ class IsotropicWingboxConstraints:
         return interaction_constr
 
 
+    def _n_col(self) -> np.ndarray:
+        r"""
+        The critical distributed compressive load acting on all stringers is computed in Equation 50, 
+        this approach being also conservative, given that in reality the skin beneath the stringer takes part of the compression load. 
+
+        .. math::
+            N_{col} = \frac{\pi^2 E I}{L^2 2 w_{st}}
+
+        :return: The critical distributed compressive laod acting on all stringers  in N/m
+        :rtype: np.ndarray
+        """        
+        t_st = self.t_st
+        h_st = self.h_st
+        w_st = self.w_st
+
+        I_arr = np.array([t_st*h_st**3/12 + 2*(w_st - t_st)*t_st**3/12 +  i.t_pnl*w_st*(0.5*h_st)**2 for i in self.pnl_lst])
+        n_col = (np.pi**2*self.material_struct.young_modulus*I_arr)/(self.len_to_rib**2*2*w_st)
+        return n_col
+
     def column_str_buckling(self) -> list:#
         r"""
         The following contraints ensure that local skin buckling occurs before colum stringer buckling, which makes failure of the structure
@@ -210,13 +233,8 @@ class IsotropicWingboxConstraints:
         :return: list
         :rtype:list
         """        
-        t_st = self.wingbox.wingbox_struct.t_st
-        h_st = self.wingbox.wingbox_struct.h_st
-        w_st = self.wingbox.wingbox_struct.w_st
 
-        I_arr = np.array([t_st*h_st**3/12 + 2*(w_st - t_st)*t_st**3/12 +  i.t_pnl*w_st*(0.5*h_st)**2 for i in self.pnl_lst])
-        n_col = (np.pi**2*self.material_struct.young_modulus*I_arr)/(self.len_to_rib**2*2*w_st)
-
+        n_col = self._n_col()
         t_sk_arr = np.array([i.t_pnl for i in self.pnl_lst])
         crit_stress_arr = self.crit_instability_compr()
 
@@ -259,38 +277,62 @@ class IsotropicWingboxConstraints:
         return sigma_web - sigma_loc
 
 
-    # def global_local(self, x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     glob = self.global_buckling(h_st, t_st, t_sk)
-    #     loc = self.local_buckling(t_sk)
-    #     diff = glob - loc
-    #     return diff
+    def crippling(self) -> np.ndarray:
+        """
+        Crippling is a form of local buckling that occurs in columns, leading to the failure of the structure. It is
+        related to plastic deformation of the stinger, and it is desired to have the load higher than the column buckling
+        of the stringers (and subsequently higher than the local skin buckling), as crippling leads to the entire failure
+        of the structure. The crippling load is expressed in Equation 56 (in N/m), where for aluminium alloys the
+        constants are β=1.42, m=0.85, and for Z stringers g=5 [4]. The constraint is stated in Equation 57.
+
+        .. math::
+            N_f = t_{st} \beta \sigma_y \left[ \frac{g t_{st}^2}{A_{st}} \sqrt{\frac{E}{\sigma_y}} \right]^m
 
 
-    # def local_column(self, x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     col = self.column_st(h_st,w_st,t_st, t_sk)
-    #     loc = self.local_buckling(t_sk)
-    #     # print("col=",col/1e6)
-    #     # print("loc=",loc/1e6)
-    #     diff = col - loc
-    #     return diff
+        :return: An array containing the inequality constraints described above, where each element represents a panel. The elements should be greater than zero to satisfy the constraint.
+        :rtype: np.ndarray
+        """        
+        n_col = self._n_col()
+        beta = 1.42
+        m = 0.85
+        g = 5
+        E = self.material_struct.young_modulus
+        sigma_y = self.material_struct.sigma_yield
+        n_f =  self.t_st*beta*sigma_y*(g*self.t_st**2/self.area_str*np.sqrt(E/sigma_y))**m
+        return n_f - n_col
 
+    def global_skin_buckling(self):
+        """
+        A stiffened panel can also buckle as a whole, Equation 42 being valid for global skin buckling calculations as
+        well. In this case, the width of the panel is utilised instead of the stringer pitch, and simply supported conditions
+        can be assumed. The contribution of the stringers that still provide a stiffening effect can be considered by
+        smearing their thickness to the skin thickness, as in Equation 47.
 
-    # def flange_loc_loc(self, x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     flange = self.flange_buckling(t_st,w_st)
-    #     loc = self.local_buckling(t_sk)
-    #     diff = flange - loc
-    #     return diff
+        .. math::
+            t_{smeared} = \frac{t_{sk}*b + N_{str}*A_{st}}{b}
 
+        The smeared thickness is substituted in the equation for critical sheet compression see ():meth:`crit_instability_compr`) the 
+        constraint is expressed in below.
 
-    # def web_flange(self, x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     web = self.web_buckling(t_st, h_st)
-    #     loc = self.local_buckling(t_sk)
-    #     diff =web-loc
-    #     return diff
+        .. math::
+            \sigma_{cr,glob} - \sigma_{cr,loc} \geq 0
+
+        """        
+
+        kc = 4 # buckling coefficient (currently very conservative but should be computed in real time using)
+        b_arr = np.array([min(i.length(), self.len_to_rib) for i in self.pnl_lst])
+
+        t_smr_arr = [] # Smeared thickness list
+
+        for pnl, b in zip(self.pnl_lst, b_arr):
+            res = (pnl.t_pnl*b + self.area_str)/b
+            t_smr_arr.append(res)
+
+        sigma_glob = kc*np.pi**2*self.material_struct.young_modulus/(12*(1 - self.material_struct.poisson ** 2)) * (t_smr_arr/b_arr) ** 2
+        sigma_loc = self.crit_instability_compr()
+        
+        return sigma_glob - sigma_loc
+
 
 
     def von_Mises(self):
@@ -311,34 +353,3 @@ class IsotropicWingboxConstraints:
         return self.material_struct.sigma_yield - np.sqrt(direct_stress_arr**2 + 3*shear_arr**2)
 
 
-    # def crippling(self, x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     A = self.get_area_str(h_st,w_st,t_st)
-    #     col = self.column_st( h_st,w_st,t_st,t_sk)
-    #     crip = t_st * self.material.beta_crippling * self.material.sigma_yield* ((self.material.g_crippling * t_st ** 2 / A) * np.sqrt(self.material.young_modulus / self.material.sigma_yield)) ** self.m_crip
-    #     return crip
-
-    # #----OWN CONSTRAINTS-----
-    # def str_buckling_constr(self,x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     Ist = t_st * h_st ** 3 / 12 + (w_st - t_st) * t_st ** 3 / 12 + t_sk**3*w_st/12+t_sk*w_st*(0.5*h_st)**2
-    #     i= pi ** 2 * self.material.young_modulus * Ist / (self.rib_pitch ** 2)#TODO IF HE FAILS REPLACE SPAN WITH RIB PITCH
-    #     i_sigma = (i/self.get_area_str(h_st,w_st,t_st))#convert to stress
-    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/(i_sigma) - 1)
-
-    # def f_ult_constr(self,x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.material.sigma_ultimate - 1)
-    # def flange_buckling_constr(self,x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.flange_buckling(t_st,w_st) - 1)
-
-    # def web_buckling_constr(self,x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.web_buckling(t_st,h_st) - 1)
-
-    # def global_buckling_constr(self,x):
-    #     t_sp, h_st, w_st, t_st, t_sk = x
-    #     return -1*(self.material.safety_factor*self.bending_stress_y_from_tip(x)/self.global_buckling(h_st,t_st,t_sk) - 1)
-
- 

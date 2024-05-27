@@ -99,12 +99,19 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.mat_struct = mat_struct
         self.path_coord = path_coord
 
-        self.box_struct.area_str = 1e-5 # Stops discretize airfoil from complaining
+        # Stops discretize airfoil from complaining (just for getting the right amount of constraints)
+        self.box_struct.area_str = 1e-5 
+        self.box_struct.t_sk_cell = 0.001*np.ones(self.box_struct.n_cell)
+        self.box_struct.t_sp = 0.001
         # sample to get the right number of constraints
         sample = discretize_airfoil(self.path_coord, self.chord, self.box_struct) 
-        self.box_struct.area_str = None # Remove from data struct again to stop from interferitg
 
-        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 5*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.01*np.ones(self.box_struct.n_cell + 4), **kwargs)
+        # Remove from data struct again to stop from interferitg
+        self.box_struct.area_str = None 
+        self.box_struct.t_sk_cell = None
+        self.box_struct.t_sp = None
+
+        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 7*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.01*np.ones(self.box_struct.n_cell + 4), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
@@ -153,7 +160,7 @@ class ProblemFixedPanel(ElementwiseProblem):
         #================ Get constraints ======================================
         constr_cls = IsotropicWingboxConstraints(wingbox_obj, self.mat_struct, self.len_sec)
         out["F"] = wingbox_obj.get_total_area() 
-        out["G"] = np.negative(np.concatenate((constr_cls.interaction_curve(), constr_cls.von_Mises(), constr_cls.column_str_buckling(), constr_cls.stringer_flange_buckling(), constr_cls.stringer_web_buckling()))) # negative is necessary because pymoo handles inequality constraints differently
+        out["G"] = np.negative(np.concatenate((constr_cls.global_skin_buckling(), constr_cls.interaction_curve(), constr_cls.von_Mises(), constr_cls.column_str_buckling(), constr_cls.stringer_flange_buckling(), constr_cls.stringer_web_buckling(), constr_cls.crippling()))) # negative is necessary because pymoo handles inequality constraints differently
 
 class SectionOptimization:
     """
