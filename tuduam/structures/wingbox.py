@@ -156,7 +156,7 @@ class IdealWingbox():
             raise UserWarning("Both stringer area and stringer geometry were specified")
         elif bool_expr_str:
             try:
-                self.area_str = 2*w_st*t_st + (h_st - 2*t_st)*t_st
+                self.area_str = self._compute_area_z_str(t_st, w_st, h_st)
             except AttributeError as err:
                 raise UserWarning(f"Not all stringer geometry was specified, resultingin the following error: {err} please refer to API docs")
 
@@ -171,24 +171,30 @@ class IdealWingbox():
         self.y_centroid = None
         self.panel_dict = {}
         self.boom_dict = {}
+        self.area_lst = None # List of cell areas
+        self.centroid_lst = None # List of cell centroid
+        self.Ixx = None
+        self.Ixy = None
+        self.Iyy = None
         pass
 
-    @property
-    def Ixx(self):
+    def _compute_area_z_str(self, t_st, w_st, h_st):
+        A_str = 2*w_st*t_st + (h_st - 2*t_st)*t_st
+        return A_str
+
+    def _set_Ixx(self):
         Ixx = 0
         for boom in self.boom_dict.values():
             Ixx += boom.A*(boom.y - self.y_centroid)**2
         return Ixx
 
-    @property
-    def Ixy(self):
-        Iyy = 0
+    def _set_Ixy(self):
+        Ixy = 0
         for boom in self.boom_dict.values():
-            Iyy += boom.A*(boom.x - self.x_centroid)*(boom.y - self.y_centroid)
-        return Iyy
+            Ixy += boom.A*(boom.x - self.x_centroid)*(boom.y - self.y_centroid)
+        return Ixy
 
-    @property
-    def Iyy(self):
+    def _set_Iyy(self):
         Iyy = 0
         for boom in self.boom_dict.values():
             Iyy += boom.A*(boom.x - self.x_centroid)**2
@@ -226,7 +232,7 @@ class IdealWingbox():
         return tot_area
 
 
-    def get_polygon_cells(self, validate=False) -> List[float]:
+    def _get_polygon_cells(self, validate=False) -> List[float]:
         """ 
         Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the 
         class using the idealized_airfoil function. Errenous results or an error will be given in case this is not the case! When using this function for the first time
@@ -333,13 +339,16 @@ class IdealWingbox():
 
         return polygon_lst
 
-    def get_cell_areas(self, validate= False) -> List[float]:
-        polygon_lst = self.get_polygon_cells(validate)
+    def _get_cell_areas(self, validate= False) -> List[float]:
+        polygon_lst = self._get_polygon_cells(validate)
         return [i.area for i in polygon_lst]
     
     def _compute_direct_stress(self, boom: Boom, moment_x: float, moment_y: float):
-        return ((moment_y*self.Ixx - moment_x*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy**2)*boom.x +  
-                (moment_x*self.Iyy  - moment_y*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy**2)*boom.y)
+        Ixx = self.Ixx
+        Ixy = self.Ixy
+        Iyy = self.Iyy
+        return ((moment_y*Ixx - moment_x*Ixy)/(Ixx*Iyy -Ixy**2)*boom.x +  
+                (moment_x*Iyy  - moment_y*Ixy)/(Ixx*Iyy -Ixy**2)*boom.y)
 
 
 
@@ -380,6 +389,50 @@ class IdealWingbox():
                 warn("Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value")
                 boom.A = np.abs(boom.A)
                 
+
+    def _load_new_gauge(self, t_sk_cell: list, t_sp: float, t_st: float, w_st: float, h_st: float) -> None:
+        """ This function allows you to change the thickness and hence your boom areas of the wingbox whilst
+        maintaining the shape. This is useful for any optimization as you do not have to call the entire discretize function.
+
+        :param t_sk_cell: _description_
+        :type t_sk_cell: list
+        :param t_sp: _description_
+        :type t_sp: float
+        :param t_st: _description_
+        :type t_st: float
+        :param w_st: _description_
+        :type w_st: float
+        :param h_st: _description_
+        :type h_st: float
+        """        
+
+        # Load new data in data structure
+        self.wingbox_struct.t_sk_cell = t_sk_cell
+        self.wingbox_struct.t_sp = t_sp
+        self.wingbox_struct.t_st = t_st
+        self.wingbox_struct.w_st = w_st
+        self.wingbox_struct.h_st = h_st
+        
+        # Required for backwards compatibility
+        self.t_st = t_st
+        self.w_st = w_st
+        self.h_st = h_st
+
+        # First compute new stringer area
+        self.area_str = self._compute_area_z_str(t_st, w_st, h_st)
+
+        for pnl in self.panel_dict.values():
+            pnl: IdealPanel = pnl
+            # Check if it is a spar 
+            if pnl.b1.x == pnl.b2.x:
+                # If spar change thickness
+                pnl.t_pnl = t_sp
+            # Else if it was a panel
+            else:
+                idx = pnl.get_cell_idx(self.wingbox_struct, self.chord) # Find which cell  panel is in
+                pnl.t_pnl = t_sk_cell[idx] # Assign new thickness
+        
+        self._compute_boom_areas(self.chord)
 
 
     def stress_analysis(self,  shear_y: float, shear_x: float,   moment_y: float, moment_x: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
@@ -549,8 +602,6 @@ class IdealWingbox():
         #=========================================================================
         # Now Compute the complementary shear flows and the twist per unit lengt   
         #========================================================================
-        area_lst = self.get_cell_areas() # Get the area per cell
-        centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in self.get_polygon_cells()] # get the centroid of each cell
 
         # Get the panel per cell, that is the fully defined cell. 
         pnl_per_cell_lst2 = []
@@ -584,20 +635,20 @@ class IdealWingbox():
             if idx == 0:
                 x_max = np.max([i.b1.x for i in cell])
                 # first assign dtheta/dz
-                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, n_cell] = 2*self.area_lst[idx]*shear_mod
                 A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
                 A_arr[idx, idx + 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_max)])
             elif  0 < idx < len(pnl_per_cell_lst2) - 1:
                 x_min = np.min([i.b1.x for i in cell])
                 x_max = np.max([i.b1.x for i in cell])
-                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, n_cell] = 2*self.area_lst[idx]*shear_mod
                 A_arr[idx, idx - 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_min) ])
                 A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
                 A_arr[idx, idx + 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_max)])
                 pass
             elif idx == len(pnl_per_cell_lst2) - 1:
                 x_min = np.min([i.b1.x for i in cell])
-                A_arr[idx, n_cell] = 2*area_lst[idx]*shear_mod
+                A_arr[idx, n_cell] = 2*self.area_lst[idx]*shear_mod
                 A_arr[idx, idx - 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_min)])
                 A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
             else: 
@@ -608,7 +659,7 @@ class IdealWingbox():
             b_ele = 0
             for pnl in cell:
                 r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
-                r_rel_vec = r_abs_vec - centroid_lst[idx]
+                r_rel_vec = r_abs_vec - self.centroid_lst[idx]
                 if pnl.q_basic != 0: 
                     sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
                     b_ele += sign*pnl.q_basic*pnl.length()/pnl.t_pnl
@@ -623,7 +674,7 @@ class IdealWingbox():
         #------------------------------- Fill in the final equation, moment equivalence ------------------
         # Contribution from the complementary shear flows
         for idx, cell in enumerate(pnl_per_cell_lst2):
-            A_arr[n_cell, idx] = 2*area_lst[idx]
+            A_arr[n_cell, idx] = 2*self.area_lst[idx]
         
         # Contribution to b_arr from basic shear flows and shear force itself
         sum = 0
@@ -654,7 +705,7 @@ class IdealWingbox():
             # Now we will loop over all panel 
             for pnl in cell:
                 r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
-                r_rel_vec = r_abs_vec - centroid_lst[idx]
+                r_rel_vec = r_abs_vec - self.centroid_lst[idx]
                 if idx == 0:
                     # If it is on the right spar qs,0+1 will also have an influence
                     if (pnl.b1.x == pnl.b2.x == x_max):
@@ -1144,6 +1195,11 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.panel_dict.update(panel_dict)
 
     wingbox._compute_boom_areas(chord)
+    wingbox.area_lst = wingbox._get_cell_areas()
+    wingbox.centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in wingbox._get_polygon_cells()]
+    wingbox.Ixx = wingbox._set_Ixx()
+    wingbox.Ixy = wingbox._set_Ixy()
+    wingbox.Iyy = wingbox._set_Iyy()
 
     return wingbox
 
@@ -1192,5 +1248,3 @@ def class2_fuselage_mass(vtol, flight_perf, fuselage):
     fuselage.mass= fweigh_USAF*const.pound
     return fuselage.mass
 
-if __name__ == "__main__":
-    print("Hello World")

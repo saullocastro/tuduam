@@ -432,7 +432,7 @@ def case23_5_Megson():
                               f=pnl6,
                               g=pnl7
                               )
-    wingbox.get_cell_areas = lambda : [0.232, 0.258]
+    wingbox._get_cell_areas = lambda : [0.232, 0.258]
     
     # Some placeholder classes so we can get the correct centroid without chaning 
     # the source code. The normal function for the centroids does not work
@@ -447,5 +447,5 @@ def case23_5_Megson():
 
     cell1 = Foo([[0.3175],[0.203]])
     cell2 = Foo([[1.0165],[0.203]])
-    wingbox.get_polygon_cells = lambda : [cell1, cell2]
+    wingbox._get_polygon_cells = lambda : [cell1, cell2]
     return wingbox

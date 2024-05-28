@@ -1,4 +1,5 @@
 import multiprocessing
+from copy import deepcopy
 
 import numpy as np
 import scipy.optimize as sop
@@ -103,15 +104,15 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.box_struct.area_str = 1e-5 
         self.box_struct.t_sk_cell = 0.001*np.ones(self.box_struct.n_cell)
         self.box_struct.t_sp = 0.001
-        # sample to get the right number of constraints
-        sample = discretize_airfoil(self.path_coord, self.chord, self.box_struct) 
+        # The following object is used to avoid repetitive computations
+        self.wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct) 
 
         # Remove from data struct again to stop from interferitg
         self.box_struct.area_str = None 
         self.box_struct.t_sk_cell = None
         self.box_struct.t_sp = None
 
-        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 7*len(sample.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.01*np.ones(self.box_struct.n_cell + 4), **kwargs)
+        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 7*len(self.wingbox_obj.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.01*np.ones(self.box_struct.n_cell + 4), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
@@ -133,6 +134,15 @@ class ProblemFixedPanel(ElementwiseProblem):
         """        
         
         n_cell = self.box_struct.n_cell
+        
+        # check whether we are using multiprocess
+        if isinstance(self.elementwise_runner, StarmapParallelization):
+            # If so then make a copy of wingbox object
+            box_copy = deepcopy(self.wingbox_obj) # Create copy (required for multiprocessing)
+        else: 
+            # If not then simpy make a reference
+            box_copy = self.wingbox_obj
+
 
         if len(x) != n_cell + 4:
             raise RuntimeError("The flattened  design vector received does not match the wingbox properties")
@@ -145,21 +155,14 @@ class ProblemFixedPanel(ElementwiseProblem):
         w_st = x[n_cell + 2]
         h_st = x[n_cell + 3]
 
-        self.box_struct.t_sk_cell = t_sk_cell
-        self.box_struct.t_sp = t_sp
-        self.box_struct.t_st = t_st
-        self.box_struct.w_st = w_st
-        self.box_struct.h_st = h_st
-
-        # Discretize airfoil from new given parameters
-        wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+        box_copy._load_new_gauge(t_sk_cell, t_sp, t_st, w_st, h_st)
 
         # Perform stress analysis
-        wingbox_obj.stress_analysis(self.shear_y,self.shear_x, self.moment_y, self.moment_x, self.applied_loc, self.mat_struct.shear_modulus)
+        box_copy.stress_analysis(self.shear_y,self.shear_x, self.moment_y, self.moment_x, self.applied_loc, self.mat_struct.shear_modulus)
 
         #================ Get constraints ======================================
-        constr_cls = IsotropicWingboxConstraints(wingbox_obj, self.mat_struct, self.len_sec)
-        out["F"] = wingbox_obj.get_total_area() 
+        constr_cls = IsotropicWingboxConstraints(box_copy, self.mat_struct, self.len_sec)
+        out["F"] = box_copy.get_total_area() 
         out["G"] = np.negative(np.concatenate((constr_cls.global_skin_buckling(), constr_cls.interaction_curve(), constr_cls.von_Mises(), constr_cls.column_str_buckling(), constr_cls.stringer_flange_buckling(), constr_cls.stringer_web_buckling(), constr_cls.crippling()))) # negative is necessary because pymoo handles inequality constraints differently
 
 class SectionOptimization:

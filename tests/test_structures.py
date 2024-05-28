@@ -1,10 +1,13 @@
-import numpy as np
-import pdb 
-import pytest
 import os
 import sys
+import pdb 
+import copy
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+import pytest
+import numpy as np
+
 
 import tuduam.structures as struct
 import tuduam as tud
@@ -113,7 +116,7 @@ def test_contribution_stringers(case2):
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    area_lst = res.get_cell_areas()
+    area_lst = res._get_cell_areas()
  
 def test_shear_flows(case23_5_Megson):
     """ The following case tests the computation of the shear flow using problem 23.5 from source [1].
@@ -203,8 +206,48 @@ def test_global_constr(test_idealwingbox_with_str, FixtMaterial):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
     res = setup.global_skin_buckling()
 
-    pdb.set_trace()
     assert True
+
+def test_update_gauge(test_idealwingbox_with_str):
+    og_struct = test_idealwingbox_with_str.wingbox_struct.model_copy()
+    og_box = copy.deepcopy(test_idealwingbox_with_str)
+
+    t_sk = [0.007,0.002,0.002, 0.003]
+    t_sp = 0.002
+    h_st = 0.012
+    w_st = 0.012
+    t_st = 0.003
+
+    test_idealwingbox_with_str._load_new_gauge(t_sk, t_sp, t_st, w_st, h_st)
+    box = test_idealwingbox_with_str
+    
+
+
+    assert og_struct.t_sk_cell != box.wingbox_struct.t_sk_cell
+    assert og_struct.t_sp != box.wingbox_struct.t_sp
+    assert og_struct.t_st != box.wingbox_struct.t_st
+    assert og_struct.w_st != box.wingbox_struct.w_st
+    assert og_struct.h_st != box.wingbox_struct.h_st
+
+    assert og_box.area_str != box.area_str
+    assert og_box.Ixx != box.Ixx
+    assert og_box.Ixy != box.Ixy
+    assert og_box.Iyy != box.Iyy
+    assert og_box.chord == box.chord
+
+    for og_pnl, pnl in zip(og_box.panel_dict.values(), box.panel_dict.values()):
+        assert og_pnl.t_pnl != pnl.t_pnl
+        assert og_pnl.pid == pnl.pid
+        assert og_pnl.bid1 == pnl.bid1
+        assert og_pnl.bid2 == pnl.bid2
+
+    for og_boom, boom in zip(og_box.boom_dict.values(), box.boom_dict.values()):
+        assert og_boom.A != boom.A
+        assert og_boom.x == boom.x
+        assert og_boom.y == boom.y
+        assert og_boom.bid == boom.bid
+ 
+
 def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
     res1 = setup.interaction_curve()
