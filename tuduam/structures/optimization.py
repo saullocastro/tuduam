@@ -301,7 +301,7 @@ class SectionOptimization:
         self.box_struct.str_cell = str_lst
 
         # Discretize airfoil from new given parameters
-        self.wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
+        self.wingbox_obj._load_new_gauge(t_sk_cell, t_sp, t_st, w_st, h_st)
 
         # Perform stress analysis
         self.wingbox_obj.stress_analysis(shear_y, shear_x, moment_y, moment_x, applied_loc, self.mat_struct.shear_modulus)
@@ -351,13 +351,13 @@ class SectionOptimization:
         for i in range(len(x0)):
             if i <= n-1:
                 lb_lst.append(1e-5)
-                ub_lst.append(0.3)
+                ub_lst.append(0.2)
             elif i == n :
                 lb_lst.append(1e-5)
-                ub_lst.append(0.5)
-            elif i  ==  n + 1: 
+                ub_lst.append(0.3)
+            elif i  >=  n + 1: 
                 lb_lst.append(1e-8)
-                ub_lst.append(1)
+                ub_lst.append(0.2)
         
         # Apply bounds through constraints manually so we can penalize them with a greater quantity
         # Otherwise they migt be ignored compared to other constraints
@@ -371,6 +371,7 @@ class SectionOptimization:
             constr_lst.append({'type':'ineq', 'args': [i], 'fun':upper_constraint})
             constr_lst.append({'type':'ineq', 'args':[i], 'fun':lower_constraint})
 
+        self.wingbox_obj = discretize_airfoil(self.path_coord, self.chord, self.box_struct)
         res = sop.minimize(self._obj_func_cobyla, x0, args=(shear_y, shear_x, moment_y, moment_x, applied_loc, str_lst), method="COBYLA" , constraints= constr_lst)
         return res
     
