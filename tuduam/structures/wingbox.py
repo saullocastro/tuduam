@@ -433,7 +433,9 @@ class IdealWingbox():
                 pnl.t_pnl = t_sk_cell[idx] # Assign new thickness
         
         self._compute_boom_areas(self.chord)
-
+        self.Ixx = self._set_Ixx()
+        self.Iyy = self._set_Iyy()
+        self.Ixy = self._set_Ixy()
 
     def stress_analysis(self,  shear_y: float, shear_x: float,   moment_y: float, moment_x: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
         """ 

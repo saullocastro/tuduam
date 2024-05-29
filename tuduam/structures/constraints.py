@@ -33,7 +33,13 @@ class IsotropicWingboxConstraints:
         self.t_st = self.wingbox.wingbox_struct.t_st
         self.w_st = self.wingbox.wingbox_struct.w_st
         self.h_st = self.wingbox.wingbox_struct.h_st
-        self.area_str = 2*self.w_st*self.t_st + (self.h_st - 2*self.t_st)*self.t_st
+
+        if self.t_st is None or self.w_st is None or self.h_st is None:
+            self.area_str = self.wingbox.wingbox_struct.area_str
+        elif self.wingbox.wingbox_struct.area_str is None:
+            self.area_str = 2*self.w_st*self.t_st + (self.h_st - 2*self.t_st)*self.t_st
+        else:
+            raise RuntimeError("Both stringer area and stringer geometry were specified")
 
         # Value used for the interpolation to get Kb
         x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ]

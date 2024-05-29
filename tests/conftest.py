@@ -448,4 +448,9 @@ def case23_5_Megson():
     cell1 = Foo([[0.3175],[0.203]])
     cell2 = Foo([[1.0165],[0.203]])
     wingbox._get_polygon_cells = lambda : [cell1, cell2]
+    wingbox.Ixx = wingbox._set_Ixx()
+    wingbox.Iyy = wingbox._set_Iyy()
+    wingbox.Ixy = wingbox._set_Ixy()
+    wingbox.area_lst = wingbox._get_cell_areas()
+    wingbox.centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in wingbox._get_polygon_cells()]
     return wingbox
