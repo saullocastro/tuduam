@@ -1,5 +1,6 @@
 import multiprocessing
 from copy import deepcopy
+import warnings
 
 import numpy as np
 import scipy.optimize as sop
@@ -68,7 +69,7 @@ class ProblemFreePanel(ElementwiseProblem):
         GA_res = sec_opt.GA_optimize(self.shear_y, self.shear_x, self.moment_y, self.moment_x, self.applied_loc, **self.kwargs_intern)
 
         if GA_res.X is None:
-            raise ValueError(f"Internal optimization for stringers {x} was not successful and the outer optimization could not continue")
+            warnings.warn(f"Internal optimization for stringers {x} was not successful, no solution found ")
 
         # Discretize airfoil from new given parameters
         wingbox_obj = discretize_airfoil(self.path_coord, self.chord, copy_struct)
@@ -379,6 +380,7 @@ class SectionOptimization:
                      verbose_full: bool = True,
                      cores: int = multiprocessing.cpu_count(),
                      seed: int = 1,
+                     multiprocess_full: bool = True,
                      save_hist_full: bool = True, **kwargs):
         """ 
         The following functions handles the full optimization of the wingbox. Compared to the func:`GA_optimize` the following functions also varies
@@ -404,8 +406,13 @@ class SectionOptimization:
         n_proccess =  cores
         pool = multiprocessing.Pool(n_proccess)
         runner = StarmapParallelization(pool.starmap)
-        prob = ProblemFreePanel(shear_y, shear_x, moment_y, moment_x, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
-                                self.path_coord, elementwise_runner=runner, **kwargs)
+        if multiprocess_full:
+            prob = ProblemFreePanel(shear_y, shear_x, moment_y, moment_x, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
+                                    self.path_coord, elementwise_runner=runner, **kwargs)
+        else:
+            prob = ProblemFreePanel(shear_y, shear_x, moment_y, moment_x, applied_loc, self.chord, self.len_sec, self.box_struct, self.mat_struct, 
+                                    self.path_coord, **kwargs)
+
         
 
         method = GA(pop_size=pop_full,
