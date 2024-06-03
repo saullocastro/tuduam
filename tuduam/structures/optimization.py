@@ -79,7 +79,8 @@ class ProblemFreePanel(ElementwiseProblem):
 class ProblemFixedPanel(ElementwiseProblem):
     """
         The followinng problem sets up an exploration of a wingbox for a fixed amount of stringers per cell. Since it is difficult for an optimizer
-        like COBYLA to find a global minimum a genetica algorith is set up first to explore the design space. This problem sets up this search.
+        like COBYLA to find a global minimum a genetica algorith is set up first to explore the design space. This problem sets up the problem as 
+        defined in (`GA <https://pymoo.org/problems/definition.html#ElementwiseProblem-(loop)>`_).
 
         ---------------------------
         Important notes
@@ -88,7 +89,42 @@ class ProblemFixedPanel(ElementwiseProblem):
     """    
 
     def __init__(self, shear_y: float, shear_x: float, moment_y: float, moment_x: float, applied_loc: float, chord: float, len_sec: float,
-                 box_struct: Wingbox, mat_struct: Material, path_coord: str, **kwargs):
+                 box_struct: Wingbox, mat_struct: Material, path_coord: str, 
+                 upper_bnds: list = None,
+                 lower_bnds: list = None,
+                 **kwargs):
+        """
+        The following funtion initializes the class with the correct data.
+
+        :param shear_y: Vertical shear force applied to the section.
+        :type shear_y: float
+        :param shear_x: Horizontal shear force applied to the section.
+        :type shear_x: float
+        :param moment_y: Bending moment around the Y-axis applied to the section.
+        :type moment_y: float
+        :param moment_x: Bending moment around the X-axis applied to the section.
+        :type moment_x: float
+        :param applied_loc: The location along the chord where the load is applied.
+        :type applied_loc: float
+        :param chord: The length of the wing chord at the section where loads are applied.
+        :type chord: float
+        :param len_sec: The length of the wing section being analyzed in the spanwise section. i.e the distance to the next rib
+        :type len_sec: float
+        :param box_struct: Data structure describing structural configuration of the wingbox at the section.
+        :type box_struct: Wingbox
+        :param mat_struct: The material properties used in the wing section.
+        :type mat_struct: Material
+        :param path_coord: File path or identifier for coordinates related to the section.
+        :type path_coord: str
+        :param upper_bnds: Upper bounds for optimization or design constraints, defaults to 0.01 for all parameters
+        :type upper_bnds: list, optional
+        :param lower_bnds: Lower bounds for optimization or design constraints, defautl to 1e-8 for all parameters
+        :type lower_bnds: list, optional
+
+        """                 
+
+        if box_struct.area_str is not None:
+            raise RuntimeError("The optimization is not compatible with stringer area as the constraints rely on the string geometry")
 
         self.shear_y = shear_y
         self.shear_x = shear_x
@@ -113,7 +149,8 @@ class ProblemFixedPanel(ElementwiseProblem):
         self.box_struct.t_sk_cell = None
         self.box_struct.t_sp = None
 
-        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 7*len(self.wingbox_obj.panel_dict), xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.01*np.ones(self.box_struct.n_cell + 4), **kwargs)
+        # The number of constraint depends on the amount of booms + 2 constraints for stringer geometry
+        super().__init__(n_var= box_struct.n_cell + 4, n_obj=1, n_ieq_constr= 7*len(self.wingbox_obj.panel_dict) + 2, xl=np.ones(self.box_struct.n_cell + 4)*1e-8, xu=0.014*np.ones(self.box_struct.n_cell + 4), **kwargs)
 
     def _evaluate(self, x, out, *args, **kwargs):
         """
@@ -163,8 +200,13 @@ class ProblemFixedPanel(ElementwiseProblem):
 
         #================ Get constraints ======================================
         constr_cls = IsotropicWingboxConstraints(box_copy, self.mat_struct, self.len_sec)
+        # Add all constraints from a structural perspective
+        struct_constr = np.negative(np.concatenate((constr_cls.global_skin_buckling(), constr_cls.interaction_curve(), constr_cls.von_Mises(), constr_cls.column_str_buckling(), constr_cls.stringer_flange_buckling(), constr_cls.stringer_web_buckling(), constr_cls.crippling()))) # negative is necessary because pymoo handles inequality constraints differently
+        # Add constraints requried from a geometrical perspective
+        geom_constr = [t_st - w_st, t_st - h_st]
         out["F"] = box_copy.get_total_area() 
-        out["G"] = np.negative(np.concatenate((constr_cls.global_skin_buckling(), constr_cls.interaction_curve(), constr_cls.von_Mises(), constr_cls.column_str_buckling(), constr_cls.stringer_flange_buckling(), constr_cls.stringer_web_buckling(), constr_cls.crippling()))) # negative is necessary because pymoo handles inequality constraints differently
+        out["G"] =  np.concatenate((struct_constr, geom_constr))
+
 
 class SectionOptimization:
     """

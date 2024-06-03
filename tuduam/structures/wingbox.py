@@ -178,8 +178,19 @@ class IdealWingbox():
         self.Iyy = None
         pass
 
-    def _compute_area_z_str(self, t_st, w_st, h_st):
+    def _compute_area_z_str(self, t_st, w_st, h_st) -> float:
+
+        if t_st > h_st:
+            warn("The thickness of stringer is larger than than the height of the stringer resulting in possible negative area.")
+
+        if t_st  > w_st:
+            warn("The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.")
+
         A_str = 2*w_st*t_st + (h_st - 2*t_st)*t_st
+
+        if A_str < 0:
+            warn("The stringer area is negative, please see previous error")
+        
         return A_str
 
     def _set_Ixx(self):
