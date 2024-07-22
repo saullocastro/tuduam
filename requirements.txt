@@ -9,6 +9,7 @@ pandas==2.2.0
 pillow==10.2.0
 plotly==5.18.0
 pydantic==2.5.3
+setuptools==69.0.3
 pydantic-settings==2.1.0
 pydantic_core==2.14.6
 pydata-sphinx-theme==0.15.2
