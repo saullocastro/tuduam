@@ -4,8 +4,7 @@ from scipy.constants import g
 import matplotlib.pyplot as plt
 from warnings import warn
 from scipy.interpolate import interp1d
-from scipy.integrate import quad, cumulative_trapezoid
-import pdb
+from scipy.integrate import cumulative_trapezoid
 
 def planform_geometry(flight_perf, vtol, wing):
   """ The following functions sizes the wing planform based on the specified

@@ -1,8 +1,13 @@
+:tocdepth: 4
 
 Structures optimization Documentation
 --------------------------------------------
 
-.. automodule:: tuduam.structures.optimization
-   :members:
-   :special-members: __init__
-   :private-members:
+.. autoclass:: tuduam.structures.optimization.ProblemFixedPanel
+   :members: _evaluate
+
+.. autoclass:: tuduam.structures.optimization.ProblemFreePanel
+   :members: _evaluate
+
+.. autoclass:: tuduam.structures.optimization.SectionOpt
+   :members: 

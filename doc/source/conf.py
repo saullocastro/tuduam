@@ -19,6 +19,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'numpydoc',
+    'sphinx.ext.napoleon',
     'sphinx.ext.doctest',
     'sphinx-pydantic',
     'sphinx.ext.coverage',
@@ -35,18 +36,18 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 
 
 templates_path = ['_templates']
+numpydoc_show_class_members=False
+
 exclude_patterns = []
 source_suffix = ".rst"
 html_theme = 'pydata_sphinx_theme'
 autosummary_generate = True
 numfig = False
 
-# Set default options for autodoc
-autodoc_default_options = {
-    'inherited-members': False,
+html_theme_options = {
+      "show_toc_level": 3
+
 }
-
-
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

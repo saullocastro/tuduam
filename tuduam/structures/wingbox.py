@@ -1,9 +1,12 @@
+""" This module contains the tools to describe a wingbox and to perform the necessary analyses on them.
+"""
+
+
 import random
 from typing import Tuple, List
 from warnings import warn
 
 import numpy  as np
-import scipy.constants as const
 from scipy.interpolate import CubicSpline
 from shapely.geometry import Polygon
 from pymoo.algorithms.soo.nonconvex.ga import GA
@@ -12,45 +15,74 @@ import plotly.graph_objs as go
 import plotly.express as px
 import plotly.figure_factory as ff
 import matplotlib.pyplot as plt
-
 from ..data_structures import *
 
 
 
+
 class Boom:
-    """ 
+    """
     A class to represent an idealized boom.
 
-    :param bid: Boom id 
-    :type bid: int
-    :param A: Boom area
-    :type bid: int
-    :param x: Boom x position
-    :type x: float
-    :param y: Boom y position 
-    :type y: float
-    :param sigma:  The direct stress the boom experiences
-    :type sigma: float
+    .. note::
+    
+        All of the parameters are optional as in this library the attributes
+        have been allocated dynamically. But if this class is used you could also simply load them
+        when instantiating them.
 
+    
+
+    Parameters
+    ----------
+    bid : int, optional
+        Boom ID.
+    A : int, optional
+        Boom area.
+    x : float, optional
+        Boom x position.
+    y : float, optional
+        Boom y position.
+    sigma : float, optional 
+        The direct stress the boom experiences.
+
+    Attributes
+    ----------
+    bid : int or None
+        Boom ID.
+    A : float or None
+        Boom area.
+    x : float or None
+        Boom x position.
+    y : float or None
+        Boom y position.
+    sigma : float or None
+        The direct stress the boom experiences.
     """
+
     def __init__(self) -> None:
-        self.bid: int| None = None  #  Boom ID
-        self.A: float | None = None   # Area boom
-        self.x: float | None = None  # X location
-        self.y: float | None = None  # Y location
-        self.sigma: float| None = None 
+        self.bid: int | None = None  # Boom ID
+        self.A: float | None = None  # Boom area
+        self.x: float | None = None  # Boom x position
+        self.y: float | None = None  # Boom y position
+        self.sigma: float | None = None  # Direct stress the boom experiences
 
     def get_cell_idx(self, wingbox_struct: Wingbox, chord: float) -> int:
-        """ Returns the cell index  of where the panel is located for the specified
-        wingbox struct
+        """
+        Returns the cell index of where the panel is located for the specified wingbox structure.
 
-            :param wingbox_struct: The wingbox data structure containing the locations of the spars
-            :type wingbox_struct: Wingbox
-            :param chord: The local chord of the wing section
-            :type chord: float
-            :return: The cell index of where the panel is located
-            :rtype: int
-        """       
+        Parameters
+        ----------
+        wingbox_struct : Wingbox
+            The wingbox data structure containing the locations of the spars.
+        chord : float
+            The local chord of the wing section.
+
+        Returns
+        -------
+        int
+            The cell index of where the panel is located.
+        """
+
         # Get index of the cell
         cell_idx = np.asarray(self.x >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord)  # type: ignore # type: ignore
         if  not any(cell_idx):
@@ -60,25 +92,51 @@ class Boom:
         return cell_idx
 
 
-class IdealPanel:
+class IdealPanel: 
     """
-    A class representing a panel in an idealized wingbox
+    A class representing a panel in an idealized wingbox.
 
-    :param pid:  Panel id 
-    :type pid: int
-    :param bid1:  
-    :type bid1: int
-    :param bid2:  Panel id 
-    :type bid2: int
-    :param b1:  Instance  of one of the two :class:`Boom` connecting the panels
-    :type b1: :class:`Boom`
-    :param b2: Instance of one of the to the other :class:`Boom`connecting the panel.
-    :type b2: :class:`Boom`
-    :param t_pnl: Boom id 
-    :type bid: int
-    :param bid: Boom id 
-    :type bid: int
+    Parameters
+    ----------
+    pid : int
+        Panel ID.
+    bid1 : int
+        The boom ID of its corresponding first boom.
+    bid2 : int
+        The boom ID of its corresponding second boom.
+    b1 : Boom
+        Instance of one of the two :class:`Boom` connecting the panels.
+    b2 : Boom
+        Instance of the other :class:`Boom` connecting the panels.
+    t_pnl : float
+        Panel thickness.
+    bid : int
+        Boom ID.
+
+    Attributes
+    ----------
+    pid : int or None
+        Panel ID.
+    bid1 : int or None
+        The boom ID of its corresponding first boom.
+    bid2 : int or None
+        The boom ID of its corresponding second boom.
+    b1 : Boom or None
+        Instance of one of the two :class:`Boom` connecting the panels.
+    b2 : Boom or None
+        Instance of the other :class:`Boom` connecting the panels.
+    t_pnl : float or None
+        Panel thickness.
+    q_basic : float or None
+        Basic shear flow.
+    q_tot : float or None
+        Total shear flow.
+    tau : float or None
+        Shear stress.
+    dir_vec : float or None
+        Direction vector.
     """
+
     def __init__(self):
         self.pid = None # Panel ID
         self.bid1 = None  # The boom id of its corresponding first boom id
@@ -91,16 +149,24 @@ class IdealPanel:
         self.tau: float | None = None
         self.dir_vec: float | None = None
     
-    def get_cell_idx(self, wingbox_struct:Wingbox, chord: float) -> int:
-        """ Returns the cell index of where the panel is located.
+    def get_cell_idx(self, wingbox_struct: Wingbox, chord: float) -> int:
+        """
+        Returns the cell index of where the panel is located.
 
-        :param wingbox_struct: The wingbox data structure containing the locations of the spars
-        :type wingbox_struct: Wingbox
-        :param chord: The local chord of the wing section
-        :type chord: float
-        :return: The cell index of where the panel is located
-        :rtype: int
-        """      
+        Parameters
+        ----------
+        wingbox_struct : Wingbox
+            The wingbox data structure containing the locations of the spars.
+        chord : float
+            The local chord of the wing section.
+
+        Returns
+        -------
+        int
+            The cell index of where the panel is located.
+        """
+
+   
         cell_idx = np.asarray((self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # type: ignore # Get index of the cell
         if  not any(cell_idx):
             cell_idx = 0
@@ -109,15 +175,32 @@ class IdealPanel:
         return cell_idx
     
     def length(self) -> float:
-        """ Length of the panel based on the coordinates of the boom. Boom center is used as the 
-        assumption is that the booms are infitestimally small.
+        """
+        Length of the panel based on the coordinates of the boom. Boom center is used as the 
+        assumption is that the booms are infinitesimally small.
 
-        :return: The length of the panel
-        :rtype: float
-        """        
+        Returns
+        -------
+        float
+            The length of the panel.
+        """
+
         return np.sqrt((self.b2.x - self.b1.x)**2 + (self.b2.y - self.b1.y)**2) # type: ignore
 
     def set_b1_to_b2_vector(self) -> tuple:
+        """
+        The following functions sets the attribute :attr:`dir_vec` from boom 1 to boom 2.
+
+        Returns
+        -------
+        tuple
+            The unit vector from b1 to b2.
+
+        Raises
+        ------
+        AttributeError
+            If boom 1 or 2 has not been assigned yet. 
+        """        
         try:
             x_comp = (self.b2.x - self.b1.x)/self.length() # type: ignore
             y_comp = (self.b2.y - self.b1.y)/self.length() # type: ignore
@@ -126,6 +209,19 @@ class IdealPanel:
         self.dir_vec = [x_comp, y_comp] # type: ignore
 
     def set_b2_to_b1_vector(self) -> tuple:
+        """
+        The following functions sets the attribute :attr:`dir_vec` from boom 2 to boom 1.
+
+        Returns
+        -------
+        tuple
+            The unit vector from b2 to b1.
+
+        Raises
+        ------
+        AttributeError
+            If boom 1 or 2 has not been assigned yet. 
+        """        
         try:
             x_comp = (self.b1.x - self.b2.x)/self.length()
             y_comp = (self.b1.y - self.b2.y)/self.length()
@@ -134,17 +230,51 @@ class IdealPanel:
         self.dir_vec =  [x_comp, y_comp]
 
 class IdealWingbox():
-    """ A class representing an idealized wingbox, containing methods to perform computations
-    on that instants and some accessed methods. It is strongly disadvised to use this class  without the :func:`discretize_airfoil` function. 
-    As all functions rely on the :class:`Wingbox` to be properly loaded with geometry.
+    """
+    A class representing an idealized wingbox, containing methods to perform computations
+    on that instance and some accessed methods. It is strongly advised not to use this class without the :func:`discretize_airfoil` function,
+    as all functions rely on the :class:`Wingbox` to be properly loaded with geometry.
 
-    **Assumptions**
-    1. The x datum of the coordinate system should be attached to the leading edge of the 
-    wingbox
-    2. Some methods such as the read_cell_area expect the first and last to begin and end on a vertex.
+    .. admonition:: Assumptions
 
+        1. The x datum of the coordinate system should be attached to the leading edge of the wingbox.
+        2. Some methods, such as read_cell_area, expect the first and last cells to begin and end on a vertex.
 
-    """    
+    Parameters
+    ----------
+    wingbox : Wingbox
+        The wingbox structure.
+    chord : float
+        The chord length of the wingbox.
+
+    Attributes
+    ----------
+    wingbox_struct : Wingbox
+        The wingbox structure.
+    area_str : float
+        The area of the stringer.
+    chord : float
+        The chord length of the wingbox.
+    x_centroid : float or None
+        The x-coordinate of the centroid, datum attached to leading edge.
+    y_centroid : float or None
+        The y-coordinate of the centroid.
+    panel_dict : dict
+        Dictionary containing panel information.
+    boom_dict : dict
+        Dictionary containing boom information.
+    area_lst : list or None
+        List of cell areas.
+    centroid_lst : list or None
+        List of cell centroids.
+    Ixx : float or None
+        Moment of inertia about the x-axis.
+    Ixy : float or None
+        Product of inertia.
+    Iyy : float or None
+        Moment of inertia about the y-axis.
+    """
+
     def __init__(self, wingbox: Wingbox, chord:float) -> None:
         self.wingbox_struct = wingbox
         t_st = self.wingbox_struct.t_st
@@ -179,6 +309,23 @@ class IdealWingbox():
         pass
 
     def _compute_area_z_str(self, t_st, w_st, h_st) -> float:
+        """
+        Computes the area of a Z-stringer.
+
+        Parameters
+        ----------
+        t_st : float
+            The thickness of the stringer.
+        w_st : float
+            The width of the stringer.
+        h_st : float
+            The height of the stringer.
+
+        Returns
+        -------
+        float
+            The computed area of the Z-stringer.
+        """
 
         if t_st > h_st:
             warn("The thickness of stringer is larger than than the height of the stringer resulting in possible negative area.")
@@ -194,18 +341,46 @@ class IdealWingbox():
         return A_str
 
     def _set_Ixx(self):
+
+        """
+        Computes the moment of inertia about the x-axis.
+
+        Returns
+        -------
+        float
+            The moment of inertia about the x-axis.
+        """
+
         Ixx = 0
         for boom in self.boom_dict.values():
             Ixx += boom.A*(boom.y - self.y_centroid)**2
         return Ixx
 
     def _set_Ixy(self):
+        """
+        Computes the product of inertia.
+
+        Returns
+        -------
+        float
+            The product of inertia.
+        """
+
         Ixy = 0
         for boom in self.boom_dict.values():
             Ixy += boom.A*(boom.x - self.x_centroid)*(boom.y - self.y_centroid)
         return Ixy
 
     def _set_Iyy(self):
+        """
+        Computes the moment of inertia about the y-axis.
+
+        Returns
+        -------
+        float
+            The moment of inertia about the y-axis.
+        """
+
         Iyy = 0
         for boom in self.boom_dict.values():
             Iyy += boom.A*(boom.x - self.x_centroid)**2
@@ -213,12 +388,16 @@ class IdealWingbox():
 
     @property
     def _read_skin_panels_per_cell(self) -> List[int]:
-        """ Returns a list with the amount of panels on the skin per cell. That is ignoring the panels
-        which are part of one the spars. This functions requires a fully filled out boom and panel dictionary
+        """
+        Returns a list with the number of panels on the skin per cell, ignoring the panels
+        which are part of one of the spars. This function requires a fully filled out boom and panel dictionary.
 
-        :return: An n x m 2d list where n is the amount cells and m the amount of panels (might not be identical for each cell)
-        :rtype: list
-        """        
+        Returns
+        -------
+        list
+            An n x m 2D list where n is the number of cells and m is the number of panels (might not be identical for each cell).
+        """
+
         panel_lst =  []
 
         spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord
@@ -230,12 +409,16 @@ class IdealWingbox():
         return panel_lst
 
     def get_total_area(self) -> float:
-        """ Returns the total area of all the booms. These booms also contain the addition of the skin thicknesses. This function in the library is used 
-        for the optimizatio of a wingbox.
+        """
+        Returns the total area of all the booms, including the addition of the skin thicknesses. This function is used 
+        for the optimization of a wingbox.
 
-        :return: The total area of all the booms combined
-        :rtype: float
-        """        
+        Returns
+        -------
+        float
+            The total area of all the booms combined.
+        """
+
 
         tot_area = 0
         for boom in self.boom_dict.values():
@@ -243,22 +426,29 @@ class IdealWingbox():
         return tot_area
 
 
-    def _get_polygon_cells(self, validate=False) -> List[float]:
-        """ 
+    def get_polygon_cells(self, validate=False) -> List[Polygon]:
+        """
         Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the 
-        class using the idealized_airfoil function. Errenous results or an error will be given in case this is not the case! When using this function for the first time
-        with a new airfoil it is advised to run it once with validate= True to see if the resulting areas are trustworthy. This will
-        show you n plots of the cell polygon where n is the amount of cells.
+        class using the idealized_airfoil function. Erroneous results or an error will be given in case this is not the case! When using this function for the first time
+        with a new airfoil, it is advised to run it once with validate=True to see if the resulting areas are trustworthy. This will
+        show you n plots of the cell polygon where n is the number of cells.
 
-        **Assumptions**
+        .. admonition:: Assumptions
 
-        1. Function is built for a object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one point is the furthest ahead. The same goes for cell n but with the trailing edge
+            1. Function is built for an object built with the discretize airfoil, that is cell 0 has a singular point as a leading edge, that is one point is the furthest ahead. The same goes for cell n but with the trailing edge.
 
-        :param validate: When True will show the 3 plots described above, defaults to False
-        :type validate: bool, optional
-        :return: A list whic is m long where m is the amount of cells. Each element is the area of the respective cell.
-        :rtype: List[float]
-        """        
+        Parameters
+        ----------
+        validate : bool, optional
+            When True will show the 3 plots described above, defaults to False.
+
+        Returns
+        -------
+        List[Polygon] 
+            A list of n cells long where each element contains a (shapely) Polygon instance representing the corresponding cell.
+        """
+
+
         bm_per_cell_lst =  []
         polygon_lst =  []
 
@@ -350,11 +540,45 @@ class IdealWingbox():
 
         return polygon_lst
 
-    def _get_cell_areas(self, validate= False) -> List[float]:
-        polygon_lst = self._get_polygon_cells(validate)
+    def get_cell_areas(self, validate= False) -> List[float]:
+
+        """
+        Compute the area of each cell using the shapely.geometry.Polygon class.
+
+        Parameters
+        ----------
+        validate : bool, optional
+            When True, shows validation plots, defaults to False.
+
+        Returns
+        -------
+        List[float]
+            A list of areas for each cell.
+        """
+
+        polygon_lst = self.get_polygon_cells(validate)
         return [i.area for i in polygon_lst]
     
-    def _compute_direct_stress(self, boom: Boom, moment_x: float, moment_y: float):
+    def compute_direct_stress(self, boom: Boom, moment_x: float, moment_y: float):
+
+        """
+        Compute the direct stress at a given boom due to bending moments.
+
+        Parameters
+        ----------
+        boom : Boom
+            The boom at which to compute the direct stress.
+        moment_x : float
+            The bending moment around the x-axis.
+        moment_y : float
+            The bending moment around the y-axis.
+
+        Returns
+        -------
+        float
+            The direct stress at the given boom.
+        """
+
         Ixx = self.Ixx
         Ixy = self.Ixy
         Iyy = self.Iyy
@@ -364,15 +588,26 @@ class IdealWingbox():
 
 
     def _compute_boom_areas(self, chord) -> None:
-        """ Function that creates all boom areas, program assumes a fully functional panel and boom
-        dictionary where all values have the full classes assigned. Function can be used by user manually
-        but it is generall advised to use the discretize_airfoil function to create a wingbox.
+        """
+        Function that creates all boom areas. The program assumes a fully functional panel and boom
+        dictionary where all values have the full classes assigned. This function can be used manually
+        by the user, but it is generally advised to use the discretize_airfoil function to create a wingbox.
 
-        **Assumptions**
+        .. admonition:: Assumptions
 
-        #. The idealizatin only takes into account a force in the vertical direction (that is tip-deflection path)
-        #. 
-        """        
+            1. The idealization only takes into account a force in the vertical direction (that is, tip-deflection path).
+
+        Parameters
+        ----------
+        chord : float
+            The chord length of the wingbox.
+
+        Returns
+        -------
+        None
+            Returns none as the boom areas are directly assigned to the :class:`Boom` instances.
+        """
+
 
         # Find stringer area to add per cell
         # str_contrib = []
@@ -401,21 +636,25 @@ class IdealWingbox():
                 boom.A = np.abs(boom.A)
                 
 
-    def _load_new_gauge(self, t_sk_cell: list, t_sp: float, t_st: float, w_st: float, h_st: float) -> None:
-        """ This function allows you to change the thickness and hence your boom areas of the wingbox whilst
+    def load_new_gauge(self, t_sk_cell: list, t_sp: float, t_st: float, w_st: float, h_st: float) -> None:
+        """
+        This function allows you to change the thickness and hence your boom areas of the wingbox whilst
         maintaining the shape. This is useful for any optimization as you do not have to call the entire discretize function.
 
-        :param t_sk_cell: _description_
-        :type t_sk_cell: list
-        :param t_sp: _description_
-        :type t_sp: float
-        :param t_st: _description_
-        :type t_st: float
-        :param w_st: _description_
-        :type w_st: float
-        :param h_st: _description_
-        :type h_st: float
-        """        
+        Parameters
+        ----------
+        t_sk_cell : list
+            List of skin thicknesses for each cell.
+        t_sp : float
+            Thickness of the spar.
+        t_st : float
+            Thickness of the stringer.
+        w_st : float
+            Width of the stringer.
+        h_st : float
+            Height of the stringer.
+        """
+
 
         # Load new data in data structure
         self.wingbox_struct.t_sk_cell = t_sk_cell
@@ -448,64 +687,64 @@ class IdealWingbox():
         self.Iyy = self._set_Iyy()
         self.Ixy = self._set_Ixy()
 
-    def stress_analysis(self,  shear_y: float, shear_x: float,   moment_y: float, moment_x: float, shear_centre_rel : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
-        """ 
-        Perform stress analysis on  a wingbox section  based on the internal shear loads and moments. All data is stored within
-        the :class:`IdealPanel` and :class:`Boom`  classes.
+    def stress_analysis(self,  shear_y: float, shear_x: float,   moment_y: float, moment_x: float, shear_y_appl : float, shear_mod: float, validate=False) ->  Tuple[list,list]:
+        """
+        Perform stress analysis on a wingbox section based on the internal shear loads and moments. All data is stored within
+        the :class:`IdealPanel` and :class:`Boom` classes.
 
-        
-        In the figure above we can see the coordinate system that is used for computing the stresses inside the wingbox. 
-        Together with the sign convention it is important that the user applies the correct sign to their absolute forces.
 
-        ------------------------------------------------
-        Sign convention forces and coordinate system
-        ------------------------------------------------
+        **Sign convention forces and coordinate system**
 
         .. image:: ../_static/sign_convention_forces.png
             :width: 300
-        
-        The sign convention above is applied for the forces . Please consider that Figure 16.9 shows positive directions and senses for the above loads and moments applied externally to
-        a beam and also the positive directions of the components of displacement u, v and w
-        of any point in the beam cross-section parallel to the x, y and z axes, respectively. If we refer internal forces and moments to that face of a section which is seen when
+
+        The sign convention above is applied for the forces. Please consider that Figure 16.9 shows positive directions and senses for the above loads and moments applied externally to
+        a beam and also the positive directions of the components of displacement u, v, and w
+        of any point in the beam cross-section parallel to the x, y, and z axes, respectively. If we refer internal forces and moments to that face of a section which is seen when
         viewed in the direction zO then, as shown in Fig. 16.10, positive internal forces and
         moments are in the same direction and sense as the externally applied loads whereas
-        on the opposite face they form an opposing system. 
-
-        Additionally, the beam seen in figure 16.10 is also immediateley the coordinate system used. Where the aircraft flies
-        in the x direction. Thus, analysing the right wing structure.
-
-        **Moments**
-
-        A further condition defining the signs of the bending moments Mx and My is that they are
-        positive when they induce tension in the positive xy quadrant of the beam cross-section.
-
-        -------------------------------------------------------------------------------
-        List of assumptions (Most made in Megson, some for simplificatoin of code)
-        -------------------------------------------------------------------------------
-
-        #. The effect of taper are not included see 21.2 (See megson) TODO: future implementation
-        #. Lift acts through the shear centre (no torque is created) TODO: future implementation
-        #. Stresses due to drag are not considered. 
-
-        --------------------------
-        sources
-        --------------------------
-
-        [1] section 16.2.2, T.H.G Megson, Aircraft  Structures For Engineering Students, 4th Edition
+        on the opposite face they form an opposing system. A further condition defining the signs of the bending moments Mx and My is that they are
+        positive when they induce tension in the positive xy quadrant of the beam cross-section. Finally, the beam seen in Figure 16.10 is also 
+        immediately the coordinate system used. Where the aircraft flies
+        in the x direction, thus analyzing the right wing structure.
 
 
 
-        :param intern_shear: _description_
-        :type intern_shear: float
-        :param intern_shear: _description_
-        :type intern_shear: float
-        :param internal_mz: _description_
-        :type internal_mz: float
-        :param shear_mod: shear_modulus
-        :type shear_mod: float
-        :return: _description_
-        :rtype: Tuple[float, dict]
-        """    
+
+        .. admonition:: Assumptoins
+
+            1. The effect of taper is not included, see 21.2 (See Megson). TODO: future implementation
+            2. Lift acts through the shear centre (no torque is created). TODO: future implementation
+            3. Stresses due to drag are not considered.
+
+
+        **Sources**
+
+
+        [1] Section 16.2.2, T.H.G Megson, Aircraft Structures For Engineering Students, 4th Edition
+
+        Parameters
+        ----------
+        shear_y : float
+            The internal shear force in the y-direction.
+        shear_x : float
+            The internal shear force in the x-direction.
+        moment_y : float
+            The internal moment around the y-axis.
+        moment_x : float
+            The internal moment around the x-axis.
+        shear_y_appl: float
+            The location where they y force is applied
+        shear_mod : float
+            The shear modulus.
+        validate : bool, optional
+            If True, validate the results, defaults to False.
+
+        Returns
+        -------
+        Tuple[list, list]
+            A tuple containing the results of the stress analysis.
+        """
 
         # Ensure all shear flows are set to none because the function relies on it
         for pnl in self.panel_dict.values():
@@ -514,7 +753,7 @@ class IdealWingbox():
 
         # First compute all the direct stresses
         for boom in self.boom_dict.values():
-            boom.sigma = self._compute_direct_stress(boom, moment_x, moment_y)
+            boom.sigma = self.compute_direct_stress(boom, moment_x, moment_y)
         
         # Start by computing basic shear stresses
 
@@ -699,7 +938,7 @@ class IdealWingbox():
                 moment = pnl.q_basic*np.cross(r_abs_vec, pnl.dir_vec)*pnl.length()
                 sum += moment
 
-        b_arr[n_cell, 0] = -1*sum + shear_y*shear_centre_rel*self.chord + shear_x*self.y_centroid
+        b_arr[n_cell, 0] = -1*sum + shear_y*shear_y_appl*self.chord + shear_x*self.y_centroid
 
         # Get the actual solution
         X = np.linalg.solve(A_arr, b_arr)
@@ -803,21 +1042,41 @@ class IdealWingbox():
         return  qs_lst, dtheta_dz
 
     def plot_direct_stresses(self) -> None:
-            plt.figure(figsize=(10,1))
-            x_lst = np.array([i.x for i in self.boom_dict.values()])
-            y_lst = np.array([i.y for i in self.boom_dict.values()])
-            stress_arr = np.array([i.sigma/1e6 for i in self.boom_dict.values()])
-            hover_data = [f"stress = {i.sigma/1e6} Mpa" for i in self.boom_dict.values()]
-            fig = px.scatter(x= x_lst, y= y_lst, color= stress_arr, title= "Direct stress")
-            fig.update_traces(marker=dict(size=12,
-                            line=dict(width=2,
-                            color='DarkSlateGrey')),
-                            selector=dict(mode='markers'))
-            fig.show()
+        """
+        Plots the direct stresses in the booms of the wingbox.
+
+        This function creates a scatter plot of the direct stresses in the booms, with the color indicating the magnitude
+        of the stress.
+
+        Returns
+        -------
+        None
+        """
+        plt.figure(figsize=(10,1))
+        x_lst = np.array([i.x for i in self.boom_dict.values()])
+        y_lst = np.array([i.y for i in self.boom_dict.values()])
+        stress_arr = np.array([i.sigma/1e6 for i in self.boom_dict.values()])
+        hover_data = [f"stress = {i.sigma/1e6} Mpa" for i in self.boom_dict.values()]
+        fig = px.scatter(x= x_lst, y= y_lst, color= stress_arr, title= "Direct stress")
+        fig.update_traces(marker=dict(size=12,
+                        line=dict(width=2,
+                        color='DarkSlateGrey')),
+                        selector=dict(mode='markers'))
+        fig.show()
 
 
 
     def plot_shear_stress(self) -> None:
+        """
+        Plots the shear stress in the panels of the wingbox.
+
+        This function creates a scatter plot of the shear stress in the panels, with the color indicating the magnitude
+        of the stress.
+
+        Returns
+        -------
+        None
+        """
         y_arr  = [i.y for i in self.boom_dict.values()]
         y_max = np.max(y_arr)
         y_min = np.min(y_arr)
@@ -875,6 +1134,21 @@ class IdealWingbox():
 
         # Rest of your layout and figure code
     def plot_quiver_shear_stress(self, scale=.020, arrow_scale=0.4) -> None:
+        """
+        Plots the shear stress directions in the panels of the wingbox using a quiver plot.
+
+        Parameters
+        ----------
+        scale : float, optional
+            Scaling factor for the arrow length, defaults to 0.020.
+        arrow_scale : float, optional
+            Scaling factor for the arrow size, defaults to 0.4.
+
+        Returns
+        -------
+        None
+        """
+
         pnl_lst = [i for i in self.panel_dict.values()]
 
         x = [(i.b1.x + i.b2.x)/2 for i in pnl_lst]
@@ -903,6 +1177,15 @@ class IdealWingbox():
 
 
     def plot_geometry(self) -> None:
+        """
+        Plots the geometry of the wingbox, showing the discretized panels and booms.
+
+        This function creates a scatter plot of the geometry of the wingbox, with hover text showing the boom ID and area.
+
+        Returns
+        -------
+        None
+        """
 
         # Modified traces and colorbar dummy trace
         traces = []
@@ -947,13 +1230,19 @@ class IdealWingbox():
 
 def read_coord(path_coord:str) -> np.ndarray:
     """
-    Returns an  m x 2 array of the airfoil coordinates based on a Selig formatted dat file.
+    Returns an m x 2 array of the airfoil coordinates based on a Selig formatted .dat file.
 
-    :param path_coord: m x 2 array with the airfoil coordinates where x goes top trailing edge to top leading edge and then back to  lower trailing edge. I.e it keeps the Selig format
-    :type path_coord: str
-    :return: _description_
-    :rtype: np.ndarray
-    """    
+    Parameters
+    ----------
+    path_coord : str
+        Path to the Selig formatted .dat file containing the airfoil coordinates.
+
+    Returns
+    -------
+    np.ndarray
+        An m x 2 array with the airfoil coordinates where x goes from the top trailing edge to the top leading edge and then back to the lower trailing edge, maintaining the Selig format.
+    """
+
     # List to save formatted coordinates
     airfoil_coord = []
 
@@ -966,15 +1255,22 @@ def read_coord(path_coord:str) -> np.ndarray:
     return airfoil_coord
 
 def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, CubicSpline]:
-    """ Return two function which interpolate the coordinates of the airfoil given. Two functions are returned
-    the first interpolates the top skin and the second function interpolates the bottom skin. The result interpolation functions 
-    take into account an airfoil scaled by the given chord.
+    """
+    Returns two functions which interpolate the coordinates of the given airfoil. The first function interpolates the top skin,
+    and the second function interpolates the bottom skin. The resulting interpolation functions take into account an airfoil 
+    scaled by the given chord.
 
-    :param path_coord: Path to the airfoil coordinates using the Selig format.
-    :type path_coord: str
-    :return: A cubic spline of the top skin and lower skin, respectively.
-    :rtype: Tuple[CubicSpline, CubicSpline]
-    """        
+    Parameters
+    ----------
+    path_coord : str
+        Path to the airfoil coordinates using the Selig format.
+
+    Returns
+    -------
+    Tuple[CubicSpline, CubicSpline]
+        A cubic spline of the top skin and lower skin, respectively.
+    """
+
     
     coord_scaled = read_coord(path_coord)*chord # coordinates of airfoil scaled by the chord
     top_coord =  coord_scaled[:np.argmin(coord_scaled[:,0]), :] #coordinates of top skin
@@ -986,25 +1282,31 @@ def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, Cubi
     return top_interp, bot_interp
 
 def get_centroids(path_coord:str) -> Tuple[float, float]:
-    r""" Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
-    The centroids are computing assuming the following:
+    r"""
+    Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
+    The centroids are computed assuming the following:
      
-     **Assumptions**
+    .. admonition:: Assumptions
 
-     1. It is only based on the skin, i.e  the spar webs and stringers are ignored. Additionally the different thickness of the skin are not taken into account 
-     The implication being that the x centroid should be at x/c = 0.5. Unless there was a bias in the sampling points
+        1. It is only based on the skin, i.e., the spar webs and stringers are ignored. Additionally, the different thickness of the skin are not taken into account.
+        The implication being that the x centroid should be at x/c = 0.5, unless there was a bias in the sampling points.
 
-    **Future improvement** 
+    .. admonition:: Future improvment
 
-     1. Take into account the spar webs for a better x centroid. However irrelevant for now as we only
-     take into account forces in the vertical directoin
-    
+        1. Take into account the spar webs for a better x centroid. However, this is irrelevant for now as we only
+        take into account forces in the vertical direction.
 
-    :param path_coord: Path to the geometry file using the Selig format
-    :type path_coord: str
-    :return: The nondimensional x and y centroid of the airfoil
-    :rtype: Tuple[float, float]
-    """    
+    Parameters
+    ----------
+    path_coord : str
+        Path to the geometry file using the Selig format.
+
+    Returns
+    -------
+    Tuple[float, float]
+        The nondimensional x and y centroid of the airfoil.
+    """
+
     coord = read_coord(path_coord)
     y_centroid_dimless = np.sum(coord[:,1])/coord.shape[0]
     x_centroid_dimless = np.sum(coord[:,0])/coord.shape[0]
@@ -1012,40 +1314,46 @@ def get_centroids(path_coord:str) -> Tuple[float, float]:
 
 
 def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> IdealWingbox:
-    r""" Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
-    the non-dimensional coordinates of the airfoil, the corresonding chord and the wingbox data structure fully filled in.
+    r"""
+    Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing
+    the non-dimensional coordinates of the airfoil, the corresponding chord, and the wingbox data structure fully filled in.
 
-    **Assumptions**
+    .. admonition:: Assumptions
 
-    #. Airfoil is idealized according Megson ch. 20 
-    #. Each stringer will form one boom in the discretized airfoil 
-    #. Only an equal amount of stringers can be specified per cell, if that is not the case a warning is issued however. (due to the method of discretization)
-    #. The ratio of :math:`\frac{\sigma_1}{\sigma_2}` required for the skin contribution to the  boom size based on the skin is determined by the ratio of their y positin thus :math:`\frac{y_1}{y_2}`. \n
-    
+        1. Airfoil is idealized according to Megson ch. 20.
+        2. Each stringer will form one boom in the discretized airfoil.
+        3. Only an equal amount of stringers can be specified per cell; if that is not the case, a warning is issued (due to the method of discretization).
+        4. The ratio of :math:`\frac{\sigma_1}{\sigma_2}` required for the skin contribution to the boom size based on the skin is determined by the ratio of their y position, thus :math:`\frac{y_1}{y_2}`.
 
     **General Procedure**
 
-    #. Create a spline of the top and bottom airfoil
-    #. Create array along which to sample this spline to create the booms, creating specific samples for the spar positions
-    #. Move over top surface creating booms and panel as we go
-    #. Do the same for the bottom surface moving in a circle like motion
-    #. Move over all the spars and create booms and panels as we go.
-    #. Iterate over all booms and add skin contribution and stringer contribution to all their areas
+    1. Create a spline of the top and bottom airfoil.
+    2. Create an array along which to sample this spline to create the booms, creating specific samples for the spar positions.
+    3. Move over the top surface, creating booms and panels as we go.
+    4. Do the same for the bottom surface, moving in a circular motion.
+    5. Move over all the spars and create booms and panels as we go.
+    6. Iterate over all booms and add skin contribution and stringer contribution to all their areas.
 
-    **Future Improvements**
+    .. admonition:: Future improvement
 
-    #. Add contribution of spar caps (For now as been left out as I did not see the value of it at the time)
+        1. Add contribution of spar caps (for now, this has been left out as I did not see the value of it at the time).
+
+    Parameters
+    ----------
+    path_coord : str
+        Path to the file containing the non-dimensional coordinates of the airfoil.
+    chord : float
+        Chord length of the airfoil.
+    wingbox_struct : Wingbox
+        The wingbox data structure fully filled in.
+
+    Returns
+    -------
+    IdealWingbox
+        The discretized idealized wingbox.
+    """
 
 
-    :param path_coord: _description_
-    :type path_coord: str
-    :param chord: _description_
-    :type chord: float
-    :param wingbox_struct: _description_
-    :type wingbox_struct: Wingbox
-    :return: _description_
-    :rtype: IdealWingbox
-    """    
     
     # Check  wingbox data structure
     assert len(wingbox_struct.t_sk_cell) == wingbox_struct.n_cell, "Length of t_sk_cell should be equal to the amount of cells"
@@ -1208,8 +1516,8 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     wingbox.panel_dict.update(panel_dict)
 
     wingbox._compute_boom_areas(chord)
-    wingbox.area_lst = wingbox._get_cell_areas()
-    wingbox.centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in wingbox._get_polygon_cells()]
+    wingbox.area_lst = wingbox.get_cell_areas()
+    wingbox.centroid_lst = [np.array(poly.centroid.xy).flatten() for poly in wingbox.get_polygon_cells()]
     wingbox.Ixx = wingbox._set_Ixx()
     wingbox.Ixy = wingbox._set_Ixy()
     wingbox.Iyy = wingbox._set_Iyy()
@@ -1217,47 +1525,4 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     return wingbox
 
 
-
-
-def class2_wing_mass(vtol, flight_perf, wing ):
-        """ Returns the structural weight of both wings 
-
-        :param vtol: VTOL data structure
-        :type vtol: VTOL
-        :param flight_perf: FlightPerformance data structure
-        :type flight_perf: FlightPerformance
-        :param wing: SingleWing datastructure
-        :type wing: SingleWing
-        :return: Mass of both wings
-        :rtype: float
-        """        
-        S_ft = wing.surface*1/const.foot**2
-        mtow_lbs = 1/const.pound * vtol.mtom
-        wing.mass= 0.04674*(mtow_lbs**0.397)*(S_ft**0.36)*(flight_perf.n_ult**0.397)*(wing.aspect_ratio**1.712)*const.pound
-        return wing.mass
-
-
-def class2_fuselage_mass(vtol, flight_perf, fuselage):
-    """ Returns the mass of the fuselage
-
-    :param vtol: VTOL data structure, requires: mtom
-    :type vtol: VTOL
-    :param flight_perf: FlightPerformance data structure
-    :type flight_perf: FlightPerformance
-    :param fuselage: Fuselage data structure
-    :type fuselage: Fuselage
-    :return: Fuselage mass
-    :rtype: float
-    """        
-    mtow_lbs = 1/const.pound * vtol.mtom
-    lf_ft, lf = fuselage.length_fuselage*1/const.foot, fuselage.length_fuselage
-
-    nult = flight_perf.n_ult # ultimate load factor
-    wf_ft = fuselage.width_fuselage*1/const.foot # width fuselage [ft]
-    hf_ft = fuselage.height_fuselage*1/const.foot # height fuselage [ft]
-    Vc_kts = flight_perf.v_cruise*1/const.foot # design cruise speed [kts]
-
-    fweigh_USAF = 200*((mtow_lbs*nult/10**5)**0.286*(lf_ft/10)**0.857*((wf_ft + hf_ft)/10)*(Vc_kts/100)**0.338)**1.1
-    fuselage.mass= fweigh_USAF*const.pound
-    return fuselage.mass
 

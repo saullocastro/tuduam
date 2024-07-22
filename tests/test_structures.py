@@ -10,15 +10,16 @@ import numpy as np
 
 
 import tuduam.structures as struct
+from tuduam.mass_metrics import *
 import tuduam as tud
 
 def test_wing_weight(FixtVTOL, FixtFlightPerformance, FixtSingleWing):
-    wing_mass = struct.class2_wing_mass(FixtVTOL, FixtFlightPerformance, FixtSingleWing)
+    wing_mass = class2_wing_mass(FixtVTOL, FixtFlightPerformance, FixtSingleWing)
     assert  wing_mass == FixtSingleWing.mass
 
 
 def test_get_fuselage_weight(FixtVTOL, FixtFlightPerformance, FixtFuselage):
-    fuselage_mass = struct.class2_fuselage_mass(FixtVTOL, FixtFlightPerformance, FixtFuselage)
+    fuselage_mass = class2_fuselage_mass(FixtVTOL, FixtFlightPerformance, FixtFuselage)
     assert fuselage_mass ==  FixtFuselage.mass
 
 def test_read_geometry(naca24012, naca0012):
@@ -116,7 +117,7 @@ def test_contribution_stringers(case2):
 
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
-    area_lst = res._get_cell_areas()
+    area_lst = res.get_cell_areas()
  
 def test_shear_flows(case23_5_Megson):
     """ The following case tests the computation of the shear flow using problem 23.5 from source [1].
@@ -218,7 +219,7 @@ def test_update_gauge(test_idealwingbox_with_str):
     w_st = 0.012
     t_st = 0.003
 
-    test_idealwingbox_with_str._load_new_gauge(t_sk, t_sp, t_st, w_st, h_st)
+    test_idealwingbox_with_str.load_new_gauge(t_sk, t_sp, t_st, w_st, h_st)
     box = test_idealwingbox_with_str
     
 
@@ -268,13 +269,13 @@ def test_cobyla_opt(naca45112, FixtWingbox2: tud.Wingbox, FixtMaterial):
     FixtWingbox2.t_st = 0.001
     FixtWingbox2.w_st = 0.01
     FixtWingbox2.h_st = 0.01
-    opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
+    opt = struct.SectionOpt(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
     opt.optimize_cobyla(3000, 0, 0, 12e3, 0.3, FixtWingbox2.str_cell)
 
 def test_GA_opt(naca45112, FixtWingbox2: tud.Wingbox, FixtMaterial):
     FixtWingbox2.area_str = None
 
-    opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
+    opt = struct.SectionOpt(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
     opt.GA_optimize(3000,0, 0, 12e3, 0.3, n_gen= 20, multiprocess= True)
 
 # def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
