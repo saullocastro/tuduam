@@ -43,6 +43,10 @@ class ProblemFreePanel(ElementwiseProblem):
         Chord length of the wingbox section.
     len_sec : float
         Length of the wingbox section.
+    upper_bnds: list
+        A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
+    lower_bnds: list
+        A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
     box_struct : Wingbox
         Wingbox structure, which includes details about geometry, materials, and discretization.
     mat_struct : Material
@@ -77,7 +81,7 @@ class ProblemFreePanel(ElementwiseProblem):
     path_coord : str
         Path to the file containing the airfoil coordinates.
     kwargs_intern : dict
-        Additional keyword arguments for the optimization functions.
+        Additional keyword arguments for the optimization functions. Mostly used to pass any keyword arguments to ProblemFixedPanel
     """
 
 
@@ -90,6 +94,8 @@ class ProblemFreePanel(ElementwiseProblem):
         applied_loc: float,
         chord: float,
         len_sec: float,
+        upper_bnds: list,
+        lower_bnds: list,
         box_struct: Wingbox,
         mat_struct: Material,
         path_coord: str,
@@ -114,6 +120,10 @@ class ProblemFreePanel(ElementwiseProblem):
             Chord length of the wingbox section.
         len_sec : float
             Length of the wingbox section.
+        upper_bnds: list
+            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
+        lower_bnds: list
+            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
         box_struct : Wingbox
             Wingbox structure, which includes details about geometry, materials, and discretization.
         mat_struct : Material
@@ -134,6 +144,8 @@ class ProblemFreePanel(ElementwiseProblem):
         self.applied_loc = applied_loc
         self.chord = chord
         self.len_sec = len_sec
+        self.upper_bnds = upper_bnds
+        self.lower_bnds = upper_bnds
         self.box_struct = box_struct
         self.mat_struct = mat_struct
         self.path_coord = path_coord
@@ -189,6 +201,8 @@ class ProblemFreePanel(ElementwiseProblem):
             self.moment_y,
             self.moment_x,
             self.applied_loc,
+            self.upper_bnds, 
+            self.lower_bnds,
             **self.kwargs_intern,
         )
 
@@ -276,11 +290,11 @@ class ProblemFixedPanel(ElementwiseProblem):
         applied_loc: float,
         chord: float,
         len_sec: float,
+        upper_bnds: list,
+        lower_bnds: list,
         box_struct: Wingbox,
         mat_struct: Material,
         path_coord: str,
-        upper_bnds: list = None,
-        lower_bnds: list = None,
         **kwargs,
     ):
         """
@@ -302,15 +316,19 @@ class ProblemFixedPanel(ElementwiseProblem):
             The length of the wing chord at the section where loads are applied.
         len_sec : float
             The length of the wing section being analyzed in the spanwise direction, i.e., the distance to the next rib.
+        upper_bnds: list
+            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
+        lower_bnds: list
+            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
         box_struct : Wingbox
             Data structure describing the structural configuration of the wingbox at the section.
         mat_struct : Material
             The material properties used in the wing section.
         path_coord : str
             File path or identifier for coordinates related to the section.
-        upper_bnds : list, optional
+        upper_bnds : list
             Upper bounds for optimization or design constraints, defaults to 0.01 for all parameters.
-        lower_bnds : list, optional
+        lower_bnds : list
             Lower bounds for optimization or design constraints, defaults to 1e-8 for all parameters.
 
         Raises
@@ -354,8 +372,8 @@ class ProblemFixedPanel(ElementwiseProblem):
             n_var=box_struct.n_cell + 4,
             n_obj=1,
             n_ieq_constr=7 * len(self.wingbox_obj.panel_dict) + 2,
-            xl=np.ones(self.box_struct.n_cell + 4) * 1e-8,
-            xu=0.014 * np.ones(self.box_struct.n_cell + 4),
+            xl=lower_bnds,
+            xu=upper_bnds,
             **kwargs,
         )
 
@@ -524,6 +542,8 @@ class SectionOpt:
         moment_y: float,
         moment_x: float,
         applied_loc: float,
+        upper_bnds: list,
+        lower_bnds: list, 
         n_gen: int = 50,  # Possible keywords
         pop: int = 100,
         verbose: bool = True,
@@ -544,6 +564,10 @@ class SectionOpt:
             The internal moment acting at the section.
         applied_loc : float
             The position of the internal shear force given as a ratio to the chord.
+        upper_bnds: list
+            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
+        lower_bnds: list
+            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. 
         n_gen : int, optional
             The number of generations allowed before termination, defaults to 50.
         pop : int, optional
@@ -579,6 +603,8 @@ class SectionOpt:
                 applied_loc,
                 self.chord,
                 self.len_sec,
+                upper_bnds,
+                lower_bnds,
                 self.box_struct,
                 self.mat_struct,
                 self.path_coord,
@@ -593,6 +619,8 @@ class SectionOpt:
                 applied_loc,
                 self.chord,
                 self.len_sec,
+                upper_bnds,
+                lower_bnds,
                 self.box_struct,
                 self.mat_struct,
                 self.path_coord,

@@ -276,7 +276,9 @@ def test_GA_opt(naca45112, FixtWingbox2: tud.Wingbox, FixtMaterial):
     FixtWingbox2.area_str = None
 
     opt = struct.SectionOpt(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)
-    opt.GA_optimize(3000,0, 0, 12e3, 0.3, n_gen= 20, multiprocess= True)
+    upper_bnds = 8*[0.1]
+    lower_bnds = 8*0.0001
+    opt.GA_optimize(3000,0, 0, 12e3, 0.3, upper_bnds, lower_bnds, n_gen= 20, multiprocess= True)
 
 # def test_full_opt(naca45112, FixtWingbox2, FixtMaterial):
     # opt = struct.SectionOptimization(naca45112, 2, 1.2, FixtWingbox2, FixtMaterial)

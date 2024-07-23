@@ -440,7 +440,7 @@ class IsotropicWingboxConstraints:
 
     def global_skin_buckling(self):
         r"""
-        A stiffened panel can also buckle as a whole, Equation 42 being valid for global skin buckling calculations as well. 
+        A stiffened panel can also buckle as a whole. 
         In this case, the width of the panel is utilized instead of the stringer pitch, and simply supported conditions 
         can be assumed. The contribution of the stringers that still provide a stiffening effect can be considered by 
         smearing their thickness to the skin thickness, as in Equation 47.

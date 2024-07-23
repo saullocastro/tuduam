@@ -124,8 +124,7 @@ class Aerodynamics(Parent):
 
 class Material(Parent):
     safety_factor: float
-    load_factor: float
-    post_buckling_ratio: float
+    post_buckling_ratio: Optional[float] = None
     """ (PB) The ratio of the applied load to the bucklingload and, for post-buckled structures is greater than 1
 
     **Source**
