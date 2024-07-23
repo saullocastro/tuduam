@@ -165,6 +165,21 @@
                       </a>
                     </li>
                 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -281,6 +296,21 @@ document.write(`
                       </a>
                     </li>
                 
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
         
@@ -370,115 +400,542 @@ document.write(`
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">BEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_structures.html#tuduam.data_structures.Propeller" title="tuduam.data_structures.Propeller"><span class="pre">Propeller</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dyn_vis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for performing Blade Element Momentum (BEM) analysis on a propeller. For initialization of the BEM class please keep the number of stations above 20. Also, if any error occurs with the propeller class,
+carefully check whether all parameters have been properly loaded in. Please specify either a thrust level or
+power level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_path</strong><span class="classifier">str</span></dt><dd><p>Path to the directory containing all Xfoil data for the various Reynolds numbers. Please note the format of the
+file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.</p>
+</dd>
+<dt><strong>propclass</strong><span class="classifier">Propeller</span></dt><dd><p>The propeller data structure with the propeller radius, number of blades, RPM cruise, and non-dimensional hub radius specified.</p>
+</dd>
+<dt><strong>rho</strong><span class="classifier">float</span></dt><dd><p>Density at the cruise height [kg/m^3].</p>
+</dd>
+<dt><strong>dyn_vis</strong><span class="classifier">float</span></dt><dd><p>Dynamic viscosity [N s/m^2].</p>
+</dd>
+<dt><strong>V_fr</strong><span class="classifier">float</span></dt><dd><p>Freestream velocity [m/s].</p>
+</dd>
+<dt><strong>n_stations</strong><span class="classifier">int</span></dt><dd><p>Number of stations to calculate [-] (preferably &gt; 20).</p>
+</dd>
+<dt><strong>a</strong><span class="classifier">float</span></dt><dd><p>Speed of sound [m/s].</p>
+</dd>
+<dt><strong>T</strong><span class="classifier">float, optional</span></dt><dd><p>Thrust delivered by the propeller [N], defaults to None.</p>
+</dd>
+<dt><strong>P</strong><span class="classifier">float, optional</span></dt><dd><p>Power delivered to the propeller [W], defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>propeller</strong><span class="classifier">Propeller</span></dt><dd><p>The propeller data structure.</p>
+</dd>
+<dt><strong>B</strong><span class="classifier">int</span></dt><dd><p>Number of blades.</p>
+</dd>
+<dt><strong>R</strong><span class="classifier">float</span></dt><dd><p>Propeller radius.</p>
+</dd>
+<dt><strong>D</strong><span class="classifier">float</span></dt><dd><p>Propeller diameter.</p>
+</dd>
+<dt><strong>Omega</strong><span class="classifier">float</span></dt><dd><p>Angular velocity in rad/s.</p>
+</dd>
+<dt><strong>xi_0</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional hub radius.</p>
+</dd>
+<dt><strong>rho</strong><span class="classifier">float</span></dt><dd><p>Density at the cruise height [kg/m^3].</p>
+</dd>
+<dt><strong>dyn_vis</strong><span class="classifier">float</span></dt><dd><p>Dynamic viscosity [N s/m^2].</p>
+</dd>
+<dt><strong>V</strong><span class="classifier">float</span></dt><dd><p>Freestream velocity [m/s].</p>
+</dd>
+<dt><strong>lamb</strong><span class="classifier">float</span></dt><dd><p>Speed ratio.</p>
+</dd>
+<dt><strong>N_s</strong><span class="classifier">int</span></dt><dd><p>Number of stations to calculate [-].</p>
+</dd>
+<dt><strong>a</strong><span class="classifier">float</span></dt><dd><p>Speed of sound [m/s].</p>
+</dd>
+<dt><strong>dir_path</strong><span class="classifier">str</span></dt><dd><p>Path to the directory containing all Xfoil data.</p>
+</dd>
+<dt><strong>alpha_interp</strong><span class="classifier">NearestNDInterpolator</span></dt><dd><p>Interpolator for angle of attack based on CL and Reynolds number.</p>
+</dd>
+<dt><strong>cd_interp</strong><span class="classifier">NearestNDInterpolator</span></dt><dd><p>Interpolator for CD based on CL and Reynolds number.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.F">
 <span class="sig-name descname"><span class="pre">F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.F" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Prandtl relation for tip loss factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Tip loss factor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.F_int">
 <span class="sig-name descname"><span class="pre">F_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.F_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.F_int" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Tip loss factor for integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Tip loss factor for integration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.G_int">
 <span class="sig-name descname"><span class="pre">G_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.G_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.G_int" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>G function for integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>G function value for integration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.I_prim_1">
 <span class="sig-name descname"><span class="pre">I_prim_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.I_prim_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.I_prim_1" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Integral I_prim_1 for internal variable calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float</span></dt><dd><p>Average value.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Integral I_prim_1 value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.I_prim_2">
 <span class="sig-name descname"><span class="pre">I_prim_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.I_prim_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.I_prim_2" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Integral I_prim_2 for internal variable calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float</span></dt><dd><p>Average value.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Integral I_prim_2 value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.J">
 <span class="sig-name descname"><span class="pre">J</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Advance ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>float</dt><dd><p>Advance ratio.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.J_prim_1">
 <span class="sig-name descname"><span class="pre">J_prim_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J_prim_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J_prim_1" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Integral J_prim_1 for internal variable calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float</span></dt><dd><p>Average value.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Integral J_prim_1 value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.J_prim_2">
 <span class="sig-name descname"><span class="pre">J_prim_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.J_prim_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.J_prim_2" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Integral J_prim_2 for internal variable calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float</span></dt><dd><p>Average value.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Integral J_prim_2 value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.M">
 <span class="sig-name descname"><span class="pre">M</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.M"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.M" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Mach number as a function of radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Mach number.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.PG">
 <span class="sig-name descname"><span class="pre">PG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.PG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.PG" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Prandtl-Glauert correction factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>M</strong><span class="classifier">float</span></dt><dd><p>Mach number.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Prandtl-Glauert correction factor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.RN">
 <span class="sig-name descname"><span class="pre">RN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Wc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.RN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.RN" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Reynolds number as a function of local speed and chord.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Wc</strong><span class="classifier">float</span></dt><dd><p>Local speed times chord.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Reynolds number.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.Wc">
 <span class="sig-name descname"><span class="pre">Wc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cl</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.Wc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.Wc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Product of local speed at the blade and chord.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>F</strong><span class="classifier">float</span></dt><dd><p>Tip loss factor.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier">float</span></dt><dd><p>Angle of local velocity.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+<dt><strong>Cl</strong><span class="classifier">float</span></dt><dd><p>Lift coefficient.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Product of local speed and chord.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.Xi">
 <span class="sig-name descname"><span class="pre">Xi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.Xi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.Xi" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Non-dimensional radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Non-dimensional radius.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.efficiency">
 <span class="sig-name descname"><span class="pre">efficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.efficiency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.efficiency" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate propeller efficiency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Tc</strong><span class="classifier">float</span></dt><dd><p>Thrust coefficient.</p>
+</dd>
+<dt><strong>Pc</strong><span class="classifier">float</span></dt><dd><p>Power coefficient.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Propeller efficiency.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.f">
 <span class="sig-name descname"><span class="pre">f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.f" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Exponent used in the Prandtl tip loss factor calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Exponent value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.f_int">
 <span class="sig-name descname"><span class="pre">f_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.f_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.f_int" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Exponent used in the Prandtl tip loss factor calculation for integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Exponent value for integration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.optimise_blade">
 <span class="sig-name descname"><span class="pre">optimise_blade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_init</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.optimise_blade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.optimise_blade" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Optimize the blade design by iteratively running the BEM design procedure and updating the inflow ratio (zeta)
+until convergence is achieved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>zeta_init</strong><span class="classifier">float</span></dt><dd><p>Initial inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>Dictionary containing the results of the BEM analysis, including chord, pitch, alpha, drag-to-lift ratio,
+effective velocity, solidity, Cl, Cd, propeller efficiency, thrust coefficient, power coefficient, and updated zeta.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi">
 <span class="sig-name descname"><span class="pre">phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Angle of local velocity of the blade with respect to the disk plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Angle of local velocity.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi_int">
 <span class="sig-name descname"><span class="pre">phi_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi_int" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Angle of local velocity for integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xi</strong><span class="classifier">float</span></dt><dd><p>Non-dimensional radius.</p>
+</dd>
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Angle of local velocity for integration.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.phi_t">
 <span class="sig-name descname"><span class="pre">phi_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.phi_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.phi_t" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Pitch angle of the blade tip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Induced inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Pitch angle of the blade tip.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.run_BEM">
 <span class="sig-name descname"><span class="pre">run_BEM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.run_BEM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.run_BEM" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Runs the design procedure for the propeller using Blade Element Momentum (BEM) theory from an arbitrary start zeta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>zeta</strong><span class="classifier">float</span></dt><dd><p>Initial inflow ratio.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>Dictionary containing the results of the BEM analysis, including chord, pitch, alpha, drag-to-lift ratio,
+effective velocity, solidity, Cl, Cd, propeller efficiency, thrust coefficient, power coefficient, and updated zeta.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.BEM.x">
 <span class="sig-name descname"><span class="pre">x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#BEM.x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.BEM.x" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Non-dimensional speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>r</strong><span class="classifier">float</span></dt><dd><p>Radial position.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>Non-dimensional speed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -660,14 +1117,66 @@ keys as specified below.</p>
 <dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">PlotBlade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propclass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data_structures.html#tuduam.data_structures.Propeller" title="tuduam.data_structures.Propeller"><span class="pre">Propeller</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to plot the blade of a propeller based on its specifications and airfoil coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>propclass</strong><span class="classifier">Propeller</span></dt><dd><p>Propeller class with all the attributes defined.</p>
+</dd>
+<dt><strong>path_coord</strong><span class="classifier">str</span></dt><dd><p>Path to the coordinates of the airfoil in the format starting at the top trailing edge,
+moving to the top leading edge and then looping back to the bottom trailing edge.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>chords</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of chord lengths at different radial positions.</p>
+</dd>
+<dt><strong>pitchs</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of pitch values at different radial positions.</p>
+</dd>
+<dt><strong>radial_coords</strong><span class="classifier">np.ndarray</span></dt><dd><p>Array of radial coordinates from the hub to the tip of the blade.</p>
+</dd>
+<dt><strong>R</strong><span class="classifier">float</span></dt><dd><p>Radius of the propeller.</p>
+</dd>
+<dt><strong>xi_0</strong><span class="classifier">float</span></dt><dd><p>Twist angle at the root of the blade.</p>
+</dd>
+<dt><strong>tc_ratio</strong><span class="classifier">float</span></dt><dd><p>Thickness-to-chord ratio of the airfoil.</p>
+</dd>
+<dt><strong>path_coord</strong><span class="classifier">str</span></dt><dd><p>Path to the airfoil coordinate file.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.load_airfoil">
+<span class="sig-name descname"><span class="pre">load_airfoil</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.load_airfoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.load_airfoil" title="Link to this definition">#</a></dt>
+<dd><p>Returns an array using a path to the coordinate file of the airfoil.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>Array with the airfoil coordinates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_3D">
 <span class="sig-name descname"><span class="pre">plot_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_3D" title="Link to this definition">#</a></dt>
-<dd><p>Plot a 3D plot of one propeller blade. The user can drag his mouse around to see
+<dd><p>Plot a 3D plot of one propeller blade. The user can drag the mouse around to see
 the blade from various angles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tst</strong> (<em>bool</em><em>, </em><em>optional</em>) – A boolean which is used for testing to surpess the output, defaults to False</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tst</strong><span class="classifier">bool, optional</span></dt><dd><p>A boolean used for testing to suppress the output, defaults to False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -675,16 +1184,39 @@ the blade from various angles.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_3D_plotly">
 <span class="sig-name descname"><span class="pre">plot_3D_plotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_3D_plotly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_3D_plotly" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot a 3D plot of one propeller blade. The user can drag the mouse around to see
+the blade from various angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tst</strong><span class="classifier">bool, optional</span></dt><dd><p>A boolean used for testing to suppress the output, defaults to False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tuduam.propulsion.PlotBlade.plot_blade">
 <span class="sig-name descname"><span class="pre">plot_blade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#PlotBlade.plot_blade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.PlotBlade.plot_blade" title="Link to this definition">#</a></dt>
-<dd><p>Returns two plots, one top down view of the propeller showing the amount of twist and the various chords
-and one plot showing a side view of the propeller</p>
+<dd><p>Returns two plots: one top-down view of the propeller showing the amount of twist and the various chords,
+and one plot showing a side view of the propeller.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tst</strong> (<em>bool</em><em>, </em><em>optional</em>) – A boolean which is used for testing to surpess the output, defaults to False</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tst</strong><span class="classifier">bool, optional</span></dt><dd><p>A boolean used for testing to suppress the output, defaults to False.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -694,16 +1226,19 @@ and one plot showing a side view of the propeller</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tuduam.propulsion.alpha_xfoil_interp">
 <span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">alpha_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#alpha_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.alpha_xfoil_interp" title="Link to this definition">#</a></dt>
-<dd><p>summary</p>
+<dd><p>Interpolates the angle of attack (alpha) from Xfoil output data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – _description_</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dir_path</strong><span class="classifier">str</span></dt><dd><p>The path of the directory to read from; can be absolute or relative.</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
+<dd class="field-even"><dl class="simple">
+<dt>NearestNDInterpolator</dt><dd><p>Interpolator for angle of attack based on CL and Reynolds number.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NearestNDInterpolator</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -711,15 +1246,19 @@ and one plot showing a side view of the propeller</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tuduam.propulsion.cd_xfoil_interp">
 <span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">cd_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#cd_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.cd_xfoil_interp" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Interpolates the drag coefficient (CD) from Xfoil output data.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – Directory of the files containting the xfoil polar</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dir_path</strong><span class="classifier">str</span></dt><dd><p>Directory of the files containing the Xfoil polar data.</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A interpolator with the input cl and the Reynolds number. In that order.</p>
+<dd class="field-even"><dl class="simple">
+<dt>NearestNDInterpolator</dt><dd><p>Interpolator for CD based on CL and Reynolds number.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_type_</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -727,16 +1266,19 @@ and one plot showing a side view of the propeller</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tuduam.propulsion.cl_xfoil_interp">
 <span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">cl_xfoil_interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NearestNDInterpolator</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#cl_xfoil_interp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.cl_xfoil_interp" title="Link to this definition">#</a></dt>
-<dd><p>summary</p>
+<dd><p>Interpolates the lift coefficient (CL) from Xfoil output data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – Directory of the files containting the xfoil polar</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dir_path</strong><span class="classifier">str</span></dt><dd><p>Directory of the files containing the Xfoil polar data.</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A interpolator with the input angle of attack and the Reynolds number. In that order.</p>
+<dd class="field-even"><dl class="simple">
+<dt>NearestNDInterpolator</dt><dd><p>Interpolator for CL based on angle of attack and Reynolds number.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_type_</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -744,20 +1286,26 @@ and one plot showing a side view of the propeller</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tuduam.propulsion.extract_data_dir">
 <span class="sig-prename descclassname"><span class="pre">tuduam.propulsion.</span></span><span class="sig-name descname"><span class="pre">extract_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/tuduam/propulsion.html#extract_data_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tuduam.propulsion.extract_data_dir" title="Link to this definition">#</a></dt>
-<dd><p>This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array. Information on how to do this can be found in the notebooks.</p>
-<p><strong>Assumptions</strong></p>
+<dd><p>This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array.
+Information on how to do this can be found in the notebooks.</p>
+<div class="admonition-assumptions admonition">
+<p class="admonition-title">Assumptions</p>
 <ol class="arabic simple">
-<li><p>The function expects the name to atleast have Rexxxx where the x’s represent the Reynolds number</p></li>
+<li><p>The function expects the name to at least have Rexxxx where the x’s represent the Reynolds number.</p></li>
 </ol>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dir_path</strong> (<em>str</em>) – The path of the directory to read from can be absolute or relative</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dir_path</strong><span class="classifier">str</span></dt><dd><p>The path of the directory to read from; can be absolute or relative.</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]</p>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd><p>An m x 8 array where the columns are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number].</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -856,6 +1404,7 @@ and one plot showing a side view of the propeller</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade"><code class="docutils literal notranslate"><span class="pre">PlotBlade</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.load_airfoil"><code class="docutils literal notranslate"><span class="pre">PlotBlade.load_airfoil()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_3D"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_3D()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_3D_plotly"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_3D_plotly()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tuduam.propulsion.PlotBlade.plot_blade"><code class="docutils literal notranslate"><span class="pre">PlotBlade.plot_blade()</span></code></a></li>

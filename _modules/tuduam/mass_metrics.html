@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tuduam.performance &#8212; tuduam  documentation</title>
+    <title>tuduam.mass_metrics &#8212; tuduam  documentation</title>
   
   
   
@@ -39,7 +39,7 @@
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/performance';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/mass_metrics';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -366,7 +366,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tuduam.performance</li>
+    <li class="breadcrumb-item active" aria-current="page">tuduam.mass_metrics</li>
   </ul>
 </nav>
 </div>
@@ -383,92 +383,87 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for tuduam.performance</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">g</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+  <h1>Source code for tuduam.mass_metrics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The following module contains methods to size for the weight of an eVTOL. Most of these methods are class 2 weigt estimations</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ISA">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA">[docs]</a>
-<span class="k">class</span> <span class="nc">ISA</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">const</span>
+<span class="kn">from</span> <span class="nn">.data_structures</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="class2_wing_mass">
+<a class="viewcode-back" href="../../mass_metric.html#tuduam.mass_metrics.class2_wing_mass">[docs]</a>
+<span class="k">def</span> <span class="nf">class2_wing_mass</span><span class="p">(</span><span class="n">vtol</span><span class="p">:</span> <span class="n">VTOL</span><span class="p">,</span> <span class="n">flight_perf</span><span class="p">:</span> <span class="n">FlightPerformance</span><span class="p">,</span> <span class="n">wing</span><span class="p">:</span> <span class="n">SingleWing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the atmospheric parameters at a specified altitude h (in meters).</span>
-<span class="sd">    An offset in sea level temperature can be specified to allow for variations.</span>
+<span class="sd">        Returns the structural weight of both wings.</span>
 
-<span class="sd">    Note: Since our aircraft probably doesn&#39;t fly too high, this is only valid in the troposphere</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vtol : VTOL</span>
+<span class="sd">            VTOL data structure.</span>
+<span class="sd">        flight_perf : FlightPerformance</span>
+<span class="sd">            FlightPerformance data structure.</span>
+<span class="sd">        wing : SingleWing</span>
+<span class="sd">            SingleWing data structure.</span>
 
-<span class="sd">    # Future improvements</span>
-<span class="sd">    ------------------------------------------------</span>
-<span class="sd">    - Made ISA calculator valid for altitudes above the troposhere</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            Mass of both wings in kg.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">S_ft</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">surface</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">foot</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">mtow_lbs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">pound</span> <span class="o">*</span> <span class="n">vtol</span><span class="o">.</span><span class="n">mtom</span>
+    <span class="n">wing</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">0.04674</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">mtow_lbs</span> <span class="o">**</span> <span class="mf">0.397</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">S_ft</span> <span class="o">**</span> <span class="mf">0.36</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">flight_perf</span><span class="o">.</span><span class="n">n_ult</span> <span class="o">**</span> <span class="mf">0.397</span><span class="p">)</span>
+        <span class="o">*</span> <span class="p">(</span><span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span> <span class="o">**</span> <span class="mf">1.712</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">pound</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">wing</span><span class="o">.</span><span class="n">mass</span></div>
 
-<span class="sd">    Verified by comparison to: https://www.digitaldutch.com/atmoscalc/</span>
+
+
+<div class="viewcode-block" id="class2_fuselage_mass">
+<a class="viewcode-back" href="../../mass_metric.html#tuduam.mass_metrics.class2_fuselage_mass">[docs]</a>
+<span class="k">def</span> <span class="nf">class2_fuselage_mass</span><span class="p">(</span><span class="n">vtol</span><span class="p">:</span> <span class="n">VTOL</span><span class="p">,</span> <span class="n">flight_perf</span><span class="p">:</span> <span class="n">FlightPerformance</span><span class="p">,</span> <span class="n">fuselage</span><span class="p">:</span> <span class="n">Fuselage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the mass of the fuselage.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vtol : VTOL</span>
+<span class="sd">        VTOL data structure, requires: mtom.</span>
+<span class="sd">    flight_perf : FlightPerformance</span>
+<span class="sd">        FlightPerformance data structure.</span>
+<span class="sd">    fuselage : Fuselage</span>
+<span class="sd">        Fuselage data structure.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Fuselage mass.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mtow_lbs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">pound</span> <span class="o">*</span> <span class="n">vtol</span><span class="o">.</span><span class="n">mtom</span>
+    <span class="n">lf_ft</span><span class="p">,</span> <span class="n">lf</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">length_fuselage</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">foot</span><span class="p">,</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">length_fuselage</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">T_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">nult</span> <span class="o">=</span> <span class="n">flight_perf</span><span class="o">.</span><span class="n">n_ult</span>  <span class="c1"># ultimate load factor</span>
+    <span class="n">wf_ft</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">width_fuselage</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">foot</span>  <span class="c1"># width fuselage [ft]</span>
+    <span class="n">hf_ft</span> <span class="o">=</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">height_fuselage</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">foot</span>  <span class="c1"># height fuselage [ft]</span>
+    <span class="n">Vc_kts</span> <span class="o">=</span> <span class="n">flight_perf</span><span class="o">.</span><span class="n">v_cruise</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">foot</span>  <span class="c1"># design cruise speed [kts]</span>
 
-        <span class="c1"># Constants</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0065</span>    <span class="c1"># [K/m]     Temperature lapse rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g0</span> <span class="o">=</span> <span class="n">g</span>   <span class="c1"># [m/s^2]   Gravitational acceleration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="mi">287</span>        <span class="c1"># [J/kg K]  Specific gas constant</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.4</span>    <span class="c1"># [-]       Heat capacity ratio</span>
-
-        <span class="c1"># Sea level values</span>
-        <span class="c1"># [kg/m^3]  Sea level density</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rho_SL</span> <span class="o">=</span> <span class="mf">1.225</span>
-        <span class="c1"># [Pa]      Sea level pressure</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_SL</span> <span class="o">=</span> <span class="mi">101325</span>
-        <span class="c1"># [K]       Sea level temperature</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span> <span class="o">=</span> <span class="mf">288.15</span> <span class="o">+</span> <span class="n">T_offset</span>
-        <span class="c1"># [kg/m/s] Sea Level Dynamic Viscosity 1.81206E-5</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mu_SL</span> <span class="o">=</span> <span class="mf">1.8120567103e-5</span>
-        <span class="c1"># [m/s] Sea level speed of sound</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a_SL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>  <span class="c1"># [m]       Altitude</span>
-
-        <span class="c1"># Throw an error if the specified altitude is outside of the troposphere</span>
-        <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="mi">11000</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;The specified altitude is outside the range of this class&#39;</span><span class="p">)</span>
-
-        <span class="c1"># [K] Temperature at altitude h, done here because it is used everywhere</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span>
-
-<div class="viewcode-block" id="ISA.temperature">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA.temperature">[docs]</a>
-    <span class="k">def</span> <span class="nf">temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span></div>
-
-
-<div class="viewcode-block" id="ISA.pressure">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA.pressure">[docs]</a>
-    <span class="k">def</span> <span class="nf">pressure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_SL</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">g0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">p</span></div>
-
-
-<div class="viewcode-block" id="ISA.density">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA.density">[docs]</a>
-    <span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho_SL</span> <span class="o">*</span> \
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">g0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rho</span></div>
-
-
-<div class="viewcode-block" id="ISA.soundspeed">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA.soundspeed">[docs]</a>
-    <span class="k">def</span> <span class="nf">soundspeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_SL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">a</span></div>
-
-
-<div class="viewcode-block" id="ISA.viscosity_dyn">
-<a class="viewcode-back" href="../../performance.html#tuduam.performance.ISA.viscosity_dyn">[docs]</a>
-    <span class="k">def</span> <span class="nf">viscosity_dyn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_SL</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">)</span> <span class="o">*</span> \
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T_SL</span> <span class="o">+</span> <span class="mf">110.4</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="mf">110.4</span><span class="p">)</span>
-        <span class="c1"># 1.458E-6 * self.T ** 1.5 / (self.T + 110.4) # Sutherland Law, using Sutherland&#39;s constant S_mu = 110.4 for air</span>
-        <span class="k">return</span> <span class="n">mu</span></div>
-</div>
+    <span class="n">fweigh_USAF</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">200</span>
+        <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">mtow_lbs</span> <span class="o">*</span> <span class="n">nult</span> <span class="o">/</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">5</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.286</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">lf_ft</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.857</span>
+            <span class="o">*</span> <span class="p">((</span><span class="n">wf_ft</span> <span class="o">+</span> <span class="n">hf_ft</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">Vc_kts</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.338</span>
+        <span class="p">)</span>
+        <span class="o">**</span> <span class="mf">1.1</span>
+    <span class="p">)</span>
+    <span class="n">fuselage</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="n">fweigh_USAF</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">pound</span>
+    <span class="k">return</span> <span class="n">fuselage</span><span class="o">.</span><span class="n">mass</span></div>
 
 </pre></div>
 
