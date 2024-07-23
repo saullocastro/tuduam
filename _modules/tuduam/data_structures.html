@@ -13,28 +13,28 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
@@ -51,27 +51,23 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -93,18 +89,25 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -125,43 +128,43 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../performance.html">
+    Performance
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -175,7 +178,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -189,10 +192,10 @@
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -206,7 +209,7 @@ document.write(`
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -238,46 +241,49 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../performance.html">
+    Performance
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -289,10 +295,10 @@ document.write(`
 
 <script>
 document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
   </button>
 `);
 </script></div>
@@ -310,13 +316,13 @@ document.write(`
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
@@ -325,7 +331,7 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -355,75 +361,82 @@ document.write(`
                   
   <h1>Source code for tuduam.data_structures</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">FilePath</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span> 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
+
 <div class="viewcode-block" id="Parent">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Parent">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Parent">[docs]</a>
 <span class="k">class</span> <span class="nc">Parent</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;forbid&#39;</span><span class="p">,</span>
-                              <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Parent.load_from_json">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Parent.load_from_json">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Parent.load_from_json">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load_from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span><span class="n">FilePath</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load_from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="n">FilePath</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">jsonFile</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">jsonFile</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 </div>
 
 
+
 <div class="viewcode-block" id="SingleWing">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.SingleWing">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.SingleWing">[docs]</a>
 <span class="k">class</span> <span class="nc">SingleWing</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
-    <span class="n">aspect_ratio</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">quarterchord_sweep</span><span class="p">:</span> <span class="nb">float</span>  
-    <span class="n">washout</span><span class="p">:</span> <span class="nb">float</span>  
+    <span class="n">aspect_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">taper</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">quarterchord_sweep</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">washout</span><span class="p">:</span> <span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The geometric twist between the tip and root chord </span>
 <span class="sd">    in radians. Negative value indicates washin i.e the tip is at a</span>
 <span class="sd">    higher AoA.&quot;&quot;&quot;</span>
-    <span class="n">x_le_root_global</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>               <span class="c1"># y position leading edge mean aerodynamic chord</span>
+    <span class="n">x_le_root_global</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="nb">float</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># y position leading edge mean aerodynamic chord</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The coordinate of the leading edge of the root chord. Defines the </span>
 <span class="sd">    positioning of the wing&quot;&quot;&quot;</span>
-    <span class="n">surface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">chord_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">chord_tip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">chord_mac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>             <span class="c1"># Mean Aerodynamic chord</span>
-    <span class="n">sweep_le</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">x_lemac_local</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>               <span class="c1"># x position (longitudinal) leading edge mean aerodynamic chord</span>
-    <span class="n">y_mac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>               <span class="c1"># y position leading edge mean aerodynamic chord</span>
-    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>               <span class="c1"># Mass of both wings</span>
+    <span class="n">surface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">chord_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">chord_tip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">chord_mac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Mean Aerodynamic chord</span>
+    <span class="n">sweep_le</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">x_lemac_local</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="nb">float</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># x position (longitudinal) leading edge mean aerodynamic chord</span>
+    <span class="n">y_mac</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># y position leading edge mean aerodynamic chord</span>
+    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Mass of both wings</span>
 
-    <span class="c1">#--------------wingbox structure --------------</span>
-    <span class="n">wingbox_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">wingbox_end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">n_ribs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">n_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
+    <span class="c1"># --------------wingbox structure --------------</span>
+    <span class="n">wingbox_start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">wingbox_end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n_ribs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">n_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The amount of stringers on one flange&quot;&quot;&quot;</span>
-    <span class="n">t_rib</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">spar_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">fl_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">stringer_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">stringer_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">stringer_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">skin_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
-    <span class="n">rib_loc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span>  <span class="o">=</span>  <span class="kc">None</span>
+    <span class="n">t_rib</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">spar_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fl_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">stringer_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">stringer_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">stringer_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">skin_thickness</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rib_loc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;A list of the spanwise position of the ribs. Can be left to None</span>
 <span class="sd">    as it will be automatically created. Howeve if pre-defined it will keep this list&quot;&quot;&quot;</span></div>
 
 
+
 <div class="viewcode-block" id="Airfoil">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Airfoil">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Airfoil">[docs]</a>
 <span class="k">class</span> <span class="nc">Airfoil</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
-    <span class="n">cl_alpha</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">cl_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">thickness_to_chord</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
+
 <div class="viewcode-block" id="Fuselage">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Fuselage">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Fuselage">[docs]</a>
 <span class="k">class</span> <span class="nc">Fuselage</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">length_fuselage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">width_fuselage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -431,17 +444,19 @@ document.write(`
     <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
+
 <div class="viewcode-block" id="HybridPowertrain">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.HybridPowertrain">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.HybridPowertrain">[docs]</a>
 <span class="k">class</span> <span class="nc">HybridPowertrain</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">fuel_cell_mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">battery_mass</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="n">battery_mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="Engine">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Engine">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Engine">[docs]</a>
 <span class="k">class</span> <span class="nc">Engine</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
-    <span class="n">n_engines</span><span class="p">:</span> <span class="nb">int</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">n_engines</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">diameter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">thrust</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -464,15 +479,17 @@ document.write(`
 <span class="sd">    the engine is placed on the fuselage&quot;&quot;&quot;</span></div>
 
 
+
 <div class="viewcode-block" id="VTOL">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.VTOL">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.VTOL">[docs]</a>
 <span class="k">class</span> <span class="nc">VTOL</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">mtom</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">oem</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
+
 <div class="viewcode-block" id="FlightPerformance">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.FlightPerformance">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.FlightPerformance">[docs]</a>
 <span class="k">class</span> <span class="nc">FlightPerformance</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">wingloading</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">cL_cruise</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -483,8 +500,9 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;cruise altitude&quot;&quot;&quot;</span></div>
 
 
+
 <div class="viewcode-block" id="Aerodynamics">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Aerodynamics">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Aerodynamics">[docs]</a>
 <span class="k">class</span> <span class="nc">Aerodynamics</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">cL_alpha</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">alpha_zero_lift</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -495,11 +513,20 @@ document.write(`
 <span class="sd">    Odd integer&quot;&quot;&quot;</span></div>
 
 
+
 <div class="viewcode-block" id="Material">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Material">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Material">[docs]</a>
 <span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">safety_factor</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">load_factor</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">post_buckling_ratio</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; (PB) The ratio of the applied load to the bucklingload and, for post-buckled structures is greater than 1</span>
+
+<span class="sd">    **Source**</span>
+
+<span class="sd">    [1] Kassapoglou, C. (2010). page 145, Design and analysis of composite structures: With applications to aerospace structures. John Wiley &amp; Sons.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">young_modulus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">load_factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">shear_modulus</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -508,24 +535,31 @@ document.write(`
     <span class="n">sigma_yield</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">sigma_ultimate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">shear_strength</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">beta_crippling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> 
+    <span class="n">beta_crippling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Material constant specific for crippling&quot;&quot;&quot;</span>
     <span class="n">m_crippling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Material constant specific for crippling&quot;&quot;&quot;</span>
     <span class="n">g_crippling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Material constant specific for crippling&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Material constant specific for crippling</span>
+<span class="sd">    **Source**</span>
+
+<span class="sd">    [1] T.H.G.Megson. Aerospace Structural Design an Analysis, 4th ed. Oxford, UK: Elsevier, 2007. isbn: -13:</span>
+<span class="sd">    978-0-75066-7395.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
 
 
 <div class="viewcode-block" id="Propeller">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Propeller">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Propeller">[docs]</a>
 <span class="k">class</span> <span class="nc">Propeller</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
-    <span class="n">n_blades</span><span class="p">:</span><span class="nb">float</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The number of blades on the propellor&quot;&quot;&quot;</span>    
-    <span class="n">r_prop</span><span class="p">:</span><span class="nb">float</span>
+    <span class="n">n_blades</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The number of blades on the propellor&quot;&quot;&quot;</span>
+    <span class="n">r_prop</span><span class="p">:</span> <span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Propeller radius&quot;&quot;&quot;</span>
-    <span class="n">rpm_cruise</span><span class="p">:</span><span class="nb">float</span> 
+    <span class="n">rpm_cruise</span><span class="p">:</span> <span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The rotations per minute during cruise flight&quot;&quot;&quot;</span>
-    <span class="n">xi_0</span><span class="p">:</span><span class="nb">float</span>
+    <span class="n">xi_0</span><span class="p">:</span> <span class="nb">float</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Non-dimensional hub radius (r_hub/R) [-]&quot;&quot;&quot;</span>
     <span class="n">chord_arr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Array with the chords at each station&quot;&quot;&quot;</span>
@@ -533,29 +567,35 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Radial coordinates for each station&quot;&quot;&quot;</span>
     <span class="n">pitch_arr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Array with the pitch at each station&quot;&quot;&quot;</span>
-    <span class="n">tc_ratio</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thickness over chord ratio of the airfoil&quot;&quot;&quot;</span>    </div>
+    <span class="n">tc_ratio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thickness over chord ratio of the airfoil&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Wingbox">
-<a class="viewcode-back" href="../../tuduam.html#tuduam.data_structures.Wingbox">[docs]</a>
+<a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Wingbox">[docs]</a>
 <span class="k">class</span> <span class="nc">Wingbox</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">n_cell</span><span class="p">:</span> <span class="nb">int</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The amount of cells in the wingbox structure&quot;&quot;&quot;</span>
     <span class="n">spar_loc_nondim</span><span class="p">:</span> <span class="nb">list</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;The location of the spar over the chord so dimensionless. Length should be n_cell - 1 &quot;&quot;&quot;</span>
-    <span class="n">t_sk_cell</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">str_cell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization</span>
+<span class="sd">    it also required to be an even number&quot;&quot;&quot;</span>
+    <span class="n">t_sk_cell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The thickness of the skin in each cell, length should be equal to n_cell&quot;&quot;&quot;</span>
     <span class="n">t_sp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The thickness of the spars&quot;&quot;&quot;</span>
-    <span class="n">area_str</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Area of the stringer&quot;&quot;&quot;</span>
-    <span class="n">str_cell</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;List of stringers (both top and bottom) per cell. Length should be n_cell. Due to the discretization</span>
-<span class="sd">    it also required to be an even number&quot;&quot;&quot;</span></div>
-
-
+    <span class="n">area_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Area of the stringer. Note that if you define area of the stringer. You can&#39;t define stringers dimensions.</span>
+<span class="sd">    The reason both options exists is a result of how the API developped over time and the requirement for stringer geometry</span>
+<span class="sd">    for constraints.&quot;&quot;&quot;</span>
+    <span class="n">t_st</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot; Thickness of the stringer&quot;&quot;&quot;</span>
+    <span class="n">w_st</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot; Thickness of the stringer&quot;&quot;&quot;</span>
+    <span class="n">h_st</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot; Thickness of the stringer&quot;&quot;&quot;</span></div>
 
 </pre></div>
 
@@ -565,7 +605,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -574,8 +614,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -588,8 +626,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -609,7 +647,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
     <br/>
   </p>
 </div>
@@ -622,7 +660,7 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>

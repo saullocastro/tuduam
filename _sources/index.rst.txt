@@ -20,7 +20,7 @@ Overview of Modules and subpackages
 =========================================
 .. toctree::
    :maxdepth: 1
-   :numbered:
+   :titlesonly:
 
    data_structures
    structures
@@ -37,7 +37,7 @@ https://github.com/saullocastro/tuduam
 
 
 Indices and tables
-----------------
+-------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

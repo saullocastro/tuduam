@@ -1,10 +1,12 @@
+:tocdepth: 3
+
 Structures constraints Documentation
 ------------------------------------
 
-.. automodule:: tuduam.structures.constraints
+
+
+.. autoclass:: tuduam.structures.constraints.IsotropicWingboxConstraints
    :members:
-   :undoc-members:
-   :special-members: __init__
    :private-members:
    :show-inheritance:
-
+   
