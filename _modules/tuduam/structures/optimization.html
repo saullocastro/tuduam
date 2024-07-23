@@ -1,0 +1,1397 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tuduam.structures.optimization &#8212; tuduam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/structures/optimization';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">tuduam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">tuduam.struc...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tuduam.structures.optimization</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">sop</span>
+<span class="kn">from</span> <span class="nn">pymoo.core.problem</span> <span class="kn">import</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">ElementwiseProblem</span>
+<span class="kn">from</span> <span class="nn">pymoo.core.problem</span> <span class="kn">import</span> <span class="n">StarmapParallelization</span>
+<span class="kn">from</span> <span class="nn">pymoo.operators.crossover.sbx</span> <span class="kn">import</span> <span class="n">SBX</span>
+<span class="kn">from</span> <span class="nn">pymoo.operators.mutation.pm</span> <span class="kn">import</span> <span class="n">PM</span>
+<span class="kn">from</span> <span class="nn">pymoo.operators.repair.rounding</span> <span class="kn">import</span> <span class="n">RoundingRepair</span>
+<span class="kn">from</span> <span class="nn">pymoo.operators.sampling.rnd</span> <span class="kn">import</span> <span class="n">IntegerRandomSampling</span>
+
+
+<span class="kn">from</span> <span class="nn">..data_structures</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.wingbox</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.constraints</span> <span class="kn">import</span> <span class="n">IsotropicWingboxConstraints</span>
+
+
+<div class="viewcode-block" id="ProblemFreePanel">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFreePanel">[docs]</a>
+<span class="k">class</span> <span class="nc">ProblemFreePanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The following problem sets up a discrete variable problem which optimizes the amount of stringers per cell. This is done </span>
+<span class="sd">    in a separate problem as changing the amount of stringers changes the amount of panels and hence the amount of constraints. </span>
+<span class="sd">    Most optimizers do not allow this, hence the following problem uses the output of the :class:`WingboxFixedPanel` to abide </span>
+<span class="sd">    by the constraints.</span>
+
+<span class="sd">    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shear_y : float</span>
+<span class="sd">        Shear force applied in the y-direction.</span>
+<span class="sd">    shear_x : float</span>
+<span class="sd">        Shear force applied in the x-direction.</span>
+<span class="sd">    moment_y : float</span>
+<span class="sd">        Bending moment around the y-axis.</span>
+<span class="sd">    moment_x : float</span>
+<span class="sd">        Bending moment around the x-axis.</span>
+<span class="sd">    applied_loc : float</span>
+<span class="sd">        Location at which the load is applied.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        Chord length of the wingbox section.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        Length of the wingbox section.</span>
+<span class="sd">    box_struct : Wingbox</span>
+<span class="sd">        Wingbox structure, which includes details about geometry, materials, and discretization.</span>
+<span class="sd">    mat_struct : Material</span>
+<span class="sd">        Material properties used in the wingbox.</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        Path to the file containing the airfoil coordinates.</span>
+<span class="sd">    kwargs_intern : dict</span>
+<span class="sd">        Additional keyword arguments to pass settings and options to the genetic algorithm optimization functions.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    box_params : list</span>
+<span class="sd">        List to store parameters of the wingbox for optimization.</span>
+<span class="sd">    shear_y : float</span>
+<span class="sd">        Shear force applied in the y-direction.</span>
+<span class="sd">    shear_x : float</span>
+<span class="sd">        Shear force applied in the x-direction.</span>
+<span class="sd">    moment_y : float</span>
+<span class="sd">        Bending moment around the y-axis.</span>
+<span class="sd">    moment_x : float</span>
+<span class="sd">        Bending moment around the x-axis.</span>
+<span class="sd">    applied_loc : float</span>
+<span class="sd">        Location at which the load is applied.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        Chord length of the wingbox section.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        Length of the wingbox section.</span>
+<span class="sd">    box_struct : Wingbox</span>
+<span class="sd">        Wingbox structure, which includes details about geometry, materials, and discretization.</span>
+<span class="sd">    mat_struct : Material</span>
+<span class="sd">        Material properties used in the wingbox.</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        Path to the file containing the airfoil coordinates.</span>
+<span class="sd">    kwargs_intern : dict</span>
+<span class="sd">        Additional keyword arguments for the optimization functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">box_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span>
+        <span class="n">mat_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span>
+        <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs_intern</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an instance of the optimization problem class, setting up all the necessary parameters and structures needed for structural analysis and optimization of an aircraft wingbox.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shear_y : float</span>
+<span class="sd">            Shear force applied in the y-direction.</span>
+<span class="sd">        shear_x : float</span>
+<span class="sd">            Shear force applied in the x-direction.</span>
+<span class="sd">        moment_y : float</span>
+<span class="sd">            Bending moment around the y-axis.</span>
+<span class="sd">        moment_x : float</span>
+<span class="sd">            Bending moment around the x-axis.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            Location at which the load is applied.</span>
+<span class="sd">        chord : float</span>
+<span class="sd">            Chord length of the wingbox section.</span>
+<span class="sd">        len_sec : float</span>
+<span class="sd">            Length of the wingbox section.</span>
+<span class="sd">        box_struct : Wingbox</span>
+<span class="sd">            Wingbox structure, which includes details about geometry, materials, and discretization.</span>
+<span class="sd">        mat_struct : Material</span>
+<span class="sd">            Material properties used in the wingbox.</span>
+<span class="sd">        path_coord : str</span>
+<span class="sd">            Path to the file containing the airfoil coordinates.</span>
+<span class="sd">        kwargs_intern : dict</span>
+<span class="sd">            Additional keyword arguments to pass settings and options to the genetic algorithm optimization functions.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_params</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span> <span class="o">=</span> <span class="n">shear_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span> <span class="o">=</span> <span class="n">shear_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span> <span class="o">=</span> <span class="n">moment_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span> <span class="o">=</span> <span class="n">moment_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span> <span class="o">=</span> <span class="n">applied_loc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="o">=</span> <span class="n">chord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span> <span class="o">=</span> <span class="n">len_sec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span> <span class="o">=</span> <span class="n">box_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span> <span class="o">=</span> <span class="n">mat_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span> <span class="o">=</span> <span class="n">path_coord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs_intern</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kwargs_intern</span>  <span class="c1">#  Used to pass any settings to GA_optimize functions</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">n_var</span><span class="o">=</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">,</span>
+            <span class="n">n_obj</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">n_ieq_constr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">xl</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">xu</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">vtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs_intern</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ProblemFreePanel._evaluate">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFreePanel._evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function gets evaluated for each &#39;element&#39;, where an element in this case is a single sequence of n_var long. </span>
+<span class="sd">        For more information, please see the documentation of the pymoo library.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : np.ndarray</span>
+<span class="sd">            A list of n_var long containing the amount of stringers per cell.</span>
+<span class="sd">        out : dict</span>
+<span class="sd">            A dictionary containing the constraints and objective.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
+        <span class="n">copy_struct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">model_copy</span><span class="p">()</span>
+        <span class="n">copy_struct</span><span class="o">.</span><span class="n">str_cell</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_cell</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The flattened  design vector received does not match the wingbox properties&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">sec_opt</span> <span class="o">=</span> <span class="n">SectionOpt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span> <span class="n">copy_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Elementwise runner is removed otherwise it clashes in the GA_optimize function</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kwargs_intern</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;elementwise_runner&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">GA_res</span> <span class="o">=</span> <span class="n">sec_opt</span><span class="o">.</span><span class="n">GA_optimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs_intern</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">GA_res</span><span class="o">.</span><span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Internal optimization for stringers </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> was not successful, no solution found &quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Discretize airfoil from new given parameters</span>
+        <span class="n">wingbox_obj</span> <span class="o">=</span> <span class="n">discretize_airfoil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span> <span class="n">copy_struct</span><span class="p">)</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wingbox_obj</span><span class="o">.</span><span class="n">get_total_area</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ProblemFixedPanel">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFixedPanel">[docs]</a>
+<span class="k">class</span> <span class="nc">ProblemFixedPanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The following problem sets up an exploration of a wingbox for a fixed amount of stringers per cell. Since it is difficult for an optimizer</span>
+<span class="sd">    like COBYLA to find a global minimum, a genetic algorithm is set up first to explore the design space. This problem sets up the problem as </span>
+<span class="sd">    defined in (`PYMOO &lt;https://pymoo.org/problems/definition.html#ElementwiseProblem-(loop)&gt;`_).</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        This optimization problem is **not** compatible with stringer area because of the constraints requiring stringer geometry.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shear_y : float</span>
+<span class="sd">        Shear force applied in the y-direction.</span>
+<span class="sd">    shear_x : float</span>
+<span class="sd">        Shear force applied in the x-direction.</span>
+<span class="sd">    moment_y : float</span>
+<span class="sd">        Bending moment around the y-axis.</span>
+<span class="sd">    moment_x : float</span>
+<span class="sd">        Bending moment around the x-axis.</span>
+<span class="sd">    applied_loc : float</span>
+<span class="sd">        Location at which the load is applied.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        Chord length of the wingbox section.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        Length of the wingbox section.</span>
+<span class="sd">    box_struct : Wingbox</span>
+<span class="sd">        Wingbox structure, which includes details about geometry, materials, and discretization.</span>
+<span class="sd">    mat_struct : Material</span>
+<span class="sd">        Material properties used in the wingbox.</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        Path to the file containing the airfoil coordinates.</span>
+<span class="sd">    upper_bnds : list, optional</span>
+<span class="sd">        A list containing the upper bounds of the optimization.</span>
+<span class="sd">    lower_bnds : list, optional</span>
+<span class="sd">        A list containing the lower bounds of the optimization.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shear_y : float</span>
+<span class="sd">        Vertical shear force applied to the section.</span>
+<span class="sd">    shear_x : float</span>
+<span class="sd">        Horizontal shear force applied to the section.</span>
+<span class="sd">    moment_y : float</span>
+<span class="sd">        Bending moment around the Y-axis applied to the section.</span>
+<span class="sd">    moment_x : float</span>
+<span class="sd">        Bending moment around the X-axis applied to the section.</span>
+<span class="sd">    applied_loc : float</span>
+<span class="sd">        The location along the chord where the load is applied.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        The length of the wing chord at the section where loads are applied.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        The length of the wing section being analyzed in the spanwise direction, i.e., the distance to the next rib.</span>
+<span class="sd">    box_struct : Wingbox</span>
+<span class="sd">        Data structure describing the structural configuration of the wingbox at the section.</span>
+<span class="sd">    mat_struct : Material</span>
+<span class="sd">        The material properties used in the wing section.</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        File path or identifier for coordinates related to the section.</span>
+<span class="sd">    wingbox_obj : object</span>
+<span class="sd">        The object used to avoid repetitive computations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+   
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">box_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span>
+        <span class="n">mat_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span>
+        <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">upper_bnds</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">lower_bnds</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the class with the correct data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shear_y : float</span>
+<span class="sd">            Vertical shear force applied to the section.</span>
+<span class="sd">        shear_x : float</span>
+<span class="sd">            Horizontal shear force applied to the section.</span>
+<span class="sd">        moment_y : float</span>
+<span class="sd">            Bending moment around the Y-axis applied to the section.</span>
+<span class="sd">        moment_x : float</span>
+<span class="sd">            Bending moment around the X-axis applied to the section.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The location along the chord where the load is applied.</span>
+<span class="sd">        chord : float</span>
+<span class="sd">            The length of the wing chord at the section where loads are applied.</span>
+<span class="sd">        len_sec : float</span>
+<span class="sd">            The length of the wing section being analyzed in the spanwise direction, i.e., the distance to the next rib.</span>
+<span class="sd">        box_struct : Wingbox</span>
+<span class="sd">            Data structure describing the structural configuration of the wingbox at the section.</span>
+<span class="sd">        mat_struct : Material</span>
+<span class="sd">            The material properties used in the wing section.</span>
+<span class="sd">        path_coord : str</span>
+<span class="sd">            File path or identifier for coordinates related to the section.</span>
+<span class="sd">        upper_bnds : list, optional</span>
+<span class="sd">            Upper bounds for optimization or design constraints, defaults to 0.01 for all parameters.</span>
+<span class="sd">        lower_bnds : list, optional</span>
+<span class="sd">            Lower bounds for optimization or design constraints, defaults to 1e-8 for all parameters.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the optimization is not compatible with stringer area as the constraints rely on the string geometry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">box_struct</span><span class="o">.</span><span class="n">area_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The optimization is not compatible with stringer area as the constraints rely on the string geometry&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span> <span class="o">=</span> <span class="n">shear_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span> <span class="o">=</span> <span class="n">shear_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span> <span class="o">=</span> <span class="n">moment_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span> <span class="o">=</span> <span class="n">moment_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span> <span class="o">=</span> <span class="n">applied_loc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="o">=</span> <span class="n">chord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span> <span class="o">=</span> <span class="n">len_sec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span> <span class="o">=</span> <span class="n">box_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span> <span class="o">=</span> <span class="n">mat_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span> <span class="o">=</span> <span class="n">path_coord</span>
+
+        <span class="c1"># Stops discretize airfoil from complaining (just for getting the right amount of constraints)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">area_str</span> <span class="o">=</span> <span class="mf">1e-5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sk_cell</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sp</span> <span class="o">=</span> <span class="mf">0.001</span>
+        <span class="c1"># The following object is used to avoid repetitive computations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span> <span class="o">=</span> <span class="n">discretize_airfoil</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Remove from data struct again to stop from interferitg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">area_str</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sk_cell</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sp</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># The number of constraint depends on the amount of booms + 2 constraints for stringer geometry</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">n_var</span><span class="o">=</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="n">n_obj</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">n_ieq_constr</span><span class="o">=</span><span class="mi">7</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span><span class="o">.</span><span class="n">panel_dict</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">xl</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-8</span><span class="p">,</span>
+            <span class="n">xu</span><span class="o">=</span><span class="mf">0.014</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ProblemFixedPanel._evaluate">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFixedPanel._evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function is executed at each element in the optimization. The arguments that are passed should be in the following </span>
+<span class="sd">        order: t_sk_cell, t_sp, t_st, w_st, h_st. Together, they give a total length of N + 4, where N is the number of cells.</span>
+<span class="sd">        This is internally checked, and if it is not the case, a runtime error will be raised.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : list</span>
+<span class="sd">            The design variable vector which is in the following format [t_sk_cell, t_sp, t_st, w_st, h_st].</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The shear force for which we&#39;re optimizing.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The moment for which we&#39;re optimizing.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The applied location of the shear force on the wingbox.</span>
+<span class="sd">        str_lst : list</span>
+<span class="sd">            A list with the amount of stringers per cell.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the flattened design vector does not match the specified wingbox properties.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
+
+        <span class="c1"># check whether we are using multiprocess</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elementwise_runner</span><span class="p">,</span> <span class="n">StarmapParallelization</span><span class="p">):</span>
+            <span class="c1"># If so then make a copy of wingbox object</span>
+            <span class="n">box_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span>
+            <span class="p">)</span>  <span class="c1"># Create copy (required for multiprocessing)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If not then simpy make a reference</span>
+            <span class="n">box_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The flattened  design vector received does not match the wingbox properties&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Assing new properties to the wingbox struct assuming the specified length</span>
+        <span class="n">t_sk_cell</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_sp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">w_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">h_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">box_copy</span><span class="o">.</span><span class="n">load_new_gauge</span><span class="p">(</span><span class="n">t_sk_cell</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span>
+
+        <span class="c1"># Perform stress analysis</span>
+        <span class="n">box_copy</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># ================ Get constraints ======================================</span>
+        <span class="n">constr_cls</span> <span class="o">=</span> <span class="n">IsotropicWingboxConstraints</span><span class="p">(</span>
+            <span class="n">box_copy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span>
+        <span class="p">)</span>
+        <span class="c1"># Add all constraints from a structural perspective</span>
+        <span class="n">struct_constr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">global_skin_buckling</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">interaction_curve</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">von_Mises</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">column_str_buckling</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">stringer_flange_buckling</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">stringer_web_buckling</span><span class="p">(),</span>
+                    <span class="n">constr_cls</span><span class="o">.</span><span class="n">crippling</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># negative is necessary because pymoo handles inequality constraints differently</span>
+        <span class="c1"># Add constraints requried from a geometrical perspective</span>
+        <span class="n">geom_constr</span> <span class="o">=</span> <span class="p">[</span><span class="n">t_st</span> <span class="o">-</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">t_st</span> <span class="o">-</span> <span class="n">h_st</span><span class="p">]</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">box_copy</span><span class="o">.</span><span class="n">get_total_area</span><span class="p">()</span>
+        <span class="n">out</span><span class="p">[</span><span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">struct_constr</span><span class="p">,</span> <span class="n">geom_constr</span><span class="p">))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SectionOpt">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt">[docs]</a>
+<span class="k">class</span> <span class="nc">SectionOpt</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The following class allows for the optimization of a single airfoil section. The class assumes that the correct material properties</span>
+<span class="sd">    have been embedded in :class:`Material`, and an initial estimate should be embedded in the :class:`Wingbox` class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        The path to the coordinate file of the airfoil that is used.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        The chord size.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        The length of the section, that is the length to the next rib.</span>
+<span class="sd">    wingbox_struct : Wingbox</span>
+<span class="sd">        The wingbox structure.</span>
+<span class="sd">    material_struct : Material</span>
+<span class="sd">        The material data structure.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_coord : str</span>
+<span class="sd">        The path to the coordinate file of the airfoil that is used.</span>
+<span class="sd">    chord : float</span>
+<span class="sd">        The chord size.</span>
+<span class="sd">    len_sec : float</span>
+<span class="sd">        The length of the section, that is the length to the next rib.</span>
+<span class="sd">    box_struct : Wingbox</span>
+<span class="sd">        The wingbox data structure.</span>
+<span class="sd">    mat_struct : Material</span>
+<span class="sd">        The material data structure.</span>
+<span class="sd">    _wingbox_obj : IdealWingbox or None</span>
+<span class="sd">        The wingbox object used for computations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wingbox_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span>
+        <span class="n">material_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor method.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path_coord : str</span>
+<span class="sd">            The path to the coordinate file of the airfoil that is used.</span>
+<span class="sd">        chord : float</span>
+<span class="sd">            The chord size.</span>
+<span class="sd">        len_sec : float</span>
+<span class="sd">            The length of the section, that is the length to the next rib.</span>
+<span class="sd">        wingbox_struct : Wingbox</span>
+<span class="sd">            The wingbox data structure.</span>
+<span class="sd">        material_struct : Material</span>
+<span class="sd">            The material data structure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="c1"># Perform checks on whether correct data was loaded in</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span> <span class="o">=</span> <span class="n">path_coord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="o">=</span> <span class="n">chord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span> <span class="o">=</span> <span class="n">len_sec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">:</span> <span class="n">Wingbox</span> <span class="o">=</span> <span class="n">wingbox_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">:</span> <span class="n">Material</span> <span class="o">=</span> <span class="n">material_struct</span>
+
+        <span class="c1"># Required Overhead</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wingbox_obj</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">IdealWingbox</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SectionOpt.GA_optimize">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.GA_optimize">[docs]</a>
+    <span class="k">def</span> <span class="nf">GA_optimize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_gen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Possible keywords</span>
+        <span class="n">pop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">multiprocess</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">cores</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(),</span>
+        <span class="n">save_hist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following function executes the Genetic Algorithm (`GA &lt;https://pymoo.org/algorithms/soo/ga.html&gt;`_) to optimize the wingbox given to the overarching class</span>
+<span class="sd">        with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis &lt;tuduam.structures.wingbox.IdealWingbox.stress_analysis&gt;`. Additionally, there are some keywords which are explained below.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The internal shear force acting at the section.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The internal moment acting at the section.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The position of the internal shear force given as a ratio to the chord.</span>
+<span class="sd">        n_gen : int, optional</span>
+<span class="sd">            The number of generations allowed before termination, defaults to 50.</span>
+<span class="sd">        pop : int, optional</span>
+<span class="sd">            The generation size, defaults to 50.</span>
+<span class="sd">        verbose : bool, optional</span>
+<span class="sd">            If true, will print the results of all generations, defaults to True.</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            The seed for the random generations of the samples, defaults to 1.</span>
+<span class="sd">        cores : int, optional</span>
+<span class="sd">            The number of cores used for the parallelization of the evaluations, defaults to multiprocessing.cpu_count().</span>
+<span class="sd">        save_hist : bool, optional</span>
+<span class="sd">            Saves the history in the result object if true, defaults to True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pymoo.core.result.Result</span>
+<span class="sd">            Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example &lt;https://pymoo.org/getting_started/part_4.html&gt;`_).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+  
+
+        <span class="c1"># initialize the thread pool and create the runner</span>
+        <span class="k">if</span> <span class="n">multiprocess</span><span class="p">:</span>
+            <span class="n">n_proccess</span> <span class="o">=</span> <span class="n">cores</span>
+            <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">n_proccess</span><span class="p">)</span>
+            <span class="n">runner</span> <span class="o">=</span> <span class="n">StarmapParallelization</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">)</span>
+
+            <span class="n">problem</span> <span class="o">=</span> <span class="n">ProblemFixedPanel</span><span class="p">(</span>
+                <span class="n">shear_y</span><span class="p">,</span>
+                <span class="n">shear_x</span><span class="p">,</span>
+                <span class="n">moment_y</span><span class="p">,</span>
+                <span class="n">moment_x</span><span class="p">,</span>
+                <span class="n">applied_loc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
+                <span class="n">elementwise_runner</span><span class="o">=</span><span class="n">runner</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">problem</span> <span class="o">=</span> <span class="n">ProblemFixedPanel</span><span class="p">(</span>
+                <span class="n">shear_y</span><span class="p">,</span>
+                <span class="n">shear_x</span><span class="p">,</span>
+                <span class="n">moment_y</span><span class="p">,</span>
+                <span class="n">moment_x</span><span class="p">,</span>
+                <span class="n">applied_loc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">GA</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">resGA</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+            <span class="n">problem</span><span class="p">,</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;n_gen&quot;</span><span class="p">,</span> <span class="n">n_gen</span><span class="p">),</span>
+            <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+            <span class="n">save_history</span><span class="o">=</span><span class="n">save_hist</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resGA</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_obj_func_cobyla</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">str_lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function is not intended to be used by the user; hence it is hinted to be a private method. The function is passed to the scipy.optimize.minimize function. The arguments that are passed should be in the following </span>
+<span class="sd">        order: t_sk_cell, t_sp, t_st, w_st, h_st. Together, they give a total length of N + 4, where N is the number of cells.</span>
+<span class="sd">        This is internally checked, and if it is not the case, a runtime error will be raised.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : list</span>
+<span class="sd">            The design variable vector which is in the following format [t_sk_cell, t_sp, t_st, w_st, h_st].</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The shear force for which we&#39;re optimizing.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The moment for which we&#39;re optimizing.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The applied location of the shear force on the wingbox.</span>
+<span class="sd">        str_lst : list</span>
+<span class="sd">            A list with the amount of stringers per cell.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If the flattened design vector does not match the specified wingbox properties.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The flattened  design vector received does not match the wingbox properties&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Assing new properties to the wingbox struct assuming the specified length</span>
+        <span class="n">t_sk_cell</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_sp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">w_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">h_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sk_cell</span> <span class="o">=</span> <span class="n">t_sk_cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sp</span> <span class="o">=</span> <span class="n">t_sp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_st</span> <span class="o">=</span> <span class="n">t_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">w_st</span> <span class="o">=</span> <span class="n">w_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">h_st</span> <span class="o">=</span> <span class="n">h_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">str_cell</span> <span class="o">=</span> <span class="n">str_lst</span>
+
+        <span class="c1"># Discretize airfoil from new given parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wingbox_obj</span><span class="o">.</span><span class="n">load_new_gauge</span><span class="p">(</span><span class="n">t_sk_cell</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span>
+
+        <span class="c1"># Perform stress analysis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wingbox_obj</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span>
+            <span class="n">shear_y</span><span class="p">,</span>
+            <span class="n">shear_x</span><span class="p">,</span>
+            <span class="n">moment_y</span><span class="p">,</span>
+            <span class="n">moment_x</span><span class="p">,</span>
+            <span class="n">applied_loc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wingbox_obj</span><span class="o">.</span><span class="n">get_total_area</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SectionOpt.optimize_cobyla">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.optimize_cobyla">[docs]</a>
+    <span class="k">def</span> <span class="nf">optimize_cobyla</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">str_lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">bnd_mult</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span>
+        <span class="n">x0</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sop</span><span class="o">.</span><span class="n">_optimize</span><span class="o">.</span><span class="n">OptimizeResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimizes the design using the COBYLA optimizer with the constraints defined in :class:`IsotropicWingboxConstraints`. The optimization parameters</span>
+<span class="sd">        are the skin thickness in each cell, the spar thickness, and the area of the stringers. Hence the resulting design vector is x = []. The amount of stringers is not an optimization parameter here</span>
+<span class="sd">        as this would result in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different </span>
+<span class="sd">        optimizer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The shear force for which we&#39;re optimizing.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The moment for which we&#39;re optimizing.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The applied location of the shear force on the wingbox.</span>
+<span class="sd">        str_list : list</span>
+<span class="sd">            List of the amount of stringers per cell.</span>
+<span class="sd">        bnd_mult : int, optional</span>
+<span class="sd">            A multiplier to increase the enforcement of the bounds on the variables, defaults to 1000.</span>
+<span class="sd">        x0 : list, optional</span>
+<span class="sd">            A more explicit way to define the initial estimate instead of taking it from the wingbox structure, defaults to None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        scipy.optimize.OptimizeResult</span>
+<span class="sd">            The result of the optimization process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+ 
+
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>  <span class="c1"># quick reference to number of cells</span>
+        <span class="c1"># Whatever parameters were given in the datastrucrtre are used as inital estimate</span>
+        <span class="k">if</span> <span class="n">x0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sk_cell</span>
+                <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sp</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_st</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">w_st</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">h_st</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">constr_lst</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_constraint_vector</span><span class="p">,</span>
+                <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">shear_y</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">,</span> <span class="n">applied_loc</span><span class="p">],</span>
+            <span class="p">},</span>
+        <span class="p">]</span>
+
+        <span class="n">lb_lst</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ub_lst</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x0</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">lb_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">)</span>
+                <span class="n">ub_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">lb_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1e-5</span><span class="p">)</span>
+                <span class="n">ub_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">lb_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
+                <span class="n">ub_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="c1"># Apply bounds through constraints manually so we can penalize them with a greater quantity</span>
+        <span class="c1"># Otherwise they migt be ignored compared to other constraints</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lb_lst</span><span class="p">)):</span>
+
+            <span class="k">def</span> <span class="nf">upper_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">ub_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+
+            <span class="k">def</span> <span class="nf">lower_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">lb_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+
+            <span class="n">constr_lst</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">upper_constraint</span><span class="p">})</span>
+            <span class="n">constr_lst</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">lower_constraint</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wingbox_obj</span> <span class="o">=</span> <span class="n">discretize_airfoil</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span>
+        <span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">sop</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_obj_func_cobyla</span><span class="p">,</span>
+            <span class="n">x0</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">shear_y</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">,</span> <span class="n">applied_loc</span><span class="p">,</span> <span class="n">str_lst</span><span class="p">),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;COBYLA&quot;</span><span class="p">,</span>
+            <span class="n">constraints</span><span class="o">=</span><span class="n">constr_lst</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="SectionOpt.full_section_opt">
+<a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.full_section_opt">[docs]</a>
+    <span class="k">def</span> <span class="nf">full_section_opt</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_gen_full</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Possible keywords</span>
+        <span class="n">pop_full</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">verbose_full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">cores</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(),</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">multiprocess_full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_hist_full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following function handles the full optimization of the wingbox. Compared to the :func:`GA_optimize`, this function also varies</span>
+<span class="sd">        the amount of stringers per cell to find the optimum design. In order to do this, it utilizes all previously defined optimizations in combination </span>
+<span class="sd">        with a discrete Genetic Algorithm variable optimization.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The shear force for which we&#39;re optimizing.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The moment for which we&#39;re optimizing.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The applied location of the shear force on the wingbox.</span>
+<span class="sd">        n_gen_full : int, optional</span>
+<span class="sd">            The number of generations for the full optimization, defaults to 50.</span>
+<span class="sd">        verbose_full : bool, optional</span>
+<span class="sd">            If true, will print the results of all generations for the full optimization, defaults to True.</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            The seed for the random generations of the samples, defaults to 1.</span>
+<span class="sd">        save_hist_full : bool, optional</span>
+<span class="sd">            Saves the history in the result object if true, defaults to True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="n">n_proccess</span> <span class="o">=</span> <span class="n">cores</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">n_proccess</span><span class="p">)</span>
+        <span class="n">runner</span> <span class="o">=</span> <span class="n">StarmapParallelization</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">multiprocess_full</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">ProblemFreePanel</span><span class="p">(</span>
+                <span class="n">shear_y</span><span class="p">,</span>
+                <span class="n">shear_x</span><span class="p">,</span>
+                <span class="n">moment_y</span><span class="p">,</span>
+                <span class="n">moment_x</span><span class="p">,</span>
+                <span class="n">applied_loc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
+                <span class="n">elementwise_runner</span><span class="o">=</span><span class="n">runner</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">ProblemFreePanel</span><span class="p">(</span>
+                <span class="n">shear_y</span><span class="p">,</span>
+                <span class="n">shear_x</span><span class="p">,</span>
+                <span class="n">moment_y</span><span class="p">,</span>
+                <span class="n">moment_x</span><span class="p">,</span>
+                <span class="n">applied_loc</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">GA</span><span class="p">(</span>
+            <span class="n">pop_size</span><span class="o">=</span><span class="n">pop_full</span><span class="p">,</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="n">IntegerRandomSampling</span><span class="p">(),</span>
+            <span class="n">crossover</span><span class="o">=</span><span class="n">SBX</span><span class="p">(</span><span class="n">prob</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">repair</span><span class="o">=</span><span class="n">RoundingRepair</span><span class="p">()),</span>
+            <span class="n">mutation</span><span class="o">=</span><span class="n">PM</span><span class="p">(</span><span class="n">prob</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">vtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">repair</span><span class="o">=</span><span class="n">RoundingRepair</span><span class="p">()),</span>
+            <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+            <span class="n">prob</span><span class="p">,</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;n_gen&quot;</span><span class="p">,</span> <span class="n">n_gen_full</span><span class="p">),</span>
+            <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+            <span class="n">save_history</span><span class="o">=</span><span class="n">save_hist_full</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_full</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_constraint_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following function utilizes all other constraints and wraps their results into one vector, where each </span>
+<span class="sd">        element represents one of the inequality constraints. The reason we utilize this method instead of just passing each function as their own constraint</span>
+<span class="sd">        has to do with the overhead that would be incurred. Since scipy.optimize.minimize can only take a flattened array, I cannot pass the actual discretized</span>
+<span class="sd">        airfoil around. Hence, if I want to get the discretized airfoil from the flattened array I have to run the :func:`discretize_airfoil` again. To avoid</span>
+<span class="sd">        doing this multiple times, all constraints are wrapped into one function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : list</span>
+<span class="sd">            The flattened array received from the scipy.optimize.minimize function.</span>
+<span class="sd">        wingbox_struct : Wingbox</span>
+<span class="sd">            The wingbox struct from the data structures module.</span>
+<span class="sd">        shear : float</span>
+<span class="sd">            The applied shear force on the wingbox.</span>
+<span class="sd">        moment : float</span>
+<span class="sd">            The applied moment on the wingbox.</span>
+<span class="sd">        applied_loc : float</span>
+<span class="sd">            The applied location of the shear force on the wingbox.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            All constraints appended to each other into one list of constraints.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
+        <span class="n">t_sk_cell</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_sp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span><span class="p">]</span>
+        <span class="n">t_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">w_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">h_st</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sk_cell</span> <span class="o">=</span> <span class="n">t_sk_cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_sp</span> <span class="o">=</span> <span class="n">t_sp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">t_st</span> <span class="o">=</span> <span class="n">t_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">w_st</span> <span class="o">=</span> <span class="n">w_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">h_st</span> <span class="o">=</span> <span class="n">h_st</span>
+
+        <span class="n">ideal_wingbox</span><span class="p">:</span> <span class="n">IdealWingbox</span> <span class="o">=</span> <span class="n">discretize_airfoil</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span>
+        <span class="p">)</span>
+        <span class="n">ideal_wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span>
+            <span class="n">shear_y</span><span class="p">,</span>
+            <span class="n">shear_x</span><span class="p">,</span>
+            <span class="n">moment_y</span><span class="p">,</span>
+            <span class="n">moment_x</span><span class="p">,</span>
+            <span class="n">applied_loc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">constr_cls</span> <span class="o">=</span> <span class="n">IsotropicWingboxConstraints</span><span class="p">(</span>
+            <span class="n">ideal_wingbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">constr_cls</span><span class="o">.</span><span class="n">interaction_curve</span><span class="p">(),</span> <span class="n">constr_cls</span><span class="o">.</span><span class="n">von_Mises</span><span class="p">()))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,998 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tuduam.structures.constraints &#8212; tuduam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/structures/constraints';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">tuduam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">tuduam.struc...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tuduam.structures.constraints</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
+<span class="kn">from</span> <span class="nn">.wingbox</span> <span class="kn">import</span> <span class="n">IdealWingbox</span>
+<span class="kn">from</span> <span class="nn">..data_structures</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints">[docs]</a>
+<span class="k">class</span> <span class="nc">IsotropicWingboxConstraints</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to handle constraints on an isotropic wingbox structure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wingbox : IdealWingbox</span>
+<span class="sd">        The wingbox structure for which constraints are evaluated.</span>
+<span class="sd">    material_struct : Material</span>
+<span class="sd">        the material properties of the wingbox structure.</span>
+<span class="sd">    len_to_rib : float</span>
+<span class="sd">        the length between ribs in the wingbox structure.</span>
+
+<span class="sd">    attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pnl_lst : list</span>
+<span class="sd">        list of panels in the wingbox.</span>
+<span class="sd">    tens_pnl_idx : list</span>
+<span class="sd">        indices of panels which are in tension.</span>
+<span class="sd">    t_st : float</span>
+<span class="sd">        thickness of the stringer.</span>
+<span class="sd">    w_st : float</span>
+<span class="sd">        width of the stringer.</span>
+<span class="sd">    h_st : float</span>
+<span class="sd">        height of the stringer.</span>
+<span class="sd">    area_str : float</span>
+<span class="sd">        area of the stringer.</span>
+<span class="sd">    kb_spline : cubicspline</span>
+<span class="sd">        interpolator for critical shear function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">wingbox</span><span class="p">:</span> <span class="n">IdealWingbox</span><span class="p">,</span> <span class="n">material_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span> <span class="n">len_to_rib</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize the isotropicwingboxconstraints class.</span>
+
+<span class="sd">        parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wingbox : idealwingbox</span>
+<span class="sd">            the wingbox structure for which constraints are evaluated.</span>
+<span class="sd">        material_struct : material</span>
+<span class="sd">            the material properties of the wingbox structure.</span>
+<span class="sd">        len_to_rib : float</span>
+<span class="sd">            the length between ribs in the wingbox structure.</span>
+
+<span class="sd">        raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        runtimeerror</span>
+<span class="sd">            raised if both stringer area and stringer geometry are specified.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+ 
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span> <span class="o">=</span> <span class="n">wingbox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span> <span class="o">=</span> <span class="n">material_struct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span> <span class="o">=</span> <span class="n">len_to_rib</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tens_pnl_idx</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">idx</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">]</span>  <span class="c1"># panel which are in tension since for some of the constraints it is not relevant here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">w_st</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">h_st</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_st</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_st</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">area_str</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">area_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area_str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_st</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h_st</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;both stringer area and stringer geometry were specified&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># value used for the interpolation to get kb</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">7.2</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">,</span> <span class="mf">5.9</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">,</span> <span class="mf">5.6</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">]</span>
+
+        <span class="c1"># interpolator for critical shear function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kb_spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints._kb_interp">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints._kb_interp">[docs]</a>
+    <span class="k">def</span> <span class="nf">_kb_interp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar_lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes the coefficients for the critical shear stability of a sheet.</span>
+
+<span class="sd">        parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ar_lst : list</span>
+<span class="sd">            list containing the aspect ratio of each sheet.</span>
+
+<span class="sd">        returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            an array with the critical shear coefficients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+   
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kb_spline</span><span class="p">(</span><span class="n">ar_lst</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span>
+            <span class="n">res</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">5.0</span>
+        <span class="p">)</span>  <span class="c1"># set values that were outside of the interpolation range to 5.</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.crit_instability_compr">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.crit_instability_compr">[docs]</a>
+    <span class="k">def</span> <span class="nf">crit_instability_compr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        compute the elastic instability of a flat sheet in compression for each panel in the idealized wingbox using </span>
+<span class="sd">        the equation shown below.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_{cr} = k_c  \frac{\pi^2 e}{12(1 - \nu^2)} \left(\frac{t_{sk}}{b}\right)^2</span>
+
+<span class="sd">        where `b` is the short dimension of the plate or loaded edge. for :math:`k_c`, a value of 4 was chosen. please see the figure below for the reasoning.</span>
+<span class="sd">        since all edges are considered simply supported from either the stringer or the ribs, it is conservative to go for a value of 4.</span>
+<span class="sd">        for any other information please see source 1.</span>
+
+<span class="sd">        .. image:: ../_static/buckle_coef.png</span>
+<span class="sd">            :width: 300</span>
+<span class="sd">        </span>
+<span class="sd">        **future improvements**</span>
+<span class="sd">        1. compute the proper buckling coefficient in real time using the sheet aspect ratio (or just check for aspect ratios smaller than 1. these seem to be the most relevant to catch).</span>
+<span class="sd">        2. a plasticity factor could be implemented (see source 1, equation c5.2).</span>
+
+<span class="sd">        **bibliography**</span>
+
+<span class="sd">        1. chapter c5.2, bruhn, analysis &amp; design of flight vehicle structures</span>
+
+<span class="sd">        parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wingbox : idealwingbox</span>
+<span class="sd">            ideal wingbox class which is utilized to create constraints per panel.</span>
+<span class="sd">        material_struct : material</span>
+<span class="sd">            data structure containing all material properties.</span>
+<span class="sd">        len_to_rib : float</span>
+<span class="sd">            the distance to the next rib.</span>
+
+<span class="sd">        returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            the critical buckling stress due to compression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+      
+        <span class="n">kc</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># buckling coefficient (currently very conservative but should be computed in real time using)</span>
+        <span class="n">t_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">t_pnl</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># thickness array of all the panels</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">length</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kc</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">poisson</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">t_arr</span> <span class="o">/</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="c1"># res[self.tens_pnl_idx] = 1</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.crit_instability_shear">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.crit_instability_shear">[docs]</a>
+    <span class="k">def</span> <span class="nf">crit_instability_shear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># todo</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        compute the elastic instability of a flat sheet in shear for each panel in the idealized wingbox using  </span>
+<span class="sd">        the equation shown below. this is very similar to the case in compression (see :func:`crit_instability_compr`) except for the shear buckling coefficient.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_{cr} = k_b  \frac{\pi^2 e}{12(1 - \nu^2)} \left(\frac{t_{sk}}{b}\right)^2</span>
+
+<span class="sd">        where `b` is the short dimension of the plate or loaded edge. for :math:`k_b`, the shear buckling coefficient, </span>
+<span class="sd">        the figure below was used to make a polynomial fit of the 3rd degree. the dataset used was as follows:</span>
+
+<span class="sd">        x = [1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5, 5. ] </span>
+<span class="sd">        y = [9.5, 7.2, 6.4, 6, 5.8, 5.9, 5.8, 5.6, 5.4]</span>
+
+<span class="sd">        the interpolator was created in the initialization of the class. for any other information please see source 1.</span>
+
+<span class="sd">        .. image:: ../_static/shear_buck_coef.png</span>
+<span class="sd">            :width: 300</span>
+<span class="sd">        </span>
+<span class="sd">        **future improvements**</span>
+<span class="sd">        1. a plasticity factor could be implemented (see source 1, equation c5.2).</span>
+
+<span class="sd">        **bibliography**</span>
+
+<span class="sd">        1. chapter c5.7, bruhn, analysis &amp; design of flight vehicle structures</span>
+
+<span class="sd">        parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wingbox : idealwingbox</span>
+<span class="sd">            ideal wingbox class which is utilized to create constraints per panel.</span>
+<span class="sd">        material_struct : material</span>
+<span class="sd">            data structure containing all material properties.</span>
+<span class="sd">        len_to_rib : float</span>
+<span class="sd">            the length to the next rib, thus the length to the next simply supported edge in the spanwise direction.</span>
+
+<span class="sd">        returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            the critical buckling stress due to shear.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+ 
+        <span class="n">t_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">t_pnl</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># thickness array of all the panels</span>
+
+        <span class="c1"># For the length of each panel we must look at the stringers</span>
+
+        <span class="n">asp_lst</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Aspect ratio list</span>
+        <span class="n">b_lst</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">:</span>
+            <span class="n">len_pnl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+            <span class="c1"># Make sure to divide by the shortest side</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span> <span class="o">&lt;</span> <span class="n">len_pnl</span><span class="p">:</span>
+                <span class="n">asp_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">len_pnl</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span><span class="p">)</span>
+                <span class="n">b_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">asp_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span> <span class="o">/</span> <span class="n">len_pnl</span><span class="p">)</span>
+                <span class="n">b_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">len_pnl</span><span class="p">)</span>
+
+        <span class="n">asp_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">asp_lst</span><span class="p">)</span>
+        <span class="n">b_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b_lst</span><span class="p">)</span>
+
+        <span class="c1"># Compute the shear buckling coefficient using poly fit described in the docstring</span>
+        <span class="n">kb_vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kb_interp</span><span class="p">(</span><span class="n">asp_lst</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kb_vec</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">poisson</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">t_arr</span> <span class="o">/</span> <span class="n">b_lst</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.interaction_curve">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.interaction_curve">[docs]</a>
+    <span class="k">def</span> <span class="nf">interaction_curve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following function ensures the panel remains below the interaction curve of a composite panel</span>
+<span class="sd">        under combined compression and shear forces. This function is designed to be used with the :func:`SectionOptimization._get_constraint_vector` however it</span>
+<span class="sd">        can also be used to check this specific constraint for any given design. The following equation is used for the </span>
+<span class="sd">        interaction curve which has been rewritten from equation 6.38, page 144 in source [1]:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            -\frac{N_x}{N_{x,crit}} - \left(\frac{N_{xy}}{N_{xy,crit}}\right)^2 + 1 &gt; 0</span>
+
+<span class="sd">        **Bibliography**</span>
+<span class="sd">        [1] Kassapoglou, C. (2010). Design and analysis of composite structures: With applications to aerospace structures. John Wiley &amp; Sons, page 137, equation 6.38.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wingbox : IdealWingbox</span>
+<span class="sd">            Ideal wingbox class which is utilized to create constraints per panel.</span>
+<span class="sd">        material_struct : Material</span>
+<span class="sd">            Data structure containing all material properties.</span>
+<span class="sd">        len_to_rib : float</span>
+<span class="sd">            The distance to the next rib.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the panel remains below the interaction curve, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">area_pnl</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">*</span> <span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">]</span>
+        <span class="n">Nx_crit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_compr</span><span class="p">()</span> <span class="o">*</span> <span class="n">area_pnl</span>
+        <span class="n">Nxy_crit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_shear</span><span class="p">()</span> <span class="o">*</span> <span class="n">area_pnl</span>
+
+        <span class="n">Nx</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="nb">min</span><span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span>
+            <span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># Take the maximum of the two booms</span>
+        <span class="n">Nxy</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span> <span class="o">*</span> <span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">])</span>
+
+        <span class="n">interaction_constr</span> <span class="o">=</span> <span class="o">-</span><span class="n">Nx</span> <span class="o">/</span> <span class="n">Nx_crit</span> <span class="o">-</span> <span class="p">(</span><span class="n">Nxy</span> <span class="o">/</span> <span class="n">Nxy_crit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># interaction_constr[self.tens_pnl_idx] = 1</span>
+
+        <span class="k">return</span> <span class="n">interaction_constr</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints._n_col">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints._n_col">[docs]</a>
+    <span class="k">def</span> <span class="nf">_n_col</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The critical distributed compressive load acting on all stringers is computed in Equation 50, </span>
+<span class="sd">        this approach being also conservative, given that in reality the skin beneath the stringer takes part of the compression load. </span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            N_{col} = \frac{\pi^2 E I}{L^2 2 w_{st}}</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            The critical distributed compressive load acting on all stringers in N/m.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">t_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span>
+        <span class="n">h_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_st</span>
+        <span class="n">w_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_st</span>
+
+        <span class="n">I_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">t_st</span> <span class="o">*</span> <span class="n">h_st</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">12</span>
+                <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_st</span> <span class="o">-</span> <span class="n">t_st</span><span class="p">)</span> <span class="o">*</span> <span class="n">t_st</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">12</span>
+                <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">*</span> <span class="n">w_st</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">h_st</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">n_col</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span> <span class="o">*</span> <span class="n">I_arr</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w_st</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">n_col</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.column_str_buckling">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.column_str_buckling">[docs]</a>
+    <span class="k">def</span> <span class="nf">column_str_buckling</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1">#</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following constraints ensure that local skin buckling occurs before column stringer buckling, which makes failure of the structure</span>
+<span class="sd">        more predictable. In order to be able to compare it to the skin buckling load, the critical distributed compressive load</span>
+<span class="sd">        acting on all stringers is computed in Equation 50. This approach is also conservative, given that in reality</span>
+<span class="sd">        the skin beneath the stringer takes part of the compression load. The constraint is expressed below as well.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            N_{col} = \frac{\pi^2 E I}{L^2 2 w_{st}}</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            N_{col} - \sigma_{cr} t_{sk} \geq 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            A list of constraints ensuring local skin buckling occurs before column stringer buckling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+   
+
+        <span class="n">n_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_col</span><span class="p">()</span>
+        <span class="n">t_sk_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">t_pnl</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">])</span>
+        <span class="n">crit_stress_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_compr</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">n_col</span> <span class="o">-</span> <span class="n">t_sk_arr</span> <span class="o">*</span> <span class="n">crit_stress_arr</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.stringer_flange_buckling">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.stringer_flange_buckling">[docs]</a>
+    <span class="k">def</span> <span class="nf">stringer_flange_buckling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The individual flanges of the stringer can also buckle (see :meth:`crit_instability_compr` for the equation and its parameters). </span>
+<span class="sd">        The buckling coefficient changes as one edge is free and one is simply supported, thus `k` is conservatively chosen to be 2. </span>
+<span class="sd">        The constraint is expressed in Equation 52.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_{cr,fl} - \sigma_{cr,loc} \geq 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the constraint is satisfied, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+ 
+
+        <span class="n">sigma_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_compr</span><span class="p">()</span>
+
+        <span class="n">kc</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># buckling coefficient</span>
+        <span class="n">t_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_st</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">w_st</span>
+        <span class="n">sigma_fl</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kc</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">poisson</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">t_st</span> <span class="o">/</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sigma_fl</span> <span class="o">-</span> <span class="n">sigma_loc</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.stringer_web_buckling">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.stringer_web_buckling">[docs]</a>
+    <span class="k">def</span> <span class="nf">stringer_web_buckling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The individual webs of the stringers can also buckle (see :meth:`crit_instability_compr` for the equation and its parameters).</span>
+<span class="sd">        The edges can be conservatively considered simply supported, the buckling coefficient `k` being 4. The constraint is expressed below:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_{cr,web} - \sigma_{cr,loc} \geq 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the constraint is satisfied, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sigma_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_compr</span><span class="p">()</span>
+
+        <span class="n">kc</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># buckling coefficient</span>
+        <span class="n">t_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_st</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">h_st</span>
+        <span class="n">sigma_web</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kc</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">poisson</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">t_st</span> <span class="o">/</span> <span class="n">b</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sigma_web</span> <span class="o">-</span> <span class="n">sigma_loc</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.crippling">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.crippling">[docs]</a>
+    <span class="k">def</span> <span class="nf">crippling</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Crippling is a form of local buckling that occurs in columns, leading to the failure of the structure. It is</span>
+<span class="sd">        related to plastic deformation of the stringer, and it is desired to have the load higher than the column buckling</span>
+<span class="sd">        of the stringers (and subsequently higher than the local skin buckling), as crippling leads to the entire failure</span>
+<span class="sd">        of the structure. The crippling load is expressed in Equation 56 (in N/m), where for aluminium alloys the</span>
+<span class="sd">        constants are β=1.42, m=0.85, and for Z stringers g=5 [4]. The constraint is stated in Equation 57.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            N_f = t_{st} \beta \sigma_y \left[\frac{g t_{st}^2}{A_{st}} \sqrt{\frac{E}{\sigma_y}} \right]^m</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            An array containing the inequality constraints described above, where each element represents a panel. </span>
+<span class="sd">            The elements should be greater than zero to satisfy the constraint.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_col</span><span class="p">()</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.42</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="mf">0.85</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+        <span class="n">sigma_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">sigma_yield</span>
+        <span class="n">n_f</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span>
+            <span class="o">*</span> <span class="n">beta</span>
+            <span class="o">*</span> <span class="n">sigma_y</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">area_str</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">E</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">))</span> <span class="o">**</span> <span class="n">m</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">n_f</span> <span class="o">-</span> <span class="n">n_col</span></div>
+
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.global_skin_buckling">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.global_skin_buckling">[docs]</a>
+    <span class="k">def</span> <span class="nf">global_skin_buckling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A stiffened panel can also buckle as a whole, Equation 42 being valid for global skin buckling calculations as well. </span>
+<span class="sd">        In this case, the width of the panel is utilized instead of the stringer pitch, and simply supported conditions </span>
+<span class="sd">        can be assumed. The contribution of the stringers that still provide a stiffening effect can be considered by </span>
+<span class="sd">        smearing their thickness to the skin thickness, as in Equation 47.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            t_{smeared} = \frac{t_{sk} \cdot b + N_{str} \cdot A_{st}}{b}</span>
+
+<span class="sd">        The smeared thickness is substituted in the equation for critical sheet compression (see :meth:`crit_instability_compr`).</span>
+<span class="sd">        The constraint is expressed below.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_{cr,glob} - \sigma_{cr,loc} \geq 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the constraint is satisfied, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">kc</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># Chosen conservatily</span>
+        <span class="n">b_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">length</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_to_rib</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">])</span>
+
+        <span class="n">t_smr_arr</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Smeared thickness list</span>
+
+        <span class="k">for</span> <span class="n">pnl</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">,</span> <span class="n">b_arr</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">*</span> <span class="n">b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">area_str</span><span class="p">)</span> <span class="o">/</span> <span class="n">b</span>
+            <span class="n">t_smr_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+        <span class="n">sigma_glob</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">kc</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">young_modulus</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">poisson</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="o">*</span> <span class="p">(</span><span class="n">t_smr_arr</span> <span class="o">/</span> <span class="n">b_arr</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="n">sigma_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crit_instability_compr</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sigma_glob</span> <span class="o">-</span> <span class="n">sigma_loc</span></div>
+
+
+    <span class="c1"># def f_ult(b,c_r,L,b_st,h_st,t_st,w_st,t):</span>
+    <span class="c1"># A_st = area_st(h_st,t_st,w_st)</span>
+    <span class="c1"># n=n_st(c_r,b_st)</span>
+    <span class="c1"># tarr=t_arr(b,L,t)</span>
+    <span class="c1"># c=chord(b,c_r)</span>
+    <span class="c1"># h=height(b,c_r)</span>
+    <span class="c1"># stations=rib_coordinates(b,L)</span>
+    <span class="c1"># f_uts=np.zeros(len(tarr))</span>
+    <span class="c1"># for i in range(len(tarr)):</span>
+    <span class="c1">#     A=n*A_st+0.6*c(stations[i])*tarr[i]</span>
+    <span class="c1">#     f_uts[i]=sigma_uts*A</span>
+    <span class="c1"># return f_uts</span>
+
+    <span class="c1"># def post_buckling(b, c_r, t_sp, t_rib, L, b_st, h_st,t_st,w_st, t):</span>
+    <span class="c1">#     f=f_ult(b,c_r,L,b_st,h_st,t_st,w_st,t)</span>
+    <span class="c1">#     ratio=2/(2+1.3*(1-1/pb))</span>
+    <span class="c1">#     px= n_max*shear_force(b, c_r, t_sp, t_rib, L, b_st, h_st,t_st,w_st,t)</span>
+    <span class="c1">#     diff=np.subtract(ratio*f,px)</span>
+    <span class="c1">#     return diff[0]</span>
+
+<div class="viewcode-block" id="IsotropicWingboxConstraints.von_Mises">
+<a class="viewcode-back" href="../../../constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.von_Mises">[docs]</a>
+    <span class="k">def</span> <span class="nf">von_Mises</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The following constraint implements the von Mises failure criterion, which is defined as follows for the case where only a direct stress</span>
+<span class="sd">        in the y-axis occurs and one shear stress is present.</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \sigma_y &amp; \geq  \sigma_v \\</span>
+<span class="sd">            \sigma_y  - \sqrt{\sigma_{11}^2 + 3\tau^2} &amp; \geq  0 \\</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray </span>
+<span class="sd">            An array of where each element represents a the von Mises condition in a section. If it is met the value should be greater than zero. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="n">shear_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">tau</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">])</span>
+        <span class="n">direct_stress_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">sigma</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">sigma</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pnl_lst</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">material_struct</span><span class="o">.</span><span class="n">sigma_yield</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="n">direct_stress_arr</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">shear_arr</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
