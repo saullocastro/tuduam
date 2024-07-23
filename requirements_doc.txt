@@ -15,6 +15,7 @@ fonttools==4.47.2
 grapheme==0.6.0
 idna==3.6
 imagesize==1.4.1
+autodoc-pydantic==2.0.1
 matplotlib==3.9.1
 matplotlib-inline==0.1.6
 mdurl==0.1.2
