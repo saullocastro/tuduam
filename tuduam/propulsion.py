@@ -11,20 +11,25 @@ from warnings import warn
 
 
 def extract_data_dir(dir_path: str) -> np.ndarray:
-    """ This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array. Information on how to do this can be found in the notebooks. 
-
-    **Assumptions**
-
-
-    1. The function expects the name to atleast have Rexxxx where the x's represent the Reynolds number
-
-
-
-    :param dir_path: The path of the directory to read from can be absolute or relative
-    :type dir_path: str
-    :return: An  m x 8 array where the colums are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number]
-    :rtype: np.ndarray
     """
+    This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array.
+    Information on how to do this can be found in the notebooks.
+
+    .. admonition:: Assumptions
+
+        1. The function expects the name to at least have Rexxxx where the x's represent the Reynolds number.
+
+    Parameters
+    ----------
+    dir_path : str
+        The path of the directory to read from; can be absolute or relative.
+
+    Returns
+    -------
+    np.ndarray
+        An m x 8 array where the columns are the following: [alpha, CL, CD, CDp, CM, Top_xtr, bot_xtr, Reynolds number].
+    """
+
     data_points: List[List[float]] = list()
 
     for file in os.listdir(dir_path):
@@ -52,12 +57,18 @@ def extract_data_dir(dir_path: str) -> np.ndarray:
 
 
 def alpha_xfoil_interp(dir_path: str) -> NearestNDInterpolator:
-    """ summary
+    """
+    Interpolates the angle of attack (alpha) from Xfoil output data.
 
-    :param dir_path: _description_
-    :type dir_path: str
-    :return: _description_
-    :rtype: NearestNDInterpolator
+    Parameters
+    ----------
+    dir_path : str
+        The path of the directory to read from; can be absolute or relative.
+
+    Returns
+    -------
+    NearestNDInterpolator
+        Interpolator for angle of attack based on CL and Reynolds number.
     """
 
     raw_data = extract_data_dir(dir_path)
@@ -65,41 +76,86 @@ def alpha_xfoil_interp(dir_path: str) -> NearestNDInterpolator:
 
 
 def cl_xfoil_interp(dir_path: str) -> NearestNDInterpolator:
-    """  summary
-
-    :param dir_path: Directory of the files containting the xfoil polar
-    :type dir_path: str
-    :return: A interpolator with the input angle of attack and the Reynolds number. In that order.
-    :rtype: _type_
     """
+    Interpolates the lift coefficient (CL) from Xfoil output data.
 
+    Parameters
+    ----------
+    dir_path : str
+        Directory of the files containing the Xfoil polar data.
+
+    Returns
+    -------
+    NearestNDInterpolator
+        Interpolator for CL based on angle of attack and Reynolds number.
+    """
+ 
     raw_data = extract_data_dir(dir_path)
     return NearestNDInterpolator(raw_data[:, [0, -1]], raw_data[:, 1])
 
 
 def cd_xfoil_interp(dir_path: str) -> NearestNDInterpolator:
-    """ 
+    """
+    Interpolates the drag coefficient (CD) from Xfoil output data.
 
-    :param dir_path: Directory of the files containting the xfoil polar
-    :type dir_path: str
-    :return: A interpolator with the input cl and the Reynolds number. In that order.
-    :rtype: _type_
+    Parameters
+    ----------
+    dir_path : str
+        Directory of the files containing the Xfoil polar data.
+
+    Returns
+    -------
+    NearestNDInterpolator
+        Interpolator for CD based on CL and Reynolds number.
     """
     raw_data = extract_data_dir(dir_path)
     return NearestNDInterpolator(raw_data[:, [1, -1]], raw_data[:, 2])
 
 
 class PlotBlade:
-    def __init__(self, propclass: Propeller, path_coord: str) -> None:
-        """ Initialization of the plot class. The propeller data structures is required to be fully filled,
-        also the thickness over chord ratio.
+    """
+    A class to plot the blade of a propeller based on its specifications and airfoil coordinates.
 
-        :param propclass: Propeller class of which all the attributes are defined.
-        :type propclass: Propeller
-        :param path_coord: Path to the coordinates of the airfoil in the format starting at the top trailing edge,
-        moving to the top leading edge and then looping back to the bottom trailinng edge. 
-        :type path_coord: str
+    Parameters
+    ----------
+    propclass : Propeller
+        Propeller class with all the attributes defined.
+    path_coord : str
+        Path to the coordinates of the airfoil in the format starting at the top trailing edge,
+        moving to the top leading edge and then looping back to the bottom trailing edge.
+
+    Attributes
+    ----------
+    chords : np.ndarray
+        Array of chord lengths at different radial positions.
+    pitchs : np.ndarray
+        Array of pitch values at different radial positions.
+    radial_coords : np.ndarray
+        Array of radial coordinates from the hub to the tip of the blade.
+    R : float
+        Radius of the propeller.
+    xi_0 : float
+        Twist angle at the root of the blade.
+    tc_ratio : float
+        Thickness-to-chord ratio of the airfoil.
+    path_coord : str
+        Path to the airfoil coordinate file.
+    """
+
+    def __init__(self, propclass: Propeller, path_coord: str) -> None:
         """
+        Initialization of the plot class. The propeller data structure is required to be fully filled,
+        including the thickness over chord ratio.
+
+        Parameters
+        ----------
+        propclass : Propeller
+            Propeller class with all the attributes defined.
+        path_coord : str
+            Path to the coordinates of the airfoil in the format starting at the top trailing edge,
+            moving to the top leading edge and then looping back to the bottom trailing edge.
+        """
+
         self.chords = propclass.chord_arr
         self.pitchs = propclass.pitch_arr
         self.radial_coords = propclass.rad_arr
@@ -108,11 +164,15 @@ class PlotBlade:
         self.tc_ratio = propclass.tc_ratio
         self.path_coord = path_coord
 
-    def _load_airfoil(self) -> np.ndarray:
-        """ Returns an array Using a path to coordinate file of the airfoil
+    def load_airfoil(self) -> np.ndarray:
 
-        :return: Returns an array with the airfoil coordinates
-        :rtype: np.ndarray
+        """
+        Returns an array using a path to the coordinate file of the airfoil.
+
+        Returns
+        -------
+        np.ndarray
+            Array with the airfoil coordinates.
         """
 
         file = open(self.path_coord)
@@ -142,12 +202,20 @@ class PlotBlade:
         return airfoil_coord
 
     def plot_blade(self, tst=False) -> None:
-        """ Returns two plots, one top down view of the propeller showing the amount of twist and the various chords
-        and one plot showing a side view of the propeller
-
-        :param tst: A boolean which is used for testing to surpess the output, defaults to False
-        :type tst: bool, optional
         """
+        Returns two plots: one top-down view of the propeller showing the amount of twist and the various chords,
+        and one plot showing a side view of the propeller.
+
+        Parameters
+        ----------
+        tst : bool, optional
+            A boolean used for testing to suppress the output, defaults to False.
+
+        Returns
+        -------
+        None
+        """
+
         # Create figures
         fig, axs = plt.subplots(2, 1)
         axs[0].axis("equal")
@@ -155,8 +223,8 @@ class PlotBlade:
         # Plot side view of the airfoil cross-sections
         for i in range(len(self.chords)):
             # Scale the chord length and thickness
-            x_coords = self._load_airfoil()[0] * self.chords[i]
-            y_coords = self._load_airfoil()[1] * self.chords[i]
+            x_coords = self.load_airfoil()[0] * self.chords[i]
+            y_coords = self.load_airfoil()[1] * self.chords[i]
 
             # New coordinates after pitch
             x_coords_n = []
@@ -220,12 +288,21 @@ class PlotBlade:
             plt.show()
 
     def plot_3D(self, tst=False):
-        """ Plot a 3D plot of one propeller blade. The user can drag his mouse around to see
+        """
+        Plot a 3D plot of one propeller blade. The user can drag the mouse around to see
         the blade from various angles.
 
-        :param tst: A boolean which is used for testing to surpess the output, defaults to False
-        :type tst: bool, optional
+        Parameters
+        ----------
+        tst : bool, optional
+            A boolean used for testing to suppress the output, defaults to False.
+
+        Returns
+        -------
+        None
         """
+
+     
         fig = plt.figure()
         ax = plt.axes(projection="3d")
         # ax.set_aspect('equal')
@@ -233,8 +310,8 @@ class PlotBlade:
         # Plot airfoil blade in 3D
         for i in range(len(self.chords)):
             # Scale the chord length and thickness
-            x_coords = self._load_airfoil()[0] * self.chords[i]
-            y_coords = self._load_airfoil()[1] * self.chords[i]
+            x_coords = self.load_airfoil()[0] * self.chords[i]
+            y_coords = self.load_airfoil()[1] * self.chords[i]
 
             # New coordinates after pitch
             x_coords_n = []
@@ -294,11 +371,24 @@ class PlotBlade:
             plt.show()
 
     def plot_3D_plotly(self, tst=False):
+        """
+        Plot a 3D plot of one propeller blade. The user can drag the mouse around to see
+        the blade from various angles.
+
+        Parameters
+        ----------
+        tst : bool, optional
+            A boolean used for testing to suppress the output, defaults to False.
+
+        Returns
+        -------
+        None
+        """
         fig = go.Figure()
 
         for i in range(len(self.chords)):
-            x_coords = self._load_airfoil()[0] * self.chords[i]
-            y_coords = self._load_airfoil()[1] * self.chords[i]
+            x_coords = self.load_airfoil()[0] * self.chords[i]
+            y_coords = self.load_airfoil()[1] * self.chords[i]
             x_coords_n = []
             y_coords_n = []
 
@@ -365,6 +455,66 @@ class PlotBlade:
 
 
 class BEM:
+    """
+    A class for performing Blade Element Momentum (BEM) analysis on a propeller. For initialization of the BEM class please keep the number of stations above 20. Also, if any error occurs with the propeller class,
+    carefully check whether all parameters have been properly loaded in. Please specify either a thrust level or
+    power level.
+
+    Parameters
+    ----------
+    data_path : str
+        Path to the directory containing all Xfoil data for the various Reynolds numbers. Please note the format of the 
+        file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.
+    propclass : Propeller
+        The propeller data structure with the propeller radius, number of blades, RPM cruise, and non-dimensional hub radius specified.
+    rho : float
+        Density at the cruise height [kg/m^3].
+    dyn_vis : float
+        Dynamic viscosity [N s/m^2].
+    V_fr : float
+        Freestream velocity [m/s].
+    n_stations : int
+        Number of stations to calculate [-] (preferably > 20).
+    a : float
+        Speed of sound [m/s].
+    T : float, optional
+        Thrust delivered by the propeller [N], defaults to None.
+    P : float, optional
+        Power delivered to the propeller [W], defaults to None.
+
+    Attributes
+    ----------
+    propeller : Propeller
+        The propeller data structure.
+    B : int
+        Number of blades.
+    R : float
+        Propeller radius.
+    D : float
+        Propeller diameter.
+    Omega : float
+        Angular velocity in rad/s.
+    xi_0 : float
+        Non-dimensional hub radius.
+    rho : float
+        Density at the cruise height [kg/m^3].
+    dyn_vis : float
+        Dynamic viscosity [N s/m^2].
+    V : float
+        Freestream velocity [m/s].
+    lamb : float
+        Speed ratio.
+    N_s : int
+        Number of stations to calculate [-].
+    a : float
+        Speed of sound [m/s].
+    dir_path : str
+        Path to the directory containing all Xfoil data.
+    alpha_interp : NearestNDInterpolator
+        Interpolator for angle of attack based on CL and Reynolds number.
+    cd_interp : NearestNDInterpolator
+        Interpolator for CD based on CL and Reynolds number.
+    """
     def __init__(
         self,
         data_path: str,
@@ -377,30 +527,34 @@ class BEM:
         T=None,
         P=None,
     ) -> None:
-        """ Initalization of the BEM class, please keep the amount of station above 20. Also, if any error occurs with the propeller class
+        """
+        Initialization of the BEM class. Please keep the number of stations above 20. Also, if any error occurs with the propeller class,
         carefully check whether all parameters have been properly loaded in. Please specify either a thrust level or
         power level.
 
-        :param data_path: Path to te directory containing all xfoil data for the various Reynolds number. Please note the format of the 
-        file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.
-        :type data_path: str
-        :param propclass: The propeller data structure with the propeller radius, number of blades, rpm cruise and non-dimensional hub radius specified
-        :type propclass: Propeller
-        :param rho: Density at the cruise height [kg/m^3]
-        :type rho: float
-        :param dyn_vis: Dynamic viscosity [N s/m^2]
-        :type dyn_vis: float
-        :param V_fr: Freestream velocity [m/s]
-        :type V_fr: float
-        :param N_stations: Number of stations to calculate [-] (preferably > 20)
-        :type N_stations: int
-        :param a: Speed of sound [m/s]
-        :type a: float
-        :param T: Thrust delivered BY the propeller [N], defaults to None
-        :type T: float , optional
-        :param P: Power deliverd to the propeller [W], defaults to None
-        :type P: float, optional
+        Parameters
+        ----------
+        data_path : str
+            Path to the directory containing all Xfoil data for the various Reynolds numbers. Please note the format of the 
+            file names given to polar files. They should only contain the Reynolds number in the name, no other numbers such as the airfoil code.
+        propclass : Propeller
+            The propeller data structure with the propeller radius, number of blades, RPM cruise, and non-dimensional hub radius specified.
+        rho : float
+            Density at the cruise height [kg/m^3].
+        dyn_vis : float
+            Dynamic viscosity [N s/m^2].
+        V_fr : float
+            Freestream velocity [m/s].
+        n_stations : int
+            Number of stations to calculate [-] (preferably > 20).
+        a : float
+            Speed of sound [m/s].
+        T : float, optional
+            Thrust delivered by the propeller [N], defaults to None.
+        P : float, optional
+            Power delivered to the propeller [W], defaults to None.
         """
+      
 
         self.propeller = propclass
         self.B = propclass.n_blades
@@ -432,36 +586,152 @@ class BEM:
 
     # Prandtl relation for tip loss
     def F(self, r, zeta):
+        """
+        Prandtl relation for tip loss factor.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Tip loss factor.
+        """
         return (2 / np.pi) * np.arccos(np.exp(-self.f(r, zeta)))
 
     # Exponent used for function above
     def f(self, r, zeta):
+        """
+        Exponent used in the Prandtl tip loss factor calculation.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Exponent value.
+        """
         return (self.B / 2) * (1 - self.Xi(r)) / (np.sin(self.phi_t(zeta)))
 
     # Pitch of blade tip
     def phi_t(self, zeta):
+        """
+        Pitch angle of the blade tip.
+
+        Parameters
+        ----------
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Pitch angle of the blade tip.
+        """
         return np.arctan(self.lamb * (1 + zeta / 2))
 
     # Non-dimensional radius, r/R
     def Xi(self, r):
+        """
+        Non-dimensional radius.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+
+        Returns
+        -------
+        float
+            Non-dimensional radius.
+        """
         return r / self.R
 
     # Angle of local velocity of the blade wrt to disk plane
     def phi(self, r, zeta):
+        """
+        Angle of local velocity of the blade with respect to the disk plane.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Angle of local velocity.
+        """
         return np.arctan(np.tan(self.phi_t(zeta)) * self.R / r)
 
     # Mach as a function of radius
     def M(self, r):
+        """
+        Mach number as a function of radius.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+
+        Returns
+        -------
+        float
+            Mach number.
+        """
         speed = np.sqrt(self.V ** 2 + (self.Omega * r) ** 2)
         return speed / self.a
 
     # Reynolds number
     def RN(self, Wc):
+        """
+        Reynolds number as a function of local speed and chord.
+
+        Parameters
+        ----------
+        Wc : float
+            Local speed times chord.
+
+        Returns
+        -------
+        float
+            Reynolds number.
+        """
         # Reynolds number. Wc is speed times chord
         return Wc * self.rho / self.dyn_vis
 
     # Product of local speed at the blade and chord
     def Wc(self, F, phi, zeta, Cl):
+        """
+        Product of local speed at the blade and chord.
+
+        Parameters
+        ----------
+        F : float
+            Tip loss factor.
+        phi : float
+            Angle of local velocity.
+        zeta : float
+            Induced inflow ratio.
+        Cl : float
+            Lift coefficient.
+
+        Returns
+        -------
+        float
+            Product of local speed and chord.
+        """
         return (
             4
             * np.pi
@@ -478,25 +748,106 @@ class BEM:
 
     # Non-dimensional speed
     def x(self, r):
+        """
+        Non-dimensional speed.
+
+        Parameters
+        ----------
+        r : float
+            Radial position.
+
+        Returns
+        -------
+        float
+            Non-dimensional speed.
+        """
         return self.Omega * r / self.V
 
     # Advance ratio
     def J(self):
+        """
+        Advance ratio.
+
+        Returns
+        -------
+        float
+            Advance ratio.
+        """
         return self.V / ((self.Omega / (2 * np.pi)) * self.D)
 
     def phi_int(self, xi, zeta):
+        """
+        Angle of local velocity for integration.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Angle of local velocity for integration.
+        """
         return np.arctan((1 + zeta / 2) * self.lamb / xi)
 
     # F function used for integration part only
     def F_int(self, xi, zeta):
+        """
+        Tip loss factor for integration.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Tip loss factor for integration.
+        """
         return 2 * np.arccos(np.exp(-self.f_int(xi, zeta))) / np.pi
 
     # f function used for integration part only
     def f_int(self, xi, zeta):
+        """
+        Exponent used in the Prandtl tip loss factor calculation for integration.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            Exponent value for integration.
+        """
         return (self.B / 2) * (1 - xi) / np.sin(self.phi_t(zeta))
 
     # G function used for integration part only
     def G_int(self, xi, zeta):
+        """
+        G function for integration.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+
+        Returns
+        -------
+        float
+            G function value for integration.
+        """
         return (
             self.F_int(xi, zeta)
             * np.cos(self.phi_int(xi, zeta))
@@ -506,11 +857,45 @@ class BEM:
     # Integrals used to calculate internal variables, refer to paper for more explanation if needed
     # Assuming average eps
     def I_prim_1(self, xi, zeta, eps):
+        """
+        Integral I_prim_1 for internal variable calculation.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+        eps : float
+            Average value.
+
+        Returns
+        -------
+        float
+            Integral I_prim_1 value.
+        """
         return (
             4 * xi * self.G_int(xi, zeta) * (1 - eps * np.tan(self.phi_int(xi, zeta)))
         )
 
     def I_prim_2(self, xi, zeta, eps):
+        """
+        Integral I_prim_2 for internal variable calculation.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+        eps : float
+            Average value.
+
+        Returns
+        -------
+        float
+            Integral I_prim_2 value.
+        """
         return (
             self.lamb
             * (self.I_prim_1(xi, zeta, eps) / (2 * xi))
@@ -520,11 +905,45 @@ class BEM:
         )
 
     def J_prim_1(self, xi, zeta, eps):
+        """
+        Integral J_prim_1 for internal variable calculation.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+        eps : float
+            Average value.
+
+        Returns
+        -------
+        float
+            Integral J_prim_1 value.
+        """
         return (
             4 * xi * self.G_int(xi, zeta) * (1 + eps / np.tan(self.phi_int(xi, zeta)))
         )
 
     def J_prim_2(self, xi, zeta, eps):
+        """
+        Integral J_prim_2 for internal variable calculation.
+
+        Parameters
+        ----------
+        xi : float
+            Non-dimensional radius.
+        zeta : float
+            Induced inflow ratio.
+        eps : float
+            Average value.
+
+        Returns
+        -------
+        float
+            Integral J_prim_2 value.
+        """
         return (
             (self.J_prim_1(xi, zeta, eps) / 2)
             * (1 - eps * np.tan(self.phi_int(xi, zeta)))
@@ -533,14 +952,56 @@ class BEM:
 
     # Propeller efficiency Tc/Pc
     def efficiency(self, Tc, Pc):
+        """
+        Calculate propeller efficiency.
+
+        Parameters
+        ----------
+        Tc : float
+            Thrust coefficient.
+        Pc : float
+            Power coefficient.
+
+        Returns
+        -------
+        float
+            Propeller efficiency.
+        """
         return Tc / Pc
 
     # Prandtl-Glauert correction factor: sqrt(1 - M^2)
     def PG(self, M):
+        """
+        Prandtl-Glauert correction factor.
+
+        Parameters
+        ----------
+        M : float
+            Mach number.
+
+        Returns
+        -------
+        float
+            Prandtl-Glauert correction factor.
+        """
         return np.sqrt(1 - M ** 2)
 
     # This function runs the design procedure from an arbitrary start zeta (which can be 0)
     def run_BEM(self, zeta):
+        """
+        Runs the design procedure for the propeller using Blade Element Momentum (BEM) theory from an arbitrary start zeta.
+
+        Parameters
+        ----------
+        zeta : float
+            Initial inflow ratio.
+
+        Returns
+        -------
+        dict
+            Dictionary containing the results of the BEM analysis, including chord, pitch, alpha, drag-to-lift ratio, 
+            effective velocity, solidity, Cl, Cd, propeller efficiency, thrust coefficient, power coefficient, and updated zeta.
+        """
         # Array with station numbers
         stations = np.arange(1, self.N_s + 1)
 
@@ -769,6 +1230,22 @@ class BEM:
             return res_dict
 
     def optimise_blade(self, zeta_init):
+        """
+        Optimize the blade design by iteratively running the BEM design procedure and updating the inflow ratio (zeta) 
+        until convergence is achieved.
+
+        Parameters
+        ----------
+        zeta_init : float
+            Initial inflow ratio.
+
+        Returns
+        -------
+        dict
+            Dictionary containing the results of the BEM analysis, including chord, pitch, alpha, drag-to-lift ratio, 
+            effective velocity, solidity, Cl, Cd, propeller efficiency, thrust coefficient, power coefficient, and updated zeta.
+        """
+
         convergence = 1
         zeta = zeta_init
         # Optimisation converges for difference in zeta below 0.1%

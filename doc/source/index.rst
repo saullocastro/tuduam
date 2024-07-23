@@ -20,13 +20,13 @@ Overview of Modules and subpackages
 =========================================
 .. toctree::
    :maxdepth: 1
-   :titlesonly:
 
    data_structures
    structures
    propulsion
    aerodynamics
    performance
+   mass_metric
 
 
 Code repository
