@@ -542,8 +542,7 @@ document.write(`
 <a class="viewcode-back" href="../../data_structures.html#tuduam.data_structures.Material">[docs]</a>
 <span class="k">class</span> <span class="nc">Material</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span>
     <span class="n">safety_factor</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">load_factor</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">post_buckling_ratio</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">post_buckling_ratio</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; (PB) The ratio of the applied load to the bucklingload and, for post-buckled structures is greater than 1</span>
 
 <span class="sd">    **Source**</span>

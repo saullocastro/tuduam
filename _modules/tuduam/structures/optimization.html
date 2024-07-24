@@ -431,6 +431,10 @@ document.write(`
 <span class="sd">        Chord length of the wingbox section.</span>
 <span class="sd">    len_sec : float</span>
 <span class="sd">        Length of the wingbox section.</span>
+<span class="sd">    upper_bnds: list</span>
+<span class="sd">        A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
+<span class="sd">    lower_bnds: list</span>
+<span class="sd">        A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
 <span class="sd">    box_struct : Wingbox</span>
 <span class="sd">        Wingbox structure, which includes details about geometry, materials, and discretization.</span>
 <span class="sd">    mat_struct : Material</span>
@@ -465,7 +469,7 @@ document.write(`
 <span class="sd">    path_coord : str</span>
 <span class="sd">        Path to the file containing the airfoil coordinates.</span>
 <span class="sd">    kwargs_intern : dict</span>
-<span class="sd">        Additional keyword arguments for the optimization functions.</span>
+<span class="sd">        Additional keyword arguments for the optimization functions. Mostly used to pass any keyword arguments to ProblemFixedPanel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
@@ -478,6 +482,8 @@ document.write(`
         <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">upper_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">lower_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="n">box_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span>
         <span class="n">mat_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span>
         <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -502,6 +508,10 @@ document.write(`
 <span class="sd">            Chord length of the wingbox section.</span>
 <span class="sd">        len_sec : float</span>
 <span class="sd">            Length of the wingbox section.</span>
+<span class="sd">        upper_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
+<span class="sd">        lower_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
 <span class="sd">        box_struct : Wingbox</span>
 <span class="sd">            Wingbox structure, which includes details about geometry, materials, and discretization.</span>
 <span class="sd">        mat_struct : Material</span>
@@ -522,6 +532,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span> <span class="o">=</span> <span class="n">applied_loc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="o">=</span> <span class="n">chord</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span> <span class="o">=</span> <span class="n">len_sec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upper_bnds</span> <span class="o">=</span> <span class="n">upper_bnds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lower_bnds</span> <span class="o">=</span> <span class="n">upper_bnds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span> <span class="o">=</span> <span class="n">box_struct</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span> <span class="o">=</span> <span class="n">mat_struct</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span> <span class="o">=</span> <span class="n">path_coord</span>
@@ -579,6 +591,8 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upper_bnds</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">lower_bnds</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs_intern</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -670,11 +684,11 @@ document.write(`
         <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">upper_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">lower_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="n">box_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span>
         <span class="n">mat_struct</span><span class="p">:</span> <span class="n">Material</span><span class="p">,</span>
         <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">upper_bnds</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">lower_bnds</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -696,15 +710,19 @@ document.write(`
 <span class="sd">            The length of the wing chord at the section where loads are applied.</span>
 <span class="sd">        len_sec : float</span>
 <span class="sd">            The length of the wing section being analyzed in the spanwise direction, i.e., the distance to the next rib.</span>
+<span class="sd">        upper_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
+<span class="sd">        lower_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
 <span class="sd">        box_struct : Wingbox</span>
 <span class="sd">            Data structure describing the structural configuration of the wingbox at the section.</span>
 <span class="sd">        mat_struct : Material</span>
 <span class="sd">            The material properties used in the wing section.</span>
 <span class="sd">        path_coord : str</span>
 <span class="sd">            File path or identifier for coordinates related to the section.</span>
-<span class="sd">        upper_bnds : list, optional</span>
+<span class="sd">        upper_bnds : list</span>
 <span class="sd">            Upper bounds for optimization or design constraints, defaults to 0.01 for all parameters.</span>
-<span class="sd">        lower_bnds : list, optional</span>
+<span class="sd">        lower_bnds : list</span>
 <span class="sd">            Lower bounds for optimization or design constraints, defaults to 1e-8 for all parameters.</span>
 
 <span class="sd">        Raises</span>
@@ -748,8 +766,8 @@ document.write(`
             <span class="n">n_var</span><span class="o">=</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span>
             <span class="n">n_obj</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">n_ieq_constr</span><span class="o">=</span><span class="mi">7</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span><span class="o">.</span><span class="n">panel_dict</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">xl</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-8</span><span class="p">,</span>
-            <span class="n">xu</span><span class="o">=</span><span class="mf">0.014</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="n">xl</span><span class="o">=</span><span class="n">lower_bnds</span><span class="p">,</span>
+            <span class="n">xu</span><span class="o">=</span><span class="n">upper_bnds</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -926,6 +944,8 @@ document.write(`
         <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">applied_loc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">upper_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">lower_bnds</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
         <span class="n">n_gen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Possible keywords</span>
         <span class="n">pop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -946,6 +966,10 @@ document.write(`
 <span class="sd">            The internal moment acting at the section.</span>
 <span class="sd">        applied_loc : float</span>
 <span class="sd">            The position of the internal shear force given as a ratio to the chord.</span>
+<span class="sd">        upper_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the upper bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
+<span class="sd">        lower_bnds: list</span>
+<span class="sd">            A list of N + 4 long containing the lower bounds, where N is the amount of cells. The bounds are presented in the following order t_sk_cell, t_sp, t_st, w_st, h_st. </span>
 <span class="sd">        n_gen : int, optional</span>
 <span class="sd">            The number of generations allowed before termination, defaults to 50.</span>
 <span class="sd">        pop : int, optional</span>
@@ -981,6 +1005,8 @@ document.write(`
                 <span class="n">applied_loc</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="n">upper_bnds</span><span class="p">,</span>
+                <span class="n">lower_bnds</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
@@ -995,6 +1021,8 @@ document.write(`
                 <span class="n">applied_loc</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span><span class="p">,</span>
+                <span class="n">upper_bnds</span><span class="p">,</span>
+                <span class="n">lower_bnds</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>

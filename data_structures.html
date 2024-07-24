@@ -1106,7 +1106,7 @@ coordinate systems if you have questions regardign this.</p>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Safety Factor&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;load_factor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;post_buckling_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
@@ -1116,11 +1116,7 @@ coordinate systems if you have questions regardign this.</p>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Load Factor&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;post_buckling_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Post Buckling Ratio&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Post Buckling Ratio&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;young_modulus&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -1133,6 +1129,18 @@ coordinate systems if you have questions regardign this.</p>
 <span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Young Modulus&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;load_factor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Load Factor&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;shear_modulus&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -1245,8 +1253,7 @@ coordinate systems if you have questions regardign this.</p>
 <span class="w">   </span><span class="p">},</span>
 <span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
 <span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;safety_factor&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;post_buckling_ratio&quot;</span>
+<span class="w">      </span><span class="s2">&quot;safety_factor&quot;</span>
 <span class="w">   </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -1266,7 +1273,7 @@ coordinate systems if you have questions regardign this.</p>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.load_factor" title="tuduam.data_structures.Material.load_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_factor</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.m_crippling" title="tuduam.data_structures.Material.m_crippling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">m_crippling</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.poisson" title="tuduam.data_structures.Material.poisson"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poisson</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#tuduam.data_structures.Material.post_buckling_ratio" title="tuduam.data_structures.Material.post_buckling_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_buckling_ratio</span> <span class="pre">(float)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#tuduam.data_structures.Material.post_buckling_ratio" title="tuduam.data_structures.Material.post_buckling_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_buckling_ratio</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.safety_factor" title="tuduam.data_structures.Material.safety_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">safety_factor</span> <span class="pre">(float)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.shear_modulus" title="tuduam.data_structures.Material.shear_modulus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shear_modulus</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#tuduam.data_structures.Material.shear_strength" title="tuduam.data_structures.Material.shear_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shear_strength</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -1314,7 +1321,7 @@ coordinate systems if you have questions regardign this.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="tuduam.data_structures.Material.post_buckling_ratio">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_buckling_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#tuduam.data_structures.Material.post_buckling_ratio" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_buckling_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tuduam.data_structures.Material.post_buckling_ratio" title="Link to this definition">#</a></dt>
 <dd><p>(PB) The ratio of the applied load to the bucklingload and, for post-buckled structures is greater than 1</p>
 <p><strong>Source</strong></p>
 <p>[1] Kassapoglou, C. (2010). page 145, Design and analysis of composite structures: With applications to aerospace structures. John Wiley &amp; Sons.</p>
