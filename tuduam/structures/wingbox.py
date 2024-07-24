@@ -328,7 +328,7 @@ class IdealWingbox():
         """
 
         if t_st > h_st:
-            warn("The thickness of stringer is larger than than the height of the stringer resulting in possible negative area.")
+            warn("The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.")
 
         if t_st  > w_st:
             warn("The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.")
