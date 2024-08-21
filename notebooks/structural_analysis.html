@@ -457,13 +457,12 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
-Requirement already satisfied: tuduam in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg (2024.16)
-Requirement already satisfied: numpy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.26.4)
-Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.12.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tuduam in c:\users\damie\anaconda3\envs\tuduam_notebook\lib\site-packages (2024.15)
+Requirement already satisfied: numpy in c:\users\damie\anaconda3\envs\tuduam_notebook\lib\site-packages (from tuduam) (1.26.4)
+Requirement already satisfied: scipy in c:\users\damie\anaconda3\envs\tuduam_notebook\lib\site-packages (from tuduam) (1.12.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.
 </pre></div>
 </div>
 </div>
@@ -474,11 +473,11 @@ Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.9/x64/l
 <p>Performing a stress analysis of the complex geometry of the multicell wingbox shown in <a class="reference internal" href="#figure1"><span class="xref myst">figure 1</span></a> can be complicated and tedious. Additionally, for a preliminary investigation often speed and simplicity are of greater importance, on the other hand a final solution must be as exact as circumstances allow. In order to meet these standard we idealize the wingbox into a simpler mechanical model which under given loading conditions behaves in nearly the same manner as the original structure.</p>
 <br>
 <p align="left"  id="figure1" >
-<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/idealization_wingbox_corr.png?raw=true" width="800" /> 
+<img src="https://github.com/saullocastro/tuduam/blob/main/doc/source/notebooks/static/idealization_wingbox_corr.png?raw=true" width="800" /> 
  <br>
 </p>
 <p align="left">
-<em>Figure 1: The NACA 4412 airfoil</em>
+<em>Figure 2: Idealization of a wingbox</em>
 </p>
 <br>
 <p>To get to this mechical model we replace the stringers and spar flanges with concentrations of areas called booms over which the direct stress is constant and which are located along the midline of the skin. Furthermore we assume that all shear stresses are carried by the skin and all direct stresses by these booms. An important consideration here is that the direct stress carrying capacity of the skin may be allowed for by increasing each boom area by an area equivalent to the direct stress carrying capacity of the adjacent skin panels. Using this assumption the shearflow through the skin section between the booms will be constant and will only change when encountering a boom. If you want more details on this idealization please refer to source 1.</p>
@@ -503,11 +502,11 @@ B_2 = \frac{t_D b}{6}(2 + \frac{y_1}{y_2})
 \]</div>
 <br>
 <p align="left"  id="figure2" >
-<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/idealization_panel.png?raw=true" width="500" /> 
+<img src="https://github.com/saullocastro/tuduam/blob/main/doc/source/notebooks/static/idealization_panel.png?raw=true" width="500" /> 
  <br>
 </p>
 <p align="left">
-<em>Figure 1: The NACA 4412 airfoil</em>
+<em>Figure 3: Idealization of a panel</em>
 </p>
 <br>
 </section>
@@ -524,6 +523,7 @@ B_2 = \frac{t_D b}{6}(2 + \frac{y_1}{y_2})
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tuduam</span> <span class="k">as</span> <span class="nn">tud</span>
+<span class="kn">from</span> <span class="nn">tuduam.structures.wingbox</span> <span class="kn">import</span> <span class="n">discretize_airfoil</span>
 <span class="kn">import</span> <span class="nn">os</span> 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -542,21 +542,19 @@ B_2 = \frac{t_D b}{6}(2 + \frac{y_1}{y_2})
 
 <span class="c1"># </span>
 <span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
-<span class="n">wingbox</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">discretize_airfoil</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">)</span>
+<span class="n">wingbox</span> <span class="o">=</span> <span class="n">discretize_airfoil</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">)</span>
 <span class="n">wingbox</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">20</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="c1"># </span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">wingbox</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">discretize_airfoil</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="n">wingbox</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\damie\anaconda3\envs\tuduam_notebook\Lib\site-packages\tuduam\structures\wingbox.py:1389: UserWarning:
 
-<span class="ne">AttributeError</span>: module &#39;tuduam&#39; has no attribute &#39;discretize_airfoil&#39;
+7 was not an even number and will be floored for conservative reasons
+
+c:\Users\damie\anaconda3\envs\tuduam_notebook\Lib\site-packages\tuduam\structures\wingbox.py:635: UserWarning:
+
+Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value
 </pre></div>
 </div>
 </div>
@@ -585,7 +583,7 @@ I_{xx} = \sum^n_{n =0} B_n y_n^2
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rich</span>
 
-<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span>
+<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">2e3</span><span class="p">,</span> <span class="mf">8e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span>
 <span class="n">wingbox</span><span class="o">.</span><span class="n">plot_direct_stresses</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -594,18 +592,30 @@ I_{xx} = \sum^n_{n =0} B_n y_n^2
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Maximum stress is <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">76.52231802066308</span> MPa
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">$Ixx = <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">157000455.47923973</span> mm^<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">4</span>
+</pre>
+</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x100 with 0 Axes&gt;
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="shear-stress-analysis">
 <h1>Shear Stress analysis<a class="headerlink" href="#shear-stress-analysis" title="Link to this heading">#</a></h1>
-<p>The direct stresses were straight forward however computing the shear stresses is quite more involved. As mentioned earlier, the shear flow over a panel is constant and only jumps at the one of the booms. When we have an open sections this gives us an easy point to start from as we know that at the outer edge of the structure the shear flow has to be zero. However, a wingbox is a closed strucutre so we have to cut the structure in each cell to give us a starting point. This is as shown in <a class="reference internal" href="#figure3"><span class="xref myst">figure 3</span></a> indicated by the two small parrallel lines.</p>
+<p>The direct stresses were straight forward however computing the shear stresses is quite more involved. As mentioned earlier, the shear flow over a panel is constant and only jumps at the one of the booms. When we have an open sections this gives us an easy point to start from as we know that at the outer edge of the structure the shear flow has to be zero. However, a wingbox is a closed structure so we have to cut the structure in each cell to give us a starting point. This is as shown in <a class="reference internal" href="#figure3"><span class="xref myst">figure 3</span></a> indicated by the two small parrallel lines.</p>
 <br>
 <p align="left"  id="figure3" >
-<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/wingbox_analysis.png?raw=true" width="800" /> 
+<img src="https://github.com/saullocastro/tuduam/blob/main/doc/source/notebooks/static/wingbox_analysis.png?raw=true" width="800" /> 
  <br>
 </p>
 <p align="left">
-<em>Figure 3: The NACA 4412 airfoil</em>
+<em>Figure 4: Starting point of the wingbox analysis</em>
 </p>
 <br>
 <p>However, these cut’s have to be “mended”, we do this by applying a complementary shear flow in each cell. We can solve for these complementary shear flows by assuming no warping will occur and hence the amount of twist per unit length should be the same in each cell. This would give us n + 1 unknowns however with n equations. Thus, the final equation can be found from moment equivalence of all the shear flows and the internal shear itself. A complete description of this process is described in source 1 which has been previously shown. Now let us apply it. See the code cell below.</p>
@@ -614,7 +624,7 @@ I_{xx} = \sum^n_{n =0} B_n y_n^2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rich</span>
 <span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
 
-<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span> 
+<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">2e3</span><span class="p">,</span> <span class="mf">8e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span>
 <span class="n">wingbox</span><span class="o">.</span><span class="n">plot_shear_stress</span><span class="p">()</span>
 
 
@@ -623,6 +633,13 @@ I_{xx} = \sum^n_{n =0} B_n y_n^2
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">Maximum shear stress is <span style="color: #008080; text-decoration-color: #008080; font-weight: bold">1.6695574128918829</span> MPa
+</pre>
+</div></div>
 </div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="visualizing-the-direction-of-the-shear-stresses">
@@ -633,6 +650,8 @@ I_{xx} = \sum^n_{n =0} B_n y_n^2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wingbox</span><span class="o">.</span><span class="n">plot_quiver_shear_stress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span> <span class="mf">0.035</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
 </div>
 </div>
 </section>
