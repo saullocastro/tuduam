@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to tuduam's documentation!
+Welcome to TUDuam's documentation!
 ==================================
 
-**tuduam** (TU Delft UAM)  is a Python library which provides a framework for
+**TUDuam** (TU Delft UAM)  is a Python library which provides a framework for
 designing UAM vehicles. This repository is developed by the Urban Air Mobility
 department at the faculty of Aerospace Engineering from Delft University of
 Technology. This course also serves as an extension to the `UAM course
@@ -27,6 +27,7 @@ Overview of Modules and subpackages
    aerodynamics
    performance
    mass_metric
+   notebooks
 
 
 Code repository

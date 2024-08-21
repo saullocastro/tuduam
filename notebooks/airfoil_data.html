@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Creating airfoil data for various Reynolds numbers &#8212; TUDuam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/airfoil_data';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Propulsion Notebook" href="../propulsion_notebook.html" />
+    <link rel="prev" title="Airfoil data generation" href="../airfoil_data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TUDuam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../airfoil_data.html">Airfoil data generation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Creating airfoil data for various Reynolds numbers</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../propulsion_notebook.html">Propulsion Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="prop_sizing.html">Preliminary sizing of a rotor blade</a></li>
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../structural_analysis.html">Structural Analysis</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="structural_analysis.html">Please run the code cell below to correctly initialize the notebook</a></li>
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../structural_opt.html">Structural Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../notebooks.html" class="nav-link">Notebooks</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../airfoil_data.html" class="nav-link">Airfoil data generation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Creating...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="creating-airfoil-data-for-various-reynolds-numbers">
+<h1>Creating airfoil data for various Reynolds numbers<a class="headerlink" href="#creating-airfoil-data-for-various-reynolds-numbers" title="Link to this heading">#</a></h1>
+<p>When analyzing propellors using blade element momentum theory we find that the various elements see a large variety in speeds and therefore reynolds number. Thus to keep the fidelity of the model within acceptable bounds it is required to know the properties of the airfoil at a wide range of Reynolds number.</p>
+<p>In order to so we can use tools such as xfoil. Xfoil is a command line tool developed by Mark Drela also known from AVL. It lets you analyze 2d airfoils using only a small set of commands. The software is open source and can be downloaded from <a class="reference external" href="https://web.mit.edu/drela/Public/web/xfoil/">xfoil</a>. Full documentation can be found in the same link as well.</p>
+<section id="workflow-for-retrieving-polar-data">
+<h2>Workflow for retrieving polar data<a class="headerlink" href="#workflow-for-retrieving-polar-data" title="Link to this heading">#</a></h2>
+<p>Opening the xfoil executable will give you the screen as shown hereunder. It is a command line interface (CLI) tool thus you will have to type the commands. You can always see which commands are available at anytime by entering <code class="docutils literal notranslate"><span class="pre">?</span></code> and pressing enter. The following procedure should then be followed to retrieve the polar data.</p>
+<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/xfoil_start_page.png?raw=true" width="400" />
+<ol class="arabic simple">
+<li><p>First we load in an airfoil, xfoil makes it very easy to load in NACA airfoils using the command <code class="docutils literal notranslate"><span class="pre">naca</span></code> with any 4 or 5 digit code so e.g <code class="docutils literal notranslate"><span class="pre">naca</span> <span class="pre">4412</span></code>. However, any airfoil can be loaded in using <code class="docutils literal notranslate"><span class="pre">load</span> <span class="pre">example/path</span></code> where example/path points to  a coordinate file.</p></li>
+<li><p>Once an airfoil has been chosen you go to operation mode by entering <code class="docutils literal notranslate"><span class="pre">oper</span></code>.</p></li>
+<li><p>Once in operation mode it is advised to increase the maximum amount of iterations for convergence sakes this can be done through <code class="docutils literal notranslate"><span class="pre">iter</span> <span class="pre">40</span></code>. Where the numbers represents the maximuma amount of iterations.</p></li>
+<li><p>Then the viscous model should be enabled using <code class="docutils literal notranslate"><span class="pre">visc</span> <span class="pre">1000000</span></code>. Where the integer represents the reynolds number, this is just an initialization and can still be changed afterwards using the command <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">integer</span></code> to the desired reynolds numbers.</p></li>
+<li><p>To then write a text file with  polar data for the current configured Reynolds number we enter the <code class="docutils literal notranslate"><span class="pre">pacc</span></code> command. Xfoil will then ask for a save path to write the file to. I recommend writing it to your downloads folder or another short path. As the path handling is not as robust and xfoil will fail to write the files with longer paths. E.g if you want to write a file named <code class="docutils literal notranslate"><span class="pre">4412_re3000000.txt</span></code> to your downloads folder you will enter the following: <code class="docutils literal notranslate"><span class="pre">C:\Users\JohnDoe\Downloads\4412_re3000000.txt</span></code>. The program will then ask for a dump path, this can safely be ignored by filling in a blank line.</p></li>
+<li><p>Then xfoil can compute the result of a range of angle of attack by using <code class="docutils literal notranslate"><span class="pre">aseq</span> <span class="pre">start_aoa</span> <span class="pre">end_alpha</span> <span class="pre">step_alpha</span></code> where <code class="docutils literal notranslate"><span class="pre">start_aoa</span></code> represents the starting angle of attack, <code class="docutils literal notranslate"><span class="pre">end_alpha</span></code> the ending angle of attack and <code class="docutils literal notranslate"><span class="pre">step_alpha</span></code> the step in the angle of attack.</p></li>
+<li><p>Whilst doing so it should have plotted the cp distribution as a pop up as shown below. You will now find a file in the specified directory. To now swithc to a different reynolds number we must first stop writing in the current file by typing <code class="docutils literal notranslate"><span class="pre">pacc</span></code> again. You can now change the reynolds number by using eg <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">20000000</span></code>.</p></li>
+</ol>
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWw3MjBzeHdwNDN6anM4ODlvNWgycnozMm9sd2N6ZnNsZWhoYjQ3OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RWOD4cRRGHzMu7xKMJ/giphy.gif" width="400" align="middle" /></section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="automating-the-process-using-python">
+<h1>Automating the process using Python<a class="headerlink" href="#automating-the-process-using-python" title="Link to this heading">#</a></h1>
+<p>As seen from the previous explanation it would be a lot of work to do create all the necessary data for a wide range of Reynolds numbers. Hence we will automate this process using the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module in Python which can manage subprocesses where the Python script itself is the main process. The script here under allows you to do so. The code is specifically left in Markdown as it requires a path to the xfoil executable thus you will have to copy the code below. However, a dataset is already embedded in the repository in the <code class="docutils literal notranslate"><span class="pre">examples\data</span></code> folder. Additionally, the script can also be found in the <code class="docutils literal notranslate"><span class="pre">examples\automation_airfoil_data.py</span></code>. Some notes about running the script can be found below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># Path to the XFOIL executable</span>
+<span class="n">xfoil_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\Johndoe\Xfoil699src\xfoil.exe&#39;</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\Johndoe\Downloads\data&#39;</span> <span class="c1"># Path can not be too long as it wil fail when it is</span>
+<span class="n">naca_airfoil</span> <span class="o">=</span> <span class="s2">&quot;4412&quot;</span>
+<span class="n">max_iter</span> <span class="o">=</span> <span class="s2">&quot;40&quot;</span>
+
+<span class="c1"># Reynolds range</span>
+<span class="n">start_reyn</span> <span class="o">=</span> <span class="mf">2e6</span>
+<span class="n">ending_reyn</span> <span class="o">=</span> <span class="mf">50e6</span>
+<span class="n">step_reyn</span> <span class="o">=</span> <span class="mf">1e6</span>
+
+<span class="c1">#AoA range</span>
+<span class="n">start_alpha</span> <span class="o">=</span> <span class="s2">&quot;-5&quot;</span>
+<span class="n">end_alpha</span> <span class="o">=</span> <span class="s2">&quot;16&quot;</span>
+<span class="n">step_alpha</span> <span class="o">=</span> <span class="s2">&quot;0.2&quot;</span>
+
+<span class="c1"># XFOIL  start up commands</span>
+<span class="n">startup_commands</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;naca &#39;</span> <span class="o">+</span> <span class="n">naca_airfoil</span><span class="p">,</span>
+    <span class="s1">&#39;oper&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;iter&#39;</span> <span class="o">+</span> <span class="n">max_iter</span><span class="p">,</span>
+    <span class="s2">&quot;visc 1000000&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># Run XFOIL</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">xfoil_path</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">startup_commands</span><span class="p">:</span>
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">command</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>  
+
+<span class="k">for</span>  <span class="n">Reyn</span> <span class="ow">in</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_reyn</span><span class="p">,</span> <span class="n">ending_reyn</span><span class="p">,</span> <span class="n">step_reyn</span><span class="p">):</span>
+    <span class="n">Reyn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Reyn</span><span class="p">)</span>
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Reyn</span><span class="p">)</span>  <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;pacc&quot;</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s2">&quot;airfoil_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Reyn</span><span class="p">))</span> <span class="o">+</span>  <span class="s2">&quot;.txt&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;aseq </span><span class="si">{</span><span class="n">start_alpha</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">end_alpha</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">step_alpha</span><span class="si">}</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;pacc&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  
+    <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+<span class="n">output</span><span class="p">,</span> <span class="n">error</span>  <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="operation-of-the-python-script">
+<h2>Operation of the Python script<a class="headerlink" href="#operation-of-the-python-script" title="Link to this heading">#</a></h2>
+<p>Using this script with the corect paths set up should result in a folder similar to the one below.</p>
+<p align="left">
+<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/data_folder.png?raw=true" width="400" />
+</p>
+<p>Then some final notes when utilizing this script:</p>
+<ol class="arabic simple">
+<li><p>Xfoil tends to crash at different Reynolds number. Thus sometimes you have to restart the script starting from the last successful Reynolds numbers therefore you will have to alter the variable <code class="docutils literal notranslate"><span class="pre">start_reyn</span></code>.</p></li>
+<li><p>Not all angle of attack converge properly to give the best possible results do the following:</p>
+<ul class="simple">
+<li><p>Increase the maximum iterations</p></li>
+<li><p>Decrease the step in angle of attack</p></li>
+<li><p>Keep your airfoil open at the trailing, this tends to help the convergence</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../airfoil_data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Airfoil data generation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../propulsion_notebook.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Propulsion Notebook</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Creating airfoil data for various Reynolds numbers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-retrieving-polar-data">Workflow for retrieving polar data</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#automating-the-process-using-python">Automating the process using Python</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operation-of-the-python-script">Operation of the Python script</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/airfoil_data.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

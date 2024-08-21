@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Please run the code cell below to correctly initialize the notebook &#8212; TUDuam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/structural_analysis';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Structural Optimization" href="../structural_opt.html" />
+    <link rel="prev" title="Structural Analysis" href="../structural_analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TUDuam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../airfoil_data.html">Airfoil data generation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="airfoil_data.html">Creating airfoil data for various Reynolds numbers</a></li>
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../propulsion_notebook.html">Propulsion Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="prop_sizing.html">Preliminary sizing of a rotor blade</a></li>
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../structural_analysis.html">Structural Analysis</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Please run the code cell below to correctly initialize the notebook</a></li>
+
+
+
+
+
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../structural_opt.html">Structural Optimization</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../notebooks.html" class="nav-link">Notebooks</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../structural_analysis.html" class="nav-link">Structural Analysis</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Please run...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="please-run-the-code-cell-below-to-correctly-initialize-the-notebook">
+<h1>Please run the code cell below to correctly initialize the notebook<a class="headerlink" href="#please-run-the-code-cell-below-to-correctly-initialize-the-notebook" title="Link to this heading">#</a></h1>
+<p>If a bug is found an issue can be created on the <a class="reference external" href="https://github.com/saullocastro/tuduam/issues">Github</a> page</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>tuduam
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/saullocastro/tuduam.git
+<span class="c1"># If the following error occurs &quot;fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.&quot; please continue as your environment is already set up correctly</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
+Requirement already satisfied: tuduam in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg (2024.16)
+Requirement already satisfied: numpy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.26.4)
+Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.12.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="structural-analysis-of-a-wing-section">
+<h1>Structural analysis of a wing section<a class="headerlink" href="#structural-analysis-of-a-wing-section" title="Link to this heading">#</a></h1>
+<p>Performing a stress analysis of the complex geometry of the multicell wingbox shown in <a class="reference internal" href="#figure1"><span class="xref myst">figure 1</span></a> can be complicated and tedious. Additionally, for a preliminary investigation often speed and simplicity are of greater importance, on the other hand a final solution must be as exact as circumstances allow. In order to meet these standard we idealize the wingbox into a simpler mechanical model which under given loading conditions behaves in nearly the same manner as the original structure.</p>
+<br>
+<p align="left"  id="figure1" >
+<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/idealization_wingbox_corr.png?raw=true" width="800" /> 
+ <br>
+</p>
+<p align="left">
+<em>Figure 1: The NACA 4412 airfoil</em>
+</p>
+<br>
+<p>To get to this mechical model we replace the stringers and spar flanges with concentrations of areas called booms over which the direct stress is constant and which are located along the midline of the skin. Furthermore we assume that all shear stresses are carried by the skin and all direct stresses by these booms. An important consideration here is that the direct stress carrying capacity of the skin may be allowed for by increasing each boom area by an area equivalent to the direct stress carrying capacity of the adjacent skin panels. Using this assumption the shearflow through the skin section between the booms will be constant and will only change when encountering a boom. If you want more details on this idealization please refer to source 1.</p>
+<section id="the-skin-addition-to-the-boom-areas">
+<h2>The skin addition to the boom areas<a class="headerlink" href="#the-skin-addition-to-the-boom-areas" title="Link to this heading">#</a></h2>
+<p>As previously mentioned in order to make the assumption that the skin thickness is zero we first have to incorportate the direct stress carrying capacity of the skin into the booms. To find this addition we can perform a moment equivalence for the two panels shown <a class="reference internal" href="#figure2"><span class="xref myst">figure 2</span></a>.  This wil result in the equation 1.</p>
+<br>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\tag{1}
+B_2 = \frac{t_D b}{6}(2 + \frac{\sigma_1}{\sigma_2})
+\end{equation}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\sigma_1\)</span>, <span class="math notranslate nohighlight">\(\sigma_2\)</span> are the direct stresses at boom 1 and 2, respectively. As seen from equation 1, the idealization is dependent on the loading case as the direct stresses would change for different loadings. However, you might correctly see the chicken and egg problem here. Therefore, we have to rewrite equation 1, we can do this by assuming that the direct stress is mostly related to the lift and therefore using <span class="math notranslate nohighlight">\(\sigma = \frac{M \cdot y}{Ixx}\)</span> we can rewrite equation 1 to equation 2.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\tag{2}
+B_2 = \frac{t_D b}{6}(2 + \frac{y_1}{y_2})
+\end{equation}
+\]</div>
+<br>
+<p align="left"  id="figure2" >
+<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/idealization_panel.png?raw=true" width="500" /> 
+ <br>
+</p>
+<p align="left">
+<em>Figure 1: The NACA 4412 airfoil</em>
+</p>
+<br>
+</section>
+<section id="sources">
+<h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Megson T. H. G. 1972. Aircraft Structures for Engineering Students. London: Edward Arnold.</p></li>
+</ol>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="discretizing-an-airfoil">
+<h1>Discretizing an airfoil<a class="headerlink" href="#discretizing-an-airfoil" title="Link to this heading">#</a></h1>
+<p>In the code cell below we discretize an airfoil using the methods explained above. Here we make use of the repository <code class="docutils literal notranslate"><span class="pre">tuduam</span></code> which you have seen before for the preliminary sizing of the propeller. In this notebook however we will be working with the <code class="docutils literal notranslate"><span class="pre">structures</span></code> module of the repository. More specifically in the following code cell we’ll utilize <code class="docutils literal notranslate"><span class="pre">discretize_airfoil</span></code>. We’ll also plot the result using  <code class="docutils literal notranslate"><span class="pre">plotly</span></code>. You can see information on each boom by hovering over it with your mouse.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tuduam</span> <span class="k">as</span> <span class="nn">tud</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="s1">&#39;tuduam/tests/naca45112.txt&#39;</span><span class="p">)</span>
+<span class="n">chord</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># meters</span>
+<span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;n_cell&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;spar_loc_nondim&quot;</span><span class="p">:[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+    <span class="s2">&quot;t_sk_cell&quot;</span><span class="p">:[</span><span class="mf">0.002</span><span class="p">,</span><span class="mf">0.004</span><span class="p">,</span><span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">],</span>
+    <span class="s2">&quot;area_str&quot;</span><span class="p">:</span><span class="mf">20e-6</span><span class="p">,</span>
+    <span class="s2">&quot;t_sp&quot;</span><span class="p">:</span><span class="mf">0.008</span><span class="p">,</span>
+    <span class="s2">&quot;str_cell&quot;</span><span class="p">:[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+<span class="p">}</span>
+
+
+<span class="c1"># </span>
+<span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
+<span class="n">wingbox</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">discretize_airfoil</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">)</span>
+<span class="n">wingbox</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">20</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="c1"># </span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">wingbox</span> <span class="o">=</span> <span class="n">tud</span><span class="o">.</span><span class="n">discretize_airfoil</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="n">wingbox</span><span class="o">.</span><span class="n">plot_geometry</span><span class="p">()</span>
+
+<span class="ne">AttributeError</span>: module &#39;tuduam&#39; has no attribute &#39;discretize_airfoil&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="direct-stress-analysis">
+<h1>Direct Stress Analysis<a class="headerlink" href="#direct-stress-analysis" title="Link to this heading">#</a></h1>
+<p>Direct stress in the cross section of a wingbox are caused by the bending moments caused by the lift and drag. However because the lift forces are significantly larger than the drag forces involved we have chosen to for now ignore the stresses caused by the drag in our model. Additionally, we can generally say the contribution <span class="math notranslate nohighlight">\(I_{xy}\)</span> of neglible hence it also left out. In future works this could also be taken into account however. Using these assume leaves us with equation 3.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\tag{3}
+\sigma_z = \frac{M_y \cdot y}{I_{xx}}
+\end{equation}
+\]</div>
+<p>Getting the values of <span class="math notranslate nohighlight">\(I_{xx}\)</span> is very much so simplified due to the definition of our booms. It can simply be found by using equation 4.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+\tag{4}
+I_{xx} = \sum^n_{n =0} B_n y_n^2 
+\end{equation}
+\]</div>
+<p>It is then straightforward to get the stress at each boom. See the code cell below. More information on each boom can be seen by hovering over the boom. In this case <code class="docutils literal notranslate"><span class="pre">color</span></code> is a reference to the stress level at that boom.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rich</span>
+
+<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span>
+<span class="n">wingbox</span><span class="o">.</span><span class="n">plot_direct_stresses</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">rich</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum stress is </span><span class="si">{</span><span class="nb">max</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">sigma</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">wingbox</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span><span class="o">/</span><span class="mf">1e6</span><span class="si">}</span><span class="s2"> MPa&quot;</span><span class="p">)</span>
+<span class="n">rich</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$Ixx = </span><span class="si">{</span><span class="n">wingbox</span><span class="o">.</span><span class="n">Ixx</span><span class="o">*</span><span class="mf">1e12</span><span class="si">}</span><span class="s2"> mm^4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="shear-stress-analysis">
+<h1>Shear Stress analysis<a class="headerlink" href="#shear-stress-analysis" title="Link to this heading">#</a></h1>
+<p>The direct stresses were straight forward however computing the shear stresses is quite more involved. As mentioned earlier, the shear flow over a panel is constant and only jumps at the one of the booms. When we have an open sections this gives us an easy point to start from as we know that at the outer edge of the structure the shear flow has to be zero. However, a wingbox is a closed strucutre so we have to cut the structure in each cell to give us a starting point. This is as shown in <a class="reference internal" href="#figure3"><span class="xref myst">figure 3</span></a> indicated by the two small parrallel lines.</p>
+<br>
+<p align="left"  id="figure3" >
+<img src="https://github.com/saullocastro/tuduam/blob/main/notebooks/static/wingbox_analysis.png?raw=true" width="800" /> 
+ <br>
+</p>
+<p align="left">
+<em>Figure 3: The NACA 4412 airfoil</em>
+</p>
+<br>
+<p>However, these cut’s have to be “mended”, we do this by applying a complementary shear flow in each cell. We can solve for these complementary shear flows by assuming no warping will occur and hence the amount of twist per unit length should be the same in each cell. This would give us n + 1 unknowns however with n equations. Thus, the final equation can be found from moment equivalence of all the shear flows and the internal shear itself. A complete description of this process is described in source 1 which has been previously shown. Now let us apply it. See the code cell below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rich</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+
+<span class="n">wingbox</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span><span class="mf">4e3</span><span class="p">,</span> <span class="mf">38e3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">24e9</span><span class="p">)</span> 
+<span class="n">wingbox</span><span class="o">.</span><span class="n">plot_shear_stress</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">rich</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum shear stress is </span><span class="si">{</span><span class="nb">max</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">tau</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">wingbox</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span><span class="o">/</span><span class="mf">1e6</span><span class="si">}</span><span class="s2"> MPa&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="visualizing-the-direction-of-the-shear-stresses">
+<h1>Visualizing the direction of the shear stresses<a class="headerlink" href="#visualizing-the-direction-of-the-shear-stresses" title="Link to this heading">#</a></h1>
+<p>In the next code cell we’ll also visualize the direction of all the shear stresses in the wingbox.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wingbox</span><span class="o">.</span><span class="n">plot_quiver_shear_stress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span> <span class="mf">0.035</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../structural_analysis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Structural Analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../structural_opt.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Structural Optimization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Please run the code cell below to correctly initialize the notebook</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-analysis-of-a-wing-section">Structural analysis of a wing section</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-skin-addition-to-the-boom-areas">The skin addition to the boom areas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources">Sources</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#discretizing-an-airfoil">Discretizing an airfoil</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-stress-analysis">Direct Stress Analysis</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#shear-stress-analysis">Shear Stress analysis</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-direction-of-the-shear-stresses">Visualizing the direction of the shear stresses</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/structural_analysis.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

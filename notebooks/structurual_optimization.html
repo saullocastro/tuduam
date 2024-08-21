@@ -1,0 +1,1073 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Structural Optimization of a wingbox &#8212; TUDuam  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/structurual_optimization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TUDuam  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../data_structures.html">
+                        Data Structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../structures.html">
+                        Structures subpackage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../propulsion.html">
+                        Propulsion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../aerodynamics.html">
+                        Aerodynamics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../performance.html">
+                        Performance
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+                        Mass Metrics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../notebooks.html">
+                        Notebooks
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Structural...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="structural-optimization-of-a-wingbox">
+<h1>Structural Optimization of a wingbox<a class="headerlink" href="#structural-optimization-of-a-wingbox" title="Link to this heading">#</a></h1>
+<p>In the previous notebook we have seen the structural analysis of a single wingbox cell. We would like however to use these tools to optimize the various parameters of the wingbox in order to minimize the weight of the structure. In order to do so let’s remind ourselves what exactly we can change in order to improve the performance of this wingbox.</p>
+<p>In the previous notebook we had defined the following parameters in order to perform the analysis.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n_{cell}\)</span>    - Number of cells</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{loc}_{sp}\)</span>    - The location of the spars</p></li>
+<li><p><span class="math notranslate nohighlight">\(t_{sk}\)</span>      - The thickness of the skin in each cell</p></li>
+<li><p><span class="math notranslate nohighlight">\(A_{str}\)</span>     - The area of the stringers</p></li>
+<li><p><span class="math notranslate nohighlight">\(t_{sp}\)</span>      -  The thickness of the spars</p></li>
+<li><p><span class="math notranslate nohighlight">\(n_{str}\)</span>     - The amount of stringers per cell</p></li>
+</ul>
+<p>These variables were then loaded in the API data structure as shown below:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">attr_dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;n_cell&quot;</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;spar_loc_nondim&quot;</span><span class="o">:</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">],</span>
+<span class="w">    </span><span class="s">&quot;t_sk_cell&quot;</span><span class="o">:</span><span class="p">[</span><span class="mf">0.002</span><span class="p">,</span><span class="mf">0.004</span><span class="p">,</span><span class="mf">0.004</span><span class="p">,</span><span class="w"> </span><span class="mf">0.004</span><span class="p">],</span>
+<span class="w">    </span><span class="s">&quot;area_str&quot;</span><span class="o">:</span><span class="mf">20e-6</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;t_sp&quot;</span><span class="o">:</span><span class="mf">0.008</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;str_cell&quot;</span><span class="o">:</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">wingbox_struct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tud</span><span class="p">.</span><span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, there will be one major change. For the structural analysis of a wingbox only the stringer area is relevant however for the constraints the geometry of said stringers is also important as you will see further up in this notebook.</p>
+<p>So in the optimization of the wingbox we wil add the stringer height, width and thickness to the optimization parameters.</p>
+<p>The parameters which we will optimize for are the skin thickness in each cell, the area of the stringers, the thickness of the spars and finally the stringer of the cell. This leaves the amount of cells, the spar locations and the bay length to be decided by the designers. The reasoning behind this is that usually your rib and spar locations are constrained the  placement of other systems in the wing such as the flap and slat mechanism. Below a summary can be found of the fixed and optimization parameters:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Optimiziation Parameters</strong></p></th>
+<th class="head"><p><strong>Fixed Parameters</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Skin thickness in each cell</p></td>
+<td><p>The amount of cells</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stringer width</p></td>
+<td><p>Spar locations</p></td>
+</tr>
+<tr class="row-even"><td><p>Stringer height</p></td>
+<td><p>Bay length</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stringer thickness</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Spar thickness</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>The amount of stringers in each cell</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="laying-out-a-framework-for-a-full-wing-optimization">
+<h1>Laying out a framework for a full wing optimization<a class="headerlink" href="#laying-out-a-framework-for-a-full-wing-optimization" title="Link to this heading">#</a></h1>
+<p>In order define our constraints later on we will have to divide the wing in sections called bays. Each bay is enclosed by two ribs, thus the length of these bays is for the designer to decide. Once, a bay is defined, we can further split this up in a collection of flat sheets. Where each sheet is in turn enclosed by stringers. The boundary conditions for these stringers have been decided to be simply supported. In <a class="reference internal" href="#figure1"><span class="xref myst">figure 1</span></a> we can see the result of the partitioning that was just described. Although we will not model the effects of taper (Future implementation).</p>
+<br>
+<p align="left"  id="figure1" >
+<img src="https://github.com/saullocastro/tuduam/blob/main/doc/_static/wing_bay_sheet.png?raw=true" width="600" />
+ <br>
+</p>
+<p align="left">
+<em>Figure 1: Wing modeled as a combination of simply supported sheets and simply supported bays. Figure taken from T.H.G Megson, Aircraft  Structures For Engineering Students</em>
+</p>
+<br>
+<p>Now that our wing has been divided into bays, and the bays respectively into sheets we can limit the scope of the optimization. Instead, of optimizing for the entire wing simultaneously we will optimize each bay. In <a class="reference internal" href="#figure2"><span class="xref myst">figure 2</span></a> an overview is found on how the optimization in this notebook will tackle the sizing of the structural members in the wing.</p>
+<br>
+<p align="left"  id="figure2" >
+<img src="https://raw.githubusercontent.com/saullocastro/tuduam/6e2a96b1fd444969175b2b61de6eb1fc9b94a9d5/doc/_static/Optimization_procedure.svg" width="600" style="background-color: white;"/>
+ <br>
+</p>
+<p align="left">
+<em>Figure 2: An overview of the optimization procedure for an entire wing.  </em>
+</p>
+<br>
+<p>The following sections will now enclose how to optimize a single one of these bays, starting with constraining the design space.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="constraining-the-design">
+<h1>Constraining the design<a class="headerlink" href="#constraining-the-design" title="Link to this heading">#</a></h1>
+<p>During the optimization it is important we set the minimum constraints the design should meet. Otherwise, the optimum solution would be no wingbox at all. For the API documentation of all these constraints please visit <a class="reference external" href="https://saullocastro.github.io/tuduam/constraints.html">constraints documentation</a>. We’ll cover the most important ones in this document and link to the documentation for the remainder of the constraints.</p>
+<section id="buckling">
+<h2>Buckling<a class="headerlink" href="#buckling" title="Link to this heading">#</a></h2>
+<p>As previously discussed, a section of the wingbox is divided up in plates. Knowing these plates are simply supported we can compute the critical instability in both shear and compression using  equations 1 and 2, respectively:</p>
+<div class="math notranslate nohighlight">
+\[
+\tag{1}
+\sigma_{cr} = k_b  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\tag{2}
+\sigma_{cr} = k_c  \frac{pi^2 E}{12(1 - \nu)} \left(\frac{t_{sk}}{b}\right)^2
+\]</div>
+<p>For the specifics on <span class="math notranslate nohighlight">\(k_b\)</span> and <span class="math notranslate nohighlight">\(k_c\)</span>, please review the <a class="reference external" href="https://saullocastro.github.io/tuduam/">API documentation</a>.</p>
+<p>Whilst, we could simply apply them individually these two critical loads are not independent from each other. In increased shear loading, decreases the compression capability of the sheet. Hence, we use an interaction curve as described in equation 3.</p>
+<div class="math notranslate nohighlight">
+\[
+\tag{3}
+\frac{N_x}{N_{x,crit}} + \left(\frac{N_{xy}}{N_{xy,crit}}\right)^2 &lt; 1
+\]</div>
+<p>In equation 3, <span class="math notranslate nohighlight">\(N_{x,crit}\)</span> is computed with equation 2 and <span class="math notranslate nohighlight">\(N_{xy,crit}\)</span> with equation 1. <span class="math notranslate nohighlight">\(N_x\)</span> and <span class="math notranslate nohighlight">\(N_{xy}\)</span> are the loads specified by the user.</p>
+<p>Finally, we also constrain the design using global skin buckling as a stiffened panel can also buckle as a whole.
+In this case, the width of the panel is utilized instead of the stringer pitch, and simply supported conditions
+can be assumed. The contribution of the stringers that still provide a stiffening effect can be considered by
+smearing their thickness to the skin thickness, as in Equation 47.</p>
+<div class="math notranslate nohighlight">
+\[
+\tag{47}
+t_{smeared} = \frac{t_{sk} \cdot b + N_{str} \cdot A_{st}}{b}
+\]</div>
+<p>The smeared thickness is substituted in the equation for critical sheet compression.
+The constraint is expressed below.</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma_{cr,glob} - \sigma_{cr,loc} \geq 0
+\]</div>
+</section>
+<section id="von-mises-failure-criterion">
+<h2>Von Mises failure Criterion<a class="headerlink" href="#von-mises-failure-criterion" title="Link to this heading">#</a></h2>
+<p>Besides buckling we also do not want the wingbox to yield. Hence we also apply the von Mises yield criterion. Considering the direct stresses and plane stresses that occur in the wingbox we can derive equation 4.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\sigma_y &amp; \geq  \sigma_v \\
+\tag{4}
+\sigma_y    &amp; \geq  \sqrt{\sigma_{11}^2 + 3\tau^2} \\
+\end{align*}
+\end{split}\]</div>
+<p>Abiding by this constraint ensures that the wingbox does not yield under the expected loads.</p>
+</section>
+<section id="other-constraints">
+<h2>Other constraints<a class="headerlink" href="#other-constraints" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://saullocastro.github.io/tuduam/constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.column_str_buckling">Column Stringer buckling</a></p></li>
+<li><p><a class="reference external" href="https://saullocastro.github.io/tuduam/constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.crippling">Crippling</a></p></li>
+<li><p><a class="reference external" href="https://saullocastro.github.io/tuduam/constraints.html#tuduam.structures.constraints.IsotropicWingboxConstraints.stringer_flange_buckling">Stringer Flange Buckling</a> (similar to buckling of sheet, except different BC’s)</p></li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="leveraging-python-for-the-optimization">
+<h1>Leveraging Python for the optimization<a class="headerlink" href="#leveraging-python-for-the-optimization" title="Link to this heading">#</a></h1>
+<p>In order to leverage Python for our optimization, we will first have to install two libraries into the <code class="docutils literal notranslate"><span class="pre">google</span> <span class="pre">collab</span></code> environment. These are <code class="docutils literal notranslate"><span class="pre">tuduam</span></code> and <code class="docutils literal notranslate"><span class="pre">pymoo</span></code>, tuduam is a library specifically tailored for this course and pymoo a library for multi-objective optimization. Please run the code cell below in order to do.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>tuduam
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pymoo
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/saullocastro/tuduam.git
+<span class="c1"># If the following error occurs &quot;fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.&quot; please continue as your environment is already set up correctly</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
+Requirement already satisfied: tuduam in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg (2024.16)
+Requirement already satisfied: numpy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.26.4)
+Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.12.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
+Requirement already satisfied: pymoo in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (0.6.1.1)
+Requirement already satisfied: numpy&gt;=1.15 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.26.4)
+Requirement already satisfied: scipy&gt;=1.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.12.0)
+Requirement already satisfied: matplotlib&gt;=3 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.9.1)
+Requirement already satisfied: autograd&gt;=1.4 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.6.2)
+Requirement already satisfied: cma==3.2.2 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.2.2)
+Requirement already satisfied: alive-progress in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.1.5)
+Requirement already satisfied: dill in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (0.3.8)
+Requirement already satisfied: Deprecated in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.2.14)
+Requirement already satisfied: future&gt;=0.15.2 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from autograd&gt;=1.4-&gt;pymoo) (1.0.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.2.0)
+Requirement already satisfied: cycler&gt;=0.10 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (4.47.2)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.4.5)
+Requirement already satisfied: packaging&gt;=20.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (24.1)
+Requirement already satisfied: pillow&gt;=8 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (10.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (3.1.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (2.8.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: about-time==4.2.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from alive-progress-&gt;pymoo) (4.2.1)
+Requirement already satisfied: grapheme==0.6.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from alive-progress-&gt;pymoo) (0.6.0)
+Requirement already satisfied: wrapt&lt;2,&gt;=1.10 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from Deprecated-&gt;pymoo) (1.16.0)
+Requirement already satisfied: six&gt;=1.5 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3-&gt;pymoo) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fatal: destination path &#39;tuduam&#39; already exists and is not an empty directory.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="initialisation-of-parameters">
+<h1>Initialisation of parameters<a class="headerlink" href="#initialisation-of-parameters" title="Link to this heading">#</a></h1>
+<p>To start the initialisation of the optimisation that we are going to perform  there are a two parameters that require a definition as these are designer choices.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tuduam</span>
+<span class="kn">from</span> <span class="nn">tuduam.data_structures</span> <span class="kn">import</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">Material</span>
+
+
+
+
+<span class="n">attr_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;n_cell&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;spar_loc_nondim&quot;</span><span class="p">:[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">],</span>
+    <span class="s2">&quot;str_cell&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">mat_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;young_modulus&quot;</span><span class="p">:</span><span class="mf">3e9</span><span class="p">,</span>
+        <span class="s2">&quot;shear_modulus&quot;</span><span class="p">:</span><span class="mf">80e9</span><span class="p">,</span>
+        <span class="s2">&quot;safety_factor&quot;</span><span class="p">:</span><span class="mf">1.5</span><span class="p">,</span>
+        <span class="s2">&quot;load_factor&quot;</span><span class="p">:</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="s2">&quot;poisson&quot;</span><span class="p">:</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="s2">&quot;density&quot;</span><span class="p">:</span><span class="mi">1600</span><span class="p">,</span>
+        <span class="s2">&quot;beta_crippling&quot;</span><span class="p">:</span><span class="mf">1.42</span><span class="p">,</span>
+        <span class="s2">&quot;sigma_ultimate&quot;</span><span class="p">:</span><span class="mf">407000000.0</span><span class="p">,</span>
+        <span class="s2">&quot;sigma_yield&quot;</span><span class="p">:</span><span class="mf">407000000.0</span><span class="p">,</span>
+        <span class="s2">&quot;g_crippling&quot;</span><span class="p">:</span><span class="mi">5</span>
+    <span class="p">}</span>
+
+<span class="n">mat_struct</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="o">**</span><span class="n">mat_dict</span><span class="p">)</span>
+<span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">Wingbox</span><span class="p">(</span><span class="o">**</span><span class="n">attr_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Having this definitnon we can now start the optimization. Before continuing it is probably useful to first take a look through the API documentation for the class and its methods that we will be using. The class that we will be using is <code class="docutils literal notranslate"><span class="pre">SectionOpt</span></code> which is situated in the <code class="docutils literal notranslate"><span class="pre">structures</span></code>subpackage in tuduam. The link to the <a class="reference external" href="https://saullocastro.github.io/tuduam/optimization.html#tuduam.structures.optimization.SectionOpt">API docs</a> can be found here.</p>
+<p>Before iterating for an entire wing, let us first do an example for a single section. We’ll take a section of the wing where the mean chord, <span class="math notranslate nohighlight">\(\bar{c} = 2\)</span> and the length of this section <span class="math notranslate nohighlight">\(b = 1.2\)</span>. For the airfoil, we’ll use th NACA 4412. For the amount of cells and spar locations we’ll use the previously defined values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tuduam.structures</span> <span class="kn">import</span> <span class="n">SectionOpt</span>
+
+<span class="n">chord</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># Chord length</span>
+<span class="n">coord_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="s1">&#39;tuduam&#39;</span><span class="p">,</span> <span class="s1">&#39;examples&#39;</span><span class="p">,</span> <span class="s1">&#39;naca_4412.txt&#39;</span><span class="p">))</span> <span class="c1"># Path to airfoil coordinates</span>
+<span class="n">len_sec</span> <span class="o">=</span> <span class="mf">.2</span> <span class="c1"># Lenght of the section</span>
+
+<span class="n">opt_obj</span> <span class="o">=</span> <span class="n">SectionOpt</span><span class="p">(</span><span class="n">coord_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">len_sec</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">,</span> <span class="n">mat_struct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember figure 2 which portrayed the top view of the optimization loop. Let us start at the core, i.e the optimization that is run for a fixed amount of stringers. For us these stringers were defined <code class="docutils literal notranslate"><span class="pre">wingbox_struct</span></code>. This optimization in the library is defined in the method <code class="docutils literal notranslate"><span class="pre">GA_optimize</span></code>, here you can find the <a class="reference external" href="https://saullocastro.github.io/tuduam/optimization.html#tuduam.structures.optimization.SectionOpt.GA_optimize">specifics</a>.</p>
+<p>Let’s run the optimization below with some typical values for the loads! Also note that we specify the upper and lower boundsFeel free to alter them and watch the design change.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">shear_y</span> <span class="o">=</span> <span class="mf">30e3</span>
+<span class="n">shear_x</span> <span class="o">=</span> <span class="mi">15000</span>
+<span class="n">moment_y</span> <span class="o">=</span> <span class="mf">4e2</span>
+<span class="n">moment_x</span> <span class="o">=</span> <span class="mf">30e3</span>
+<span class="n">applied_loc</span> <span class="o">=</span> <span class="mf">0.45</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">SectionOpt</span><span class="p">(</span><span class="n">coord_path</span><span class="p">,</span> <span class="n">chord</span><span class="p">,</span> <span class="n">len_sec</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">,</span> <span class="n">mat_struct</span><span class="p">)</span>
+
+<span class="n">upper_bnds</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="p">[</span><span class="mf">0.012</span><span class="p">]</span>
+<span class="n">lower_bnds</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0001</span><span class="p">]</span> <span class="o">+</span>  <span class="p">[</span><span class="mf">0.003</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="mf">0.003</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span>  <span class="n">opt</span><span class="o">.</span><span class="n">GA_optimize</span><span class="p">(</span><span class="n">shear_y</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">,</span> <span class="n">applied_loc</span><span class="p">,</span> <span class="n">upper_bnds</span><span class="p">,</span> <span class="n">lower_bnds</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_gen</span><span class="o">=</span> <span class="mi">60</span><span class="p">,</span><span class="n">multiprocess</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">======== Results ==========&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skin thickness = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">X</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="si">}</span><span class="s2"> mm&quot;</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spar thickness = </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stringer thickness = </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stringer  width= </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stringer height = </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+
+<span class="c1"># res =  opt_obj.full_section_opt(, pop=100, pop_full= 10, n_gen= 5 ,n_gen_full= 2)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:635: UserWarning: Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:635: UserWarning: Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:1389: UserWarning: 9 was not an even number and will be floored for conservative reasons
+/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:1389: UserWarning: 7 was not an even number and will be floored for conservative reasons
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=================================================================================
+n_gen  |  n_eval  |     cv_min    |     cv_avg    |     f_avg     |     f_min    
+=================================================================================
+     1 |       20 |           nan |           nan |             - |             -
+     2 |       40 |  5.892335E+05 |  2.586893E+06 |             - |             -
+     3 |       60 |  1.597098E+04 |  8.828549E+05 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     4 |       80 |  1.475767E+04 |  4.876832E+05 |             - |             -
+     5 |      100 |  1.572664E+02 |  2.307658E+05 |             - |             -
+     6 |      120 |  1.330916E+02 |  1.778502E+04 |             - |             -
+     7 |      140 |  8.390189E+01 |  3.090627E+02 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     8 |      160 |  4.823260E+01 |  1.332849E+02 |             - |             -
+     9 |      180 |  2.876452E+01 |  1.026962E+02 |             - |             -
+    10 |      200 |  2.354275E+01 |  6.086254E+01 |             - |             -
+    11 |      220 |  1.767519E+01 |  3.868588E+01 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    12 |      240 |  1.767519E+01 |  2.547644E+01 |             - |             -
+    13 |      260 |  1.457934E+01 |  2.154567E+01 |             - |             -
+    14 |      280 |  1.457934E+01 |  1.884780E+01 |             - |             -
+    15 |      300 |  7.3260777168 |  1.565098E+01 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    16 |      320 |  5.5390067387 |  1.291093E+01 |             - |             -
+    17 |      340 |  5.5214687616 |  9.3546616528 |             - |             -
+    18 |      360 |  5.3663213535 |  6.5134697471 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 |      380 |  5.1252980579 |  5.4626972814 |             - |             -
+    20 |      400 |  2.7705223748 |  5.1812955117 |             - |             -
+    21 |      420 |  1.8802673609 |  4.4893896406 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    22 |      440 |  0.8128057312 |  3.1804604891 |             - |             -
+    23 |      460 |  0.7976215623 |  2.0264520478 |             - |             -
+    24 |      480 |  0.3837283234 |  1.1931978843 |             - |             -
+    25 |      500 |  0.3453816585 |  0.7119007667 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    26 |      520 |  0.0047099656 |  0.5012213253 |             - |             -
+    27 |      540 |  0.0047099656 |  0.2679410870 |             - |             -
+    28 |      560 |  0.0042659691 |  0.1118058332 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    29 |      580 |  0.0042659691 |  0.0059999780 |             - |             -
+    30 |      600 |  0.0038944594 |  0.0045613230 |             - |             -
+    31 |      620 |  0.0034608084 |  0.0043678042 |             - |             -
+    32 |      640 |  0.0026648398 |  0.0039910481 |             - |             -
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    33 |      660 |  0.0023822746 |  0.0034588027 |             - |             -
+    34 |      680 |  0.0014011219 |  0.0029460993 |             - |             -
+    35 |      700 |  0.000000E+00 |  0.0022065751 |  0.0429117122 |  0.0429117122
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    36 |      720 |  0.000000E+00 |  0.0014997832 |  0.0430613629 |  0.0429117122
+    37 |      740 |  0.000000E+00 |  0.0008837850 |  0.0428172072 |  0.0413998642
+    38 |      760 |  0.000000E+00 |  0.0000371314 |  0.0427315086 |  0.0411576838
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    39 |      780 |  0.000000E+00 |  0.000000E+00 |  0.0422681761 |  0.0410578780
+    40 |      800 |  0.000000E+00 |  0.000000E+00 |  0.0415369764 |  0.0409264512
+    41 |      820 |  0.000000E+00 |  0.000000E+00 |  0.0411469917 |  0.0405330817
+    42 |      840 |  0.000000E+00 |  0.000000E+00 |  0.0409429253 |  0.0404786924
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    43 |      860 |  0.000000E+00 |  0.000000E+00 |  0.0406877301 |  0.0397829212
+    44 |      880 |  0.000000E+00 |  0.000000E+00 |  0.0405264004 |  0.0397829212
+    45 |      900 |  0.000000E+00 |  0.000000E+00 |  0.0403892590 |  0.0397829212
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    46 |      920 |  0.000000E+00 |  0.000000E+00 |  0.0402376947 |  0.0391904389
+    47 |      940 |  0.000000E+00 |  0.000000E+00 |  0.0399770525 |  0.0388116677
+    48 |      960 |  0.000000E+00 |  0.000000E+00 |  0.0395450563 |  0.0387084247
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    49 |      980 |  0.000000E+00 |  0.000000E+00 |  0.0390217266 |  0.0383586854
+    50 |     1000 |  0.000000E+00 |  0.000000E+00 |  0.0387678747 |  0.0383586854
+    51 |     1020 |  0.000000E+00 |  0.000000E+00 |  0.0386958158 |  0.0383561457
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    52 |     1040 |  0.000000E+00 |  0.000000E+00 |  0.0385594842 |  0.0381963505
+    53 |     1060 |  0.000000E+00 |  0.000000E+00 |  0.0383947490 |  0.0381682142
+    54 |     1080 |  0.000000E+00 |  0.000000E+00 |  0.0382808392 |  0.0381682142
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    55 |     1100 |  0.000000E+00 |  0.000000E+00 |  0.0381951416 |  0.0380180272
+    56 |     1120 |  0.000000E+00 |  0.000000E+00 |  0.0381173639 |  0.0378847512
+    57 |     1140 |  0.000000E+00 |  0.000000E+00 |  0.0380221608 |  0.0378824289
+    58 |     1160 |  0.000000E+00 |  0.000000E+00 |  0.0379554328 |  0.0378442887
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    59 |     1180 |  0.000000E+00 |  0.000000E+00 |  0.0378859941 |  0.0377812016
+    60 |     1200 |  0.000000E+00 |  0.000000E+00 |  0.0378435873 |  0.0377159718
+
+
+======== Results ==========
+Skin thickness = [6.38311823 6.59095961 6.03707018 4.61159371] mm
+Spar thickness = 4.996795247355678 mm
+Stringer thickness = 4.2038652157530505 mm
+Stringer  width= 5.7953735714898995 mm
+Stringer height = 9.85470647635964 mm
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also get to know more about the history of each iteration through the <code class="docutils literal notranslate"><span class="pre">res</span></code> variable which is an instance of the <code class="docutils literal notranslate"><span class="pre">pymoo.core.result.Result</span></code>class. In this class the objective functions is described with <code class="docutils literal notranslate"><span class="pre">F</span></code> and the design vector with <code class="docutils literal notranslate"><span class="pre">X</span></code>. The object contains the history of each generation which we can access like shown below where we access the first generation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">gen</span><span class="o">.</span><span class="n">pop</span> <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">history</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generation 1</span><span class="se">\n</span><span class="s2">t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=====================================================================</span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">pop_lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generation 1
+t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
+=====================================================================
+
+ [[0.00506256 0.00867186 0.00010136 0.00369776 0.0043208  0.00201572
+  0.00467634 0.00611005]
+ [0.00482153 0.00651192 0.00508841 0.00825411 0.00484007 0.01065929
+  0.00324649 0.00903421]
+ [0.00506593 0.00674841 0.0017706  0.00245741 0.0102067  0.01165088
+  0.00582082 0.0092309 ]
+ [0.01052903 0.01074582 0.00111203 0.00056475 0.00452847 0.01065957
+  0.00388512 0.00678997]
+ [0.01149889 0.00644467 0.00833334 0.00385464 0.00917851 0.01018088
+  0.00316459 0.0097513 ]
+ [0.01186745 0.00900317 0.00343728 0.00949242 0.00392903 0.00592683
+  0.01117736 0.00564253]
+ [0.00352453 0.00164734 0.00033047 0.00817814 0.00490465 0.00392101
+  0.00742416 0.00348026]
+ [0.006932   0.00184607 0.00711274 0.00842712 0.00392101 0.00555462
+  0.0092496  0.00672761]
+ [0.00069445 0.00647717 0.00799916 0.00622718 0.01150135 0.00745211
+  0.01113062 0.00423727]
+ [0.00175739 0.00970796 0.00483235 0.00206771 0.01134758 0.00482542
+  0.00975731 0.00953398]
+ [0.01061134 0.0075217  0.00903621 0.00425189 0.00542935 0.01085475
+  0.00685282 0.01168356]
+ [0.00799495 0.00749818 0.00146548 0.01139892 0.00704921 0.00736229
+  0.00667323 0.00513324]
+ [0.01085022 0.00692679 0.00013416 0.00744402 0.0059398  0.00679764
+  0.01097348 0.00621543]
+ [0.01091157 0.00751799 0.00028827 0.0111603  0.00921807 0.01197055
+  0.00455106 0.00423422]
+ [0.01119789 0.00839214 0.0008854  0.00909001 0.00978489 0.01115327
+  0.00940372 0.00411844]
+ [0.00033657 0.00041191 0.00043685 0.00302991 0.01074025 0.00692714
+  0.0079754  0.01057828]
+ [0.00157766 0.00342229 0.00707054 0.01163819 0.00804927 0.00120512
+  0.01020569 0.00509677]
+ [0.00970455 0.00471554 0.01037615 0.00899075 0.00800616 0.00250101
+  0.00353926 0.00409209]
+ [0.00063017 0.00137918 0.00278594 0.00858457 0.00803745 0.00113812
+  0.00364777 0.01170549]
+ [0.0068604  0.00251919 0.00310268 0.00895153 0.00475887 0.00739495
+  0.01173018 0.01062146]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also plot the average value of variables over time and optimization function over time, this gives us an idea of how the variables effect the design. Run the code below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">t_sk_cell1_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">t_sk_cell2_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">t_sk_cell3_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">t_sk_cell4_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">3</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">t_sp_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">4</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">t_st_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">5</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">w_st_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">6</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+<span class="n">h_st__lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">7</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+
+<span class="n">f_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;F&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mf">18.5</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sk_cell1_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T sk cell 1&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sk_cell2_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T sk cell 2&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sk_cell3_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T sk cell 3&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sk_cell4_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T sk cell 4&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sp_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T sp&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_st_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;T st&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_st_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;W st&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">h_st__lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;H st&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_lst</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Weight&quot;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Average value of variables over time&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Average value of the optimization function over time&quot;</span><span class="p">)</span>
+
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Thickness (mm)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/524ff4a0dc8fb924801cdf1ece2254a5eac07d2d157853ed22816e8fb01fb5d3.png" src="../_images/524ff4a0dc8fb924801cdf1ece2254a5eac07d2d157853ed22816e8fb01fb5d3.png" />
+</div>
+</div>
+<p>As you can see, it gets quite messy with all variables in there. One could also argue the information gets lost when taking the average and only plotting the optimum solution would give a better idea. It is left up to the reader to implement this.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="changing-the-amount-of-stringers">
+<h1>Changing the amount of stringers<a class="headerlink" href="#changing-the-amount-of-stringers" title="Link to this heading">#</a></h1>
+<p>In the previous optimization we only optimzied for the various thicknesses, however a better solution would be possible when different configuration of stringers are used, or even a different layout of ribs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tuduam</span></code> also provides a method for optimizing for different stringer configuration. This is the outer optimization loop as has been shown earlier in this notebook in figure 2. The API documentation for this functionality can be found <a class="reference external" href="https://saullocastro.github.io/tuduam/optimization.html#tuduam.structures.optimization.SectionOpt.full_section_opt">here</a>. <code class="docutils literal notranslate"><span class="pre">SectionOpt.full_section_opt</span></code> interally also used the optimization which we experimented with previously. However, it calls this function for every stringer configuration, hence it is signficantly more computationally expensive.</p>
+<p>The method does come with a <code class="docutils literal notranslate"><span class="pre">multiprocess</span></code> flag which does allow it to see major performance boosts on more powerful platforms. So feel free to give it a try on your local machine. The setup is very similar to <code class="docutils literal notranslate"><span class="pre">GA_optimize</span></code>.</p>
+<p>This repository does <strong>not</strong> implememt an optimization of the spanwise rib distribution.</p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Structural Optimization of a wingbox</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#laying-out-a-framework-for-a-full-wing-optimization">Laying out a framework for a full wing optimization</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#constraining-the-design">Constraining the design</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buckling">Buckling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#von-mises-failure-criterion">Von Mises failure Criterion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-constraints">Other constraints</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#leveraging-python-for-the-optimization">Leveraging Python for the optimization</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#initialisation-of-parameters">Initialisation of parameters</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-amount-of-stringers">Changing the amount of stringers</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/notebooks/structurual_optimization.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024-, Damien Keijzer,, Saullo G. P. Castro.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
