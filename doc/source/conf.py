@@ -8,7 +8,7 @@ import os
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'tuduam'
+project = 'TUDuam'
 author = 'Damien Keijzer, Saullo Castro'
 copyright = '2024-, Damien Keijzer,, Saullo G. P. Castro'
 
@@ -28,8 +28,16 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.todo',
+    "myst_nb",
     'sphinxcontrib.autodoc_pydantic',
     'sphinx.ext.inheritance_diagram'
+]
+
+myst_enable_extensions = [
+    "dollarmath",  # If you want to use $ math notation
+    "amsmath",
+    "colon_fence",
+    # Add other MyST extensions here
 ]
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "..")))
