@@ -23,4 +23,6 @@ temp*.*
 *.pyo
 *.pyd
 
+doc/source/notebooks/tuduam
+
 .DS_Store
