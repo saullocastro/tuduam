@@ -27,7 +27,17 @@ Overview of Modules and subpackages
    aerodynamics
    performance
    mass_metric
-   notebooks
+
+Overview of tutorial/notebooks
+=========================================
+.. toctree::
+   :maxdepth: 1
+
+   airfoil_data
+   propulsion_notebook
+   structural_analysis
+   structural_opt
+
 
 
 Code repository
