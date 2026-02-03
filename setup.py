@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 is_released = True
-version = '2026.6'
+version = '2026.7'
 
 
 def git_version():
@@ -61,12 +61,13 @@ def read(fname):
 install_requires = [
         "numpy",
         "scipy",
+        "pymoo"
         ]
 
 #Trove classifiers
 CLASSIFIERS = """\
 
-Development Status :: 1 - Planning
+Development Status :: 4 - Beta
 Intended Audience :: Education
 Intended Audience :: Science/Research
 Intended Audience :: Developers
