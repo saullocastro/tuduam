@@ -1101,7 +1101,6 @@ class IdealWingbox():
             stress = abs(panel.tau/1e6)
             hover_text = f"Panel: {panel.pid}, Stress: {stress} MPa"  # Modify as needed
             col = [str(float(coli)) for coli in cmap(norm(stress))]
-            print('DEBUG col', col)
             col = "rgb(" + ",".join(col[:-1]) + ")"
 
             trace = go.Scatter(
