@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 is_released = True
-version = '2024.16'
+version = '2026.1'
 
 
 def git_version():
@@ -78,10 +78,10 @@ Topic :: Software Development :: Libraries :: Python Modules
 Operating System :: Microsoft :: Windows
 Operating System :: Unix
 Operating System :: POSIX :: BSD
-Programming Language :: Python :: 3.8
-Programming Language :: Python :: 3.9
 Programming Language :: Python :: 3.10
 Programming Language :: Python :: 3.11
+Programming Language :: Python :: 3.12
+Programming Language :: Python :: 3.13
 License :: OSI Approved :: BSD License
 
 """
