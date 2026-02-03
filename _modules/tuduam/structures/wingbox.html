@@ -13,38 +13,42 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/structures/wingbox';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -52,31 +56,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -84,7 +73,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,20 +80,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../../index.html">
@@ -126,83 +121,85 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -217,29 +214,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -248,15 +237,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -273,7 +258,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -282,89 +268,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -374,15 +355,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -390,29 +367,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -423,7 +403,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tuduam.struc...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tuduam.structures.wingbox</span></li>
   </ul>
 </nav>
 </div>
@@ -445,37 +425,37 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>  <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
-<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
-<span class="kn">from</span> <span class="nn">pymoo.algorithms.soo.nonconvex.ga</span> <span class="kn">import</span> <span class="n">GA</span>
-<span class="kn">from</span> <span class="nn">pymoo.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
-<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="kn">import</span> <span class="nn">plotly.figure_factory</span> <span class="k">as</span> <span class="nn">ff</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">..data_structures</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w">  </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubicSpline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.algorithms.soo.nonconvex.ga</span><span class="w"> </span><span class="kn">import</span> <span class="n">GA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.figure_factory</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ff</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 
 
 
 <div class="viewcode-block" id="Boom">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.Boom">[docs]</a>
-<span class="k">class</span> <span class="nc">Boom</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Boom</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to represent an idealized boom.</span>
 
 <span class="sd">    .. note::</span>
-<span class="sd">    </span>
+
 <span class="sd">        All of the parameters are optional as in this library the attributes</span>
 <span class="sd">        have been allocated dynamically. But if this class is used you could also simply load them</span>
 <span class="sd">        when instantiating them.</span>
 
-<span class="sd">    </span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -487,7 +467,7 @@ document.write(`
 <span class="sd">        Boom x position.</span>
 <span class="sd">    y : float, optional</span>
 <span class="sd">        Boom y position.</span>
-<span class="sd">    sigma : float, optional </span>
+<span class="sd">    sigma : float, optional</span>
 <span class="sd">        The direct stress the boom experiences.</span>
 
 <span class="sd">    Attributes</span>
@@ -504,7 +484,7 @@ document.write(`
 <span class="sd">        The direct stress the boom experiences.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Boom ID</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Boom area</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Boom x position</span>
@@ -513,7 +493,7 @@ document.write(`
 
 <div class="viewcode-block" id="Boom.get_cell_idx">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.Boom.get_cell_idx">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cell_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the cell index of where the panel is located for the specified wingbox structure.</span>
 
@@ -543,7 +523,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealPanel">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealPanel">[docs]</a>
-<span class="k">class</span> <span class="nc">IdealPanel</span><span class="p">:</span> 
+<span class="k">class</span><span class="w"> </span><span class="nc">IdealPanel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class representing a panel in an idealized wingbox.</span>
 
@@ -588,21 +568,21 @@ document.write(`
 <span class="sd">        Direction vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Panel ID</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># The boom id of its corresponding first boom id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The boom id of its corresponding second boom id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">:</span> <span class="n">Boom</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="p">:</span> <span class="n">Boom</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="p">:</span> <span class="n">Boom</span> <span class="o">|</span> <span class="kc">None</span>  <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_pnl</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q_basic</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q_tot</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    
+
 <div class="viewcode-block" id="IdealPanel.get_cell_idx">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealPanel.get_cell_idx">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cell_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the cell index of where the panel is located.</span>
 
@@ -619,7 +599,7 @@ document.write(`
 <span class="sd">            The cell index of where the panel is located.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-   
+
         <span class="n">cell_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">chord</span><span class="p">)</span> <span class="c1"># type: ignore # Get index of the cell</span>
         <span class="k">if</span>  <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">cell_idx</span><span class="p">):</span>
             <span class="n">cell_idx</span> <span class="o">=</span> <span class="mi">0</span>
@@ -627,12 +607,12 @@ document.write(`
             <span class="n">cell_idx</span> <span class="o">=</span> <span class="n">cell_idx</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">cell_idx</span></div>
 
-    
+
 <div class="viewcode-block" id="IdealPanel.length">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealPanel.length">[docs]</a>
-    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Length of the panel based on the coordinates of the boom. Boom center is used as the </span>
+<span class="sd">        Length of the panel based on the coordinates of the boom. Boom center is used as the</span>
 <span class="sd">        assumption is that the booms are infinitesimally small.</span>
 
 <span class="sd">        Returns</span>
@@ -646,7 +626,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealPanel.set_b1_to_b2_vector">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealPanel.set_b1_to_b2_vector">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_b1_to_b2_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_b1_to_b2_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The following functions sets the attribute :attr:`dir_vec` from boom 1 to boom 2.</span>
 
@@ -658,8 +638,8 @@ document.write(`
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        AttributeError</span>
-<span class="sd">            If boom 1 or 2 has not been assigned yet. </span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">            If boom 1 or 2 has not been assigned yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">x_comp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="c1"># type: ignore</span>
             <span class="n">y_comp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="c1"># type: ignore</span>
@@ -670,7 +650,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealPanel.set_b2_to_b1_vector">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealPanel.set_b2_to_b1_vector">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_b2_to_b1_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_b2_to_b1_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The following functions sets the attribute :attr:`dir_vec` from boom 2 to boom 1.</span>
 
@@ -682,8 +662,8 @@ document.write(`
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        AttributeError</span>
-<span class="sd">            If boom 1 or 2 has not been assigned yet. </span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">            If boom 1 or 2 has not been assigned yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">x_comp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
             <span class="n">y_comp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
@@ -695,7 +675,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox">[docs]</a>
-<span class="k">class</span> <span class="nc">IdealWingbox</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IdealWingbox</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class representing an idealized wingbox, containing methods to perform computations</span>
 <span class="sd">    on that instance and some accessed methods. It is strongly advised not to use this class without the :func:`discretize_airfoil` function,</span>
@@ -741,7 +721,7 @@ document.write(`
 <span class="sd">        Moment of inertia about the y-axis.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wingbox</span><span class="p">:</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span> <span class="o">=</span> <span class="n">wingbox</span>
         <span class="n">t_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_st</span>
         <span class="n">w_st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">w_st</span>
@@ -776,7 +756,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox._compute_area_z_str">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox._compute_area_z_str">[docs]</a>
-    <span class="k">def</span> <span class="nf">_compute_area_z_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_area_z_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the area of a Z-stringer.</span>
 
@@ -805,13 +785,13 @@ document.write(`
 
         <span class="k">if</span> <span class="n">A_str</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The stringer area is negative, please see previous error&quot;</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">A_str</span></div>
 
 
 <div class="viewcode-block" id="IdealWingbox._set_Ixx">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox._set_Ixx">[docs]</a>
-    <span class="k">def</span> <span class="nf">_set_Ixx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_Ixx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the moment of inertia about the x-axis.</span>
@@ -830,7 +810,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox._set_Ixy">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox._set_Ixy">[docs]</a>
-    <span class="k">def</span> <span class="nf">_set_Ixy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_Ixy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the product of inertia.</span>
 
@@ -848,7 +828,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox._set_Iyy">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox._set_Iyy">[docs]</a>
-    <span class="k">def</span> <span class="nf">_set_Iyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_Iyy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the moment of inertia about the y-axis.</span>
 
@@ -865,7 +845,7 @@ document.write(`
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_read_skin_panels_per_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_skin_panels_per_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list with the number of panels on the skin per cell, ignoring the panels</span>
 <span class="sd">        which are part of one of the spars. This function requires a fully filled out boom and panel dictionary.</span>
@@ -888,9 +868,9 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.get_total_area">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.get_total_area">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_total_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total area of all the booms, including the addition of the skin thicknesses. This function is used </span>
+<span class="sd">        Returns the total area of all the booms, including the addition of the skin thicknesses. This function is used</span>
 <span class="sd">        for the optimization of a wingbox.</span>
 
 <span class="sd">        Returns</span>
@@ -909,9 +889,9 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.get_polygon_cells">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.get_polygon_cells">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_polygon_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Polygon</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_polygon_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Polygon</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the </span>
+<span class="sd">        Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the</span>
 <span class="sd">        class using the idealized_airfoil function. Erroneous results or an error will be given in case this is not the case! When using this function for the first time</span>
 <span class="sd">        with a new airfoil, it is advised to run it once with validate=True to see if the resulting areas are trustworthy. This will</span>
 <span class="sd">        show you n plots of the cell polygon where n is the number of cells.</span>
@@ -927,7 +907,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        List[Polygon] </span>
+<span class="sd">        List[Polygon]</span>
 <span class="sd">            A list of n cells long where each element contains a (shapely) Polygon instance representing the corresponding cell.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -942,8 +922,8 @@ document.write(`
                 <span class="n">bm_per_cell_lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">spar_loc</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">spar_loc_arr</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">spar_loc</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">spar_loc_arr</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bm_per_cell_lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span>  <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">spar_loc</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">spar_loc</span><span class="p">)])</span>
-        
-        <span class="c1"># The code in this for loop is required to correctly sort the coordinates </span>
+
+        <span class="c1"># The code in this for loop is required to correctly sort the coordinates</span>
         <span class="c1"># so a polygon can be created from which the area is computed</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bm_per_cell_lst</span><span class="p">):</span>
             <span class="n">x_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">]</span>
@@ -951,12 +931,12 @@ document.write(`
             <span class="n">coord_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x_lst</span><span class="p">,</span> <span class="n">y_lst</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># The boundary here is always chosen to be the leading edge</span>
-                <span class="n">bnd</span> <span class="o">=</span> <span class="n">y_lst</span><span class="p">[</span><span class="n">x_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))]</span> 
+                <span class="n">bnd</span> <span class="o">=</span> <span class="n">y_lst</span><span class="p">[</span><span class="n">x_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))]</span>
             <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># The boundary here is always chosen to be the trailing edge</span>
-                <span class="n">bnd</span> <span class="o">=</span> <span class="n">y_lst</span><span class="p">[</span><span class="n">x_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))]</span> 
+                <span class="n">bnd</span> <span class="o">=</span> <span class="n">y_lst</span><span class="p">[</span><span class="n">x_lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Get the vertices of the spar in order to always choose </span>
+                <span class="c1"># Get the vertices of the spar in order to always choose</span>
                 <span class="c1"># the correct horizontal boundary to split from</span>
                 <span class="n">idx_xmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_lst</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))</span>
                 <span class="n">idx_xmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_lst</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_lst</span><span class="p">))</span>
@@ -976,8 +956,8 @@ document.write(`
             <span class="c1"># Get all upper  coords and sort them from low to high based on the x location</span>
             <span class="n">upper_coord</span> <span class="o">=</span> <span class="n">coord_arr</span><span class="p">[</span><span class="n">coord_arr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">bnd</span><span class="p">,:]</span>
             <span class="n">upper_coord</span> <span class="o">=</span> <span class="n">upper_coord</span><span class="p">[</span><span class="n">upper_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">(),:]</span>
-            
-            <span class="c1"># Sort the upper coords of the left spar and right spar </span>
+
+            <span class="c1"># Sort the upper coords of the left spar and right spar</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># The first cell does not have a left spar</span>
                 <span class="c1">#left spar</span>
                 <span class="n">spar_sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">upper_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">upper_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Correct the sorting of the nodes on the left spar</span>
@@ -995,7 +975,7 @@ document.write(`
             <span class="n">lower_coord</span> <span class="o">=</span> <span class="n">coord_arr</span><span class="p">[</span><span class="n">coord_arr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">bnd</span><span class="p">,:]</span>
             <span class="n">lower_coord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">lower_coord</span><span class="p">[</span><span class="n">lower_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">(),:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-            <span class="c1"># Sort the lower coords of the left spar internally </span>
+            <span class="c1"># Sort the lower coords of the left spar internally</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># The first cell does not have a left spar</span>
                 <span class="c1"># left spar</span>
                 <span class="n">spar_sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lower_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">lower_coord</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Correct the sorting of the nodes on the left spar</span>
@@ -1010,7 +990,7 @@ document.write(`
                 <span class="n">lower_coord</span><span class="p">[</span><span class="n">spar_sort_idx</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">right_spar</span>
 
             <span class="c1"># An correct set of coordinates is now achieved</span>
-            <span class="n">coord_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">upper_coord</span><span class="p">,</span> <span class="n">lower_coord</span><span class="p">))</span> 
+            <span class="n">coord_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">upper_coord</span><span class="p">,</span> <span class="n">lower_coord</span><span class="p">))</span>
             <span class="n">coord_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">coord_arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># Close the loop so the polygon can compute the area</span>
             <span class="n">poly</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coord_arr</span><span class="p">)</span> <span class="c1"># Create the actual polygon</span>
             <span class="n">polygon_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span> <span class="c1"># Get the area</span>
@@ -1026,7 +1006,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.get_cell_areas">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.get_cell_areas">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_cell_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the area of each cell using the shapely.geometry.Polygon class.</span>
@@ -1045,10 +1025,10 @@ document.write(`
         <span class="n">polygon_lst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_polygon_cells</span><span class="p">(</span><span class="n">validate</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">area</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">polygon_lst</span><span class="p">]</span></div>
 
-    
+
 <div class="viewcode-block" id="IdealWingbox.compute_direct_stress">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.compute_direct_stress">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_direct_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boom</span><span class="p">:</span> <span class="n">Boom</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_direct_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boom</span><span class="p">:</span> <span class="n">Boom</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the direct stress at a given boom due to bending moments.</span>
@@ -1071,7 +1051,7 @@ document.write(`
         <span class="n">Ixx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ixx</span>
         <span class="n">Ixy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ixy</span>
         <span class="n">Iyy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Iyy</span>
-        <span class="k">return</span> <span class="p">((</span><span class="n">moment_y</span><span class="o">*</span><span class="n">Ixx</span> <span class="o">-</span> <span class="n">moment_x</span><span class="o">*</span><span class="n">Ixy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Ixx</span><span class="o">*</span><span class="n">Iyy</span> <span class="o">-</span><span class="n">Ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">boom</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span>  
+        <span class="k">return</span> <span class="p">((</span><span class="n">moment_y</span><span class="o">*</span><span class="n">Ixx</span> <span class="o">-</span> <span class="n">moment_x</span><span class="o">*</span><span class="n">Ixy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Ixx</span><span class="o">*</span><span class="n">Iyy</span> <span class="o">-</span><span class="n">Ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">boom</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span>
                 <span class="p">(</span><span class="n">moment_x</span><span class="o">*</span><span class="n">Iyy</span>  <span class="o">-</span> <span class="n">moment_y</span><span class="o">*</span><span class="n">Ixy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Ixx</span><span class="o">*</span><span class="n">Iyy</span> <span class="o">-</span><span class="n">Ixy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">boom</span><span class="o">.</span><span class="n">y</span><span class="p">)</span></div>
 
 
@@ -1079,7 +1059,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox._compute_boom_areas">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox._compute_boom_areas">[docs]</a>
-    <span class="k">def</span> <span class="nf">_compute_boom_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_boom_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that creates all boom areas. The program assumes a fully functional panel and boom</span>
 <span class="sd">        dictionary where all values have the full classes assigned. This function can be used manually</span>
@@ -1123,15 +1103,15 @@ document.write(`
             <span class="c1"># check if it is not a spar boom, this will get a flange addition in the future maybe</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">boom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">spar_loc_abs</span> <span class="p">)):</span>
                 <span class="n">boom</span><span class="o">.</span><span class="n">A</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area_str</span>
-            <span class="k">if</span> <span class="n">boom</span><span class="o">.</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="n">boom</span><span class="o">.</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value&quot;</span><span class="p">)</span>
                 <span class="n">boom</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">boom</span><span class="o">.</span><span class="n">A</span><span class="p">)</span></div>
 
-                
+
 
 <div class="viewcode-block" id="IdealWingbox.load_new_gauge">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.load_new_gauge">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_new_gauge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_sk_cell</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_new_gauge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_sk_cell</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h_st</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function allows you to change the thickness and hence your boom areas of the wingbox whilst</span>
 <span class="sd">        maintaining the shape. This is useful for any optimization as you do not have to call the entire discretize function.</span>
@@ -1157,7 +1137,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_st</span> <span class="o">=</span> <span class="n">t_st</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">w_st</span> <span class="o">=</span> <span class="n">w_st</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">h_st</span> <span class="o">=</span> <span class="n">h_st</span>
-        
+
         <span class="c1"># Required for backwards compatibility</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_st</span> <span class="o">=</span> <span class="n">t_st</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_st</span> <span class="o">=</span> <span class="n">w_st</span>
@@ -1168,7 +1148,7 @@ document.write(`
 
         <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">pnl</span><span class="p">:</span> <span class="n">IdealPanel</span> <span class="o">=</span> <span class="n">pnl</span>
-            <span class="c1"># Check if it is a spar </span>
+            <span class="c1"># Check if it is a spar</span>
             <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
                 <span class="c1"># If spar change thickness</span>
                 <span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">=</span> <span class="n">t_sp</span>
@@ -1176,7 +1156,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">get_cell_idx</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">)</span> <span class="c1"># Find which cell  panel is in</span>
                 <span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">=</span> <span class="n">t_sk_cell</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="c1"># Assign new thickness</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_compute_boom_areas</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chord</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ixx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_Ixx</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Iyy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_Iyy</span><span class="p">()</span>
@@ -1185,7 +1165,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.stress_analysis">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.stress_analysis">[docs]</a>
-    <span class="k">def</span> <span class="nf">stress_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>   <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_y_appl</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_mod</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span>  <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span><span class="nb">list</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stress_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>   <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_y_appl</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">shear_mod</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span>  <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span><span class="nb">list</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform stress analysis on a wingbox section based on the internal shear loads and moments. All data is stored within</span>
 <span class="sd">        the :class:`IdealPanel` and :class:`Boom` classes.</span>
@@ -1202,7 +1182,7 @@ document.write(`
 <span class="sd">        viewed in the direction zO then, as shown in Fig. 16.10, positive internal forces and</span>
 <span class="sd">        moments are in the same direction and sense as the externally applied loads whereas</span>
 <span class="sd">        on the opposite face they form an opposing system. A further condition defining the signs of the bending moments Mx and My is that they are</span>
-<span class="sd">        positive when they induce tension in the positive xy quadrant of the beam cross-section. Finally, the beam seen in Figure 16.10 is also </span>
+<span class="sd">        positive when they induce tension in the positive xy quadrant of the beam cross-section. Finally, the beam seen in Figure 16.10 is also</span>
 <span class="sd">        immediately the coordinate system used. Where the aircraft flies</span>
 <span class="sd">        in the x direction, thus analyzing the right wing structure.</span>
 
@@ -1252,10 +1232,10 @@ document.write(`
         <span class="c1"># First compute all the direct stresses</span>
         <span class="k">for</span> <span class="n">boom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">boom</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_direct_stress</span><span class="p">(</span><span class="n">boom</span><span class="p">,</span> <span class="n">moment_x</span><span class="p">,</span> <span class="n">moment_y</span><span class="p">)</span>
-        
+
         <span class="c1"># Start by computing basic shear stresses</span>
 
-        <span class="n">cut_lst</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#define list to </span>
+        <span class="n">cut_lst</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#define list to</span>
 
         <span class="c1"># Loop over all cells and specify required conditions in order to cut</span>
         <span class="c1"># We cut the upper panel left of each spar. Except for the last cell, here we cut to the</span>
@@ -1266,17 +1246,17 @@ document.write(`
             <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">cond1</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="c1"># Remove the spars from selectioj</span>
-                    <span class="n">cond2</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> <span class="ow">and</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> <span class="c1"># Only upper skin </span>
+                    <span class="n">cond2</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> <span class="ow">and</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> <span class="c1"># Only upper skin</span>
                     <span class="n">cond3</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">spar_loc</span>  <span class="ow">and</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">spar_loc</span> <span class="c1"># Get the panel left of the spar</span>
                     <span class="n">cond4</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">spar_loc</span> <span class="ow">or</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">spar_loc</span> <span class="c1"># Only select panel attached to the spar</span>
                     <span class="k">if</span> <span class="n">cond1</span> <span class="ow">and</span> <span class="n">cond2</span> <span class="ow">and</span> <span class="n">cond3</span> <span class="ow">and</span> <span class="n">cond4</span><span class="p">:</span> <span class="c1"># Combine all statements</span>
                         <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Cut this panel</span>
-                        <span class="n">cut_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pnl</span><span class="p">)</span> 
+                        <span class="n">cut_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pnl</span><span class="p">)</span>
             <span class="c1"># If are at the last cell cut both the left and right panel connected to the spar</span>
             <span class="k">elif</span> <span class="n">idx</span> <span class="o">==</span>  <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">cond1</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span>
-                    <span class="n">cond2</span> <span class="o">=</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span> 
+                    <span class="n">cond2</span> <span class="o">=</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span>
                     <span class="n">cond3</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">spar_loc</span> <span class="ow">or</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">spar_loc</span>
                     <span class="k">if</span> <span class="n">cond1</span> <span class="ow">and</span> <span class="n">cond2</span> <span class="ow">and</span> <span class="n">cond3</span><span class="p">:</span>
                         <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1284,10 +1264,10 @@ document.write(`
             <span class="c1"># In case something goes wrong with the previous statements</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Something went wrong, more iterations were made than there are cells&quot;</span><span class="p">)</span>
-            
+
         <span class="n">cut_lst</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cut_lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">x1</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">x1</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">]))</span><span class="c1"># Sort the cut panels based on their x location.</span>
-            
-        <span class="c1"># Get panels per cell excluding the right spar of that cell </span>
+
+        <span class="c1"># Get panels per cell excluding the right spar of that cell</span>
         <span class="n">pnl_per_cell_lst</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">spar_loc_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="c1"># dimensionalize and insert a zero</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">spar_loc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spar_loc_arr</span><span class="p">):</span>
@@ -1297,7 +1277,7 @@ document.write(`
             <span class="c1"># Conditions for the last cell</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pnl_per_cell_lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span>  <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="n">spar_loc</span><span class="p">])</span>
-            
+
         <span class="n">shear_const_y</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">shear_y</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Iyy</span> <span class="o">-</span> <span class="n">shear_x</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Ixy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ixx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Iyy</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ixy</span><span class="p">)</span> <span class="c1"># define -Sy/Ixx which is used repeatdly</span>
         <span class="n">shear_const_x</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">shear_x</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Ixx</span> <span class="o">-</span> <span class="n">shear_y</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Ixy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ixx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Iyy</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ixy</span><span class="p">)</span> <span class="c1"># define -Sy/Ixx which is used repeatdly</span>
 
@@ -1345,15 +1325,15 @@ document.write(`
                         <span class="n">q_basic</span> <span class="o">+=</span> <span class="n">shear_const_y</span><span class="o">*</span><span class="n">curr_pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">curr_pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_centroid</span><span class="p">)</span> <span class="o">+</span> <span class="n">shear_const_x</span><span class="o">*</span><span class="n">curr_pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">A</span><span class="o">*</span><span class="p">(</span><span class="n">curr_pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_centroid</span><span class="p">)</span>
                         <span class="n">curr_pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">=</span>  <span class="n">q_basic</span>
                         <span class="n">curr_pnl</span><span class="o">.</span><span class="n">set_b1_to_b2_vector</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span> 
+                <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No connecting panel was found&quot;</span><span class="p">)</span>
 
 
         <span class="c1">#=========================================================================</span>
-        <span class="c1"># Now Compute the complementary shear flows and the twist per unit lengt   </span>
+        <span class="c1"># Now Compute the complementary shear flows and the twist per unit lengt</span>
         <span class="c1">#========================================================================</span>
 
-        <span class="c1"># Get the panel per cell, that is the fully defined cell. </span>
+        <span class="c1"># Get the panel per cell, that is the fully defined cell.</span>
         <span class="n">pnl_per_cell_lst2</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">spar_loc_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">chord</span> <span class="c1"># dimensionalize and insert a zero</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">spar_loc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spar_loc_arr</span><span class="p">):</span>
@@ -1363,15 +1343,15 @@ document.write(`
             <span class="c1"># Conditions for the last cell</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pnl_per_cell_lst2</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span>  <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="n">spar_loc</span><span class="p">])</span>
-        
-        <span class="c1"># Define A and b matrix to compute qs,1 qs,2 \cdots qs,n and dtheta/dz </span>
+
+        <span class="c1"># Define A and b matrix to compute qs,1 qs,2 \cdots qs,n and dtheta/dz</span>
         <span class="n">n_cell</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span>  <span class="c1"># shortcut to amount of cells</span>
         <span class="n">b_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">A_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_cell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,))</span>
 
         <span class="c1"># Set up the equations for the twist per unit length in array A</span>
-        <span class="c1"># Everything counterclockwise (ccw) is set up as positive. We can check whether something is ccw </span>
-        <span class="c1"># as we have the direction the q_basic was set up and the centroid of each cell thus a simple cross </span>
+        <span class="c1"># Everything counterclockwise (ccw) is set up as positive. We can check whether something is ccw</span>
+        <span class="c1"># as we have the direction the q_basic was set up and the centroid of each cell thus a simple cross</span>
         <span class="c1"># product will tell us so</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pnl_per_cell_lst2</span><span class="p">):</span>
             <span class="c1"># Flag to easily verify whether the cell geometry selection makes sense</span>
@@ -1401,7 +1381,7 @@ document.write(`
                 <span class="n">A_arr</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">n_cell</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">area_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">*</span><span class="n">shear_mod</span>
                 <span class="n">A_arr</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="n">cell</span> <span class="k">if</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">x_min</span><span class="p">)])</span>
                 <span class="n">A_arr</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span> 
+            <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Something went wrong, more iterations were made then there were cells&quot;</span><span class="p">)</span>
 
         <span class="c1"># Set up eqautions for twist per unit legnth but in b array</span>
@@ -1410,7 +1390,7 @@ document.write(`
             <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
                 <span class="n">r_abs_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">,</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">r_rel_vec</span> <span class="o">=</span> <span class="n">r_abs_vec</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroid_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+                <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_rel_vec</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">))</span>
                     <span class="n">b_ele</span> <span class="o">+=</span> <span class="n">sign</span><span class="o">*</span><span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span><span class="o">*</span><span class="n">pnl</span><span class="o">.</span><span class="n">length</span><span class="p">()</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span>
                 <span class="c1"># When we have a panel that was not cut, they do not have a defined direction yet and it does not matter since magnitude is 0</span>
@@ -1425,7 +1405,7 @@ document.write(`
         <span class="c1"># Contribution from the complementary shear flows</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pnl_per_cell_lst2</span><span class="p">):</span>
             <span class="n">A_arr</span><span class="p">[</span><span class="n">n_cell</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">area_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        
+
         <span class="c1"># Contribution to b_arr from basic shear flows and shear force itself</span>
         <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -1452,7 +1432,7 @@ document.write(`
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pnl_per_cell_lst2</span><span class="p">):</span>
             <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">])</span> <span class="c1"># get maximum x value in cell (will help us find spars)</span>
             <span class="n">x_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">])</span> <span class="c1"># idem but for  minimum</span>
-            <span class="c1"># Now we will loop over all panel </span>
+            <span class="c1"># Now we will loop over all panel</span>
             <span class="k">for</span> <span class="n">pnl</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
                 <span class="n">r_abs_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">,</span> <span class="p">(</span><span class="n">pnl</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">r_rel_vec</span> <span class="o">=</span> <span class="n">r_abs_vec</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">centroid_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
@@ -1465,7 +1445,7 @@ document.write(`
                     <span class="c1"># Else if it not on the right spar just add qs0</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># Check if it was not the cut panel</span>
-                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_rel_vec</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">))</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span>  <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">+</span> <span class="n">sign</span><span class="o">*</span><span class="n">qs_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span>
@@ -1495,7 +1475,7 @@ document.write(`
                     <span class="c1"># Else if it not on the right spar just add qs,n</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># Check if it was not the cut panel</span>
-                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_rel_vec</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">))</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span>  <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">+</span> <span class="n">sign</span><span class="o">*</span><span class="n">qs_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span>
@@ -1520,7 +1500,7 @@ document.write(`
                     <span class="c1"># Else if  just add qs,n. As no other influece needs to be taken into account</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># Check if it was not the cut panel</span>
-                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+                        <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_rel_vec</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">))</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span>  <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">+</span> <span class="n">sign</span><span class="o">*</span><span class="n">qs_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                             <span class="n">pnl</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span>
@@ -1542,7 +1522,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.plot_direct_stresses">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.plot_direct_stresses">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_direct_stresses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_direct_stresses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the direct stresses in the booms of the wingbox.</span>
 
@@ -1558,7 +1538,7 @@ document.write(`
         <span class="n">y_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
         <span class="n">stress_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">sigma</span><span class="o">/</span><span class="mf">1e6</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
         <span class="n">hover_data</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;stress = </span><span class="si">{</span><span class="n">i</span><span class="o">.</span><span class="n">sigma</span><span class="o">/</span><span class="mf">1e6</span><span class="si">}</span><span class="s2"> Mpa&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boom_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">x_lst</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span> <span class="n">y_lst</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span> <span class="n">stress_arr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span> <span class="s2">&quot;Direct stress&quot;</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">x_lst</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span> <span class="n">y_lst</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">stress_arr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span> <span class="s2">&quot;Direct stress&quot;</span><span class="p">)</span>
         <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
                         <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                         <span class="n">color</span><span class="o">=</span><span class="s1">&#39;DarkSlateGrey&#39;</span><span class="p">)),</span>
@@ -1570,7 +1550,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.plot_shear_stress">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.plot_shear_stress">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_shear_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_shear_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the shear stress in the panels of the wingbox.</span>
 
@@ -1604,8 +1584,9 @@ document.write(`
             <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">panel</span><span class="o">.</span><span class="n">b1</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">panel</span><span class="o">.</span><span class="n">b2</span><span class="o">.</span><span class="n">y</span><span class="p">]</span>
             <span class="n">stress</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">tau</span><span class="o">/</span><span class="mf">1e6</span><span class="p">)</span>
             <span class="n">hover_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Panel: </span><span class="si">{</span><span class="n">panel</span><span class="o">.</span><span class="n">pid</span><span class="si">}</span><span class="s2">, Stress: </span><span class="si">{</span><span class="n">stress</span><span class="si">}</span><span class="s2"> MPa&quot;</span>  <span class="c1"># Modify as needed</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">stress</span><span class="p">))</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;rgb&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">coli</span><span class="p">))</span> <span class="k">for</span> <span class="n">coli</span> <span class="ow">in</span> <span class="n">cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">stress</span><span class="p">))]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;DEBUG col&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;rgb(&quot;</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">col</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
 
             <span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
                 <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
@@ -1640,7 +1621,7 @@ document.write(`
         <span class="c1"># Rest of your layout and figure code</span>
 <div class="viewcode-block" id="IdealWingbox.plot_quiver_shear_stress">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.plot_quiver_shear_stress">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_quiver_shear_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">.020</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_quiver_shear_stress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">.020</span><span class="p">,</span> <span class="n">arrow_scale</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the shear stress directions in the panels of the wingbox using a quiver plot.</span>
 
@@ -1686,7 +1667,7 @@ document.write(`
 
 <div class="viewcode-block" id="IdealWingbox.plot_geometry">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.IdealWingbox.plot_geometry">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the geometry of the wingbox, showing the discretized panels and booms.</span>
 
@@ -1742,7 +1723,7 @@ document.write(`
 
 <div class="viewcode-block" id="read_coord">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.read_coord">[docs]</a>
-<span class="k">def</span> <span class="nf">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns an m x 2 array of the airfoil coordinates based on a Selig formatted .dat file.</span>
 
@@ -1771,10 +1752,10 @@ document.write(`
 
 <div class="viewcode-block" id="spline_airfoil_coord">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.spline_airfoil_coord">[docs]</a>
-<span class="k">def</span> <span class="nf">spline_airfoil_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">CubicSpline</span><span class="p">,</span> <span class="n">CubicSpline</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">spline_airfoil_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">CubicSpline</span><span class="p">,</span> <span class="n">CubicSpline</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns two functions which interpolate the coordinates of the given airfoil. The first function interpolates the top skin,</span>
-<span class="sd">    and the second function interpolates the bottom skin. The resulting interpolation functions take into account an airfoil </span>
+<span class="sd">    and the second function interpolates the bottom skin. The resulting interpolation functions take into account an airfoil</span>
 <span class="sd">    scaled by the given chord.</span>
 
 <span class="sd">    Parameters</span>
@@ -1788,7 +1769,7 @@ document.write(`
 <span class="sd">        A cubic spline of the top skin and lower skin, respectively.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    
+
     <span class="n">coord_scaled</span> <span class="o">=</span> <span class="n">read_coord</span><span class="p">(</span><span class="n">path_coord</span><span class="p">)</span><span class="o">*</span><span class="n">chord</span> <span class="c1"># coordinates of airfoil scaled by the chord</span>
     <span class="n">top_coord</span> <span class="o">=</span>  <span class="n">coord_scaled</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">coord_scaled</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span> <span class="p">:]</span> <span class="c1">#coordinates of top skin</span>
     <span class="n">top_coord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">top_coord</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1801,11 +1782,11 @@ document.write(`
 
 <div class="viewcode-block" id="get_centroids">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.get_centroids">[docs]</a>
-<span class="k">def</span> <span class="nf">get_centroids</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_centroids</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.</span>
 <span class="sd">    The centroids are computed assuming the following:</span>
-<span class="sd">     </span>
+
 <span class="sd">    .. admonition:: Assumptions</span>
 
 <span class="sd">        1. It is only based on the skin, i.e., the spar webs and stringers are ignored. Additionally, the different thickness of the skin are not taken into account.</span>
@@ -1836,7 +1817,7 @@ document.write(`
 
 <div class="viewcode-block" id="discretize_airfoil">
 <a class="viewcode-back" href="../../../wingbox.html#tuduam.structures.wingbox.discretize_airfoil">[docs]</a>
-<span class="k">def</span> <span class="nf">discretize_airfoil</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span><span class="n">Wingbox</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IdealWingbox</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">discretize_airfoil</span><span class="p">(</span><span class="n">path_coord</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">chord</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">wingbox_struct</span><span class="p">:</span><span class="n">Wingbox</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IdealWingbox</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a discretized airfoil according to the principles of Megson based on a path to a txt file containing</span>
 <span class="sd">    the non-dimensional coordinates of the airfoil, the corresponding chord, and the wingbox data structure fully filled in.</span>
@@ -1877,7 +1858,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-    
+
     <span class="c1"># Check  wingbox data structure</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_sk_cell</span><span class="p">)</span> <span class="o">==</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">,</span> <span class="s2">&quot;Length of t_sk_cell should be equal to the amount of cells&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="o">.</span><span class="n">str_cell</span><span class="p">)</span> <span class="o">==</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">n_cell</span><span class="p">,</span> <span class="s2">&quot;Length of str_cell should be equal to the amount of cells&quot;</span>
@@ -1897,28 +1878,28 @@ document.write(`
 
     <span class="n">x_boom_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
-    <span class="c1">#TODO create a new x_boom_loc </span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">loc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spar_loc_lst</span><span class="p">):</span> 
+    <span class="c1">#TODO create a new x_boom_loc</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">loc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">spar_loc_lst</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spar_loc_lst</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">len_cell</span> <span class="o">=</span> <span class="n">spar_loc_lst</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">loc</span>
-            <span class="c1"># A 0.1 starting point is chosen to avoid </span>
-            <span class="n">str_tot</span> <span class="o">=</span> <span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> 
-            
+            <span class="c1"># A 0.1 starting point is chosen to avoid</span>
+            <span class="n">str_tot</span> <span class="o">=</span> <span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
-            <span class="c1"># See assumptions, the amount of stringers is supposed to be an even numbers hence </span>
+
+            <span class="c1"># See assumptions, the amount of stringers is supposed to be an even numbers hence</span>
             <span class="c1"># the code below</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">str_tot</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">str_tot</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not an even number and will be floored for conservative reasons&quot;</span><span class="p">)</span>
                     <span class="n">n_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span> 
+                <span class="k">else</span><span class="p">:</span>
                     <span class="n">n_str</span> <span class="o">=</span> <span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
-            <span class="k">else</span><span class="p">:</span> 
+            <span class="k">else</span><span class="p">:</span>
                 <span class="n">str_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">str_tot</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">str_tot</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2"> was not an even number and will be floored for conservative reasons&quot;</span><span class="p">)</span>
                     <span class="n">n_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span> 
+                <span class="k">else</span><span class="p">:</span>
                     <span class="n">n_str</span> <span class="o">=</span> <span class="n">str_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>
 
             <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1926,7 +1907,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">loc_cell</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">loc</span> <span class="p">,</span> <span class="n">spar_loc_lst</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_str</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
             <span class="n">x_boom_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_boom_loc</span><span class="p">,</span> <span class="n">loc_cell</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> 
+        <span class="k">else</span><span class="p">:</span>
             <span class="k">pass</span>
 
 
@@ -1942,7 +1923,7 @@ document.write(`
         <span class="n">boom</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">top_interp</span><span class="p">(</span><span class="n">x_boom</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">boom</span><span class="o">.</span><span class="n">bid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">boom_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">boom_dict</span><span class="p">[</span><span class="n">boom</span><span class="o">.</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">boom</span> 
+            <span class="n">boom_dict</span><span class="p">[</span><span class="n">boom</span><span class="o">.</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">boom</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Boom id </span><span class="si">{</span><span class="n">boom</span><span class="o">.</span><span class="n">bid</span><span class="si">}</span><span class="s2"> already exists in variable boom dictionary&quot;</span><span class="p">)</span>
 
@@ -1950,7 +1931,7 @@ document.write(`
             <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
             <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
             <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span> 
+            <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span>
             <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
             <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span><span class="p">]</span>
             <span class="n">cell_idx</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">get_cell_idx</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span>
@@ -1975,7 +1956,7 @@ document.write(`
         <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">bid</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span> 
+        <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">bid</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span><span class="p">]</span>
         <span class="n">cell_idx</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">get_cell_idx</span><span class="p">(</span><span class="n">wingbox_struct</span><span class="p">,</span> <span class="n">chord</span><span class="p">)</span>
@@ -1997,7 +1978,7 @@ document.write(`
     <span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">=</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_sk_cell</span><span class="p">[</span><span class="n">cell_idx</span><span class="p">]</span>
     <span class="c1">#TODO create the areas  based on sigma ratio</span>
     <span class="n">panel_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="n">pnl</span>
-    <span class="n">pid</span> <span class="o">+=</span><span class="mi">1</span> 
+    <span class="n">pid</span> <span class="o">+=</span><span class="mi">1</span>
 
     <span class="c1"># Create panels on the spar booms</span>
     <span class="k">for</span> <span class="n">spar_loc</span> <span class="ow">in</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">spar_loc_nondim</span><span class="p">:</span>
@@ -2020,7 +2001,7 @@ document.write(`
         <span class="c1"># Create panel connecting upper boom and lower boom</span>
         <span class="n">pnl</span> <span class="o">=</span> <span class="n">IdealPanel</span><span class="p">()</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">pid</span>
-        <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">upper_b</span><span class="o">.</span><span class="n">bid</span> 
+        <span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span> <span class="o">=</span> <span class="n">upper_b</span><span class="o">.</span><span class="n">bid</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">bid2</span> <span class="o">=</span> <span class="n">lower_b</span><span class="o">.</span><span class="n">bid</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span> <span class="o">=</span> <span class="n">wingbox_struct</span><span class="o">.</span><span class="n">t_sp</span>
         <span class="n">pnl</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span>  <span class="n">boom_dict</span><span class="p">[</span><span class="n">pnl</span><span class="o">.</span><span class="n">bid1</span><span class="p">]</span>
@@ -2058,7 +2039,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -2067,8 +2048,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -2081,8 +2060,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2102,7 +2081,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -2115,7 +2094,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

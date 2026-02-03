@@ -14,41 +14,45 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/structural_optimization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Structural Optimization" href="../structural_opt.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -56,31 +60,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -88,7 +77,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -96,20 +84,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -130,83 +125,85 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance
+  </a>
+</li>
+
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link dropdown-item nav-internal" href="../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -221,29 +218,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -252,22 +241,18 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -279,7 +264,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -288,89 +274,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../propulsion.html">
+    Propulsion
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item current active">
-                      <a class="nav-link dropdown-item nav-internal" href="../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -380,15 +361,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -418,29 +395,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -451,7 +431,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../structural_opt.html" class="nav-link">Structural Optimization</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Structural...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Structural Optimization of a wingbox</span></li>
   </ul>
 </nav>
 </div>
@@ -496,7 +476,7 @@ document.write(`
 <p>However, there will be one major change. For the structural analysis of a wingbox only the stringer area is relevant however for the constraints the geometry of said stringers is also important as you will see further up in this notebook.</p>
 <p>So in the optimization of the wingbox we wil add the stringer height, width and thickness to the optimization parameters.</p>
 <p>The parameters which we will optimize for are the skin thickness in each cell, the area of the stringers, the thickness of the spars and finally the stringer of the cell. This leaves the amount of cells, the spar locations and the bay length to be decided by the designers. The reasoning behind this is that usually your rib and spar locations are constrained the  placement of other systems in the wing such as the flap and slat mechanism. Below a summary can be found of the fixed and optimization parameters:</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Optimiziation Parameters</strong></p></th>
 <th class="head"><p><strong>Fixed Parameters</strong></p></th>
@@ -523,6 +503,7 @@ document.write(`
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="laying-out-a-framework-for-a-full-wing-optimization">
 <h1>Laying out a framework for a full wing optimization<a class="headerlink" href="#laying-out-a-framework-for-a-full-wing-optimization" title="Link to this heading">#</a></h1>
@@ -623,478 +604,478 @@ The constraint is expressed below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
-Requirement already satisfied: tuduam in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg (2024.16)
-Requirement already satisfied: numpy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.26.4)
-Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from tuduam) (1.12.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: tuduam in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/ (2026.6)
+Requirement already satisfied: numpy in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from tuduam) (2.4.2)
+Requirement already satisfied: scipy in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from tuduam) (1.17.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">DEPRECATION: Loading egg at /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg is deprecated. pip 24.3 will enforce this behaviour change. A possible replacement is to use pip for package installation. Discussion can be found at https://github.com/pypa/pip/issues/12330</span>
-Requirement already satisfied: pymoo in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (0.6.1.1)
-Requirement already satisfied: numpy&gt;=1.15 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.26.4)
-Requirement already satisfied: scipy&gt;=1.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.12.0)
-Requirement already satisfied: matplotlib&gt;=3 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.9.1)
-Requirement already satisfied: autograd&gt;=1.4 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.6.2)
-Requirement already satisfied: cma==3.2.2 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.2.2)
-Requirement already satisfied: alive-progress in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (3.1.5)
-Requirement already satisfied: dill in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (0.3.8)
-Requirement already satisfied: Deprecated in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from pymoo) (1.2.14)
-Requirement already satisfied: future&gt;=0.15.2 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from autograd&gt;=1.4-&gt;pymoo) (1.0.0)
-Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.2.0)
-Requirement already satisfied: cycler&gt;=0.10 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (0.12.1)
-Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (4.47.2)
-Requirement already satisfied: kiwisolver&gt;=1.3.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.4.5)
-Requirement already satisfied: packaging&gt;=20.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (24.1)
-Requirement already satisfied: pillow&gt;=8 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (10.4.0)
-Requirement already satisfied: pyparsing&gt;=2.3.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (3.1.2)
-Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (2.8.2)
-Requirement already satisfied: about-time==4.2.1 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from alive-progress-&gt;pymoo) (4.2.1)
-Requirement already satisfied: grapheme==0.6.0 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from alive-progress-&gt;pymoo) (0.6.0)
-Requirement already satisfied: wrapt&lt;2,&gt;=1.10 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from Deprecated-&gt;pymoo) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pymoo in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (0.6.1.6)
+Requirement already satisfied: numpy&gt;=1.19.3 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (2.4.2)
+Requirement already satisfied: scipy&gt;=1.1 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (1.17.0)
+Requirement already satisfied: moocore&gt;=0.1.7 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (0.2.0)
+Requirement already satisfied: autograd&gt;=1.4 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (1.8.0)
+Requirement already satisfied: cma&gt;=3.2.2 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (4.4.2)
+Requirement already satisfied: matplotlib&gt;=3 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (3.10.8)
+Requirement already satisfied: alive_progress in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (3.3.0)
+Requirement already satisfied: Deprecated in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from pymoo) (1.3.1)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.3.3)
+Requirement already satisfied: cycler&gt;=0.10 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (4.61.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (1.4.9)
+Requirement already satisfied: packaging&gt;=20.0 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (26.0)
+Requirement already satisfied: pillow&gt;=8 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (12.1.0)
+Requirement already satisfied: pyparsing&gt;=3 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (3.3.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from matplotlib&gt;=3-&gt;pymoo) (2.9.0.post0)
+Requirement already satisfied: cffi&gt;=1.17.1 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from moocore&gt;=0.1.7-&gt;pymoo) (2.0.0)
+Requirement already satisfied: platformdirs in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from moocore&gt;=0.1.7-&gt;pymoo) (4.5.1)
+Requirement already satisfied: pycparser in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from cffi&gt;=1.17.1-&gt;moocore&gt;=0.1.7-&gt;pymoo) (3.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3-&gt;pymoo) (1.16.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: six&gt;=1.5 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=3-&gt;pymoo) (1.17.0)
+Requirement already satisfied: about-time==4.2.1 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from alive_progress-&gt;pymoo) (4.2.1)
+Requirement already satisfied: graphemeu==0.7.2 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from alive_progress-&gt;pymoo) (0.7.2)
+Requirement already satisfied: wrapt&lt;3,&gt;=1.10 in /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages (from Deprecated-&gt;pymoo) (2.1.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;tuduam&#39;...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 1867, done.
-remote: Counting objects:   0% (1/442)
-remote: Counting objects:   1% (5/442)
-remote: Counting objects:   2% (9/442)
-remote: Counting objects:   3% (14/442)
-remote: Counting objects:   4% (18/442)
-remote: Counting objects:   5% (23/442)
-remote: Counting objects:   6% (27/442)
-remote: Counting objects:   7% (31/442)
-remote: Counting objects:   8% (36/442)
-remote: Counting objects:   9% (40/442)
-remote: Counting objects:  10% (45/442)
-remote: Counting objects:  11% (49/442)
-remote: Counting objects:  12% (54/442)
-remote: Counting objects:  13% (58/442)
-remote: Counting objects:  14% (62/442)
-remote: Counting objects:  15% (67/442)
-remote: Counting objects:  16% (71/442)
-remote: Counting objects:  17% (76/442)
-remote: Counting objects:  18% (80/442)
-remote: Counting objects:  19% (84/442)
-remote: Counting objects:  20% (89/442)
-remote: Counting objects:  21% (93/442)
-remote: Counting objects:  22% (98/442)
-remote: Counting objects:  23% (102/442)
-remote: Counting objects:  24% (107/442)
-remote: Counting objects:  25% (111/442)
-remote: Counting objects:  26% (115/442)
-remote: Counting objects:  27% (120/442)
-remote: Counting objects:  28% (124/442)
-remote: Counting objects:  29% (129/442)
-remote: Counting objects:  30% (133/442)
-remote: Counting objects:  31% (138/442)
-remote: Counting objects:  32% (142/442)
-remote: Counting objects:  33% (146/442)
-remote: Counting objects:  34% (151/442)
-remote: Counting objects:  35% (155/442)
-remote: Counting objects:  36% (160/442)
-remote: Counting objects:  37% (164/442)
-remote: Counting objects:  38% (168/442)
-remote: Counting objects:  39% (173/442)
-remote: Counting objects:  40% (177/442)
-remote: Counting objects:  41% (182/442)
-remote: Counting objects:  42% (186/442)
-remote: Counting objects:  43% (191/442)
-remote: Counting objects:  44% (195/442)
-remote: Counting objects:  45% (199/442)
-remote: Counting objects:  46% (204/442)
-remote: Counting objects:  47% (208/442)
-remote: Counting objects:  48% (213/442)
-remote: Counting objects:  49% (217/442)
-remote: Counting objects:  50% (221/442)
-remote: Counting objects:  51% (226/442)
-remote: Counting objects:  52% (230/442)
-remote: Counting objects:  53% (235/442)
-remote: Counting objects:  54% (239/442)
-remote: Counting objects:  55% (244/442)
-remote: Counting objects:  56% (248/442)
-remote: Counting objects:  57% (252/442)
-remote: Counting objects:  58% (257/442)
-remote: Counting objects:  59% (261/442)
-remote: Counting objects:  60% (266/442)
-remote: Counting objects:  61% (270/442)
-remote: Counting objects:  62% (275/442)
-remote: Counting objects:  63% (279/442)
-remote: Counting objects:  64% (283/442)
-remote: Counting objects:  65% (288/442)
-remote: Counting objects:  66% (292/442)
-remote: Counting objects:  67% (297/442)
-remote: Counting objects:  68% (301/442)
-remote: Counting objects:  69% (305/442)
-remote: Counting objects:  70% (310/442)
-remote: Counting objects:  71% (314/442)
-remote: Counting objects:  72% (319/442)
-remote: Counting objects:  73% (323/442)
-remote: Counting objects:  74% (328/442)
-remote: Counting objects:  75% (332/442)
-remote: Counting objects:  76% (336/442)
-remote: Counting objects:  77% (341/442)
-remote: Counting objects:  78% (345/442)
-remote: Counting objects:  79% (350/442)
-remote: Counting objects:  80% (354/442)
-remote: Counting objects:  81% (359/442)
-remote: Counting objects:  82% (363/442)
-remote: Counting objects:  83% (367/442)
-remote: Counting objects:  84% (372/442)
-remote: Counting objects:  85% (376/442)
-remote: Counting objects:  86% (381/442)
-remote: Counting objects:  87% (385/442)
-remote: Counting objects:  88% (389/442)
-remote: Counting objects:  89% (394/442)
-remote: Counting objects:  90% (398/442)
-remote: Counting objects:  91% (403/442)
-remote: Counting objects:  92% (407/442)
-remote: Counting objects:  93% (412/442)
-remote: Counting objects:  94% (416/442)
-remote: Counting objects:  95% (420/442)
-remote: Counting objects:  96% (425/442)
-remote: Counting objects:  97% (429/442)
-remote: Counting objects:  98% (434/442)
-remote: Counting objects:  99% (438/442)
-remote: Counting objects: 100% (442/442)
-remote: Counting objects: 100% (442/442), done.
-remote: Compressing objects:   0% (1/261)
-remote: Compressing objects:   1% (3/261)
-remote: Compressing objects:   2% (6/261)
-remote: Compressing objects:   3% (8/261)
-remote: Compressing objects:   4% (11/261)
-remote: Compressing objects:   5% (14/261)
-remote: Compressing objects:   6% (16/261)
-remote: Compressing objects:   7% (19/261)
-remote: Compressing objects:   8% (21/261)
-remote: Compressing objects:   9% (24/261)
-remote: Compressing objects:  10% (27/261)
-remote: Compressing objects:  11% (29/261)
-remote: Compressing objects:  12% (32/261)
-remote: Compressing objects:  13% (34/261)
-remote: Compressing objects:  14% (37/261)
-remote: Compressing objects:  15% (40/261)
-remote: Compressing objects:  16% (42/261)
-remote: Compressing objects:  17% (45/261)
-remote: Compressing objects:  18% (47/261)
-remote: Compressing objects:  19% (50/261)
-remote: Compressing objects:  20% (53/261)
-remote: Compressing objects:  21% (55/261)
-remote: Compressing objects:  22% (58/261)
-remote: Compressing objects:  23% (61/261)
-remote: Compressing objects:  24% (63/261)
-remote: Compressing objects:  25% (66/261)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 1991, done.
+remote: Counting objects:   0% (1/566)
+remote: Counting objects:   1% (6/566)
+remote: Counting objects:   2% (12/566)
+remote: Counting objects:   3% (17/566)
+remote: Counting objects:   4% (23/566)
+remote: Counting objects:   5% (29/566)
+remote: Counting objects:   6% (34/566)
+remote: Counting objects:   7% (40/566)
+remote: Counting objects:   8% (46/566)
+remote: Counting objects:   9% (51/566)
+remote: Counting objects:  10% (57/566)
+remote: Counting objects:  11% (63/566)
+remote: Counting objects:  12% (68/566)
+remote: Counting objects:  13% (74/566)
+remote: Counting objects:  14% (80/566)
+remote: Counting objects:  15% (85/566)
+remote: Counting objects:  16% (91/566)
+remote: Counting objects:  17% (97/566)
+remote: Counting objects:  18% (102/566)
+remote: Counting objects:  19% (108/566)
+remote: Counting objects:  20% (114/566)
+remote: Counting objects:  21% (119/566)
+remote: Counting objects:  22% (125/566)
+remote: Counting objects:  23% (131/566)
+remote: Counting objects:  24% (136/566)
+remote: Counting objects:  25% (142/566)
+remote: Counting objects:  26% (148/566)
+remote: Counting objects:  27% (153/566)
+remote: Counting objects:  28% (159/566)
+remote: Counting objects:  29% (165/566)
+remote: Counting objects:  30% (170/566)
+remote: Counting objects:  31% (176/566)
+remote: Counting objects:  32% (182/566)
+remote: Counting objects:  33% (187/566)
+remote: Counting objects:  34% (193/566)
+remote: Counting objects:  35% (199/566)
+remote: Counting objects:  36% (204/566)
+remote: Counting objects:  37% (210/566)
+remote: Counting objects:  38% (216/566)
+remote: Counting objects:  39% (221/566)
+remote: Counting objects:  40% (227/566)
+remote: Counting objects:  41% (233/566)
+remote: Counting objects:  42% (238/566)
+remote: Counting objects:  43% (244/566)
+remote: Counting objects:  44% (250/566)
+remote: Counting objects:  45% (255/566)
+remote: Counting objects:  46% (261/566)
+remote: Counting objects:  47% (267/566)
+remote: Counting objects:  48% (272/566)
+remote: Counting objects:  49% (278/566)
+remote: Counting objects:  50% (283/566)
+remote: Counting objects:  51% (289/566)
+remote: Counting objects:  52% (295/566)
+remote: Counting objects:  53% (300/566)
+remote: Counting objects:  54% (306/566)
+remote: Counting objects:  55% (312/566)
+remote: Counting objects:  56% (317/566)
+remote: Counting objects:  57% (323/566)
+remote: Counting objects:  58% (329/566)
+remote: Counting objects:  59% (334/566)
+remote: Counting objects:  60% (340/566)
+remote: Counting objects:  61% (346/566)
+remote: Counting objects:  62% (351/566)
+remote: Counting objects:  63% (357/566)
+remote: Counting objects:  64% (363/566)
+remote: Counting objects:  65% (368/566)
+remote: Counting objects:  66% (374/566)
+remote: Counting objects:  67% (380/566)
+remote: Counting objects:  68% (385/566)
+remote: Counting objects:  69% (391/566)
+remote: Counting objects:  70% (397/566)
+remote: Counting objects:  71% (402/566)
+remote: Counting objects:  72% (408/566)
+remote: Counting objects:  73% (414/566)
+remote: Counting objects:  74% (419/566)
+remote: Counting objects:  75% (425/566)
+remote: Counting objects:  76% (431/566)
+remote: Counting objects:  77% (436/566)
+remote: Counting objects:  78% (442/566)
+remote: Counting objects:  79% (448/566)
+remote: Counting objects:  80% (453/566)
+remote: Counting objects:  81% (459/566)
+remote: Counting objects:  82% (465/566)
+remote: Counting objects:  83% (470/566)
+remote: Counting objects:  84% (476/566)
+remote: Counting objects:  85% (482/566)
+remote: Counting objects:  86% (487/566)
+remote: Counting objects:  87% (493/566)
+remote: Counting objects:  88% (499/566)
+remote: Counting objects:  89% (504/566)
+remote: Counting objects:  90% (510/566)
+remote: Counting objects:  91% (516/566)
+remote: Counting objects:  92% (521/566)
+remote: Counting objects:  93% (527/566)
+remote: Counting objects:  94% (533/566)
+remote: Counting objects:  95% (538/566)
+remote: Counting objects:  96% (544/566)
+remote: Counting objects:  97% (550/566)
+remote: Counting objects:  98% (555/566)
+remote: Counting objects:  99% (561/566)
+remote: Counting objects: 100% (566/566)
+remote: Counting objects: 100% (566/566), done.
+remote: Compressing objects:   0% (1/333)
+remote: Compressing objects:   1% (4/333)
+remote: Compressing objects:   2% (7/333)
+remote: Compressing objects:   3% (10/333)
+remote: Compressing objects:   4% (14/333)
+remote: Compressing objects:   5% (17/333)
+remote: Compressing objects:   6% (20/333)
+remote: Compressing objects:   7% (24/333)
+remote: Compressing objects:   8% (27/333)
+remote: Compressing objects:   9% (30/333)
+remote: Compressing objects:  10% (34/333)
+remote: Compressing objects:  11% (37/333)
+remote: Compressing objects:  12% (40/333)
+remote: Compressing objects:  13% (44/333)
+remote: Compressing objects:  14% (47/333)
+remote: Compressing objects:  15% (50/333)
+remote: Compressing objects:  16% (54/333)
+remote: Compressing objects:  17% (57/333)
+remote: Compressing objects:  18% (60/333)
+remote: Compressing objects:  19% (64/333)
+remote: Compressing objects:  20% (67/333)
+remote: Compressing objects:  21% (70/333)
+remote: Compressing objects:  22% (74/333)
+remote: Compressing objects:  23% (77/333)
+remote: Compressing objects:  24% (80/333)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  26% (68/261)
-remote: Compressing objects:  27% (71/261)
-remote: Compressing objects:  28% (74/261)
-remote: Compressing objects:  29% (76/261)
-remote: Compressing objects:  30% (79/261)
-remote: Compressing objects:  31% (81/261)
-remote: Compressing objects:  32% (84/261)
-remote: Compressing objects:  33% (87/261)
-remote: Compressing objects:  34% (89/261)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  25% (84/333)
+remote: Compressing objects:  26% (87/333)
+remote: Compressing objects:  27% (90/333)
+remote: Compressing objects:  28% (94/333)
+remote: Compressing objects:  29% (97/333)
+remote: Compressing objects:  30% (100/333)
+remote: Compressing objects:  31% (104/333)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  35% (92/261)
-remote: Compressing objects:  36% (94/261)
-remote: Compressing objects:  37% (97/261)
-remote: Compressing objects:  38% (100/261)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  32% (107/333)
+remote: Compressing objects:  33% (110/333)
+remote: Compressing objects:  34% (114/333)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  39% (102/261)
-remote: Compressing objects:  40% (105/261)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  35% (117/333)
+remote: Compressing objects:  36% (120/333)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  41% (108/261)
-remote: Compressing objects:  42% (110/261)
-remote: Compressing objects:  43% (113/261)
-remote: Compressing objects:  44% (115/261)
-remote: Compressing objects:  45% (118/261)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  37% (124/333)
+remote: Compressing objects:  38% (127/333)
+remote: Compressing objects:  39% (130/333)
+remote: Compressing objects:  40% (134/333)
+remote: Compressing objects:  41% (137/333)
+remote: Compressing objects:  42% (140/333)
+remote: Compressing objects:  43% (144/333)
+remote: Compressing objects:  44% (147/333)
+remote: Compressing objects:  45% (150/333)
+remote: Compressing objects:  46% (154/333)
+remote: Compressing objects:  47% (157/333)
+remote: Compressing objects:  48% (160/333)
+remote: Compressing objects:  49% (164/333)
+remote: Compressing objects:  50% (167/333)
+remote: Compressing objects:  51% (170/333)
+remote: Compressing objects:  52% (174/333)
+remote: Compressing objects:  53% (177/333)
+remote: Compressing objects:  54% (180/333)
+remote: Compressing objects:  55% (184/333)
+remote: Compressing objects:  56% (187/333)
+remote: Compressing objects:  57% (190/333)
+remote: Compressing objects:  58% (194/333)
+remote: Compressing objects:  59% (197/333)
+remote: Compressing objects:  60% (200/333)
+remote: Compressing objects:  61% (204/333)
+remote: Compressing objects:  62% (207/333)
+remote: Compressing objects:  63% (210/333)
+remote: Compressing objects:  64% (214/333)
+remote: Compressing objects:  65% (217/333)
+remote: Compressing objects:  66% (220/333)
+remote: Compressing objects:  67% (224/333)
+remote: Compressing objects:  68% (227/333)
+remote: Compressing objects:  69% (230/333)
+remote: Compressing objects:  70% (234/333)
+remote: Compressing objects:  71% (237/333)
+remote: Compressing objects:  72% (240/333)
+remote: Compressing objects:  73% (244/333)
+remote: Compressing objects:  74% (247/333)
+remote: Compressing objects:  75% (250/333)
+remote: Compressing objects:  76% (254/333)
+remote: Compressing objects:  77% (257/333)
+remote: Compressing objects:  78% (260/333)
+remote: Compressing objects:  79% (264/333)
+remote: Compressing objects:  80% (267/333)
+remote: Compressing objects:  81% (270/333)
+remote: Compressing objects:  82% (274/333)
+remote: Compressing objects:  83% (277/333)
+remote: Compressing objects:  84% (280/333)
+remote: Compressing objects:  85% (284/333)
+remote: Compressing objects:  86% (287/333)
+remote: Compressing objects:  87% (290/333)
+remote: Compressing objects:  88% (294/333)
+remote: Compressing objects:  89% (297/333)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  46% (121/261)
-remote: Compressing objects:  47% (123/261)
-remote: Compressing objects:  48% (126/261)
-remote: Compressing objects:  49% (128/261)
-remote: Compressing objects:  50% (131/261)
-remote: Compressing objects:  51% (134/261)
-remote: Compressing objects:  52% (136/261)
-remote: Compressing objects:  53% (139/261)
-remote: Compressing objects:  54% (141/261)
-remote: Compressing objects:  55% (144/261)
-remote: Compressing objects:  56% (147/261)
-remote: Compressing objects:  57% (149/261)
-remote: Compressing objects:  58% (152/261)
-remote: Compressing objects:  59% (154/261)
-remote: Compressing objects:  60% (157/261)
-remote: Compressing objects:  61% (160/261)
-remote: Compressing objects:  62% (162/261)
-remote: Compressing objects:  63% (165/261)
-remote: Compressing objects:  64% (168/261)
-remote: Compressing objects:  65% (170/261)
-remote: Compressing objects:  66% (173/261)
-remote: Compressing objects:  67% (175/261)
-remote: Compressing objects:  68% (178/261)
-remote: Compressing objects:  69% (181/261)
-remote: Compressing objects:  70% (183/261)
-remote: Compressing objects:  71% (186/261)
-remote: Compressing objects:  72% (188/261)
-remote: Compressing objects:  73% (191/261)
-remote: Compressing objects:  74% (194/261)
-remote: Compressing objects:  75% (196/261)
-remote: Compressing objects:  76% (199/261)
-remote: Compressing objects:  77% (201/261)
-remote: Compressing objects:  78% (204/261)
-remote: Compressing objects:  79% (207/261)
-remote: Compressing objects:  80% (209/261)
-remote: Compressing objects:  81% (212/261)
-remote: Compressing objects:  82% (215/261)
-remote: Compressing objects:  83% (217/261)
-remote: Compressing objects:  84% (220/261)
-remote: Compressing objects:  85% (222/261)
-remote: Compressing objects:  86% (225/261)
-remote: Compressing objects:  87% (228/261)
-remote: Compressing objects:  88% (230/261)
-remote: Compressing objects:  89% (233/261)
-remote: Compressing objects:  90% (235/261)
-remote: Compressing objects:  91% (238/261)
-remote: Compressing objects:  92% (241/261)
-remote: Compressing objects:  93% (243/261)
-remote: Compressing objects:  94% (246/261)
-remote: Compressing objects:  95% (248/261)
-remote: Compressing objects:  96% (251/261)
-remote: Compressing objects:  97% (254/261)
-remote: Compressing objects:  98% (256/261)
-remote: Compressing objects:  99% (259/261)
-remote: Compressing objects: 100% (261/261)
-remote: Compressing objects: 100% (261/261), done.
-Receiving objects:   0% (1/1867)
-Receiving objects:   1% (19/1867)
-Receiving objects:   2% (38/1867)
-Receiving objects:   3% (57/1867)
-Receiving objects:   4% (75/1867)
-Receiving objects:   5% (94/1867)
-Receiving objects:   6% (113/1867)
-Receiving objects:   7% (131/1867)
-Receiving objects:   8% (150/1867)
-Receiving objects:   9% (169/1867)
-Receiving objects:  10% (187/1867)
-Receiving objects:  11% (206/1867)
-Receiving objects:  12% (225/1867)
-Receiving objects:  13% (243/1867)
-Receiving objects:  14% (262/1867)
-Receiving objects:  15% (281/1867)
-Receiving objects:  16% (299/1867)
-Receiving objects:  17% (318/1867)
-Receiving objects:  18% (337/1867)
-Receiving objects:  19% (355/1867)
-Receiving objects:  20% (374/1867)
-Receiving objects:  21% (393/1867)
-Receiving objects:  22% (411/1867)
-Receiving objects:  23% (430/1867)
-Receiving objects:  24% (449/1867)
-Receiving objects:  25% (467/1867)
-Receiving objects:  26% (486/1867)
-Receiving objects:  27% (505/1867)
-Receiving objects:  28% (523/1867)
-Receiving objects:  29% (542/1867)
-Receiving objects:  30% (561/1867)
-Receiving objects:  31% (579/1867)
-Receiving objects:  32% (598/1867)
-Receiving objects:  33% (617/1867)
-Receiving objects:  34% (635/1867)
-Receiving objects:  35% (654/1867)
-Receiving objects:  36% (673/1867)
-Receiving objects:  37% (691/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  90% (300/333)
+remote: Compressing objects:  91% (304/333)
+remote: Compressing objects:  92% (307/333)
+remote: Compressing objects:  93% (310/333)
+remote: Compressing objects:  94% (314/333)
+remote: Compressing objects:  95% (317/333)
+remote: Compressing objects:  96% (320/333)
+remote: Compressing objects:  97% (324/333)
+remote: Compressing objects:  98% (327/333)
+remote: Compressing objects:  99% (330/333)
+remote: Compressing objects: 100% (333/333)
+remote: Compressing objects: 100% (333/333), done.
+Receiving objects:   0% (1/1991)
+Receiving objects:   1% (20/1991)
+Receiving objects:   2% (40/1991)
+Receiving objects:   3% (60/1991)
+Receiving objects:   4% (80/1991)
+Receiving objects:   5% (100/1991)
+Receiving objects:   6% (120/1991)
+Receiving objects:   7% (140/1991)
+Receiving objects:   8% (160/1991)
+Receiving objects:   9% (180/1991)
+Receiving objects:  10% (200/1991)
+Receiving objects:  11% (220/1991)
+Receiving objects:  12% (239/1991)
+Receiving objects:  13% (259/1991)
+Receiving objects:  14% (279/1991)
+Receiving objects:  15% (299/1991)
+Receiving objects:  16% (319/1991)
+Receiving objects:  17% (339/1991)
+Receiving objects:  18% (359/1991)
+Receiving objects:  19% (379/1991)
+Receiving objects:  20% (399/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  38% (710/1867)
-Receiving objects:  39% (729/1867)
-Receiving objects:  40% (747/1867)
-Receiving objects:  41% (766/1867)
-Receiving objects:  42% (785/1867)
-Receiving objects:  43% (803/1867)
-Receiving objects:  44% (822/1867)
-Receiving objects:  45% (841/1867)
-Receiving objects:  46% (859/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  21% (419/1991)
+Receiving objects:  22% (439/1991)
+Receiving objects:  23% (458/1991)
+Receiving objects:  24% (478/1991)
+Receiving objects:  25% (498/1991)
+Receiving objects:  26% (518/1991)
+Receiving objects:  27% (538/1991)
+Receiving objects:  28% (558/1991)
+Receiving objects:  29% (578/1991)
+Receiving objects:  30% (598/1991)
+Receiving objects:  31% (618/1991)
+Receiving objects:  32% (638/1991)
+Receiving objects:  33% (658/1991)
+Receiving objects:  34% (677/1991)
+Receiving objects:  35% (697/1991)
+Receiving objects:  36% (717/1991)
+Receiving objects:  37% (737/1991)
+Receiving objects:  38% (757/1991)
+Receiving objects:  39% (777/1991)
+Receiving objects:  40% (797/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  47% (878/1867)
-Receiving objects:  48% (897/1867)
-Receiving objects:  49% (915/1867)
-Receiving objects:  50% (934/1867)
-Receiving objects:  51% (953/1867)
-Receiving objects:  52% (971/1867)
-Receiving objects:  53% (990/1867)
-Receiving objects:  54% (1009/1867)
-Receiving objects:  55% (1027/1867)
-Receiving objects:  56% (1046/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  41% (817/1991)
+Receiving objects:  42% (837/1991)
+Receiving objects:  43% (857/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  57% (1065/1867)
-Receiving objects:  58% (1083/1867)
-Receiving objects:  59% (1102/1867)
-Receiving objects:  60% (1121/1867)
-Receiving objects:  61% (1139/1867)
-Receiving objects:  62% (1158/1867)
-Receiving objects:  63% (1177/1867)
-Receiving objects:  64% (1195/1867)
-Receiving objects:  65% (1214/1867)
-Receiving objects:  66% (1233/1867)
-Receiving objects:  67% (1251/1867)
-Receiving objects:  68% (1270/1867)
-Receiving objects:  69% (1289/1867)
-Receiving objects:  70% (1307/1867)
-Receiving objects:  71% (1326/1867)
-Receiving objects:  72% (1345/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  44% (877/1991)
+Receiving objects:  45% (896/1991)
+Receiving objects:  46% (916/1991)
+Receiving objects:  47% (936/1991)
+Receiving objects:  48% (956/1991)
+Receiving objects:  49% (976/1991)
+Receiving objects:  50% (996/1991)
+Receiving objects:  51% (1016/1991)
+Receiving objects:  52% (1036/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  73% (1363/1867)
-Receiving objects:  74% (1382/1867)
-Receiving objects:  75% (1401/1867)
-Receiving objects:  76% (1419/1867)
-Receiving objects:  77% (1438/1867)
-Receiving objects:  78% (1457/1867)
-Receiving objects:  79% (1475/1867)
-Receiving objects:  80% (1494/1867)
-Receiving objects:  81% (1513/1867)
-Receiving objects:  82% (1531/1867)
-Receiving objects:  83% (1550/1867)
-Receiving objects:  84% (1569/1867)
-Receiving objects:  85% (1587/1867)
-Receiving objects:  86% (1606/1867)
-Receiving objects:  87% (1625/1867)
-Receiving objects:  88% (1643/1867)
-Receiving objects:  89% (1662/1867)
-Receiving objects:  90% (1681/1867)
-Receiving objects:  91% (1699/1867)
-Receiving objects:  92% (1718/1867)
-Receiving objects:  93% (1737/1867)
-Receiving objects:  94% (1755/1867)
-Receiving objects:  95% (1774/1867)
-Receiving objects:  96% (1793/1867)
-Receiving objects:  97% (1811/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  53% (1056/1991)
+Receiving objects:  54% (1076/1991)
+Receiving objects:  55% (1096/1991)
+Receiving objects:  56% (1115/1991)
+Receiving objects:  57% (1135/1991)
+Receiving objects:  58% (1155/1991)
+Receiving objects:  59% (1175/1991)
+Receiving objects:  60% (1195/1991)
+Receiving objects:  61% (1215/1991)
+Receiving objects:  62% (1235/1991)
+Receiving objects:  63% (1255/1991)
+Receiving objects:  64% (1275/1991)
+Receiving objects:  65% (1295/1991)
+Receiving objects:  66% (1315/1991)
+Receiving objects:  67% (1334/1991)
+Receiving objects:  68% (1354/1991)
+Receiving objects:  69% (1374/1991)
+Receiving objects:  70% (1394/1991)
+Receiving objects:  71% (1414/1991)
+Receiving objects:  72% (1434/1991)
+Receiving objects:  73% (1454/1991)
+Receiving objects:  74% (1474/1991)
+Receiving objects:  75% (1494/1991)
+Receiving objects:  76% (1514/1991)
+Receiving objects:  77% (1534/1991)
+Receiving objects:  78% (1553/1991)
+Receiving objects:  79% (1573/1991)
+Receiving objects:  80% (1593/1991)
+Receiving objects:  81% (1613/1991)
+Receiving objects:  82% (1633/1991)
+Receiving objects:  83% (1653/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  98% (1830/1867)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  84% (1673/1991)
+Receiving objects:  85% (1693/1991)
+Receiving objects:  86% (1713/1991)
+Receiving objects:  87% (1733/1991)
+Receiving objects:  88% (1753/1991)
+Receiving objects:  89% (1772/1991)
+Receiving objects:  90% (1792/1991)
+Receiving objects:  91% (1812/1991)
+Receiving objects:  92% (1832/1991)
+Receiving objects:  93% (1852/1991)
+Receiving objects:  94% (1872/1991)
+Receiving objects:  95% (1892/1991)
+Receiving objects:  96% (1912/1991)
+Receiving objects:  97% (1932/1991)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  99% (1849/1867)
-remote: Total 1867 (delta 265), reused 330 (delta 177), pack-reused 1425 (from 1)
-Receiving objects: 100% (1867/1867)
-Receiving objects: 100% (1867/1867), 11.80 MiB | 39.87 MiB/s, done.
-Resolving deltas:   0% (0/1087)
-Resolving deltas:   1% (11/1087)
-Resolving deltas:   2% (22/1087)
-Resolving deltas:   3% (33/1087)
-Resolving deltas:   4% (44/1087)
-Resolving deltas:   5% (55/1087)
-Resolving deltas:   6% (66/1087)
-Resolving deltas:   7% (77/1087)
-Resolving deltas:   8% (87/1087)
-Resolving deltas:   9% (98/1087)
-Resolving deltas:  10% (109/1087)
-Resolving deltas:  11% (121/1087)
-Resolving deltas:  12% (131/1087)
-Resolving deltas:  13% (142/1087)
-Resolving deltas:  14% (155/1087)
-Resolving deltas:  15% (164/1087)
-Resolving deltas:  16% (174/1087)
-Resolving deltas:  17% (185/1087)
-Resolving deltas:  18% (196/1087)
-Resolving deltas:  19% (207/1087)
-Resolving deltas:  20% (218/1087)
-Resolving deltas:  21% (229/1087)
-Resolving deltas:  22% (240/1087)
-Resolving deltas:  23% (252/1087)
-Resolving deltas:  24% (261/1087)
-Resolving deltas:  25% (272/1087)
-Resolving deltas:  26% (283/1087)
-Resolving deltas:  27% (294/1087)
-Resolving deltas:  28% (305/1087)
-Resolving deltas:  29% (316/1087)
-Resolving deltas:  30% (327/1087)
-Resolving deltas:  31% (337/1087)
-Resolving deltas:  32% (348/1087)
-Resolving deltas:  33% (359/1087)
-Resolving deltas:  34% (370/1087)
-Resolving deltas:  35% (381/1087)
-Resolving deltas:  36% (392/1087)
-Resolving deltas:  37% (403/1087)
-Resolving deltas:  38% (414/1087)
-Resolving deltas:  39% (424/1087)
-Resolving deltas:  40% (435/1087)
-Resolving deltas:  41% (446/1087)
-Resolving deltas:  42% (457/1087)
-Resolving deltas:  43% (468/1087)
-Resolving deltas:  44% (479/1087)
-Resolving deltas:  45% (490/1087)
-Resolving deltas:  46% (501/1087)
-Resolving deltas:  47% (511/1087)
-Resolving deltas:  48% (522/1087)
-Resolving deltas:  49% (533/1087)
-Resolving deltas:  50% (544/1087)
-Resolving deltas:  51% (556/1087)
-Resolving deltas:  52% (566/1087)
-Resolving deltas:  53% (577/1087)
-Resolving deltas:  54% (587/1087)
-Resolving deltas:  55% (598/1087)
-Resolving deltas:  56% (609/1087)
-Resolving deltas:  57% (620/1087)
-Resolving deltas:  58% (632/1087)
-Resolving deltas:  59% (643/1087)
-Resolving deltas:  60% (653/1087)
-Resolving deltas:  61% (665/1087)
-Resolving deltas:  62% (674/1087)
-Resolving deltas:  63% (685/1087)
-Resolving deltas:  64% (696/1087)
-Resolving deltas:  65% (707/1087)
-Resolving deltas:  66% (718/1087)
-Resolving deltas:  67% (729/1087)
-Resolving deltas:  68% (740/1087)
-Resolving deltas:  69% (751/1087)
-Resolving deltas:  70% (761/1087)
-Resolving deltas:  71% (772/1087)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  98% (1952/1991)
+Receiving objects:  99% (1972/1991)
+remote: Total 1991 (delta 341), reused 399 (delta 219), pack-reused 1425 (from 1)
+Receiving objects: 100% (1991/1991)
+Receiving objects: 100% (1991/1991), 12.02 MiB | 36.20 MiB/s, done.
+Resolving deltas:   0% (0/1163)
+Resolving deltas:   1% (12/1163)
+Resolving deltas:   2% (24/1163)
+Resolving deltas:   3% (35/1163)
+Resolving deltas:   4% (47/1163)
+Resolving deltas:   5% (59/1163)
+Resolving deltas:   6% (70/1163)
+Resolving deltas:   7% (82/1163)
+Resolving deltas:   8% (94/1163)
+Resolving deltas:   9% (105/1163)
+Resolving deltas:  10% (118/1163)
+Resolving deltas:  11% (128/1163)
+Resolving deltas:  12% (141/1163)
+Resolving deltas:  13% (152/1163)
+Resolving deltas:  14% (163/1163)
+Resolving deltas:  15% (176/1163)
+Resolving deltas:  16% (187/1163)
+Resolving deltas:  17% (198/1163)
+Resolving deltas:  18% (210/1163)
+Resolving deltas:  19% (221/1163)
+Resolving deltas:  20% (233/1163)
+Resolving deltas:  21% (245/1163)
+Resolving deltas:  22% (256/1163)
+Resolving deltas:  23% (269/1163)
+Resolving deltas:  24% (280/1163)
+Resolving deltas:  25% (291/1163)
+Resolving deltas:  26% (303/1163)
+Resolving deltas:  27% (315/1163)
+Resolving deltas:  28% (326/1163)
+Resolving deltas:  29% (338/1163)
+Resolving deltas:  30% (349/1163)
+Resolving deltas:  31% (361/1163)
+Resolving deltas:  32% (373/1163)
+Resolving deltas:  33% (384/1163)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  72% (783/1087)
-Resolving deltas:  73% (794/1087)
-Resolving deltas:  74% (805/1087)
-Resolving deltas:  75% (816/1087)
-Resolving deltas:  76% (827/1087)
-Resolving deltas:  77% (837/1087)
-Resolving deltas:  78% (848/1087)
-Resolving deltas:  79% (859/1087)
-Resolving deltas:  80% (870/1087)
-Resolving deltas:  81% (881/1087)
-Resolving deltas:  82% (892/1087)
-Resolving deltas:  83% (904/1087)
-Resolving deltas:  84% (914/1087)
-Resolving deltas:  85% (924/1087)
-Resolving deltas:  86% (935/1087)
-Resolving deltas:  87% (946/1087)
-Resolving deltas:  88% (957/1087)
-Resolving deltas:  89% (968/1087)
-Resolving deltas:  90% (979/1087)
-Resolving deltas:  91% (990/1087)
-Resolving deltas:  92% (1001/1087)
-Resolving deltas:  93% (1012/1087)
-Resolving deltas:  94% (1022/1087)
-Resolving deltas:  95% (1033/1087)
-Resolving deltas:  96% (1044/1087)
-Resolving deltas:  97% (1055/1087)
-Resolving deltas:  98% (1066/1087)
-Resolving deltas:  99% (1077/1087)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  34% (396/1163)
+Resolving deltas:  35% (408/1163)
+Resolving deltas:  36% (419/1163)
+Resolving deltas:  37% (431/1163)
+Resolving deltas:  38% (442/1163)
+Resolving deltas:  39% (454/1163)
+Resolving deltas:  40% (466/1163)
+Resolving deltas:  41% (477/1163)
+Resolving deltas:  42% (489/1163)
+Resolving deltas:  43% (501/1163)
+Resolving deltas:  44% (512/1163)
+Resolving deltas:  45% (525/1163)
+Resolving deltas:  46% (535/1163)
+Resolving deltas:  47% (547/1163)
+Resolving deltas:  48% (559/1163)
+Resolving deltas:  49% (570/1163)
+Resolving deltas:  50% (582/1163)
+Resolving deltas:  51% (594/1163)
+Resolving deltas:  52% (605/1163)
+Resolving deltas:  53% (617/1163)
+Resolving deltas:  54% (630/1163)
+Resolving deltas:  55% (640/1163)
+Resolving deltas:  56% (652/1163)
+Resolving deltas:  57% (663/1163)
+Resolving deltas:  58% (675/1163)
+Resolving deltas:  59% (687/1163)
+Resolving deltas:  60% (699/1163)
+Resolving deltas:  61% (710/1163)
+Resolving deltas:  62% (722/1163)
+Resolving deltas:  63% (733/1163)
+Resolving deltas:  64% (746/1163)
+Resolving deltas:  65% (756/1163)
+Resolving deltas:  66% (768/1163)
+Resolving deltas:  67% (780/1163)
+Resolving deltas:  68% (791/1163)
+Resolving deltas:  69% (803/1163)
+Resolving deltas:  70% (815/1163)
+Resolving deltas:  71% (826/1163)
+Resolving deltas:  72% (838/1163)
+Resolving deltas:  73% (849/1163)
+Resolving deltas:  74% (861/1163)
+Resolving deltas:  75% (873/1163)
+Resolving deltas:  76% (884/1163)
+Resolving deltas:  77% (896/1163)
+Resolving deltas:  78% (909/1163)
+Resolving deltas:  79% (919/1163)
+Resolving deltas:  80% (931/1163)
+Resolving deltas:  81% (944/1163)
+Resolving deltas:  82% (954/1163)
+Resolving deltas:  83% (966/1163)
+Resolving deltas:  84% (977/1163)
+Resolving deltas:  85% (989/1163)
+Resolving deltas:  86% (1001/1163)
+Resolving deltas:  87% (1012/1163)
+Resolving deltas:  88% (1024/1163)
+Resolving deltas:  89% (1036/1163)
+Resolving deltas:  90% (1047/1163)
+Resolving deltas:  91% (1059/1163)
+Resolving deltas:  92% (1070/1163)
+Resolving deltas:  93% (1082/1163)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas: 100% (1087/1087)
-Resolving deltas: 100% (1087/1087), done.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  94% (1094/1163)
+Resolving deltas:  95% (1105/1163)
+Resolving deltas:  96% (1117/1163)
+Resolving deltas:  97% (1129/1163)
+Resolving deltas:  98% (1140/1163)
+Resolving deltas:  99% (1152/1163)
+Resolving deltas: 100% (1163/1163)
+Resolving deltas: 100% (1163/1163), done.
 </pre></div>
 </div>
 </div>
@@ -1105,14 +1086,14 @@ Resolving deltas: 100% (1087/1087), done.
 <p>To start the initialisation of the optimisation that we are going to perform  there are a two parameters that require a definition as these are designer choices.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="c1"># sys.path.append(&quot;/content/tuduam&quot;)</span>
 <span class="c1"># os.chdir(&quot;/content/tuduam&quot;)</span>
-<span class="kn">import</span> <span class="nn">tuduam</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tuduam</span>
 <span class="c1"># import importlib</span>
 <span class="c1"># importlib.reload(tuduam)  # Force reload of the module</span>
-<span class="kn">from</span> <span class="nn">tuduam.data_structures</span> <span class="kn">import</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">Material</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tuduam.data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">Material</span>
 
 
 
@@ -1146,8 +1127,8 @@ Resolving deltas: 100% (1087/1087), done.
 <p>Before iterating for an entire wing, let us first do an example for a single section. We’ll take a section of the wing where the mean chord, <span class="math notranslate nohighlight">\(\bar{c} = 2\)</span> and the length of this section <span class="math notranslate nohighlight">\(b = 1.2\)</span>. For the airfoil, we’ll use th NACA 4412. For the amount of cells and spar locations we’ll use the previously defined values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tuduam.structures</span> <span class="kn">import</span> <span class="n">SectionOpt</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tuduam.structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">SectionOpt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 
 <span class="n">chord</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># Chord length</span>
@@ -1163,7 +1144,7 @@ Resolving deltas: 100% (1087/1087), done.
 <p>Let’s run the optimization below with some typical values for the loads! Also note that we specify the upper and lower boundsFeel free to alter them and watch the design change.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">shear_y</span> <span class="o">=</span> <span class="mf">30e3</span>
 <span class="n">shear_x</span> <span class="o">=</span> <span class="mi">15000</span>
@@ -1188,173 +1169,144 @@ Resolving deltas: 100% (1087/1087), done.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:635: UserWarning: Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:635: UserWarning: Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:1389: UserWarning: 9 was not an even number and will be floored for conservative reasons
-/opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:1389: UserWarning: 7 was not an even number and will be floored for conservative reasons
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/optimization.py:618: UserWarning: pymoo StarmapParallelization not available in this pymoo version; running without multiprocessing.
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:1390: UserWarning: 9 was not an even number and will be floored for conservative reasons
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:1390: UserWarning: 7 was not an even number and will be floored for conservative reasons
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:331: UserWarning: The thickness of stringer is larger than than the height of the stringer perhaps resulting in a negative area.
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:334: UserWarning: The thickness of stringer is larger than than the width of the stringer resulting in nonsensical geometries.
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:339: UserWarning: The stringer area is negative, please see previous error
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/constraints.py:437: RuntimeWarning: invalid value encountered in scalar power
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=================================================================================
 n_gen  |  n_eval  |     cv_min    |     cv_avg    |     f_avg     |     f_min    
 =================================================================================
      1 |       20 |           nan |           nan |             - |             -
-     2 |       40 |  5.892335E+05 |  2.586893E+06 |             - |             -
-     3 |       60 |  1.597098E+04 |  8.828549E+05 |             - |             -
+     2 |       40 |  3.124475E+05 |  1.581670E+06 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     4 |       80 |  1.475767E+04 |  4.876832E+05 |             - |             -
-     5 |      100 |  1.572664E+02 |  2.307658E+05 |             - |             -
-     6 |      120 |  1.330916E+02 |  1.778502E+04 |             - |             -
-     7 |      140 |  8.390189E+01 |  3.090627E+02 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     3 |       60 |  1.967514E+05 |  8.721081E+05 |             - |             -
+     4 |       80 |  4.974931E+01 |  3.411562E+05 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     8 |      160 |  4.823260E+01 |  1.332849E+02 |             - |             -
-     9 |      180 |  2.876452E+01 |  1.026962E+02 |             - |             -
-    10 |      200 |  2.354275E+01 |  6.086254E+01 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     5 |      100 |  4.973213E+01 |  8.181937E+04 |             - |             -
+     6 |      120 |  4.973213E+01 |  5.059239E+02 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    11 |      220 |  1.767519E+01 |  3.868588E+01 |             - |             -
-    12 |      240 |  1.767519E+01 |  2.547644E+01 |             - |             -
-    13 |      260 |  1.457934E+01 |  2.154567E+01 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     7 |      140 |  4.179461E+01 |  2.124282E+02 |             - |             -
+     8 |      160 |  3.994965E+01 |  5.384557E+01 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    14 |      280 |  1.457934E+01 |  1.884780E+01 |             - |             -
-    15 |      300 |  7.3260777168 |  1.565098E+01 |             - |             -
-    16 |      320 |  5.5390067387 |  1.291093E+01 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     9 |      180 |  1.146001E+01 |  3.896513E+01 |             - |             -
+    10 |      200 |  1.106959E+01 |  3.073917E+01 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    17 |      340 |  5.5214687616 |  9.3546616528 |             - |             -
-    18 |      360 |  5.3663213535 |  6.5134697471 |             - |             -
-    19 |      380 |  5.1252980579 |  5.4626972814 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    11 |      220 |  9.0397564671 |  1.767104E+01 |             - |             -
+    12 |      240 |  4.9992011941 |  1.108185E+01 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    20 |      400 |  2.7705223748 |  5.1812955117 |             - |             -
-    21 |      420 |  1.8802673609 |  4.4893896406 |             - |             -
-    22 |      440 |  0.8128057312 |  3.1804604891 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    13 |      260 |  4.9992011941 |  8.2869620634 |             - |             -
+    14 |      280 |  1.1312434930 |  5.8253064960 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    23 |      460 |  0.7976215623 |  2.0264520478 |             - |             -
-    24 |      480 |  0.3837283234 |  1.1931978843 |             - |             -
-    25 |      500 |  0.3453816585 |  0.7119007667 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    15 |      300 |  0.0010583673 |  4.1940742481 |             - |             -
+    16 |      320 |  0.0007603402 |  2.4769300555 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    26 |      520 |  0.0047099656 |  0.5012213253 |             - |             -
-    27 |      540 |  0.0047099656 |  0.2679410870 |             - |             -
-    28 |      560 |  0.0042659691 |  0.1118058332 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    17 |      340 |  0.0001142241 |  0.5117517691 |             - |             -
+    18 |      360 |  0.0001142241 |  0.0008003192 |             - |             -
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    29 |      580 |  0.0042659691 |  0.0059999780 |             - |             -
-    30 |      600 |  0.0038944594 |  0.0045613230 |             - |             -
-    31 |      620 |  0.0034608084 |  0.0043678042 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 |      380 |  0.0001039980 |  0.0005229120 |             - |             -
+    20 |      400 |  0.000000E+00 |  0.0003459834 |  0.0408617457 |  0.0408617457
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    32 |      640 |  0.0026648398 |  0.0039910481 |             - |             -
-    33 |      660 |  0.0023822746 |  0.0034588027 |             - |             -
-    34 |      680 |  0.0014011219 |  0.0029460993 |             - |             -
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    21 |      420 |  0.000000E+00 |  0.0001840332 |  0.0405002293 |  0.0398670421
+    22 |      440 |  0.000000E+00 |  0.0000639682 |  0.0405846230 |  0.0398174106
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    35 |      700 |  0.000000E+00 |  0.0022065751 |  0.0429117122 |  0.0429117122
-    36 |      720 |  0.000000E+00 |  0.0014997832 |  0.0430613629 |  0.0429117122
-    37 |      740 |  0.000000E+00 |  0.0008837850 |  0.0428172072 |  0.0413998642
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    23 |      460 |  0.000000E+00 |  0.000000E+00 |  0.0403925272 |  0.0397944723
+    24 |      480 |  0.000000E+00 |  0.000000E+00 |  0.0400458024 |  0.0397944723
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    38 |      760 |  0.000000E+00 |  0.0000371314 |  0.0427315086 |  0.0411576838
-    39 |      780 |  0.000000E+00 |  0.000000E+00 |  0.0422681761 |  0.0410578780
-    40 |      800 |  0.000000E+00 |  0.000000E+00 |  0.0415369764 |  0.0409264512
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    25 |      500 |  0.000000E+00 |  0.000000E+00 |  0.0399167639 |  0.0397944723
+    26 |      520 |  0.000000E+00 |  0.000000E+00 |  0.0397680219 |  0.0390697731
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    41 |      820 |  0.000000E+00 |  0.000000E+00 |  0.0411469917 |  0.0405330817
-    42 |      840 |  0.000000E+00 |  0.000000E+00 |  0.0409429253 |  0.0404786924
-    43 |      860 |  0.000000E+00 |  0.000000E+00 |  0.0406877301 |  0.0397829212
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    27 |      540 |  0.000000E+00 |  0.000000E+00 |  0.0397000627 |  0.0390697731
+    28 |      560 |  0.000000E+00 |  0.000000E+00 |  0.0394871157 |  0.0390355987
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    44 |      880 |  0.000000E+00 |  0.000000E+00 |  0.0405264004 |  0.0397829212
-    45 |      900 |  0.000000E+00 |  0.000000E+00 |  0.0403892590 |  0.0397829212
-    46 |      920 |  0.000000E+00 |  0.000000E+00 |  0.0402376947 |  0.0391904389
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    29 |      580 |  0.000000E+00 |  0.000000E+00 |  0.0393660474 |  0.0386382257
+    30 |      600 |  0.000000E+00 |  0.000000E+00 |  0.0390947292 |  0.0386382257
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    47 |      940 |  0.000000E+00 |  0.000000E+00 |  0.0399770525 |  0.0388116677
-    48 |      960 |  0.000000E+00 |  0.000000E+00 |  0.0395450563 |  0.0387084247
-    49 |      980 |  0.000000E+00 |  0.000000E+00 |  0.0390217266 |  0.0383586854
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    31 |      620 |  0.000000E+00 |  0.000000E+00 |  0.0389476069 |  0.0386288914
+    32 |      640 |  0.000000E+00 |  0.000000E+00 |  0.0388201701 |  0.0386238803
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    50 |     1000 |  0.000000E+00 |  0.000000E+00 |  0.0387678747 |  0.0383586854
-    51 |     1020 |  0.000000E+00 |  0.000000E+00 |  0.0386958158 |  0.0383561457
-    52 |     1040 |  0.000000E+00 |  0.000000E+00 |  0.0385594842 |  0.0381963505
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    33 |      660 |  0.000000E+00 |  0.000000E+00 |  0.0387276301 |  0.0386238803
+    34 |      680 |  0.000000E+00 |  0.000000E+00 |  0.0386018879 |  0.0380682464
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    53 |     1060 |  0.000000E+00 |  0.000000E+00 |  0.0383947490 |  0.0381682142
-    54 |     1080 |  0.000000E+00 |  0.000000E+00 |  0.0382808392 |  0.0381682142
-    55 |     1100 |  0.000000E+00 |  0.000000E+00 |  0.0381951416 |  0.0380180272
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    35 |      700 |  0.000000E+00 |  0.000000E+00 |  0.0385194164 |  0.0380682464
+    36 |      720 |  0.000000E+00 |  0.000000E+00 |  0.0384130114 |  0.0379608271
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    56 |     1120 |  0.000000E+00 |  0.000000E+00 |  0.0381173639 |  0.0378847512
-    57 |     1140 |  0.000000E+00 |  0.000000E+00 |  0.0380221608 |  0.0378824289
-    58 |     1160 |  0.000000E+00 |  0.000000E+00 |  0.0379554328 |  0.0378442887
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    37 |      740 |  0.000000E+00 |  0.000000E+00 |  0.0382254157 |  0.0379572670
+    38 |      760 |  0.000000E+00 |  0.000000E+00 |  0.0380096466 |  0.0375285619
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    59 |     1180 |  0.000000E+00 |  0.000000E+00 |  0.0378859941 |  0.0377812016
-    60 |     1200 |  0.000000E+00 |  0.000000E+00 |  0.0378435873 |  0.0377159718
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    39 |      780 |  0.000000E+00 |  0.000000E+00 |  0.0379017994 |  0.0374398807
+    40 |      800 |  0.000000E+00 |  0.000000E+00 |  0.0377893966 |  0.0374398807
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    41 |      820 |  0.000000E+00 |  0.000000E+00 |  0.0376694973 |  0.0372546393
+    42 |      840 |  0.000000E+00 |  0.000000E+00 |  0.0375277824 |  0.0372546393
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    43 |      860 |  0.000000E+00 |  0.000000E+00 |  0.0373917647 |  0.0372546393
+    44 |      880 |  0.000000E+00 |  0.000000E+00 |  0.0373246662 |  0.0371866475
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    45 |      900 |  0.000000E+00 |  0.000000E+00 |  0.0372442466 |  0.0371146880
+    46 |      920 |  0.000000E+00 |  0.000000E+00 |  0.0371735743 |  0.0366751864
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    47 |      940 |  0.000000E+00 |  0.000000E+00 |  0.0370927213 |  0.0366751864
+    48 |      960 |  0.000000E+00 |  0.000000E+00 |  0.0369817672 |  0.0366751864
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    49 |      980 |  0.000000E+00 |  0.000000E+00 |  0.0368707281 |  0.0366751864
+    50 |     1000 |  0.000000E+00 |  0.000000E+00 |  0.0367998894 |  0.0366545298
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    51 |     1020 |  0.000000E+00 |  0.000000E+00 |  0.0367391182 |  0.0365531983
+    52 |     1040 |  0.000000E+00 |  0.000000E+00 |  0.0366872155 |  0.0365531983
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    53 |     1060 |  0.000000E+00 |  0.000000E+00 |  0.0366404731 |  0.0365239606
+    54 |     1080 |  0.000000E+00 |  0.000000E+00 |  0.0366103000 |  0.0365239606
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    55 |     1100 |  0.000000E+00 |  0.000000E+00 |  0.0365627600 |  0.0364333112
+    56 |     1120 |  0.000000E+00 |  0.000000E+00 |  0.0365306851 |  0.0364333112
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    57 |     1140 |  0.000000E+00 |  0.000000E+00 |  0.0364787116 |  0.0363396022
+    58 |     1160 |  0.000000E+00 |  0.000000E+00 |  0.0364455249 |  0.0363387818
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    59 |     1180 |  0.000000E+00 |  0.000000E+00 |  0.0364235888 |  0.0363387818
+    60 |     1200 |  0.000000E+00 |  0.000000E+00 |  0.0364048380 |  0.0363387034
 
 
 ======== Results ==========
-Skin thickness = [6.38311823 6.59095961 6.03707018 4.61159371] mm
-Spar thickness = 4.996795247355678 mm
-Stringer thickness = 4.2038652157530505 mm
-Stringer  width= 5.7953735714898995 mm
-Stringer height = 9.85470647635964 mm
+Skin thickness = [6.29669944 6.59177534 5.91015319 4.36598275] mm
+Spar thickness = 5.7720044356115405 mm
+Stringer thickness = 1.3346322166553304 mm
+Stringer  width= 3.3949805122081163 mm
+Stringer height = 10.317599816412146 mm
 </pre></div>
 </div>
 </div>
@@ -1373,46 +1325,46 @@ Stringer height = 9.85470647635964 mm
 t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 =====================================================================
 
- [[0.00506256 0.00867186 0.00010136 0.00369776 0.0043208  0.00201572
-  0.00467634 0.00611005]
- [0.00482153 0.00651192 0.00508841 0.00825411 0.00484007 0.01065929
-  0.00324649 0.00903421]
- [0.00506593 0.00674841 0.0017706  0.00245741 0.0102067  0.01165088
-  0.00582082 0.0092309 ]
- [0.01052903 0.01074582 0.00111203 0.00056475 0.00452847 0.01065957
-  0.00388512 0.00678997]
- [0.01149889 0.00644467 0.00833334 0.00385464 0.00917851 0.01018088
-  0.00316459 0.0097513 ]
- [0.01186745 0.00900317 0.00343728 0.00949242 0.00392903 0.00592683
-  0.01117736 0.00564253]
- [0.00352453 0.00164734 0.00033047 0.00817814 0.00490465 0.00392101
-  0.00742416 0.00348026]
- [0.006932   0.00184607 0.00711274 0.00842712 0.00392101 0.00555462
-  0.0092496  0.00672761]
- [0.00069445 0.00647717 0.00799916 0.00622718 0.01150135 0.00745211
-  0.01113062 0.00423727]
- [0.00175739 0.00970796 0.00483235 0.00206771 0.01134758 0.00482542
-  0.00975731 0.00953398]
- [0.01061134 0.0075217  0.00903621 0.00425189 0.00542935 0.01085475
-  0.00685282 0.01168356]
- [0.00799495 0.00749818 0.00146548 0.01139892 0.00704921 0.00736229
-  0.00667323 0.00513324]
- [0.01085022 0.00692679 0.00013416 0.00744402 0.0059398  0.00679764
-  0.01097348 0.00621543]
- [0.01091157 0.00751799 0.00028827 0.0111603  0.00921807 0.01197055
-  0.00455106 0.00423422]
- [0.01119789 0.00839214 0.0008854  0.00909001 0.00978489 0.01115327
-  0.00940372 0.00411844]
- [0.00033657 0.00041191 0.00043685 0.00302991 0.01074025 0.00692714
-  0.0079754  0.01057828]
- [0.00157766 0.00342229 0.00707054 0.01163819 0.00804927 0.00120512
-  0.01020569 0.00509677]
- [0.00970455 0.00471554 0.01037615 0.00899075 0.00800616 0.00250101
-  0.00353926 0.00409209]
- [0.00063017 0.00137918 0.00278594 0.00858457 0.00803745 0.00113812
-  0.00364777 0.01170549]
- [0.0068604  0.00251919 0.00310268 0.00895153 0.00475887 0.00739495
-  0.01173018 0.01062146]]
+ [[0.00619068 0.01141052 0.0018155  0.01138893 0.00580648 0.00565659
+  0.01044932 0.00668279]
+ [0.00664016 0.00042795 0.00906681 0.00650391 0.00596759 0.00967272
+  0.00572875 0.00708148]
+ [0.0016951  0.00489704 0.00252112 0.00322153 0.00975328 0.0040845
+  0.00736672 0.01182663]
+ [0.01154372 0.008725   0.0065406  0.00339501 0.00444587 0.01166918
+  0.00764462 0.00404279]
+ [0.00751953 0.00934253 0.00739474 0.01101584 0.00335634 0.00681448
+  0.00713402 0.00356115]
+ [0.00773181 0.01024633 0.007156   0.00319516 0.01055893 0.00660445
+  0.007598   0.00977727]
+ [0.00186027 0.00985356 0.00823111 0.00946645 0.00472455 0.00982601
+  0.00472192 0.00373397]
+ [0.0102772  0.01034927 0.01053079 0.00571573 0.00546644 0.00107801
+  0.00881149 0.00947918]
+ [0.01004327 0.00345435 0.0026611  0.00770804 0.01024549 0.01160038
+  0.00435472 0.00733991]
+ [0.01074712 0.00513033 0.00711507 0.00039144 0.00906114 0.01110997
+  0.01044143 0.01096968]
+ [0.00795823 0.00302207 0.00924535 0.00261893 0.01048147 0.0016899
+  0.01042939 0.00448057]
+ [0.00456425 0.00386918 0.00832691 0.00222501 0.00656631 0.00106407
+  0.00536245 0.0067907 ]
+ [0.00136046 0.0076346  0.00462705 0.008731   0.00888479 0.00574349
+  0.01080588 0.00868922]
+ [0.00974226 0.00416736 0.00656966 0.00243593 0.01196527 0.00367537
+  0.00531181 0.00365871]
+ [0.00316786 0.00918123 0.00840493 0.00163121 0.00638615 0.00563014
+  0.00898486 0.00710336]
+ [0.00707957 0.01009225 0.00874504 0.00444359 0.00703557 0.0050447
+  0.00398761 0.00482917]
+ [0.0034773  0.00383819 0.00382527 0.00696273 0.01174521 0.00952131
+  0.01012021 0.00983342]
+ [0.00720415 0.01102054 0.0083066  0.00605424 0.00369375 0.00637294
+  0.00491548 0.00419427]
+ [0.00612217 0.00944251 0.00361058 0.00924838 0.00773067 0.00263953
+  0.01168471 0.00661473]
+ [0.00361329 0.01017928 0.00158108 0.00882973 0.00469042 0.00531741
+  0.0050871  0.01057105]]
 </pre></div>
 </div>
 </div>
@@ -1420,7 +1372,7 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 <p>We can also plot the average value of variables over time and optimization function over time, this gives us an idea of how the variables effect the design. Run the code below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">t_sk_cell1_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
 <span class="n">t_sk_cell2_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
@@ -1464,7 +1416,7 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/524ff4a0dc8fb924801cdf1ece2254a5eac07d2d157853ed22816e8fb01fb5d3.png" src="../_images/524ff4a0dc8fb924801cdf1ece2254a5eac07d2d157853ed22816e8fb01fb5d3.png" />
+<img alt="../_images/840e443b5f6d70edec75cde85b95cffb50e00d04d6d3296dc887f3ba1fa20daa.png" src="../_images/840e443b5f6d70edec75cde85b95cffb50e00d04d6d3296dc887f3ba1fa20daa.png" />
 </div>
 </div>
 <p>As you can see, it gets quite messy with all variables in there. One could also argue the information gets lost when taking the average and only plotting the optimum solution would give a better idea. It is left up to the reader to implement this.</p>
@@ -1480,7 +1432,7 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 <section class="tex2jax_ignore mathjax_ignore" id="example-optimizing-the-wing-of-a-cessna-172r">
 <h1>Example: Optimizing the wing of a Cessna 172R<a class="headerlink" href="#example-optimizing-the-wing-of-a-cessna-172r" title="Link to this heading">#</a></h1>
 <p>Let us do an example of how we would design the structure of a complete wing. To keep it computationally bounded we are assuming a 3 cell wingbox with a fixed stringer distribution of 10 stringers per cell. Furthermore, here is some important data on the Cessna 172</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Characteristic</p></th>
 <th class="head"><p>Value</p></th>
@@ -1501,6 +1453,7 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 </tr>
 </tbody>
 </table>
+</div>
 <p>To come up with the correct loading per bay we make some oversimplified assumptions to make our life easier for this notebook.</p>
 <section id="assumptions">
 <h2>Assumptions<a class="headerlink" href="#assumptions" title="Link to this heading">#</a></h2>
@@ -1519,11 +1472,11 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 <p>The functions below will be used to get the correct internal forces for each rib section, as can be inferred from <code class="docutils literal notranslate"><span class="pre">average_fun</span></code> we assume a constant force over each section. This constant force is taken to be the average value over the entire section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">quad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="k">def</span> <span class="nf">average_fun</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">average_fun</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span>
                 <span class="n">x_start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                 <span class="n">x_end</span><span class="p">:</span> <span class="nb">float</span>
                 <span class="p">):</span>
@@ -1541,16 +1494,16 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
     <span class="n">val</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">x_start</span><span class="p">,</span> <span class="n">x_end</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">val</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_end</span> <span class="o">-</span> <span class="n">x_start</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">shear_y</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shear_y</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
   <span class="k">return</span> <span class="mi">5444</span> <span class="o">-</span> <span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1979</span> <span class="o">-</span> <span class="mi">1979</span><span class="o">/</span><span class="mf">5.5</span><span class="o">*</span><span class="n">x</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="n">span</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">moment_y</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">moment_y</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
   <span class="k">return</span> <span class="o">-</span><span class="mi">9980</span> <span class="o">+</span> <span class="n">quad</span><span class="p">(</span><span class="n">shear_y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">span</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">shear_x</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shear_x</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
   <span class="k">return</span> <span class="o">-</span><span class="mi">1265</span> <span class="o">+</span> <span class="mi">230</span><span class="o">*</span><span class="n">span</span>
 
-<span class="k">def</span> <span class="nf">moment_x</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">moment_x</span><span class="p">(</span><span class="n">span</span><span class="p">):</span>
   <span class="k">return</span> <span class="mf">3478.75</span> <span class="o">+</span> <span class="n">quad</span><span class="p">(</span><span class="n">shear_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">span</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="c1"># print(average_fun(moment_x, 5, 5.5))</span>
@@ -1571,7 +1524,7 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 <p>We must now create the section to iterate over. See the code below whwere we create the rib locations. You can change the exponent of the <code class="docutils literal notranslate"><span class="pre">slicer</span></code> variable to alter the distribution of the rib locations</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
 <span class="n">span</span> <span class="o">=</span> <span class="mf">5.5</span>
@@ -1598,8 +1551,8 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 <p>With the rib locations and loads specified we can iterate over all the sections. Please see the code below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tuduam.data_structures</span> <span class="kn">import</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">Material</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tuduam.data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Wingbox</span><span class="p">,</span> <span class="n">Material</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 <span class="n">res_lst</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1642,35 +1595,35 @@ t_sk_cell1 - t_sk_cell2 - t_sk_cell3 - t_sk_cell4 - t_sp -  t_st - w_st - h_st
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======== Results rib section 1 rib 0.0 to 0.24 ==========
-Skin thickness = [2.75 2.93 2.47] mm
-Spar thickness = 5.88 mm
-Stringer thickness = 8.64 mm
-Stringer  width= 9.64 mm
-Stringer height = 8.75 mm
+Skin thickness = [3.13 2.9  2.54] mm
+Spar thickness = 3.37 mm
+Stringer thickness = 1.0 mm
+Stringer  width= 3.15 mm
+Stringer height = 6.08 mm
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======== Results rib section 2 rib 0.24 to 0.74 ==========
-Skin thickness = [2.67 2.86 2.33] mm
-Spar thickness = 3.08 mm
-Stringer thickness = 6.61 mm
-Stringer  width= 6.66 mm
-Stringer height = 8.77 mm
+Skin thickness = [2.62 2.83 2.39] mm
+Spar thickness = 3.19 mm
+Stringer thickness = 1.0 mm
+Stringer  width= 3.22 mm
+Stringer height = 9.19 mm
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======== Results rib section 3 rib 0.74 to 1.42 ==========
-Skin thickness = [2.56 2.6  2.07] mm
-Spar thickness = 4.44 mm
-Stringer thickness = 7.73 mm
-Stringer  width= 7.73 mm
-Stringer height = 7.98 mm
+Skin thickness = [3.27 2.54 2.03] mm
+Spar thickness = 3.02 mm
+Stringer thickness = 2.1 mm
+Stringer  width= 7.36 mm
+Stringer height = 8.75 mm
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>======== Results rib section 4 rib 1.42 to 2.25 ==========
-Skin thickness = [2.35 2.3  1.78] mm
-Spar thickness = 5.04 mm
-Stringer thickness = 1.65 mm
-Stringer  width= 7.4 mm
-Stringer height = 10.19 mm
+Skin thickness = [2.26 2.36 1.75] mm
+Spar thickness = 3.0 mm
+Stringer thickness = 2.78 mm
+Stringer  width= 6.16 mm
+Stringer height = 8.46 mm
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -1682,46 +1635,45 @@ Stringer height = 10.19 mm
 <span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="n">res_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">======== Results rib section </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2"> rib </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">rib_1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">rib_2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> ==========&quot;</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/optimization.py:630,</span> in <span class="ni">SectionOpt.GA_optimize</span><span class="nt">(self, shear_y, shear_x, moment_y, moment_x, applied_loc, upper_bnds, lower_bnds, n_gen, pop, verbose, seed, multiprocess, cores, save_hist)</span>
-<span class="g g-Whitespace">    </span><span class="mi">614</span>     <span class="n">problem</span> <span class="o">=</span> <span class="n">ProblemFixedPanel</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">615</span>         <span class="n">shear_y</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">616</span>         <span class="n">shear_x</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">626</span>         <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">627</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">629</span> <span class="n">method</span> <span class="o">=</span> <span class="n">GA</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">630</span> <span class="n">resGA</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">631</span>     <span class="n">problem</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">632</span>     <span class="n">method</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">633</span>     <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;n_gen&quot;</span><span class="p">,</span> <span class="n">n_gen</span><span class="p">),</span>
-<span class="g g-Whitespace">    </span><span class="mi">634</span>     <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">635</span>     <span class="n">save_history</span><span class="o">=</span><span class="n">save_hist</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">636</span>     <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">637</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">638</span> <span class="k">return</span> <span class="n">resGA</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/optimization.py:637,</span> in <span class="ni">SectionOpt.GA_optimize</span><span class="nt">(self, shear_y, shear_x, moment_y, moment_x, applied_loc, upper_bnds, lower_bnds, n_gen, pop, verbose, seed, multiprocess, cores, save_hist)</span>
+<span class="g g-Whitespace">    </span><span class="mi">621</span>     <span class="n">problem</span> <span class="o">=</span> <span class="n">ProblemFixedPanel</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span>         <span class="n">shear_y</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span>         <span class="n">shear_x</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">633</span>         <span class="bp">self</span><span class="o">.</span><span class="n">path_coord</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">634</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">636</span> <span class="n">method</span> <span class="o">=</span> <span class="n">GA</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">637</span> <span class="n">resGA</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">638</span>     <span class="n">problem</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">639</span>     <span class="n">method</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">640</span>     <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;n_gen&quot;</span><span class="p">,</span> <span class="n">n_gen</span><span class="p">),</span>
+<span class="g g-Whitespace">    </span><span class="mi">641</span>     <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">642</span>     <span class="n">save_history</span><span class="o">=</span><span class="n">save_hist</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">643</span>     <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">644</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">645</span> <span class="k">return</span> <span class="n">resGA</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/optimize.py:67,</span> in <span class="ni">minimize</span><span class="nt">(problem, algorithm, termination, copy_algorithm, copy_termination, **kwargs)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/optimize.py:67,</span> in <span class="ni">minimize</span><span class="nt">(problem, algorithm, termination, copy_algorithm, copy_termination, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="n">algorithm</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">66</span> <span class="c1"># actually execute the algorithm</span>
 <span class="ne">---&gt; </span><span class="mi">67</span> <span class="n">res</span> <span class="o">=</span> <span class="n">algorithm</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="c1"># store the deep copied algorithm in the result object</span>
 <span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="n">res</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="n">algorithm</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/algorithm.py:138,</span> in <span class="ni">Algorithm.run</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">137</span>     <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">138</span>         <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/algorithm.py:133,</span> in <span class="ni">Algorithm.run</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">131</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span>     <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">133</span>         <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">134</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/algorithm.py:158,</span> in <span class="ni">Algorithm.next</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">156</span> <span class="c1"># call the advance with them after evaluation</span>
-<span class="g g-Whitespace">    </span><span class="mi">157</span> <span class="k">if</span> <span class="n">infills</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">158</span>     <span class="bp">self</span><span class="o">.</span><span class="n">evaluator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">,</span> <span class="n">infills</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">159</span>     <span class="bp">self</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">infills</span><span class="o">=</span><span class="n">infills</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">161</span> <span class="c1"># if the algorithm does not follow the infill-advance scheme just call advance</span>
-<span class="g g-Whitespace">    </span><span class="mi">162</span> <span class="k">else</span><span class="p">:</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/algorithm.py:153,</span> in <span class="ni">Algorithm.next</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">151</span> <span class="c1"># call the advance with them after evaluation</span>
+<span class="g g-Whitespace">    </span><span class="mi">152</span> <span class="k">if</span> <span class="n">infills</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">153</span>     <span class="bp">self</span><span class="o">.</span><span class="n">evaluator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">,</span> <span class="n">infills</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">154</span>     <span class="bp">self</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">infills</span><span class="o">=</span><span class="n">infills</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">156</span> <span class="c1"># if the algorithm does not follow the infill-advance scheme just call advance</span>
+<span class="g g-Whitespace">    </span><span class="mi">157</span> <span class="k">else</span><span class="p">:</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/evaluator.py:69,</span> in <span class="ni">Evaluator.eval</span><span class="nt">(self, problem, pop, skip_already_evaluated, evaluate_values_of, count_evals, **kwargs)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/evaluator.py:69,</span> in <span class="ni">Evaluator.eval</span><span class="nt">(self, problem, pop, skip_already_evaluated, evaluate_values_of, count_evals, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="c1"># evaluate the solutions (if there are any)</span>
 <span class="g g-Whitespace">     </span><span class="mi">66</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">67</span> 
@@ -1730,98 +1682,76 @@ Stringer height = 10.19 mm
 <span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="c1"># update the function evaluation counter</span>
 <span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="k">if</span> <span class="n">count_evals</span><span class="p">:</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/evaluator.py:90,</span> in <span class="ni">Evaluator._eval</span><span class="nt">(self, problem, pop, evaluate_values_of, **kwargs)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/evaluator.py:90,</span> in <span class="ni">Evaluator._eval</span><span class="nt">(self, problem, pop, evaluate_values_of, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span> <span class="n">X</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">89</span> <span class="c1"># call the problem to evaluate the solutions</span>
 <span class="ne">---&gt; </span><span class="mi">90</span> <span class="n">out</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_values_of</span><span class="o">=</span><span class="n">evaluate_values_of</span><span class="p">,</span> <span class="n">return_as_dictionary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="c1"># for each of the attributes set it to the problem</span>
 <span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:257,</span> in <span class="ni">Problem.evaluate</span><span class="nt">(self, X, return_values_of, return_as_dictionary, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">254</span>     <span class="n">only_single_value</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">256</span> <span class="c1"># this is where the actual evaluation takes place</span>
-<span class="ne">--&gt; </span><span class="mi">257</span> <span class="n">_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_values_of</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">259</span> <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="g g-Whitespace">    </span><span class="mi">260</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span> 
-<span class="g g-Whitespace">    </span><span class="mi">262</span>     <span class="c1"># copy it to a numpy array (it might be one of jax at this point)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:170,</span> in <span class="ni">Problem.evaluate</span><span class="nt">(self, X, return_values_of, return_as_dictionary, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">167</span>     <span class="n">only_single_value</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span> <span class="c1"># this is where the actual evaluation takes place</span>
+<span class="ne">--&gt; </span><span class="mi">170</span> <span class="n">_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_values_of</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">174</span> 
+<span class="g g-Whitespace">    </span><span class="mi">175</span>     <span class="c1"># copy it to a numpy array (it might be one of jax at this point)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:297,</span> in <span class="ni">Problem.do</span><span class="nt">(self, X, return_values_of, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">295</span> <span class="c1"># do the function evaluation</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">297</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_elementwise</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">298</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">299</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_vectorized</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:210,</span> in <span class="ni">Problem.do</span><span class="nt">(self, X, return_values_of, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="c1"># do the function evaluation</span>
+<span class="g g-Whitespace">    </span><span class="mi">209</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">210</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_elementwise</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">211</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">212</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_vectorized</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:315,</span> in <span class="ni">Problem._evaluate_elementwise</span><span class="nt">(self, X, out, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">312</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span> <span class="c1"># execute the runner</span>
-<span class="ne">--&gt; </span><span class="mi">315</span> <span class="n">elems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise_runner</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">317</span> <span class="c1"># for each evaluation call</span>
-<span class="g g-Whitespace">    </span><span class="mi">318</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span> 
-<span class="g g-Whitespace">    </span><span class="mi">320</span>     <span class="c1"># for each key stored for this evaluation</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:228,</span> in <span class="ni">Problem._evaluate_elementwise</span><span class="nt">(self, X, out, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span> <span class="c1"># execute the runner</span>
+<span class="ne">--&gt; </span><span class="mi">228</span> <span class="n">elems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elementwise_runner</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="c1"># for each evaluation call</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">232</span> 
+<span class="g g-Whitespace">    </span><span class="mi">233</span>     <span class="c1"># for each key stored for this evaluation</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:32,</span> in <span class="ni">LoopedElementwiseEvaluation.__call__</span><span class="nt">(self, f, X)</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">32</span>     <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:16,</span> in <span class="ni">LoopedElementwiseEvaluation.__call__</span><span class="nt">(self, f, X)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">16</span>     <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:32,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">32</span>     <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:16,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">16</span>     <span class="k">return</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/pymoo/core/problem.py:25,</span> in <span class="ni">ElementwiseEvaluationFunction.__call__</span><span class="nt">(self, x)</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">out</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-<span class="ne">---&gt; </span><span class="mi">25</span>     <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="k">return</span> <span class="n">out</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pymoo/core/problem.py:29,</span> in <span class="ni">ElementwiseEvaluationFunction.__call__</span><span class="nt">(self, x)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="n">out</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="ne">---&gt; </span><span class="mi">29</span>     <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span>     <span class="k">return</span> <span class="n">out</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/optimization.py:433,</span> in <span class="ni">ProblemFixedPanel._evaluate</span><span class="nt">(self, x, out, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">430</span> <span class="n">box_copy</span><span class="o">.</span><span class="n">load_new_gauge</span><span class="p">(</span><span class="n">t_sk_cell</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">432</span> <span class="c1"># Perform stress analysis</span>
-<span class="ne">--&gt; </span><span class="mi">433</span> <span class="n">box_copy</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">434</span>     <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">435</span>     <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">436</span>     <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">437</span>     <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">438</span>     <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">439</span>     <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">440</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">442</span> <span class="c1"># ================ Get constraints ======================================</span>
-<span class="g g-Whitespace">    </span><span class="mi">443</span> <span class="n">constr_cls</span> <span class="o">=</span> <span class="n">IsotropicWingboxConstraints</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">444</span>     <span class="n">box_copy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span>
-<span class="g g-Whitespace">    </span><span class="mi">445</span> <span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/optimization.py:440,</span> in <span class="ni">ProblemFixedPanel._evaluate</span><span class="nt">(self, x, out, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">437</span> <span class="n">box_copy</span><span class="o">.</span><span class="n">load_new_gauge</span><span class="p">(</span><span class="n">t_sk_cell</span><span class="p">,</span> <span class="n">t_sp</span><span class="p">,</span> <span class="n">t_st</span><span class="p">,</span> <span class="n">w_st</span><span class="p">,</span> <span class="n">h_st</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">439</span> <span class="c1"># Perform stress analysis</span>
+<span class="ne">--&gt; </span><span class="mi">440</span> <span class="n">box_copy</span><span class="o">.</span><span class="n">stress_analysis</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span>     <span class="bp">self</span><span class="o">.</span><span class="n">shear_y</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">442</span>     <span class="bp">self</span><span class="o">.</span><span class="n">shear_x</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="bp">self</span><span class="o">.</span><span class="n">moment_y</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span>     <span class="bp">self</span><span class="o">.</span><span class="n">moment_x</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>     <span class="bp">self</span><span class="o">.</span><span class="n">applied_loc</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>     <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span> <span class="c1"># ================ Get constraints ====================================== </span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span> <span class="n">constr_cls</span> <span class="o">=</span> <span class="n">IsotropicWingboxConstraints</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">451</span>     <span class="n">box_copy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span>
+<span class="g g-Whitespace">    </span><span class="mi">452</span> <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/tuduam-2024.16-py3.11.egg/tuduam/structures/wingbox.py:1026,</span> in <span class="ni">IdealWingbox.stress_analysis</span><span class="nt">(self, shear_y, shear_x, moment_y, moment_x, shear_y_appl, shear_mod, validate)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/tuduam-2026.6-py3.11.egg/tuduam/structures/wingbox.py:1026,</span> in <span class="ni">IdealWingbox.stress_analysis</span><span class="nt">(self, shear_y, shear_x, moment_y, moment_x, shear_y_appl, shear_mod, validate)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1022</span> <span class="c1"># Else if  just add qs,n. As no other influece needs to be taken into account</span>
 <span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1024</span>     <span class="c1"># Check if it was not the cut panel</span>
-<span class="g g-Whitespace">   </span><span class="mi">1025</span>     <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1025</span>     <span class="k">if</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1026</span>         <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">r_rel_vec</span><span class="p">,</span> <span class="n">pnl</span><span class="o">.</span><span class="n">dir_vec</span><span class="p">))</span>
 <span class="g g-Whitespace">   </span><span class="mi">1027</span>         <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span>  <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_basic</span> <span class="o">+</span> <span class="n">sign</span><span class="o">*</span><span class="n">qs_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 <span class="g g-Whitespace">   </span><span class="mi">1028</span>         <span class="n">pnl</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">pnl</span><span class="o">.</span><span class="n">q_tot</span><span class="o">/</span><span class="n">pnl</span><span class="o">.</span><span class="n">t_pnl</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/numpy/core/numeric.py:1591,</span> in <span class="ni">cross</span><span class="nt">(a, b, axisa, axisb, axisc, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1588</span> <span class="n">axisb</span> <span class="o">=</span> <span class="n">normalize_axis_index</span><span class="p">(</span><span class="n">axisb</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">msg_prefix</span><span class="o">=</span><span class="s1">&#39;axisb&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1590</span> <span class="c1"># Move working axis to the end of the shape</span>
-<span class="ne">-&gt; </span><span class="mi">1591</span> <span class="n">a</span> <span class="o">=</span> <span class="n">moveaxis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axisa</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1592</span> <span class="n">b</span> <span class="o">=</span> <span class="n">moveaxis</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axisb</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1593</span> <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;incompatible dimensions for cross product</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1594</span>        <span class="s2">&quot;(dimension must be 2 or 3)&quot;</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/site-packages/numpy/core/numeric.py:1393,</span> in <span class="ni">moveaxis</span><span class="nt">(a, source, destination)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1389</span> <span class="k">def</span> <span class="nf">_moveaxis_dispatcher</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1390</span>     <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,)</span>
-<span class="ne">-&gt; </span><span class="mi">1393</span> <span class="nd">@array_function_dispatch</span><span class="p">(</span><span class="n">_moveaxis_dispatcher</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1394</span> <span class="k">def</span> <span class="nf">moveaxis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1395</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1396</span><span class="sd">     Move axes of an array to new positions.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1397</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1440</span><span class="sd"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1441</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1442</span>     <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1443</span>         <span class="c1"># allow duck-array types if they define transpose</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
@@ -1834,10 +1764,10 @@ Stringer height = 10.19 mm
 <p>Above you have now seen the final result of each section. The history of each section as we have plotted previously, is also saved in the <code class="docutils literal notranslate"><span class="pre">res_lst</span></code> variable. The previous code we utilized is wrapped in a function below for easy access such that you can compare the the various sections. Now feel free to change the variables or use the API for your optimizations!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymoo.core.result</span> <span class="kn">import</span> <span class="n">Result</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.core.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
 
 
-<span class="k">def</span> <span class="nf">plot_history</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Result</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_history</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Result</span><span class="p">):</span>
   <span class="n">pop_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">gen</span><span class="o">.</span><span class="n">pop</span> <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">history</span><span class="p">]</span>
   <span class="n">t_sk_cell1_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
   <span class="n">t_sk_cell2_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)[:][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_lst</span><span class="p">]</span>
@@ -1895,7 +1825,7 @@ Stringer height = 10.19 mm
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1914,7 +1844,8 @@ Stringer height = 10.19 mm
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1948,13 +1879,13 @@ Stringer height = 10.19 mm
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/notebooks/structural_optimization.ipynb.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/notebooks/structural_optimization.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -1969,8 +1900,8 @@ Stringer height = 10.19 mm
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1990,7 +1921,7 @@ Stringer height = 10.19 mm
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -2003,7 +1934,8 @@ Stringer height = 10.19 mm
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

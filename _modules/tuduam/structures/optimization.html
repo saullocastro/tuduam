@@ -13,38 +13,42 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/structures/optimization';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -52,31 +56,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -84,7 +73,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,20 +80,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../../index.html">
@@ -126,83 +121,85 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -217,29 +214,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -248,15 +237,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -273,7 +258,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -282,89 +268,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion.html">
+    Propulsion
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../performance.html">
+    Performance
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -374,15 +355,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -390,29 +367,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -423,7 +403,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tuduam.struc...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tuduam.structures.optimization</span></li>
   </ul>
 </nav>
 </div>
@@ -441,29 +421,38 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for tuduam.structures.optimization</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">sop</span>
-<span class="kn">from</span> <span class="nn">pymoo.core.problem</span> <span class="kn">import</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">ElementwiseProblem</span>
-<span class="kn">from</span> <span class="nn">pymoo.core.problem</span> <span class="kn">import</span> <span class="n">StarmapParallelization</span>
-<span class="kn">from</span> <span class="nn">pymoo.operators.crossover.sbx</span> <span class="kn">import</span> <span class="n">SBX</span>
-<span class="kn">from</span> <span class="nn">pymoo.operators.mutation.pm</span> <span class="kn">import</span> <span class="n">PM</span>
-<span class="kn">from</span> <span class="nn">pymoo.operators.repair.rounding</span> <span class="kn">import</span> <span class="n">RoundingRepair</span>
-<span class="kn">from</span> <span class="nn">pymoo.operators.sampling.rnd</span> <span class="kn">import</span> <span class="n">IntegerRandomSampling</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.core.problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">Problem</span><span class="p">,</span> <span class="n">ElementwiseProblem</span>
+<span class="c1"># StarmapParallelization was moved between pymoo versions – try the new location first,</span>
+<span class="c1"># fall back to the old location, otherwise disable parallelization support.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.core.parallelization</span><span class="w"> </span><span class="kn">import</span> <span class="n">StarmapParallelization</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.core.problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">StarmapParallelization</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">StarmapParallelization</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.operators.crossover.sbx</span><span class="w"> </span><span class="kn">import</span> <span class="n">SBX</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.operators.mutation.pm</span><span class="w"> </span><span class="kn">import</span> <span class="n">PM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.operators.repair.rounding</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoundingRepair</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.operators.sampling.rnd</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntegerRandomSampling</span>
 
 
-<span class="kn">from</span> <span class="nn">..data_structures</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">.wingbox</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">.constraints</span> <span class="kn">import</span> <span class="n">IsotropicWingboxConstraints</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.wingbox</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.constraints</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsotropicWingboxConstraints</span>
 
 
 <div class="viewcode-block" id="ProblemFreePanel">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFreePanel">[docs]</a>
-<span class="k">class</span> <span class="nc">ProblemFreePanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProblemFreePanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The following problem sets up a discrete variable problem which optimizes the amount of stringers per cell. This is done </span>
 <span class="sd">    in a separate problem as changing the amount of stringers changes the amount of panels and hence the amount of constraints. </span>
@@ -530,8 +519,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -610,7 +598,7 @@ document.write(`
 
 <div class="viewcode-block" id="ProblemFreePanel._evaluate">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFreePanel._evaluate">[docs]</a>
-    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function gets evaluated for each &#39;element&#39;, where an element in this case is a single sequence of n_var long. </span>
 <span class="sd">        For more information, please see the documentation of the pymoo library.</span>
@@ -668,7 +656,7 @@ document.write(`
 
 <div class="viewcode-block" id="ProblemFixedPanel">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFixedPanel">[docs]</a>
-<span class="k">class</span> <span class="nc">ProblemFixedPanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProblemFixedPanel</span><span class="p">(</span><span class="n">ElementwiseProblem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The following problem sets up an exploration of a wingbox for a fixed amount of stringers per cell. Since it is difficult for an optimizer</span>
 <span class="sd">    like COBYLA to find a global minimum, a genetic algorithm is set up first to explore the design space. This problem sets up the problem as </span>
@@ -699,7 +687,7 @@ document.write(`
 <span class="sd">    mat_struct : Material</span>
 <span class="sd">        Material properties used in the wingbox.</span>
 <span class="sd">    path_coord : str</span>
-<span class="sd">        Path to the file containing the airfoil coordinates.</span>
+<span class="sd">        File path or identifier for coordinates related to the section.</span>
 <span class="sd">    upper_bnds : list, optional</span>
 <span class="sd">        A list containing the upper bounds of the optimization.</span>
 <span class="sd">    lower_bnds : list, optional</span>
@@ -732,8 +720,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
    
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">moment_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -786,7 +773,7 @@ document.write(`
 <span class="sd">        ------</span>
 <span class="sd">        RuntimeError</span>
 <span class="sd">            If the optimization is not compatible with stringer area as the constraints rely on the string geometry.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
 
         <span class="k">if</span> <span class="n">box_struct</span><span class="o">.</span><span class="n">area_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -830,7 +817,7 @@ document.write(`
 
 <div class="viewcode-block" id="ProblemFixedPanel._evaluate">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.ProblemFixedPanel._evaluate">[docs]</a>
-    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The function is executed at each element in the optimization. The arguments that are passed should be in the following </span>
 <span class="sd">        order: t_sk_cell, t_sp, t_st, w_st, h_st. Together, they give a total length of N + 4, where N is the number of cells.</span>
@@ -859,7 +846,7 @@ document.write(`
         <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
 
         <span class="c1"># check whether we are using multiprocess</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elementwise_runner</span><span class="p">,</span> <span class="n">StarmapParallelization</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">StarmapParallelization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;elementwise_runner&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">StarmapParallelization</span><span class="p">):</span>
             <span class="c1"># If so then make a copy of wingbox object</span>
             <span class="n">box_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">wingbox_obj</span>
@@ -892,7 +879,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="o">.</span><span class="n">shear_modulus</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># ================ Get constraints ======================================</span>
+        <span class="c1"># ================ Get constraints ====================================== </span>
         <span class="n">constr_cls</span> <span class="o">=</span> <span class="n">IsotropicWingboxConstraints</span><span class="p">(</span>
             <span class="n">box_copy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_struct</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_sec</span>
         <span class="p">)</span>
@@ -920,7 +907,7 @@ document.write(`
 
 <div class="viewcode-block" id="SectionOpt">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt">[docs]</a>
-<span class="k">class</span> <span class="nc">SectionOpt</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SectionOpt</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The following class allows for the optimization of a single airfoil section. The class assumes that the correct material properties</span>
 <span class="sd">    have been embedded in :class:`Material`, and an initial estimate should be embedded in the :class:`Wingbox` class.</span>
@@ -955,8 +942,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
         <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">chord</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">len_sec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -978,8 +964,7 @@ document.write(`
 <span class="sd">            The wingbox data structure.</span>
 <span class="sd">        material_struct : Material</span>
 <span class="sd">            The material data structure.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
+<span class="sd">        &quot;&quot;&quot;</span> 
 
         <span class="c1"># Perform checks on whether correct data was loaded in</span>
 
@@ -994,7 +979,7 @@ document.write(`
 
 <div class="viewcode-block" id="SectionOpt.GA_optimize">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.GA_optimize">[docs]</a>
-    <span class="k">def</span> <span class="nf">GA_optimize</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">GA_optimize</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1013,7 +998,7 @@ document.write(`
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The following function executes the Genetic Algorithm (`GA &lt;https://pymoo.org/algorithms/soo/ga.html&gt;`_) to optimize the wingbox given to the overarching class</span>
-<span class="sd">        with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis &lt;tuduam.structures.wingbox.IdealWingbox.stress_analysis&gt;`. Additionally, there are some keywords which are explained below.</span>
+<span class="sd">        with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis &lt;tuduam.structures.wingbox.IdealWingbox.stress_analysis&gt;`. Additionally, t[...] </span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1043,13 +1028,11 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        pymoo.core.result.Result</span>
-<span class="sd">            Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example &lt;https://pymoo.org/getting_started/part_4.html&gt;`_).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-  
+<span class="sd">            Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example &lt;https://pymoo.org/getting_started/part_4.html&gt;`_[...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
 
         <span class="c1"># initialize the thread pool and create the runner</span>
-        <span class="k">if</span> <span class="n">multiprocess</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">multiprocess</span> <span class="ow">and</span> <span class="n">StarmapParallelization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n_proccess</span> <span class="o">=</span> <span class="n">cores</span>
             <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">n_proccess</span><span class="p">)</span>
             <span class="n">runner</span> <span class="o">=</span> <span class="n">StarmapParallelization</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">)</span>
@@ -1070,6 +1053,10 @@ document.write(`
                 <span class="n">elementwise_runner</span><span class="o">=</span><span class="n">runner</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">multiprocess</span> <span class="ow">and</span> <span class="n">StarmapParallelization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;pymoo StarmapParallelization not available in this pymoo version; running without multiprocessing.&quot;</span>
+                <span class="p">)</span>
             <span class="n">problem</span> <span class="o">=</span> <span class="n">ProblemFixedPanel</span><span class="p">(</span>
                 <span class="n">shear_y</span><span class="p">,</span>
                 <span class="n">shear_x</span><span class="p">,</span>
@@ -1097,7 +1084,7 @@ document.write(`
         <span class="k">return</span> <span class="n">resGA</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_obj_func_cobyla</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_obj_func_cobyla</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1108,7 +1095,7 @@ document.write(`
         <span class="n">str_lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This function is not intended to be used by the user; hence it is hinted to be a private method. The function is passed to the scipy.optimize.minimize function. The arguments that are passed should be in the following </span>
+<span class="sd">        This function is not intended to be used by the user; hence it is hinted to be a private method. The function is passed to the scipy.optimize.minimize function. The arguments that are passed s[...] </span>
 <span class="sd">        order: t_sk_cell, t_sp, t_st, w_st, h_st. Together, they give a total length of N + 4, where N is the number of cells.</span>
 <span class="sd">        This is internally checked, and if it is not the case, a runtime error will be raised.</span>
 
@@ -1130,7 +1117,6 @@ document.write(`
 <span class="sd">        RuntimeError</span>
 <span class="sd">            If the flattened design vector does not match the specified wingbox properties.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
 
 
         <span class="n">n_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>
@@ -1171,7 +1157,7 @@ document.write(`
 
 <div class="viewcode-block" id="SectionOpt.optimize_cobyla">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.optimize_cobyla">[docs]</a>
-    <span class="k">def</span> <span class="nf">optimize_cobyla</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">optimize_cobyla</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1184,7 +1170,7 @@ document.write(`
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sop</span><span class="o">.</span><span class="n">_optimize</span><span class="o">.</span><span class="n">OptimizeResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Optimizes the design using the COBYLA optimizer with the constraints defined in :class:`IsotropicWingboxConstraints`. The optimization parameters</span>
-<span class="sd">        are the skin thickness in each cell, the spar thickness, and the area of the stringers. Hence the resulting design vector is x = []. The amount of stringers is not an optimization parameter here</span>
+<span class="sd">        are the skin thickness in each cell, the spar thickness, and the area of the stringers. Hence the resulting design vector is x = []. The amount of stringers is not an optimization parameter he[...]</span>
 <span class="sd">        as this would result in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different </span>
 <span class="sd">        optimizer.</span>
 
@@ -1207,10 +1193,7 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        scipy.optimize.OptimizeResult</span>
 <span class="sd">            The result of the optimization process.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-
- 
+<span class="sd">        &quot;&quot;&quot;</span>  
 
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_struct</span><span class="o">.</span><span class="n">n_cell</span>  <span class="c1"># quick reference to number of cells</span>
         <span class="c1"># Whatever parameters were given in the datastrucrtre are used as inital estimate</span>
@@ -1249,10 +1232,10 @@ document.write(`
         <span class="c1"># Otherwise they migt be ignored compared to other constraints</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lb_lst</span><span class="p">)):</span>
 
-            <span class="k">def</span> <span class="nf">upper_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">upper_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">ub_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
 
-            <span class="k">def</span> <span class="nf">lower_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">lower_constraint</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
                 <span class="k">return</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">lb_lst</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
 
             <span class="n">constr_lst</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">upper_constraint</span><span class="p">})</span>
@@ -1273,7 +1256,7 @@ document.write(`
 
 <div class="viewcode-block" id="SectionOpt.full_section_opt">
 <a class="viewcode-back" href="../../../optimization.html#tuduam.structures.optimization.SectionOpt.full_section_opt">[docs]</a>
-    <span class="k">def</span> <span class="nf">full_section_opt</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">full_section_opt</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">shear_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1310,14 +1293,21 @@ document.write(`
 <span class="sd">            The seed for the random generations of the samples, defaults to 1.</span>
 <span class="sd">        save_hist_full : bool, optional</span>
 <span class="sd">            Saves the history in the result object if true, defaults to True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
 
+        <span class="n">pool</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">runner</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">multiprocess_full</span> <span class="ow">and</span> <span class="n">StarmapParallelization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_proccess</span> <span class="o">=</span> <span class="n">cores</span>
+            <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">n_proccess</span><span class="p">)</span>
+            <span class="n">runner</span> <span class="o">=</span> <span class="n">StarmapParallelization</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">multiprocess_full</span> <span class="ow">and</span> <span class="n">StarmapParallelization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;pymoo StarmapParallelization not available in this pymoo version; running without multiprocessing.&quot;</span>
+            <span class="p">)</span>
 
-        <span class="n">n_proccess</span> <span class="o">=</span> <span class="n">cores</span>
-        <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">n_proccess</span><span class="p">)</span>
-        <span class="n">runner</span> <span class="o">=</span> <span class="n">StarmapParallelization</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">multiprocess_full</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">runner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prob</span> <span class="o">=</span> <span class="n">ProblemFreePanel</span><span class="p">(</span>
                 <span class="n">shear_y</span><span class="p">,</span>
                 <span class="n">shear_x</span><span class="p">,</span>
@@ -1363,10 +1353,17 @@ document.write(`
             <span class="n">save_history</span><span class="o">=</span><span class="n">save_hist_full</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose_full</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="c1"># best effort: if we created a pool, close it</span>
+        <span class="k">if</span> <span class="n">pool</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_constraint_vector</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_constraint_vector</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="n">shear_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -1439,7 +1436,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -1448,8 +1445,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -1462,8 +1457,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1483,7 +1478,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -1496,7 +1491,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

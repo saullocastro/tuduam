@@ -13,38 +13,42 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tuduam/propulsion';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -52,31 +56,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -84,7 +73,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -92,20 +80,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -126,83 +121,85 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../propulsion.html">
+    Propulsion
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../performance.html">
+    Performance
+  </a>
+</li>
+
             <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
                     More
                 </button>
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -217,29 +214,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -248,15 +237,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -273,7 +258,8 @@ document.write(`
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -282,89 +268,84 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../data_structures.html">
-                        Data Structures
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../data_structures.html">
+    Data Structures
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../structures.html">
-                        Structures subpackage
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../propulsion.html">
-                        Propulsion
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structures.html">
+    Structures subpackage
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../aerodynamics.html">
-                        Aerodynamics
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../performance.html">
-                        Performance
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../mass_metric.html">
-                        Mass Metrics
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../propulsion.html">
+    Propulsion
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../airfoil_data.html">
-                        Airfoil data generation
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../propulsion_notebook.html">
-                        Propulsion Notebook
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../aerodynamics.html">
+    Aerodynamics
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../structural_analysis.html">
-                        Structural Analysis
-                      </a>
-                    </li>
-                
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../structural_opt.html">
-                        Structural Optimization
-                      </a>
-                    </li>
-                
-                </ul>
-            </li>
-            
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../performance.html">
+    Performance
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../mass_metric.html">
+    Mass Metrics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../airfoil_data.html">
+    Airfoil data generation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../propulsion_notebook.html">
+    Propulsion Notebook
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structural_analysis.html">
+    Structural Analysis
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../structural_opt.html">
+    Structural Optimization
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -374,15 +355,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -390,29 +367,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -423,7 +403,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tuduam.propulsion</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tuduam.propulsion</span></li>
   </ul>
 </nav>
 </div>
@@ -441,21 +421,21 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for tuduam.propulsion</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tuduam.data_structures</span> <span class="kn">import</span> <span class="n">Propeller</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">spint</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">NearestNDInterpolator</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tuduam.data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Propeller</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">spint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearestNDInterpolator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
 
 <div class="viewcode-block" id="extract_data_dir">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.extract_data_dir">[docs]</a>
-<span class="k">def</span> <span class="nf">extract_data_dir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_data_dir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function pulls data from multiple files within a directory as outputted by Xfoil and puts them in one array.</span>
 <span class="sd">    Information on how to do this can be found in the notebooks.</span>
@@ -504,7 +484,7 @@ document.write(`
 
 <div class="viewcode-block" id="alpha_xfoil_interp">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.alpha_xfoil_interp">[docs]</a>
-<span class="k">def</span> <span class="nf">alpha_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">alpha_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolates the angle of attack (alpha) from Xfoil output data.</span>
 
@@ -526,7 +506,7 @@ document.write(`
 
 <div class="viewcode-block" id="cl_xfoil_interp">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.cl_xfoil_interp">[docs]</a>
-<span class="k">def</span> <span class="nf">cl_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cl_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolates the lift coefficient (CL) from Xfoil output data.</span>
 
@@ -548,7 +528,7 @@ document.write(`
 
 <div class="viewcode-block" id="cd_xfoil_interp">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.cd_xfoil_interp">[docs]</a>
-<span class="k">def</span> <span class="nf">cd_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cd_xfoil_interp</span><span class="p">(</span><span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NearestNDInterpolator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interpolates the drag coefficient (CD) from Xfoil output data.</span>
 
@@ -569,7 +549,7 @@ document.write(`
 
 <div class="viewcode-block" id="PlotBlade">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.PlotBlade">[docs]</a>
-<span class="k">class</span> <span class="nc">PlotBlade</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PlotBlade</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to plot the blade of a propeller based on its specifications and airfoil coordinates.</span>
 
@@ -599,7 +579,7 @@ document.write(`
 <span class="sd">        Path to the airfoil coordinate file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propclass</span><span class="p">:</span> <span class="n">Propeller</span><span class="p">,</span> <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propclass</span><span class="p">:</span> <span class="n">Propeller</span><span class="p">,</span> <span class="n">path_coord</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialization of the plot class. The propeller data structure is required to be fully filled,</span>
 <span class="sd">        including the thickness over chord ratio.</span>
@@ -623,7 +603,7 @@ document.write(`
 
 <div class="viewcode-block" id="PlotBlade.load_airfoil">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.PlotBlade.load_airfoil">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_airfoil</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_airfoil</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an array using a path to the coordinate file of the airfoil.</span>
@@ -663,7 +643,7 @@ document.write(`
 
 <div class="viewcode-block" id="PlotBlade.plot_blade">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.PlotBlade.plot_blade">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_blade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_blade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns two plots: one top-down view of the propeller showing the amount of twist and the various chords,</span>
 <span class="sd">        and one plot showing a side view of the propeller.</span>
@@ -752,7 +732,7 @@ document.write(`
 
 <div class="viewcode-block" id="PlotBlade.plot_3D">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.PlotBlade.plot_3D">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot a 3D plot of one propeller blade. The user can drag the mouse around to see</span>
 <span class="sd">        the blade from various angles.</span>
@@ -838,7 +818,7 @@ document.write(`
 
 <div class="viewcode-block" id="PlotBlade.plot_3D_plotly">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.PlotBlade.plot_3D_plotly">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot_3D_plotly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_3D_plotly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tst</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot a 3D plot of one propeller blade. The user can drag the mouse around to see</span>
 <span class="sd">        the blade from various angles.</span>
@@ -926,7 +906,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM">[docs]</a>
-<span class="k">class</span> <span class="nc">BEM</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BEM</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for performing Blade Element Momentum (BEM) analysis on a propeller. For initialization of the BEM class please keep the number of stations above 20. Also, if any error occurs with the propeller class,</span>
 <span class="sd">    carefully check whether all parameters have been properly loaded in. Please specify either a thrust level or</span>
@@ -987,7 +967,7 @@ document.write(`
 <span class="sd">    cd_interp : NearestNDInterpolator</span>
 <span class="sd">        Interpolator for CD based on CL and Reynolds number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">propclass</span><span class="p">:</span> <span class="n">Propeller</span><span class="p">,</span>
@@ -1059,7 +1039,7 @@ document.write(`
     <span class="c1"># Prandtl relation for tip loss</span>
 <div class="viewcode-block" id="BEM.F">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.F">[docs]</a>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prandtl relation for tip loss factor.</span>
 
@@ -1081,7 +1061,7 @@ document.write(`
     <span class="c1"># Exponent used for function above</span>
 <div class="viewcode-block" id="BEM.f">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.f">[docs]</a>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exponent used in the Prandtl tip loss factor calculation.</span>
 
@@ -1103,7 +1083,7 @@ document.write(`
     <span class="c1"># Pitch of blade tip</span>
 <div class="viewcode-block" id="BEM.phi_t">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.phi_t">[docs]</a>
-    <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pitch angle of the blade tip.</span>
 
@@ -1123,7 +1103,7 @@ document.write(`
     <span class="c1"># Non-dimensional radius, r/R</span>
 <div class="viewcode-block" id="BEM.Xi">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.Xi">[docs]</a>
-    <span class="k">def</span> <span class="nf">Xi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Xi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Non-dimensional radius.</span>
 
@@ -1143,7 +1123,7 @@ document.write(`
     <span class="c1"># Angle of local velocity of the blade wrt to disk plane</span>
 <div class="viewcode-block" id="BEM.phi">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.phi">[docs]</a>
-    <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Angle of local velocity of the blade with respect to the disk plane.</span>
 
@@ -1165,7 +1145,7 @@ document.write(`
     <span class="c1"># Mach as a function of radius</span>
 <div class="viewcode-block" id="BEM.M">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.M">[docs]</a>
-    <span class="k">def</span> <span class="nf">M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Mach number as a function of radius.</span>
 
@@ -1186,7 +1166,7 @@ document.write(`
     <span class="c1"># Reynolds number</span>
 <div class="viewcode-block" id="BEM.RN">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.RN">[docs]</a>
-    <span class="k">def</span> <span class="nf">RN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Wc</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Wc</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reynolds number as a function of local speed and chord.</span>
 
@@ -1207,7 +1187,7 @@ document.write(`
     <span class="c1"># Product of local speed at the blade and chord</span>
 <div class="viewcode-block" id="BEM.Wc">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.Wc">[docs]</a>
-    <span class="k">def</span> <span class="nf">Wc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Cl</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Wc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Cl</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Product of local speed at the blade and chord.</span>
 
@@ -1245,7 +1225,7 @@ document.write(`
     <span class="c1"># Non-dimensional speed</span>
 <div class="viewcode-block" id="BEM.x">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.x">[docs]</a>
-    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Non-dimensional speed.</span>
 
@@ -1265,7 +1245,7 @@ document.write(`
     <span class="c1"># Advance ratio</span>
 <div class="viewcode-block" id="BEM.J">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.J">[docs]</a>
-    <span class="k">def</span> <span class="nf">J</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">J</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Advance ratio.</span>
 
@@ -1279,7 +1259,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM.phi_int">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.phi_int">[docs]</a>
-    <span class="k">def</span> <span class="nf">phi_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phi_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Angle of local velocity for integration.</span>
 
@@ -1301,7 +1281,7 @@ document.write(`
     <span class="c1"># F function used for integration part only</span>
 <div class="viewcode-block" id="BEM.F_int">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.F_int">[docs]</a>
-    <span class="k">def</span> <span class="nf">F_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tip loss factor for integration.</span>
 
@@ -1323,7 +1303,7 @@ document.write(`
     <span class="c1"># f function used for integration part only</span>
 <div class="viewcode-block" id="BEM.f_int">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.f_int">[docs]</a>
-    <span class="k">def</span> <span class="nf">f_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Exponent used in the Prandtl tip loss factor calculation for integration.</span>
 
@@ -1345,7 +1325,7 @@ document.write(`
     <span class="c1"># G function used for integration part only</span>
 <div class="viewcode-block" id="BEM.G_int">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.G_int">[docs]</a>
-    <span class="k">def</span> <span class="nf">G_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        G function for integration.</span>
 
@@ -1372,7 +1352,7 @@ document.write(`
     <span class="c1"># Assuming average eps</span>
 <div class="viewcode-block" id="BEM.I_prim_1">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.I_prim_1">[docs]</a>
-    <span class="k">def</span> <span class="nf">I_prim_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">I_prim_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Integral I_prim_1 for internal variable calculation.</span>
 
@@ -1397,7 +1377,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM.I_prim_2">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.I_prim_2">[docs]</a>
-    <span class="k">def</span> <span class="nf">I_prim_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">I_prim_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Integral I_prim_2 for internal variable calculation.</span>
 
@@ -1426,7 +1406,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM.J_prim_1">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.J_prim_1">[docs]</a>
-    <span class="k">def</span> <span class="nf">J_prim_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">J_prim_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Integral J_prim_1 for internal variable calculation.</span>
 
@@ -1451,7 +1431,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM.J_prim_2">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.J_prim_2">[docs]</a>
-    <span class="k">def</span> <span class="nf">J_prim_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">J_prim_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Integral J_prim_2 for internal variable calculation.</span>
 
@@ -1479,7 +1459,7 @@ document.write(`
     <span class="c1"># Propeller efficiency Tc/Pc</span>
 <div class="viewcode-block" id="BEM.efficiency">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.efficiency">[docs]</a>
-    <span class="k">def</span> <span class="nf">efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tc</span><span class="p">,</span> <span class="n">Pc</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tc</span><span class="p">,</span> <span class="n">Pc</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate propeller efficiency.</span>
 
@@ -1501,7 +1481,7 @@ document.write(`
     <span class="c1"># Prandtl-Glauert correction factor: sqrt(1 - M^2)</span>
 <div class="viewcode-block" id="BEM.PG">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.PG">[docs]</a>
-    <span class="k">def</span> <span class="nf">PG</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">PG</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prandtl-Glauert correction factor.</span>
 
@@ -1521,7 +1501,7 @@ document.write(`
     <span class="c1"># This function runs the design procedure from an arbitrary start zeta (which can be 0)</span>
 <div class="viewcode-block" id="BEM.run_BEM">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.run_BEM">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_BEM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_BEM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs the design procedure for the propeller using Blade Element Momentum (BEM) theory from an arbitrary start zeta.</span>
 
@@ -1766,7 +1746,7 @@ document.write(`
 
 <div class="viewcode-block" id="BEM.optimise_blade">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.BEM.optimise_blade">[docs]</a>
-    <span class="k">def</span> <span class="nf">optimise_blade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta_init</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">optimise_blade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta_init</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Optimize the blade design by iteratively running the BEM design procedure and updating the inflow ratio (zeta) </span>
 <span class="sd">        until convergence is achieved.</span>
@@ -1807,7 +1787,7 @@ document.write(`
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM">[docs]</a>
-<span class="k">class</span> <span class="nc">OffDesignAnalysisBEM</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OffDesignAnalysisBEM</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class encapsulating the arbitrary analysis of a propeller blade as described in Adkins and Liebeck (1994).</span>
 
@@ -1824,7 +1804,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">propclass</span><span class="p">:</span> <span class="n">Propeller</span><span class="p">,</span>
@@ -1860,14 +1840,14 @@ document.write(`
     <span class="c1"># Prandtl relation for tip loss</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.F">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.F">[docs]</a>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">)))</span></div>
 
 
     <span class="c1"># Exponent used for function above</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.f">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.f">[docs]</a>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Xi</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_t</span><span class="p">))</span></div>
 
 
@@ -1877,69 +1857,69 @@ document.write(`
     <span class="c1"># Non-dimensional radius, r/R</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.Xi">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.Xi">[docs]</a>
-    <span class="k">def</span> <span class="nf">Xi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Xi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span></div>
 
 
     <span class="c1"># Mach as a function of radius</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.M">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.M">[docs]</a>
-    <span class="k">def</span> <span class="nf">M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">M</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">W</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span></div>
 
 
     <span class="c1"># Reynolds number</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.RN">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.RN">[docs]</a>
-    <span class="k">def</span> <span class="nf">RN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="c1"># Reynolds number. Wc is speed times chord</span>
         <span class="k">return</span> <span class="n">W</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dyn_vis</span></div>
 
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.W">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.W">[docs]</a>
-    <span class="k">def</span> <span class="nf">W</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a_prim</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">W</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a_prim</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">a</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Omega</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_prim</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
     <span class="c1"># Cx and Cy coefficients from Cl and Cd</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.Cy">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.Cy">[docs]</a>
-    <span class="k">def</span> <span class="nf">Cy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Cy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Cl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">-</span> <span class="n">Cd</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.Cx">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.Cx">[docs]</a>
-    <span class="k">def</span> <span class="nf">Cx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Cx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Cl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">Cd</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span></div>
 
 
     <span class="c1"># Local solidity of a blade element</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.solidity_local">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.solidity_local">[docs]</a>
-    <span class="k">def</span> <span class="nf">solidity_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solidity_local</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">*</span> <span class="n">c</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span></div>
 
 
     <span class="c1"># Variables used in interference factors</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.K">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.K">[docs]</a>
-    <span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cy</span><span class="p">(</span><span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.K_prim">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.K_prim">[docs]</a>
-    <span class="k">def</span> <span class="nf">K_prim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">K_prim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cx</span><span class="p">(</span><span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span></div>
 
 
     <span class="c1"># Interference factors</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.a_fac">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.a_fac">[docs]</a>
-    <span class="k">def</span> <span class="nf">a_fac</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a_fac</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">Cl</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">Cd</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -1981,7 +1961,7 @@ document.write(`
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.a_prim_fac">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.a_prim_fac">[docs]</a>
-    <span class="k">def</span> <span class="nf">a_prim_fac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a_prim_fac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cd</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Returns the rotational interferene factor. Note that Viterna and Janetzke11 give empirical arguments </span>
 <span class="sd">        for clipping the magnitude of a and a&#39; at the value of 0.7 in order to better convergence.</span>
@@ -2023,7 +2003,7 @@ document.write(`
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.phi">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.phi">[docs]</a>
-    <span class="k">def</span> <span class="nf">phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a_prim</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a_prim</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Omega</span> <span class="o">*</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a_prim</span><span class="p">)))</span></div>
 
 
@@ -2050,20 +2030,20 @@ document.write(`
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.eff">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.eff">[docs]</a>
-    <span class="k">def</span> <span class="nf">eff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_T</span><span class="p">,</span> <span class="n">C_P</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_T</span><span class="p">,</span> <span class="n">C_P</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">C_T</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">J</span> <span class="o">/</span> <span class="n">C_P</span></div>
 
 
     <span class="c1"># Prandtl-Glauert correction factor: sqrt(1 - M^2)</span>
 <div class="viewcode-block" id="OffDesignAnalysisBEM.PG_correct">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.PG_correct">[docs]</a>
-    <span class="k">def</span> <span class="nf">PG_correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">PG_correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OffDesignAnalysisBEM.analyse_propeller">
 <a class="viewcode-back" href="../../propulsion.html#tuduam.propulsion.OffDesignAnalysisBEM.analyse_propeller">[docs]</a>
-    <span class="k">def</span> <span class="nf">analyse_propeller</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyse_propeller</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">delta_pitch</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">abs_extrapolation</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Analyse the propeller according to the procedure specified in Adkins and Liebeck (1994), returns a dictionary with the </span>
@@ -2275,7 +2255,7 @@ document.write(`
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
 </div>
@@ -2284,8 +2264,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -2298,8 +2276,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -2319,7 +2297,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     <br/>
   </p>
 </div>
@@ -2332,7 +2310,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
