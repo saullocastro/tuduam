@@ -6,7 +6,16 @@ from typing import List
 import numpy as np
 import scipy.optimize as sop
 from pymoo.core.problem import Problem, ElementwiseProblem
-from pymoo.core.problem import StarmapParallelization
+# StarmapParallelization was moved between pymoo versions – try the new location first,
+# fall back to the old location, otherwise disable parallelization support.
+try:
+    from pymoo.core.parallelization import StarmapParallelization
+except Exception:
+    try:
+        from pymoo.core.problem import StarmapParallelization
+    except Exception:
+        StarmapParallelization = None
+
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
 from pymoo.operators.repair.rounding import RoundingRepair
@@ -85,8 +94,7 @@ class ProblemFreePanel(ElementwiseProblem):
     """
 
 
-    def __init__(
-        self,
+    def __init__(self,
         shear_y: float,
         shear_x: float,
         moment_y: float,
@@ -248,7 +256,7 @@ class ProblemFixedPanel(ElementwiseProblem):
     mat_struct : Material
         Material properties used in the wingbox.
     path_coord : str
-        Path to the file containing the airfoil coordinates.
+        File path or identifier for coordinates related to the section.
     upper_bnds : list, optional
         A list containing the upper bounds of the optimization.
     lower_bnds : list, optional
@@ -281,8 +289,7 @@ class ProblemFixedPanel(ElementwiseProblem):
     """
    
 
-    def __init__(
-        self,
+    def __init__(self,
         shear_y: float,
         shear_x: float,
         moment_y: float,
@@ -335,7 +342,7 @@ class ProblemFixedPanel(ElementwiseProblem):
         ------
         RuntimeError
             If the optimization is not compatible with stringer area as the constraints rely on the string geometry.
-        """
+        """  
 
         if box_struct.area_str is not None:
             raise RuntimeError(
@@ -406,7 +413,7 @@ class ProblemFixedPanel(ElementwiseProblem):
         n_cell = self.box_struct.n_cell
 
         # check whether we are using multiprocess
-        if isinstance(self.elementwise_runner, StarmapParallelization):
+        if StarmapParallelization is not None and isinstance(getattr(self, "elementwise_runner", None), StarmapParallelization):
             # If so then make a copy of wingbox object
             box_copy = deepcopy(
                 self.wingbox_obj
@@ -439,7 +446,7 @@ class ProblemFixedPanel(ElementwiseProblem):
             self.mat_struct.shear_modulus,
         )
 
-        # ================ Get constraints ======================================
+        # ================ Get constraints ====================================== 
         constr_cls = IsotropicWingboxConstraints(
             box_copy, self.mat_struct, self.len_sec
         )
@@ -498,8 +505,7 @@ class SectionOpt:
     """
 
 
-    def __init__(
-        self,
+    def __init__(self,
         path_coord: str,
         chord: float,
         len_sec: float,
@@ -521,8 +527,7 @@ class SectionOpt:
             The wingbox data structure.
         material_struct : Material
             The material data structure.
-        """
-
+        """ 
 
         # Perform checks on whether correct data was loaded in
 
@@ -554,7 +559,7 @@ class SectionOpt:
     ):
         """
         The following function executes the Genetic Algorithm (`GA <https://pymoo.org/algorithms/soo/ga.html>`_) to optimize the wingbox given to the overarching class
-        with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis <tuduam.structures.wingbox.IdealWingbox.stress_analysis>`. Additionally, there are some keywords which are explained below.
+        with the loads fed to the function. For more information on the loads specification please see :meth:`stress_analysis <tuduam.structures.wingbox.IdealWingbox.stress_analysis>`. Additionally, t[...] 
 
         Parameters
         ----------
@@ -584,13 +589,11 @@ class SectionOpt:
         Returns
         -------
         pymoo.core.result.Result
-            Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example <https://pymoo.org/getting_started/part_4.html>`_).
-        """
-
-  
+            Returns the result class from pymoo, which will also contain the history if specified true. Please see the example for use cases (`example <https://pymoo.org/getting_started/part_4.html>`_[...]
+        """  
 
         # initialize the thread pool and create the runner
-        if multiprocess:
+        if multiprocess and StarmapParallelization is not None:
             n_proccess = cores
             pool = multiprocessing.Pool(n_proccess)
             runner = StarmapParallelization(pool.starmap)
@@ -611,6 +614,10 @@ class SectionOpt:
                 elementwise_runner=runner,
             )
         else:
+            if multiprocess and StarmapParallelization is None:
+                warnings.warn(
+                    "pymoo StarmapParallelization not available in this pymoo version; running without multiprocessing."
+                )
             problem = ProblemFixedPanel(
                 shear_y,
                 shear_x,
@@ -648,7 +655,7 @@ class SectionOpt:
         str_lst: list,
     ):
         """
-        This function is not intended to be used by the user; hence it is hinted to be a private method. The function is passed to the scipy.optimize.minimize function. The arguments that are passed should be in the following 
+        This function is not intended to be used by the user; hence it is hinted to be a private method. The function is passed to the scipy.optimize.minimize function. The arguments that are passed s[...] 
         order: t_sk_cell, t_sp, t_st, w_st, h_st. Together, they give a total length of N + 4, where N is the number of cells.
         This is internally checked, and if it is not the case, a runtime error will be raised.
 
@@ -670,7 +677,6 @@ class SectionOpt:
         RuntimeError
             If the flattened design vector does not match the specified wingbox properties.
         """
-
 
 
         n_cell = self.box_struct.n_cell
@@ -722,7 +728,7 @@ class SectionOpt:
     ) -> sop._optimize.OptimizeResult:
         """
         Optimizes the design using the COBYLA optimizer with the constraints defined in :class:`IsotropicWingboxConstraints`. The optimization parameters
-        are the skin thickness in each cell, the spar thickness, and the area of the stringers. Hence the resulting design vector is x = []. The amount of stringers is not an optimization parameter here
+        are the skin thickness in each cell, the spar thickness, and the area of the stringers. Hence the resulting design vector is x = []. The amount of stringers is not an optimization parameter he[...]
         as this would result in a varying amount of constraints which is not supported by COBYLA. Hence, the result of this will be fed to a different 
         optimizer.
 
@@ -745,10 +751,7 @@ class SectionOpt:
         -------
         scipy.optimize.OptimizeResult
             The result of the optimization process.
-        """
-
-
- 
+        """  
 
         n = self.box_struct.n_cell  # quick reference to number of cells
         # Whatever parameters were given in the datastrucrtre are used as inital estimate
@@ -845,14 +848,21 @@ class SectionOpt:
             The seed for the random generations of the samples, defaults to 1.
         save_hist_full : bool, optional
             Saves the history in the result object if true, defaults to True.
-        """
+        """  
 
+        pool = None
+        runner = None
+        if multiprocess_full and StarmapParallelization is not None:
+            n_proccess = cores
+            pool = multiprocessing.Pool(n_proccess)
+            runner = StarmapParallelization(pool.starmap)
 
+        if multiprocess_full and StarmapParallelization is None:
+            warnings.warn(
+                "pymoo StarmapParallelization not available in this pymoo version; running without multiprocessing."
+            )
 
-        n_proccess = cores
-        pool = multiprocessing.Pool(n_proccess)
-        runner = StarmapParallelization(pool.starmap)
-        if multiprocess_full:
+        if runner is not None:
             prob = ProblemFreePanel(
                 shear_y,
                 shear_x,
@@ -898,6 +908,13 @@ class SectionOpt:
             save_history=save_hist_full,
             verbose=verbose_full,
         )
+        # best effort: if we created a pool, close it
+        if pool is not None:
+            try:
+                pool.close()
+                pool.join()
+            except Exception:
+                pass
         return res
 
     def _get_constraint_vector(
