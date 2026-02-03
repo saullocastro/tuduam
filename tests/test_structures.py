@@ -1,17 +1,16 @@
 import os
 import sys
-import pdb 
+import pdb
 import copy
 
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-import pytest
 import numpy as np
-
 
 import tuduam.structures as struct
 from tuduam.mass_metrics import *
 import tuduam as tud
+
 
 def test_wing_weight(FixtVTOL, FixtFlightPerformance, FixtSingleWing):
     wing_mass = class2_wing_mass(FixtVTOL, FixtFlightPerformance, FixtSingleWing)
@@ -43,7 +42,7 @@ def test_get_centroids(naca24012, naca0012):
     assert np.isclose(x1,0.5,atol=0.01)
     assert np.isclose(x2,0.5,atol=0.01)
 
-    
+
 
 
 def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
@@ -57,7 +56,7 @@ def test_discretize_airfoil(FixtWingbox1, naca24012, naca0012, naca45112):
     panel_cell1 = [i for i in res.panel_dict.values() if (i.b1.x + i.b2.x)/2 < 0.6 ]
     panel_cell2 = [i for i in res.panel_dict.values() if 0.6 <= (i.b1.x + i.b2.x)/2 < 1.4 ]
     panel_cell3 = [i for i in res.panel_dict.values() if (i.b1.x + i.b2.x)/2 >= 1.4 ]
-    
+
 
     # Test whether correct thicknesses have been assigned
     tsk_cell1 = [i.t_pnl for i in panel_cell1 if i.b1.x != i.b2.x]
@@ -118,11 +117,11 @@ def test_contribution_stringers(case2):
 def test_cell_areas(FixtWingbox2, naca24012, naca0012, naca45112):
     res = struct.discretize_airfoil(naca45112, 2, FixtWingbox2)
     area_lst = res.get_cell_areas()
- 
+
 def test_shear_flows(case23_5_Megson):
     """ The following case tests the computation of the shear flow using problem 23.5 from source [1].
 
-    
+
     ---------------------------------------
     Source
     ------------------------------------
@@ -131,7 +130,7 @@ def test_shear_flows(case23_5_Megson):
 
     :param case23_5_Megson: Fixture building the example
     :type case23_5_Megson:Fixture
-    """    
+    """
     wingbox = case23_5_Megson
     assert np.isclose(np.round(wingbox.Ixx*1e6,1)*1e6,214.3e6)
     qs_lst, dtheta_dz = wingbox.stress_analysis(44.5e3, 0, 0,20e3, 635/1398, 80e9, validate=False)
@@ -145,26 +144,26 @@ def test_shear_flows(case23_5_Megson):
 
     # Check basic shear flows
     # Very minor relative tolerance  of 0.5% is introducted due to rounding error in the solution manual
-    assert np.isclose(pnl1.q_basic, -34.07664e3, rtol=0.005) 
-    assert np.isclose(pnl2.q_basic, 0, rtol=0.005) 
-    assert np.isclose(pnl3.q_basic, 0, rtol=0.005) 
-    assert np.isclose(pnl4.q_basic, -13.55016e3, rtol=0.005) 
-    assert np.isclose(pnl5.q_basic, 0, rtol=0.005) 
-    assert np.isclose(pnl6.q_basic, 0, rtol=0.005) 
-    assert np.isclose(pnl7.q_basic, 81.745664e3, rtol=0.005) 
+    assert np.isclose(pnl1.q_basic, -34.07664e3, rtol=0.005)
+    assert np.isclose(pnl2.q_basic, 0, rtol=0.005)
+    assert np.isclose(pnl3.q_basic, 0, rtol=0.005)
+    assert np.isclose(pnl4.q_basic, -13.55016e3, rtol=0.005)
+    assert np.isclose(pnl5.q_basic, 0, rtol=0.005)
+    assert np.isclose(pnl6.q_basic, 0, rtol=0.005)
+    assert np.isclose(pnl7.q_basic, 81.745664e3, rtol=0.005)
 
     # Check total shear flows
-    assert np.isclose(np.abs(pnl1.q_tot), 35.17e3, rtol=0.05) 
+    assert np.isclose(np.abs(pnl1.q_tot), 35.17e3, rtol=0.05)
     assert np.isclose(np.abs(pnl2.q_tot), 0.795e3, rtol=0.005)  # FIXME: qs,1 is slightly off should be around 1.1e3
-    assert np.isclose(np.abs(pnl3.q_tot), 7.2e3, rtol=0.02) 
-    assert np.isclose(np.abs(pnl4.q_tot), 20.8e3, rtol=0.005) 
-    assert np.isclose(np.abs(pnl5.q_tot), 7.2e3, rtol=0.02) 
-    assert np.isclose(np.abs(pnl6.q_tot), 0.795e3, rtol=0.005) 
+    assert np.isclose(np.abs(pnl3.q_tot), 7.2e3, rtol=0.02)
+    assert np.isclose(np.abs(pnl4.q_tot), 20.8e3, rtol=0.005)
+    assert np.isclose(np.abs(pnl5.q_tot), 7.2e3, rtol=0.02)
+    assert np.isclose(np.abs(pnl6.q_tot), 0.795e3, rtol=0.005)
     assert np.isclose(np.abs(pnl7.q_tot), 73.5e3, rtol=0.005) # FIXME should be around 72.4e3
 
     # Check complementary shear flow
     assert np.isclose(qs_lst[0], -0.795e3,rtol=0.005) # Should be around -1100
-    assert np.isclose(qs_lst[1],  7.2e3, rtol=0.02) 
+    assert np.isclose(qs_lst[1],  7.2e3, rtol=0.02)
 
 def test_shear_buckling(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
@@ -175,7 +174,7 @@ def test_shear_buckling(test_idealwingbox, FixtMaterial,  ):
 def test_compr_buckling(test_idealwingbox, FixtMaterial ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
     res = setup.crit_instability_compr()
-    
+
     assert all(res > 0)
 
 def test_column_str_buckling(test_idealwingbox_with_str, FixtMaterial ):
@@ -184,7 +183,7 @@ def test_column_str_buckling(test_idealwingbox_with_str, FixtMaterial ):
 
     # TODO: Find test case
     assert True
-    
+
 def test_flange_str_buckling(test_idealwingbox_with_str, FixtMaterial):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox_with_str, FixtMaterial, 0.1)
     res = setup.stringer_flange_buckling()
@@ -221,7 +220,7 @@ def test_update_gauge(test_idealwingbox_with_str):
 
     test_idealwingbox_with_str.load_new_gauge(t_sk, t_sp, t_st, w_st, h_st)
     box = test_idealwingbox_with_str
-    
+
 
 
     assert og_struct.t_sk_cell != box.wingbox_struct.t_sk_cell
@@ -247,13 +246,14 @@ def test_update_gauge(test_idealwingbox_with_str):
         assert og_boom.x == boom.x
         assert og_boom.y == boom.y
         assert og_boom.bid == boom.bid
- 
+
 
 def test_interaction_curve(test_idealwingbox, FixtMaterial,  ):
     setup = struct.IsotropicWingboxConstraints(test_idealwingbox, FixtMaterial, 0.2)
     res1 = setup.interaction_curve()
 
     test_idealwingbox.stress_analysis(6000,0, 0,17e3, 0.25, 80e9)
+    test_idealwingbox.plot_shear_stress()
     res2 = setup.interaction_curve()
 
     test_idealwingbox.stress_analysis(3000, 0, 0, 50e3, 0.25, 80e9)

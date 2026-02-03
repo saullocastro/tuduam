@@ -25,12 +25,12 @@ class Boom:
     A class to represent an idealized boom.
 
     .. note::
-    
+
         All of the parameters are optional as in this library the attributes
         have been allocated dynamically. But if this class is used you could also simply load them
         when instantiating them.
 
-    
+
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ class Boom:
         Boom x position.
     y : float, optional
         Boom y position.
-    sigma : float, optional 
+    sigma : float, optional
         The direct stress the boom experiences.
 
     Attributes
@@ -92,7 +92,7 @@ class Boom:
         return cell_idx
 
 
-class IdealPanel: 
+class IdealPanel:
     """
     A class representing a panel in an idealized wingbox.
 
@@ -141,14 +141,14 @@ class IdealPanel:
         self.pid = None # Panel ID
         self.bid1 = None  # The boom id of its corresponding first boom id
         self.bid2 = None # The boom id of its corresponding second boom id
-        self.b1: Boom | None = None 
+        self.b1: Boom | None = None
         self.b2: Boom | None  = None
         self.t_pnl: float | None = None
         self.q_basic: float | None = None
         self.q_tot: float | None = None
         self.tau: float | None = None
         self.dir_vec: float | None = None
-    
+
     def get_cell_idx(self, wingbox_struct: Wingbox, chord: float) -> int:
         """
         Returns the cell index of where the panel is located.
@@ -166,17 +166,17 @@ class IdealPanel:
             The cell index of where the panel is located.
         """
 
-   
+
         cell_idx = np.asarray((self.b1.x + self.b2.x)/2 >= np.insert(wingbox_struct.spar_loc_nondim, 0, 0)*chord) # type: ignore # Get index of the cell
         if  not any(cell_idx):
             cell_idx = 0
         else:
             cell_idx = cell_idx.nonzero()[0][-1]
         return cell_idx
-    
+
     def length(self) -> float:
         """
-        Length of the panel based on the coordinates of the boom. Boom center is used as the 
+        Length of the panel based on the coordinates of the boom. Boom center is used as the
         assumption is that the booms are infinitesimally small.
 
         Returns
@@ -199,8 +199,8 @@ class IdealPanel:
         Raises
         ------
         AttributeError
-            If boom 1 or 2 has not been assigned yet. 
-        """        
+            If boom 1 or 2 has not been assigned yet.
+        """
         try:
             x_comp = (self.b2.x - self.b1.x)/self.length() # type: ignore
             y_comp = (self.b2.y - self.b1.y)/self.length() # type: ignore
@@ -220,8 +220,8 @@ class IdealPanel:
         Raises
         ------
         AttributeError
-            If boom 1 or 2 has not been assigned yet. 
-        """        
+            If boom 1 or 2 has not been assigned yet.
+        """
         try:
             x_comp = (self.b1.x - self.b2.x)/self.length()
             y_comp = (self.b1.y - self.b2.y)/self.length()
@@ -337,7 +337,7 @@ class IdealWingbox():
 
         if A_str < 0:
             warn("The stringer area is negative, please see previous error")
-        
+
         return A_str
 
     def _set_Ixx(self):
@@ -410,7 +410,7 @@ class IdealWingbox():
 
     def get_total_area(self) -> float:
         """
-        Returns the total area of all the booms, including the addition of the skin thicknesses. This function is used 
+        Returns the total area of all the booms, including the addition of the skin thicknesses. This function is used
         for the optimization of a wingbox.
 
         Returns
@@ -428,7 +428,7 @@ class IdealWingbox():
 
     def get_polygon_cells(self, validate=False) -> List[Polygon]:
         """
-        Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the 
+        Compute the area of each cell with the help of the shapely.geometry.Polygon class. The function expects a fully loaded airfoil to be in the
         class using the idealized_airfoil function. Erroneous results or an error will be given in case this is not the case! When using this function for the first time
         with a new airfoil, it is advised to run it once with validate=True to see if the resulting areas are trustworthy. This will
         show you n plots of the cell polygon where n is the number of cells.
@@ -444,7 +444,7 @@ class IdealWingbox():
 
         Returns
         -------
-        List[Polygon] 
+        List[Polygon]
             A list of n cells long where each element contains a (shapely) Polygon instance representing the corresponding cell.
         """
 
@@ -459,8 +459,8 @@ class IdealWingbox():
                 bm_per_cell_lst.append([i for i in self.boom_dict.values() if (spar_loc <= i.x <= spar_loc_arr[idx + 1]) or np.isclose(i.x, spar_loc) or np.isclose(i.x, spar_loc_arr[idx + 1])])
             else:
                 bm_per_cell_lst.append([i for i in self.boom_dict.values() if  (i.x >= spar_loc) or np.isclose(i.x, spar_loc)])
-        
-        # The code in this for loop is required to correctly sort the coordinates 
+
+        # The code in this for loop is required to correctly sort the coordinates
         # so a polygon can be created from which the area is computed
         for idx, cell in enumerate(bm_per_cell_lst):
             x_lst = [i.x for i in cell]
@@ -468,12 +468,12 @@ class IdealWingbox():
             coord_arr = np.vstack((x_lst, y_lst)).transpose()
             if idx == 0:
                 # The boundary here is always chosen to be the leading edge
-                bnd = y_lst[x_lst.index(np.min(x_lst))] 
+                bnd = y_lst[x_lst.index(np.min(x_lst))]
             elif idx == self.wingbox_struct.n_cell - 1:
                 # The boundary here is always chosen to be the trailing edge
-                bnd = y_lst[x_lst.index(np.max(x_lst))] 
+                bnd = y_lst[x_lst.index(np.max(x_lst))]
             else:
-                # Get the vertices of the spar in order to always choose 
+                # Get the vertices of the spar in order to always choose
                 # the correct horizontal boundary to split from
                 idx_xmax = np.where(x_lst == np.max(x_lst))
                 idx_xmin = np.where(x_lst == np.min(x_lst))
@@ -493,8 +493,8 @@ class IdealWingbox():
             # Get all upper  coords and sort them from low to high based on the x location
             upper_coord = coord_arr[coord_arr[:,1] >= bnd,:]
             upper_coord = upper_coord[upper_coord[:,0].argsort(),:]
-            
-            # Sort the upper coords of the left spar and right spar 
+
+            # Sort the upper coords of the left spar and right spar
             if idx != 0: # The first cell does not have a left spar
                 #left spar
                 spar_sort_idx = np.where(upper_coord[:,0] == np.min(upper_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
@@ -512,7 +512,7 @@ class IdealWingbox():
             lower_coord = coord_arr[coord_arr[:,1] < bnd,:]
             lower_coord = np.flip(lower_coord[lower_coord[:,0].argsort(),:], axis=0)
 
-            # Sort the lower coords of the left spar internally 
+            # Sort the lower coords of the left spar internally
             if idx != 0: # The first cell does not have a left spar
                 # left spar
                 spar_sort_idx = np.where(lower_coord[:,0] == np.min(lower_coord[:,0]))[0] # Correct the sorting of the nodes on the left spar
@@ -527,7 +527,7 @@ class IdealWingbox():
                 lower_coord[spar_sort_idx,:] = right_spar
 
             # An correct set of coordinates is now achieved
-            coord_arr = np.vstack((upper_coord, lower_coord)) 
+            coord_arr = np.vstack((upper_coord, lower_coord))
             coord_arr[0,:] = coord_arr[-1:] # Close the loop so the polygon can compute the area
             poly = Polygon(coord_arr) # Create the actual polygon
             polygon_lst.append(poly) # Get the area
@@ -558,7 +558,7 @@ class IdealWingbox():
 
         polygon_lst = self.get_polygon_cells(validate)
         return [i.area for i in polygon_lst]
-    
+
     def compute_direct_stress(self, boom: Boom, moment_x: float, moment_y: float):
 
         """
@@ -582,7 +582,7 @@ class IdealWingbox():
         Ixx = self.Ixx
         Ixy = self.Ixy
         Iyy = self.Iyy
-        return ((moment_y*Ixx - moment_x*Ixy)/(Ixx*Iyy -Ixy**2)*boom.x +  
+        return ((moment_y*Ixx - moment_x*Ixy)/(Ixx*Iyy -Ixy**2)*boom.x +
                 (moment_x*Iyy  - moment_y*Ixy)/(Ixx*Iyy -Ixy**2)*boom.y)
 
 
@@ -631,10 +631,10 @@ class IdealWingbox():
             # check if it is not a spar boom, this will get a flange addition in the future maybe
             if not any(np.isclose(boom.x, spar_loc_abs )):
                 boom.A += self.area_str
-            if boom.A < 0: 
+            if boom.A < 0:
                 warn("Negative boom areas encountered this is currently a bug, temporary fix takes the absolute value")
                 boom.A = np.abs(boom.A)
-                
+
 
     def load_new_gauge(self, t_sk_cell: list, t_sp: float, t_st: float, w_st: float, h_st: float) -> None:
         """
@@ -662,7 +662,7 @@ class IdealWingbox():
         self.wingbox_struct.t_st = t_st
         self.wingbox_struct.w_st = w_st
         self.wingbox_struct.h_st = h_st
-        
+
         # Required for backwards compatibility
         self.t_st = t_st
         self.w_st = w_st
@@ -673,7 +673,7 @@ class IdealWingbox():
 
         for pnl in self.panel_dict.values():
             pnl: IdealPanel = pnl
-            # Check if it is a spar 
+            # Check if it is a spar
             if pnl.b1.x == pnl.b2.x:
                 # If spar change thickness
                 pnl.t_pnl = t_sp
@@ -681,7 +681,7 @@ class IdealWingbox():
             else:
                 idx = pnl.get_cell_idx(self.wingbox_struct, self.chord) # Find which cell  panel is in
                 pnl.t_pnl = t_sk_cell[idx] # Assign new thickness
-        
+
         self._compute_boom_areas(self.chord)
         self.Ixx = self._set_Ixx()
         self.Iyy = self._set_Iyy()
@@ -704,7 +704,7 @@ class IdealWingbox():
         viewed in the direction zO then, as shown in Fig. 16.10, positive internal forces and
         moments are in the same direction and sense as the externally applied loads whereas
         on the opposite face they form an opposing system. A further condition defining the signs of the bending moments Mx and My is that they are
-        positive when they induce tension in the positive xy quadrant of the beam cross-section. Finally, the beam seen in Figure 16.10 is also 
+        positive when they induce tension in the positive xy quadrant of the beam cross-section. Finally, the beam seen in Figure 16.10 is also
         immediately the coordinate system used. Where the aircraft flies
         in the x direction, thus analyzing the right wing structure.
 
@@ -754,10 +754,10 @@ class IdealWingbox():
         # First compute all the direct stresses
         for boom in self.boom_dict.values():
             boom.sigma = self.compute_direct_stress(boom, moment_x, moment_y)
-        
+
         # Start by computing basic shear stresses
 
-        cut_lst = [] #define list to 
+        cut_lst = [] #define list to
 
         # Loop over all cells and specify required conditions in order to cut
         # We cut the upper panel left of each spar. Except for the last cell, here we cut to the
@@ -768,17 +768,17 @@ class IdealWingbox():
             if idx != len(self.wingbox_struct.spar_loc_nondim) - 1:
                 for pnl in self.panel_dict.values():
                     cond1 = pnl.b1.x != pnl.b2.x # Remove the spars from selectioj
-                    cond2 = pnl.b2.y >= self.y_centroid and pnl.b1.y >= self.y_centroid # Only upper skin 
+                    cond2 = pnl.b2.y >= self.y_centroid and pnl.b1.y >= self.y_centroid # Only upper skin
                     cond3 = pnl.b1.x <= spar_loc  and pnl.b2.x <= spar_loc # Get the panel left of the spar
                     cond4 = pnl.b1.x == spar_loc or pnl.b2.x == spar_loc # Only select panel attached to the spar
                     if cond1 and cond2 and cond3 and cond4: # Combine all statements
                         pnl.q_basic = 0 # Cut this panel
-                        cut_lst.append(pnl) 
+                        cut_lst.append(pnl)
             # If are at the last cell cut both the left and right panel connected to the spar
             elif idx ==  len(self.wingbox_struct.spar_loc_nondim) - 1:
                 for pnl in self.panel_dict.values():
                     cond1 = pnl.b1.x != pnl.b2.x
-                    cond2 = (pnl.b2.y + pnl.b1.y)/2 >= self.y_centroid 
+                    cond2 = (pnl.b2.y + pnl.b1.y)/2 >= self.y_centroid
                     cond3 = pnl.b1.x == spar_loc or pnl.b2.x == spar_loc
                     if cond1 and cond2 and cond3:
                         pnl.q_basic = 0
@@ -786,10 +786,10 @@ class IdealWingbox():
             # In case something goes wrong with the previous statements
             else:
                 raise Exception(f"Something went wrong, more iterations were made than there are cells")
-            
+
         cut_lst = sorted(cut_lst, key= lambda x1: np.min([x1.b1.x, x1.b2.x]))# Sort the cut panels based on their x location.
-            
-        # Get panels per cell excluding the right spar of that cell 
+
+        # Get panels per cell excluding the right spar of that cell
         pnl_per_cell_lst = []
         spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord # dimensionalize and insert a zero
         for idx, spar_loc in enumerate(spar_loc_arr):
@@ -799,7 +799,7 @@ class IdealWingbox():
             # Conditions for the last cell
             else:
                 pnl_per_cell_lst.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc])
-            
+
         shear_const_y = -(shear_y*self.Iyy - shear_x*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy) # define -Sy/Ixx which is used repeatdly
         shear_const_x = -(shear_x*self.Ixx - shear_y*self.Ixy)/(self.Ixx*self.Iyy - self.Ixy) # define -Sy/Ixx which is used repeatdly
 
@@ -847,15 +847,15 @@ class IdealWingbox():
                         q_basic += shear_const_y*curr_pnl.b1.A*(curr_pnl.b1.y - self.y_centroid) + shear_const_x*curr_pnl.b1.A*(curr_pnl.b1.x - self.x_centroid)
                         curr_pnl.q_basic =  q_basic
                         curr_pnl.set_b1_to_b2_vector()
-                else: 
+                else:
                     raise Exception("No connecting panel was found")
 
 
         #=========================================================================
-        # Now Compute the complementary shear flows and the twist per unit lengt   
+        # Now Compute the complementary shear flows and the twist per unit lengt
         #========================================================================
 
-        # Get the panel per cell, that is the fully defined cell. 
+        # Get the panel per cell, that is the fully defined cell.
         pnl_per_cell_lst2 = []
         spar_loc_arr = np.insert(self.wingbox_struct.spar_loc_nondim, 0,0)*self.chord # dimensionalize and insert a zero
         for idx, spar_loc in enumerate(spar_loc_arr):
@@ -865,15 +865,15 @@ class IdealWingbox():
             # Conditions for the last cell
             else:
                 pnl_per_cell_lst2.append([i for i in self.panel_dict.values() if  (i.b1.x + i.b2.x)/2 >= spar_loc])
-        
-        # Define A and b matrix to compute qs,1 qs,2 \cdots qs,n and dtheta/dz 
+
+        # Define A and b matrix to compute qs,1 qs,2 \cdots qs,n and dtheta/dz
         n_cell =  self.wingbox_struct.n_cell  # shortcut to amount of cells
         b_arr = np.zeros((n_cell + 1,1))
         A_arr = np.zeros((n_cell + 1, n_cell + 1,))
 
         # Set up the equations for the twist per unit length in array A
-        # Everything counterclockwise (ccw) is set up as positive. We can check whether something is ccw 
-        # as we have the direction the q_basic was set up and the centroid of each cell thus a simple cross 
+        # Everything counterclockwise (ccw) is set up as positive. We can check whether something is ccw
+        # as we have the direction the q_basic was set up and the centroid of each cell thus a simple cross
         # product will tell us so
         for idx, cell in enumerate(pnl_per_cell_lst2):
             # Flag to easily verify whether the cell geometry selection makes sense
@@ -903,7 +903,7 @@ class IdealWingbox():
                 A_arr[idx, n_cell] = 2*self.area_lst[idx]*shear_mod
                 A_arr[idx, idx - 1] = np.sum([pnl.length()/pnl.t_pnl for pnl in cell if (pnl.b1.x == pnl.b2.x == x_min)])
                 A_arr[idx, idx] = -1*np.sum([pnl.length()/pnl.t_pnl for pnl in cell])
-            else: 
+            else:
                 raise Exception(f"Something went wrong, more iterations were made then there were cells")
 
         # Set up eqautions for twist per unit legnth but in b array
@@ -912,7 +912,7 @@ class IdealWingbox():
             for pnl in cell:
                 r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
                 r_rel_vec = r_abs_vec - self.centroid_lst[idx]
-                if pnl.q_basic != 0: 
+                if pnl.q_basic != 0:
                     sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
                     b_ele += sign*pnl.q_basic*pnl.length()/pnl.t_pnl
                 # When we have a panel that was not cut, they do not have a defined direction yet and it does not matter since magnitude is 0
@@ -927,7 +927,7 @@ class IdealWingbox():
         # Contribution from the complementary shear flows
         for idx, cell in enumerate(pnl_per_cell_lst2):
             A_arr[n_cell, idx] = 2*self.area_lst[idx]
-        
+
         # Contribution to b_arr from basic shear flows and shear force itself
         sum = 0
         for pnl in self.panel_dict.values():
@@ -954,7 +954,7 @@ class IdealWingbox():
         for idx, cell in enumerate(pnl_per_cell_lst2):
             x_max = np.max([i.b1.x for i in cell]) # get maximum x value in cell (will help us find spars)
             x_min = np.min([i.b1.x for i in cell]) # idem but for  minimum
-            # Now we will loop over all panel 
+            # Now we will loop over all panel
             for pnl in cell:
                 r_abs_vec = np.array([(pnl.b1.x + pnl.b2.x)/2 , (pnl.b1.y + pnl.b2.y)/2])
                 r_rel_vec = r_abs_vec - self.centroid_lst[idx]
@@ -967,7 +967,7 @@ class IdealWingbox():
                     # Else if it not on the right spar just add qs0
                     else:
                         # Check if it was not the cut panel
-                        if pnl.q_basic != 0: 
+                        if pnl.q_basic != 0:
                             sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
                             pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
                             pnl.tau = pnl.q_tot/pnl.t_pnl
@@ -997,7 +997,7 @@ class IdealWingbox():
                     # Else if it not on the right spar just add qs,n
                     else:
                         # Check if it was not the cut panel
-                        if pnl.q_basic != 0: 
+                        if pnl.q_basic != 0:
                             sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
                             pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
                             pnl.tau = pnl.q_tot/pnl.t_pnl
@@ -1022,7 +1022,7 @@ class IdealWingbox():
                     # Else if  just add qs,n. As no other influece needs to be taken into account
                     else:
                         # Check if it was not the cut panel
-                        if pnl.q_basic != 0: 
+                        if pnl.q_basic != 0:
                             sign = np.sign(np.cross(r_rel_vec, pnl.dir_vec))
                             pnl.q_tot  = pnl.q_basic + sign*qs_lst[idx]
                             pnl.tau = pnl.q_tot/pnl.t_pnl
@@ -1057,7 +1057,7 @@ class IdealWingbox():
         y_lst = np.array([i.y for i in self.boom_dict.values()])
         stress_arr = np.array([i.sigma/1e6 for i in self.boom_dict.values()])
         hover_data = [f"stress = {i.sigma/1e6} Mpa" for i in self.boom_dict.values()]
-        fig = px.scatter(x= x_lst, y= y_lst, color= stress_arr, title= "Direct stress")
+        fig = px.scatter(x= x_lst, y= y_lst, color=stress_arr, title= "Direct stress")
         fig.update_traces(marker=dict(size=12,
                         line=dict(width=2,
                         color='DarkSlateGrey')),
@@ -1100,8 +1100,9 @@ class IdealWingbox():
             y = [panel.b1.y, panel.b2.y]
             stress = abs(panel.tau/1e6)
             hover_text = f"Panel: {panel.pid}, Stress: {stress} MPa"  # Modify as needed
-            col = cmap(norm(stress))
-            col = "rgb" + str(col[:-1])
+            col = [str(float(coli)) for coli in cmap(norm(stress))]
+            print('DEBUG col', col)
+            col = "rgb(" + ",".join(col[:-1]) + ")"
 
             trace = go.Scatter(
                 x=x,
@@ -1257,7 +1258,7 @@ def read_coord(path_coord:str) -> np.ndarray:
 def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, CubicSpline]:
     """
     Returns two functions which interpolate the coordinates of the given airfoil. The first function interpolates the top skin,
-    and the second function interpolates the bottom skin. The resulting interpolation functions take into account an airfoil 
+    and the second function interpolates the bottom skin. The resulting interpolation functions take into account an airfoil
     scaled by the given chord.
 
     Parameters
@@ -1271,7 +1272,7 @@ def spline_airfoil_coord(path_coord:str, chord:float) -> Tuple[CubicSpline, Cubi
         A cubic spline of the top skin and lower skin, respectively.
     """
 
-    
+
     coord_scaled = read_coord(path_coord)*chord # coordinates of airfoil scaled by the chord
     top_coord =  coord_scaled[:np.argmin(coord_scaled[:,0]), :] #coordinates of top skin
     top_coord = np.flip(top_coord, axis=0)
@@ -1285,7 +1286,7 @@ def get_centroids(path_coord:str) -> Tuple[float, float]:
     r"""
     Compute the nondimensional x and y centroid based on the coordinate file of an airfoil.
     The centroids are computed assuming the following:
-     
+
     .. admonition:: Assumptions
 
         1. It is only based on the skin, i.e., the spar webs and stringers are ignored. Additionally, the different thickness of the skin are not taken into account.
@@ -1354,7 +1355,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     """
 
 
-    
+
     # Check  wingbox data structure
     assert len(wingbox_struct.t_sk_cell) == wingbox_struct.n_cell, "Length of t_sk_cell should be equal to the amount of cells"
     assert len(wingbox_struct.str_cell) == wingbox_struct.n_cell, "Length of str_cell should be equal to the amount of cells"
@@ -1374,28 +1375,28 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
 
     x_boom_loc = np.array([])
 
-    #TODO create a new x_boom_loc 
-    for idx, loc in enumerate(spar_loc_lst): 
+    #TODO create a new x_boom_loc
+    for idx, loc in enumerate(spar_loc_lst):
         if idx != len(spar_loc_lst) - 1:
             len_cell = spar_loc_lst[idx + 1] - loc
-            # A 0.1 starting point is chosen to avoid 
-            str_tot = str_lst[idx] 
-            
+            # A 0.1 starting point is chosen to avoid
+            str_tot = str_lst[idx]
 
-            # See assumptions, the amount of stringers is supposed to be an even numbers hence 
+
+            # See assumptions, the amount of stringers is supposed to be an even numbers hence
             # the code below
             if isinstance(str_tot, int):
                 if str_tot % 2 != 0:
                     warn(f"{str_lst[idx]} was not an even number and will be floored for conservative reasons")
                     n_str = np.floor(str_lst[idx]/2)
-                else: 
+                else:
                     n_str = str_lst[idx]/2
-            else: 
+            else:
                 str_tot = np.round(str_tot,0)
                 if str_tot % 2 != 0:
                     warn(f"{str_lst[idx]} was not an even number and will be floored for conservative reasons")
                     n_str = np.floor(str_lst[idx]/2)
-                else: 
+                else:
                     n_str = str_lst[idx]/2
 
             if idx != 0:
@@ -1403,7 +1404,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             else:
                 loc_cell =  np.linspace(loc , spar_loc_lst[idx + 1], int(n_str + 1))
             x_boom_loc = np.append(x_boom_loc, loc_cell)
-        else: 
+        else:
             pass
 
 
@@ -1419,7 +1420,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         boom.y = float(top_interp(x_boom))
 
         if boom.bid not in boom_dict.keys():
-            boom_dict[boom.bid] = boom 
+            boom_dict[boom.bid] = boom
         else:
             raise RuntimeError(f"Boom id {boom.bid} already exists in variable boom dictionary")
 
@@ -1427,7 +1428,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
             pnl = IdealPanel()
             pnl.pid = pid
             pnl.bid1 = bid - 1
-            pnl.bid2 = bid 
+            pnl.bid2 = bid
             pnl.b1 =  boom_dict[pnl.bid1]
             pnl.b2 =  boom_dict[pnl.bid2]
             cell_idx = pnl.get_cell_idx(wingbox_struct, chord)
@@ -1452,7 +1453,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         pnl = IdealPanel()
         pnl.pid = pid
         pnl.bid1 = bid - 1
-        pnl.bid2 = bid 
+        pnl.bid2 = bid
         pnl.b1 =  boom_dict[pnl.bid1]
         pnl.b2 =  boom_dict[pnl.bid2]
         cell_idx = pnl.get_cell_idx(wingbox_struct, chord)
@@ -1474,7 +1475,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
     pnl.t_pnl = wingbox_struct.t_sk_cell[cell_idx]
     #TODO create the areas  based on sigma ratio
     panel_dict[pid] = pnl
-    pid +=1 
+    pid +=1
 
     # Create panels on the spar booms
     for spar_loc in wingbox_struct.spar_loc_nondim:
@@ -1497,7 +1498,7 @@ def discretize_airfoil(path_coord:str, chord:float, wingbox_struct:Wingbox) -> I
         # Create panel connecting upper boom and lower boom
         pnl = IdealPanel()
         pnl.pid = pid
-        pnl.bid1 = upper_b.bid 
+        pnl.bid1 = upper_b.bid
         pnl.bid2 = lower_b.bid
         pnl.t_pnl = wingbox_struct.t_sp
         pnl.b1 =  boom_dict[pnl.bid1]
